@@ -2,6 +2,8 @@ using Atlas.API.Endpoints;
 using Atlas.Core.Models;
 using Atlas.Data.Access.Data;
 using Atlas.Data.Access.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,24 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks();
 
 builder.Services.AddScoped<IWeatherForecastRepository, WeatherForecastRepository>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = $"https://{builder.Configuration["Auth0:Domain"]}";
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidIssuer = builder.Configuration["Auth0:Domain"],
+            ValidAudience = builder.Configuration["Auth0:Audience"]
+        };
+    });
+
+builder.Services.AddAuthorization(o =>
+{
+    o.AddPolicy("atlas-user", p => p.
+        RequireAuthenticatedUser().
+        RequireClaim("role", "atlas-user"));
+});
 
 builder.Services.AddCors(options =>
 {
@@ -38,6 +58,10 @@ else
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
+
+app.UseAuthorization();
+
 app.MapHealthChecks("/health");
 
 app.MapGet("/error", () => Results.Problem());
@@ -48,6 +72,7 @@ app.MapGet("/weatherforecast", WeatherForecastEndpoint.GetWeatherForecast)
 .WithName("GetBestStories")
 .WithDescription("The GetBestStories Endpoint")
 .Produces<IEnumerable<WeatherForecast>>(StatusCodes.Status200OK)
-.Produces(StatusCodes.Status500InternalServerError);
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization("atlas-user");
 
 app.Run();
