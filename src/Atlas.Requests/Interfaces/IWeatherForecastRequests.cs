@@ -4,6 +4,6 @@ namespace Atlas.Requests.Interfaces
 {
     public interface IWeatherForecastRequests
     {
-        Task<IEnumerable<WeatherForecast>> GetWeatherForecasts();
+        Task<IEnumerable<WeatherForecast>?> GetWeatherForecasts();
     }
 }
