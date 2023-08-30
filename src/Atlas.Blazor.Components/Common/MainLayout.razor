@@ -1,0 +1,87 @@
+﻿<MudThemeProvider Theme="_theme" @bind-IsDarkMode="@_isDarkMode" />
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
+<MudLayout>
+    <MudAppBar Elevation="0">    
+        <MudImage ObjectFit="@ObjectFit.Fill" Height="50" Width="200" Src="/images/Atlas.png" Alt="Atlas"/>
+        <MudSpacer />
+        @LoginDisplayFragment
+        <MudTooltip Text="@(_isDarkMode ? Mode.LIGHT : Mode.DARK)" Color="Color.Inherit">
+            <MudToggleIconButton Toggled="@_isDarkMode"
+                                 Icon="@Icons.Material.Filled.DarkMode" 
+                                 Color="Color.Inherit"
+                                 ToggledIcon="@Icons.Material.Filled.WbSunny"
+                                 ToggledColor="Color.Inherit"
+                                 ToggledChanged="ToggledChanged"/>
+        </MudTooltip>
+    </MudAppBar>
+    <AuthorizeView>
+        <Authorized>
+            <MudDrawer @bind-Open="_drawerOpen" Elevation="1" ClipMode="DrawerClipMode.Always">
+                <NavMenu />           
+            </MudDrawer>
+        </Authorized>
+    </AuthorizeView>
+    <MudMainContent>
+        <AuthorizeView>
+            <Authorized>
+                <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                    <MudToolBar DisableGutters="true">
+                        <MudTooltip Text="@(_drawerOpen ? Buttons.NAVIGATION_MENU_TOOLTIP_HIDE : Buttons.NAVIGATION_MENU_TOOLTIP_SHOW)">
+                            <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" OnClick="@((e) => DrawerToggle())" Class="ml-3" />
+                        </MudTooltip>
+                        <Breadcrumbs/>
+                        <MudSpacer />
+                    </MudToolBar>
+                </MudHidden>
+            </Authorized>
+        </AuthorizeView>
+        <MudContainer MaxWidth="MaxWidth.False">
+            @BodyFragment
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    [Inject]
+    public IAtlasCache? AtlasCache { get; set; }
+
+    [Parameter]
+    public RenderFragment? LoginDisplayFragment { get; set; }
+
+    [Parameter]
+    public RenderFragment? BodyFragment { get; set; }
+
+    private AtlasTheme _theme = new();
+    private bool _isDarkMode = false;
+    private bool _drawerOpen = true;
+
+    protected override void OnParametersSet()
+    {
+        if (AtlasCache == null)
+        {
+            throw new NullReferenceException(nameof(AtlasCache));
+        }
+
+        _isDarkMode = AtlasCache.Get<bool>(AtlasCacheKeys.IsDarkMode);
+
+        base.OnParametersSet();
+    }
+
+    private void ToggledChanged(bool value)
+    {
+        if (AtlasCache == null)
+        {
+            throw new NullReferenceException(nameof(AtlasCache));
+        }
+
+        _isDarkMode = value;
+        AtlasCache.Set(AtlasCacheKeys.IsDarkMode, value);
+    }
+
+    private void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+}

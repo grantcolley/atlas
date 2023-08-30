@@ -1,0 +1,60 @@
+﻿@foreach (var module in _modules)
+{
+    @RenderModule(module);
+}
+
+@code {
+    [Inject]
+    internal IModuleRequests? ModuleRequest { get; set; }
+
+    [Inject]
+    internal AuthenticationStateProvider? AuthenticationStateProvider { get; set; }
+
+    private IEnumerable<Module>? _modules = new List<Module>();
+
+    protected async override Task OnParametersSetAsync()
+    {
+        if (AuthenticationStateProvider == null)
+        {
+            throw new ArgumentNullException(nameof(AuthenticationStateProvider));    
+        }
+
+        if (ModuleRequest == null)
+        {
+            throw new ArgumentNullException(nameof(ModuleRequest));
+        }
+
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync().ConfigureAwait(false);
+
+        if (authState != null
+            && authState.User != null
+            && authState.User.Identity != null
+            && authState.User.Identity.IsAuthenticated)
+        {
+            if (authState.User.HasClaim(c => c.Value.Equals(Auth.ATLAS_USER)))
+            {
+                _modules = await ModuleRequest.GetModulesAsync().ConfigureAwait(false);
+            }
+        }
+
+        await base.OnParametersSetAsync().ConfigureAwait(false);
+    }
+
+    private RenderFragment RenderModule(Module module) => __builder =>
+    {
+        @if (module != null)
+        {
+            <MudNavGroup Title="@module.Name" Icon=@IconHelper.GetOutlined(module.Icon) HideExpandIcon="true" Expanded="true">
+                @foreach (var category in module.Categories)
+                {
+                    <MudNavGroup Title="@category.Name" Icon=@IconHelper.GetOutlined(category.Icon) HideExpandIcon="true" Expanded="true">
+                        @foreach (var menuItem in category.MenuItems)
+                        {
+                            <MudNavLink Href="@menuItem.NavigateFullPath()" Icon=@IconHelper.GetOutlined(menuItem.Icon) @onclick:stopPropagation Match="NavLinkMatch.All">@menuItem.Name</MudNavLink>
+                        }
+                    </MudNavGroup>
+                }
+            </MudNavGroup>
+        }
+    };
+}
