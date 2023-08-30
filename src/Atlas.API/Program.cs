@@ -67,10 +67,9 @@ app.MapHealthChecks("/health");
 app.MapGet("/error", () => Results.Problem());
 
 app.MapGet("/weatherforecast", WeatherForecastEndpoint.GetWeatherForecast)
-.WithName("GetWeatherForecast")
 .WithOpenApi()
-.WithName("GetBestStories")
-.WithDescription("The GetBestStories Endpoint")
+.WithName("GetWeatherForecast")
+.WithDescription("The GetWeatherForecast Endpoint")
 .Produces<IEnumerable<WeatherForecast>>(StatusCodes.Status200OK)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization("atlas-user");
