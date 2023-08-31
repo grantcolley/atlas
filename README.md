@@ -1,3 +1,5 @@
+![Alt text](/readme-images/Atlas.png?raw=true "Atlas") 
+
 ###### .NET 7.0, Blazor WebAssembly, Blazor Server, ASP.NET Core Web API, Auth0, MudBlazor, Entity Framework Core, MS SQL Server, SQLite 
 ###### 
 \
