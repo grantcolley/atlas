@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas.Requests", "Atlas.Req
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas.Blazor.Components", "Atlas.Blazor.Components\Atlas.Blazor.Components.csproj", "{A97D5921-7A74-400B-8730-D7ACE72BF523}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas.Blazor.Server", "Atlas.Blazor.Server\Atlas.Blazor.Server.csproj", "{DCF30872-2052-4EF0-9075-C5077C6DA599}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{A97D5921-7A74-400B-8730-D7ACE72BF523}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A97D5921-7A74-400B-8730-D7ACE72BF523}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A97D5921-7A74-400B-8730-D7ACE72BF523}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCF30872-2052-4EF0-9075-C5077C6DA599}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCF30872-2052-4EF0-9075-C5077C6DA599}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCF30872-2052-4EF0-9075-C5077C6DA599}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCF30872-2052-4EF0-9075-C5077C6DA599}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
