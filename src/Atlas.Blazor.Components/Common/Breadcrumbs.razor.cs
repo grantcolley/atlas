@@ -9,7 +9,7 @@ namespace Atlas.Blazor.Components.Common
     public abstract class BreadcrumbsBase : ComponentBase, IDisposable
     {
         [Inject]
-        public IStateNotification? StateNotification { get; set; }
+        public IStateNotificationService? StateNotification { get; set; }
 
         protected List<BreadcrumbItem> _breadcrumbs = new();
 

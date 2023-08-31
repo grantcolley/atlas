@@ -1,6 +1,6 @@
 ﻿namespace Atlas.Blazor.Components.Interfaces
 {
-    public interface IStateNotification
+    public interface IStateNotificationService
     {
         void Deregister(string target);
         void Register(string target, Action action);

@@ -1,13 +1,13 @@
 ﻿using Atlas.Blazor.Components.Interfaces;
 
-namespace Atlas.Blazor.Components.Notification
+namespace Atlas.Blazor.Components.Services
 {
-    public class StateNotification : IStateNotification
+    public class StateNotificationService : IStateNotificationService
     {
         private readonly Dictionary<string, Action> actions;
         private readonly Dictionary<string, Func<object, Task>> functions;
 
-        public StateNotification()
+        public StateNotificationService()
         {
             actions = new Dictionary<string, Action>();
             functions = new Dictionary<string, Func<object, Task>>();
