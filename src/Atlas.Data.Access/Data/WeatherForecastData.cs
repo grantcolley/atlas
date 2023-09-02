@@ -3,7 +3,7 @@ using Atlas.Data.Access.Interfaces;
 
 namespace Atlas.Data.Access.Data
 {
-    public class WeatherForecastRepository : IWeatherForecastRepository
+    public class WeatherForecastData : IWeatherForecastData
     {
         private static readonly string[] Summaries = new[]
         {

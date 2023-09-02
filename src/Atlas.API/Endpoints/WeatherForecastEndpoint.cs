@@ -5,7 +5,7 @@ namespace Atlas.API.Endpoints
 {
     internal static class WeatherForecastEndpoint
     {
-        internal static async Task<IResult> GetWeatherForecast(IWeatherForecastRepository weatherForecastRepository, CancellationToken cancellationToken)
+        internal static async Task<IResult> GetWeatherForecast(IWeatherForecastData weatherForecastRepository, CancellationToken cancellationToken)
         {
             try
             {
