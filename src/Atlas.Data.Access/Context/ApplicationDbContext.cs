@@ -16,7 +16,6 @@ namespace Atlas.Data.Access.Context
         }
 
         public DbSet<Audit> Audits { get; set; }
-
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Permission> Permissions { get; set; }
