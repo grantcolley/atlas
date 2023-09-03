@@ -37,7 +37,7 @@ builder.Services
 
 builder.Services.AddHttpClient("atlas-api", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7220");
+    client.BaseAddress = new Uri("https://localhost:44420");
 });
 
 builder.Services.AddScoped<TokenProvider>();
