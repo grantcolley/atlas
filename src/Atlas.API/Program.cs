@@ -1,7 +1,9 @@
 using Atlas.API.Endpoints;
 using Atlas.Core.Models;
+using Atlas.Data.Access.Context;
 using Atlas.Data.Access.Data;
 using Atlas.Data.Access.Interfaces;
+using Atlas.Seed.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -73,5 +75,21 @@ app.MapGet("/weatherforecast", WeatherForecastEndpoint.GetWeatherForecast)
 .Produces<IEnumerable<WeatherForecast>>(StatusCodes.Status200OK)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization("atlas-user");
+
+var useSeedData = bool.Parse(builder.Configuration["SeedData:UseSeedData"]);
+
+if (useSeedData)
+{
+    // Seed data for testing purposes only...
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        var applicationDbContext = services.GetRequiredService<ApplicationDbContext>();
+
+        applicationDbContext.SetUser("Atlas.SeedData");
+
+        SeedData.Initialise(applicationDbContext);
+    }
+}
 
 app.Run();
