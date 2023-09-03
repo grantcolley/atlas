@@ -2,8 +2,9 @@
 {
     public static class Auth
     {
-        public const string ATLAS_USER = "atlas-user";
-        public const string ROLE = "role";
-        public const string USER = "user";
+        public const string ATLAS_USER_CLAIM = "atlas-user";
+        public const string ADMIN = "Admin";
+        public const string USER = "User";
+        public const string DEVELOPER = "Developer";
     }
 }
