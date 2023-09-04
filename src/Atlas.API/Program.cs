@@ -1,10 +1,12 @@
 using Atlas.API.Endpoints;
 using Atlas.Core.Models;
+using Atlas.Data.Access.Constants;
 using Atlas.Data.Access.Context;
 using Atlas.Data.Access.Data;
 using Atlas.Data.Access.Interfaces;
 using Atlas.Seed.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,22 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks();
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    if (builder.Configuration.GetConnectionString(DataMigrations.CONNECTION_STRING).Contains(DataMigrations.SQLITE_DATABASE))
+    {
+        options.EnableSensitiveDataLogging()
+                .UseSqlite(builder.Configuration.GetConnectionString(DataMigrations.CONNECTION_STRING),
+                            x => x.MigrationsAssembly(DataMigrations.SQLITE_MIGRATIONS));
+    }
+    else
+    {
+        options.EnableSensitiveDataLogging()
+                .UseSqlServer(builder.Configuration.GetConnectionString(DataMigrations.CONNECTION_STRING),
+                            x => x.MigrationsAssembly(DataMigrations.SQLSERVER_MIGRATIONS));
+    }
+});
 
 builder.Services.AddScoped<IWeatherForecastData, WeatherForecastData>();
 
