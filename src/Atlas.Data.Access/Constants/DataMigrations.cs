@@ -3,8 +3,8 @@
     public static class DataMigrations
     {
         public const string CONNECTION_STRING = "DefaultConnection";
-        public const string SQLITE_DATABASE = "Headway.db";
-        public const string SQLITE_MIGRATIONS = "Headway.MigrationsSqlite";
-        public const string SQLSERVER_MIGRATIONS = "Headway.MigrationsSqlServer";
+        public const string SQLITE_DATABASE = "Atlas.db";
+        public const string SQLITE_MIGRATIONS = "Atlas.Migrations.SQLite";
+        public const string SQLSERVER_MIGRATIONS = "Atlas.Migrations.SQLServer";
     }
 }
