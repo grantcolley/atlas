@@ -11,7 +11,7 @@ namespace Atlas.Data.Access.Data
             "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        public async Task<IEnumerable<WeatherForecast>> GetWeatherForecasts(CancellationToken cancellationToken)
+        public async Task<IEnumerable<WeatherForecast>> GetWeatherForecastsAsync(CancellationToken cancellationToken)
         {
             var rng = new Random();
             WeatherForecast[] weatherForecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
