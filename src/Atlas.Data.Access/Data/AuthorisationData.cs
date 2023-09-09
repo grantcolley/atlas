@@ -20,7 +20,7 @@ namespace Atlas.Data.Access.Data
                 return default;
             }
 
-            var user = await applicationDbContext.Users
+            var user = await _applicationDbContext.Users
                 .AsNoTracking()
                 .Include(u => u.Permissions)
                 .Include(u => u.Roles)
@@ -43,7 +43,7 @@ namespace Atlas.Data.Access.Data
 
         private void SetUser(string user)
         {
-            applicationDbContext.SetUser(user);
+            _applicationDbContext.SetUser(user);
         }
     }
 }
