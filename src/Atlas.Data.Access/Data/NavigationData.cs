@@ -11,6 +11,15 @@ namespace Atlas.Data.Access.Data
         public NavigationData(ApplicationDbContext applicationDbContext, ILogger<NavigationData> logger)
             : base(applicationDbContext, logger)
         {
+            if (_applicationDbContext == null)
+            {
+                throw new NullReferenceException(nameof(_applicationDbContext));
+            }
+
+            if (_logger == null)
+            {
+                throw new NullReferenceException(nameof(logger));
+            }
         }
 
         public async Task<IEnumerable<Module>?> GetNavigationClaimsAsync(string claim, CancellationToken cancellationToken)
@@ -20,12 +29,7 @@ namespace Atlas.Data.Access.Data
                 return default;
             }
 
-            if(applicationDbContext == null)
-            {
-                throw new NullReferenceException(nameof(applicationDbContext));
-            }
-
-            User? user = await applicationDbContext.Users
+            User? user = await _applicationDbContext.Users
                 .Include(u => u.Permissions)
                 .Include(u => u.Roles)
                 .ThenInclude(r => r.Permissions)
@@ -49,7 +53,7 @@ namespace Atlas.Data.Access.Data
 
             List<string?> permissions = userPermissions.Distinct().ToList();
 
-            List<Module> modules = await applicationDbContext.Modules
+            List<Module> modules = await _applicationDbContext.Modules
                 .AsNoTracking()
                 .Include(m => m.Categories.OrderBy(c => c.Order))
                 .ThenInclude(c => c.MenuItems.OrderBy(mu => mu.Order))
