@@ -5,14 +5,14 @@ namespace Atlas.Data.Access.Data
 {
     public abstract class DataBase<T> : IDisposable
     {
-        protected readonly ApplicationDbContext applicationDbContext;
-        protected readonly ILogger<T> logger;
+        protected readonly ApplicationDbContext _applicationDbContext;
+        protected readonly ILogger<T> _logger;
         private bool disposedValue;
 
         protected DataBase(ApplicationDbContext applicationDbContext, ILogger<T> logger)
         {
-            this.applicationDbContext = applicationDbContext;
-            this.logger = logger;
+            _applicationDbContext = applicationDbContext;
+            _logger = logger;
         }
 
         protected virtual void Dispose(bool disposing)
@@ -21,7 +21,7 @@ namespace Atlas.Data.Access.Data
             {
                 if (disposing)
                 {
-                    applicationDbContext.Dispose();
+                    _applicationDbContext.Dispose();
                 }
 
                 disposedValue = true;
