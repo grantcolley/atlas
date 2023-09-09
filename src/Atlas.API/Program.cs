@@ -1,4 +1,6 @@
 using Atlas.API.Endpoints;
+using Atlas.API.Interfaces;
+using Atlas.API.Services;
 using Atlas.Core.Models;
 using Atlas.Data.Access.Constants;
 using Atlas.Data.Access.Context;
@@ -6,8 +8,10 @@ using Atlas.Data.Access.Data;
 using Atlas.Data.Access.Interfaces;
 using Atlas.Seed.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +20,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks();
+
+builder.Services.Configure<JsonOptions>(options =>
+{
+    options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -33,6 +42,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     }
 });
 
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddScoped<IAuthorisationData, AuthorisationData>();
+builder.Services.AddScoped<IAuthorisationService, AuthorisationService>();
+builder.Services.AddScoped<INavigationData, NavigationData>();
 builder.Services.AddScoped<IWeatherForecastData, WeatherForecastData>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -50,7 +64,7 @@ builder.Services.AddAuthorization(o =>
 {
     o.AddPolicy("atlas-user", p => p.
         RequireAuthenticatedUser().
-        RequireClaim("role", "atlas-user"));
+        RequireRole("atlas-user"));
 });
 
 builder.Services.AddCors(options =>
@@ -88,9 +102,17 @@ app.MapGet("/error", () => Results.Problem());
 
 app.MapGet("/weatherforecast", WeatherForecastEndpoint.GetWeatherForecast)
 .WithOpenApi()
-.WithName("GetWeatherForecast")
-.WithDescription("The GetWeatherForecast Endpoint")
+.WithName("weatherorecast")
+.WithDescription("Gets the weather forecast")
 .Produces<IEnumerable<WeatherForecast>>(StatusCodes.Status200OK)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization("atlas-user");
+
+app.MapGet("/claimmodules", NavigationEndpoint.GetClaimModules)
+.WithOpenApi()
+.WithName("claimmodules")
+.WithDescription("Gets the user's authorized modules")
+.Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization("atlas-user");
 
