@@ -113,18 +113,34 @@ namespace Atlas.Seed.Data
 
             dbContext.Modules.Add(administration);
 
-            var authorisationCatgory = new Category { Name = "Authorisation", Icon = "AdminPanelSettings", Order = 1, Permission = Auth.ADMIN };
-            var navigationCatgory = new Category { Name = "Navigation", Icon = "Explore", Order = 2, Permission = Auth.ADMIN };
+            dbContext.SaveChanges();
 
-            dbContext.Categories.Add(authorisationCatgory);
+            var authorisationCategory = new Category { Name = "Authorisation", Icon = "AdminPanelSettings", Order = 1, Permission = Auth.ADMIN, Module = administration };
+            var navigationCategory = new Category { Name = "Navigation", Icon = "Explore", Order = 2, Permission = Auth.ADMIN, Module = administration };
 
-            var usersMenuItem = new MenuItem { Name = "Users", Icon = "SupervisedUserCircle", NavigatePage = "Page", Order = 1, Permission = Auth.ADMIN };
-            var rolesMenuItem = new MenuItem { Name = "Roles", Icon = "Lock", NavigatePage = "Page", Order = 2, Permission = Auth.ADMIN };
-            var permissionsMenuItem = new MenuItem { Name = "Permissions", Icon = "Key", NavigatePage = "Page", Order = 3, Permission = Auth.ADMIN };
+            administration.Categories.Add(authorisationCategory);
+            administration.Categories.Add(navigationCategory);
 
-            var modulesMenuItem = new MenuItem { Name = "Modules", Icon = "AutoAwesomeMosaic", NavigatePage = "Page", Order = 1, Permission = Auth.ADMIN };
-            var categoriesMenuItem = new MenuItem { Name = "Categories", Icon = "AutoAwesomeMotion", NavigatePage = "Page", Order = 2, Permission = Auth.ADMIN };
-            var menuItemsMenuItem = new MenuItem { Name = "MenuItems", Icon = "Article", NavigatePage = "Page", Order = 3, Permission = Auth.ADMIN };
+            dbContext.Categories.Add(authorisationCategory);
+            dbContext.Categories.Add(navigationCategory);
+
+            dbContext.SaveChanges();
+
+            var usersMenuItem = new MenuItem { Name = "Users", Icon = "SupervisedUserCircle", NavigatePage = "Page", Order = 1, Permission = Auth.ADMIN, Category = authorisationCategory };
+            var rolesMenuItem = new MenuItem { Name = "Roles", Icon = "Lock", NavigatePage = "Page", Order = 2, Permission = Auth.ADMIN, Category = authorisationCategory };
+            var permissionsMenuItem = new MenuItem { Name = "Permissions", Icon = "Key", NavigatePage = "Page", Order = 3, Permission = Auth.ADMIN, Category = authorisationCategory };
+
+            var modulesMenuItem = new MenuItem { Name = "Modules", Icon = "AutoAwesomeMosaic", NavigatePage = "Page", Order = 1, Permission = Auth.ADMIN, Category = navigationCategory };
+            var categoriesMenuItem = new MenuItem { Name = "Categories", Icon = "AutoAwesomeMotion", NavigatePage = "Page", Order = 2, Permission = Auth.ADMIN, Category = navigationCategory };
+            var menuItemsMenuItem = new MenuItem { Name = "MenuItems", Icon = "Article", NavigatePage = "Page", Order = 3, Permission = Auth.ADMIN, Category = navigationCategory };
+            
+            authorisationCategory.MenuItems.Add(usersMenuItem);
+            authorisationCategory.MenuItems.Add(rolesMenuItem);
+            authorisationCategory.MenuItems.Add(permissionsMenuItem);
+
+            navigationCategory.MenuItems.Add(modulesMenuItem);
+            navigationCategory.MenuItems.Add(categoriesMenuItem);
+            navigationCategory.MenuItems.Add(menuItemsMenuItem);
 
             dbContext.MenuItems.Add(usersMenuItem);
             dbContext.MenuItems.Add(rolesMenuItem);
@@ -132,16 +148,6 @@ namespace Atlas.Seed.Data
             dbContext.MenuItems.Add(modulesMenuItem);
             dbContext.MenuItems.Add(categoriesMenuItem);
             dbContext.MenuItems.Add(menuItemsMenuItem);
-
-            authorisationCatgory.MenuItems.Add(usersMenuItem);
-            authorisationCatgory.MenuItems.Add(rolesMenuItem);
-            authorisationCatgory.MenuItems.Add(permissionsMenuItem);
-            navigationCatgory.MenuItems.Add(modulesMenuItem);
-            navigationCatgory.MenuItems.Add(categoriesMenuItem);
-            navigationCatgory.MenuItems.Add(menuItemsMenuItem);
-
-            administration.Categories.Add(authorisationCatgory);
-            administration.Categories.Add(navigationCatgory);
 
             dbContext.SaveChanges();
         }
