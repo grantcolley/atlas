@@ -21,8 +21,7 @@ namespace Atlas.Requests.API
         {
             return await JsonSerializer.DeserializeAsync<IEnumerable<Module>?>
                 (await httpClient.GetStreamAsync($"claimmodules").ConfigureAwait(false),
-                    new JsonSerializerOptions(JsonSerializerDefaults.Web))
-                .ConfigureAwait(false);
+                new JsonSerializerOptions(JsonSerializerDefaults.Web)).ConfigureAwait(false);
         }
     }
 }
