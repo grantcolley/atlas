@@ -6,10 +6,10 @@ namespace Atlas.Core.Models
     {
         public Authorisation()
         {
-            Permissions = new List<string>();
+            Permissions = new List<string?>();
         }
 
         public string? User { get; set; }
-        public List<string> Permissions { get; set; }
+        public List<string?> Permissions { get; set; }
     }
 }
