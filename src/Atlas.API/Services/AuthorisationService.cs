@@ -26,8 +26,7 @@ namespace Atlas.API.Services
                 throw new NullReferenceException(nameof(_httpContextAccessor.HttpContext.User.Identity));
             }
 
-            ClaimsIdentity claimsIdentity = (ClaimsIdentity)_httpContextAccessor.HttpContext.User.Identity;
-            _claim = claimsIdentity.FindFirst(ClaimTypes.Email);
+            _claim = ((ClaimsIdentity)_httpContextAccessor.HttpContext.User.Identity).FindFirst(ClaimTypes.Email);
         }
 
         public Task<Authorisation?> GetAuthorisationAsync()
