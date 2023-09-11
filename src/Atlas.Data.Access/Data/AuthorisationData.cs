@@ -1,4 +1,5 @@
 ﻿using Atlas.Core.Models;
+using Atlas.Data.Access.Base;
 using Atlas.Data.Access.Context;
 using Atlas.Data.Access.Interfaces;
 using Microsoft.EntityFrameworkCore;
