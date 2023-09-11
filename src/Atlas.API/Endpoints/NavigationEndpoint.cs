@@ -6,11 +6,11 @@ namespace Atlas.API.Endpoints
 {
     internal static class NavigationEndpoint
     {
-        internal static async Task<IResult> GetClaimModules(IAuthorisationService authorisationService, INavigationData navigationData, CancellationToken cancellationToken)
+        internal static async Task<IResult> GetClaimModules(IClaimService claimService, INavigationData navigationData, CancellationToken cancellationToken)
         {
             try
             {
-                var authorisation = await authorisationService.GetAuthorisationAsync()
+                Authorisation? authorisation = await navigationData.GetAuthorisationAsync(claimService.GetClaim())
                     .ConfigureAwait(false);
 
                 if (authorisation == null
