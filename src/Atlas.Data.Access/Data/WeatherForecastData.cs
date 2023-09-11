@@ -1,10 +1,18 @@
 ﻿using Atlas.Core.Models;
+using Atlas.Data.Access.Base;
+using Atlas.Data.Access.Context;
 using Atlas.Data.Access.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace Atlas.Data.Access.Data
 {
-    public class WeatherForecastData : IWeatherForecastData
+    public class WeatherForecastData : DataBase<WeatherForecastData>, IWeatherForecastData
     {
+        public WeatherForecastData(ApplicationDbContext applicationDbContext, ILogger<WeatherForecastData> logger)
+            : base(applicationDbContext, logger)
+        {
+        }
+
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild",
