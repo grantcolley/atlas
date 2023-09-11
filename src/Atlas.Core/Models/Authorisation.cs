@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Atlas.Core.Models
 {
@@ -11,5 +12,15 @@ namespace Atlas.Core.Models
 
         public string? User { get; set; }
         public List<string?> Permissions { get; set; }
+
+        public bool HasPermission(string permission)
+        {
+            if(Permissions == null) 
+            {
+                throw new ArgumentNullException(nameof(permission));
+            }
+
+            return Permissions.Contains(permission);
+        }
     }
 }
