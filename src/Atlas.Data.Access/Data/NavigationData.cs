@@ -1,5 +1,4 @@
 ﻿using Atlas.Core.Models;
-using Atlas.Data.Access.Base;
 using Atlas.Data.Access.Context;
 using Atlas.Data.Access.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Atlas.Data.Access.Data
 {
-    public class NavigationData : DataBase<NavigationData>, INavigationData
+    public class NavigationData : AuthorisationData<NavigationData>, INavigationData
     {
         public NavigationData(ApplicationDbContext applicationDbContext, ILogger<NavigationData> logger)
             : base(applicationDbContext, logger)
