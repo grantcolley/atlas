@@ -8,7 +8,7 @@ namespace Atlas.Data.Access.Context
 {
     public class ApplicationDbContext : DbContext
     {
-        private string? user;
+        private string? _user;
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -25,7 +25,7 @@ namespace Atlas.Data.Access.Context
 
         public void SetUser(string user)
         {
-            this.user = user;
+            this._user = user;
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -111,14 +111,14 @@ namespace Atlas.Data.Access.Context
                 if (entry.State.Equals(EntityState.Added))
                 {
                     ((ModelBase)entry.Entity).CreatedDate = now;
-                    ((ModelBase)entry.Entity).CreatedBy = user ?? null;
+                    ((ModelBase)entry.Entity).CreatedBy = _user ?? null;
                     ((ModelBase)entry.Entity).ModifiedDate = now;
-                    ((ModelBase)entry.Entity).ModifiedBy = user ?? null;
+                    ((ModelBase)entry.Entity).ModifiedBy = _user ?? null;
                 }
                 else if (entry.State.Equals(EntityState.Modified))
                 {
                     ((ModelBase)entry.Entity).ModifiedDate = now;
-                    ((ModelBase)entry.Entity).ModifiedBy = user ?? null;
+                    ((ModelBase)entry.Entity).ModifiedBy = _user ?? null;
                 }
 
                 var audit = new Audit
@@ -126,7 +126,7 @@ namespace Atlas.Data.Access.Context
                     TableName = entry.Metadata.GetTableName(),
                     ClrType = entry.Metadata.ClrType.Name,
                     Action = entry.State == EntityState.Added ? "ADD" : entry.State == EntityState.Modified ? "UPDATE" : "DELETE",
-                    User = user,
+                    User = _user,
                     DateTime = now
                 };
 
