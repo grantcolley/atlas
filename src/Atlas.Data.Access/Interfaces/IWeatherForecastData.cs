@@ -2,7 +2,7 @@
 
 namespace Atlas.Data.Access.Interfaces
 {
-    public interface IWeatherForecastData
+    public interface IWeatherForecastData : IAuthorisationData
     {
         Task<IEnumerable<WeatherForecast>> GetWeatherForecastsAsync(CancellationToken cancellationToken);
     }
