@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Atlas.Data.Access.Data
 {
-    public class WeatherForecastData : DataBase<WeatherForecastData>, IWeatherForecastData
+    public class WeatherForecastData : AuthorisationData<WeatherForecastData>, IWeatherForecastData
     {
         public WeatherForecastData(ApplicationDbContext applicationDbContext, ILogger<WeatherForecastData> logger)
             : base(applicationDbContext, logger)
