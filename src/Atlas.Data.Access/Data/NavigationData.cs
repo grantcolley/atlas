@@ -1,4 +1,5 @@
 ﻿using Atlas.Core.Models;
+using Atlas.Data.Access.Base;
 using Atlas.Data.Access.Context;
 using Atlas.Data.Access.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -11,15 +12,6 @@ namespace Atlas.Data.Access.Data
         public NavigationData(ApplicationDbContext applicationDbContext, ILogger<NavigationData> logger)
             : base(applicationDbContext, logger)
         {
-            if (_applicationDbContext == null)
-            {
-                throw new NullReferenceException(nameof(_applicationDbContext));
-            }
-
-            if (_logger == null)
-            {
-                throw new NullReferenceException(nameof(logger));
-            }
         }
 
         public async Task<IEnumerable<Module>?> GetNavigationClaimsAsync(string claim, CancellationToken cancellationToken)
