@@ -7,14 +7,14 @@ using Microsoft.Extensions.Logging;
 
 namespace Atlas.Data.Access.Data
 {
-    public class AuthorisationData : DataBase<AuthorisationData>, IAuthorisationData
+    public abstract class AuthorisationData<T> : DataBase<T>, IAuthorisationData
     {
-        public AuthorisationData(ApplicationDbContext applicationDbContext, ILogger<AuthorisationData> logger)
+        public AuthorisationData(ApplicationDbContext applicationDbContext, ILogger<T> logger)
             : base(applicationDbContext, logger)
         {
         }
 
-        public async Task<Authorisation?> GetAuthorisationAsync(string claim)
+        public async Task<Authorisation?> GetAuthorisationAsync(string? claim)
         {
             if(string.IsNullOrWhiteSpace(claim))
             {
