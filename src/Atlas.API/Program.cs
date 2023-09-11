@@ -44,8 +44,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddScoped<IAuthorisationData, AuthorisationData>();
-builder.Services.AddScoped<IAuthorisationService, AuthorisationService>();
+builder.Services.AddScoped<IClaimService, ClaimService>();
 builder.Services.AddScoped<INavigationData, NavigationData>();
 builder.Services.AddScoped<IWeatherForecastData, WeatherForecastData>();
 
