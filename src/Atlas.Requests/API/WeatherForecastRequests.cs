@@ -20,7 +20,7 @@ namespace Atlas.Requests.API
         public async Task<IEnumerable<WeatherForecast>?> GetWeatherForecasts()
         {
             return await JsonSerializer.DeserializeAsync<IEnumerable<WeatherForecast>?>
-                (await httpClient.GetStreamAsync($"weatherforecast"),
+                (await _httpClient.GetStreamAsync($"weatherforecast"),
                     new JsonSerializerOptions(JsonSerializerDefaults.Web))
                 .ConfigureAwait(false);
         }
