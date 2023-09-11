@@ -2,7 +2,7 @@
 
 namespace Atlas.Data.Access.Interfaces
 {
-    public interface INavigationData
+    public interface INavigationData : IAuthorisationData
     {
         Task<IEnumerable<Module>?> GetNavigationClaimsAsync(string claim, CancellationToken cancellationToken);
     }
