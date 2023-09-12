@@ -16,7 +16,7 @@ namespace Atlas.Data.Access.Context
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
 
             var connectionString = configuration.GetConnectionString(DataMigrations.CONNECTION_STRING) 
-                ?? throw new ArgumentNullException(nameof(DataMigrations.CONNECTION_STRING));
+                ?? throw new NullReferenceException(nameof(DataMigrations.CONNECTION_STRING));
 
             if (connectionString.Contains(DataMigrations.SQLITE_DATABASE))
             {
