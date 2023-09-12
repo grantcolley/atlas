@@ -28,7 +28,9 @@ builder.Services.Configure<JsonOptions>(options =>
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    if (builder.Configuration.GetConnectionString(DataMigrations.CONNECTION_STRING).Contains(DataMigrations.SQLITE_DATABASE))
+    bool? isSQLLite = builder.Configuration.GetConnectionString(DataMigrations.CONNECTION_STRING)?.Contains(DataMigrations.SQLITE_DATABASE);
+
+    if (isSQLLite.HasValue && isSQLLite.Value)
     {
         options.EnableSensitiveDataLogging()
                 .UseSqlite(builder.Configuration.GetConnectionString(DataMigrations.CONNECTION_STRING),
@@ -115,20 +117,20 @@ app.MapGet("/claimmodules", NavigationEndpoint.GetClaimModules)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization("atlas-user");
 
-var useSeedData = bool.Parse(builder.Configuration["SeedData:UseSeedData"]);
+var useSeedData = bool.Parse(builder.Configuration["SeedData:UseSeedData"] ?? "false");
 
 if (useSeedData)
 {
     // Seed data for testing purposes only...
-    using (var scope = app.Services.CreateScope())
-    {
-        var services = scope.ServiceProvider;
-        var applicationDbContext = services.GetRequiredService<ApplicationDbContext>();
+    using var scope = app.Services.CreateScope();
 
-        applicationDbContext.SetUser("Atlas.SeedData");
+    var services = scope.ServiceProvider;
 
-        SeedData.Initialise(applicationDbContext);
-    }
+    var applicationDbContext = services.GetRequiredService<ApplicationDbContext>();
+
+    applicationDbContext.SetUser("Atlas.SeedData");
+
+    SeedData.Initialise(applicationDbContext);
 }
 
 app.Run();

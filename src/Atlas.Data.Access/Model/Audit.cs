@@ -19,9 +19,9 @@ namespace Atlas.Data.Access.Model
         public List<PropertyEntry> TemporaryProperties { get; } = new List<PropertyEntry>();
 
         [NotMapped]
-        public Dictionary<string, object> OldValuesDictionary { get; } = new Dictionary<string, object>();
+        public Dictionary<string, object?> OldValuesDictionary { get; } = new Dictionary<string, object?>();
 
         [NotMapped]
-        public Dictionary<string, object> NewValuesDictionary { get; } = new Dictionary<string, object>();
+        public Dictionary<string, object?> NewValuesDictionary { get; } = new Dictionary<string, object?>();
     }
 }

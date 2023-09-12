@@ -17,10 +17,7 @@ namespace Atlas.Blazor.Components.Common
 
         public void Dispose()
         {
-            if(StateNotification != null)
-            {
-                StateNotification.Deregister(StateNotifications.BREADCRUMBS);
-            }
+            StateNotification?.Deregister(StateNotifications.BREADCRUMBS);
 
             GC.SuppressFinalize(this);
         }

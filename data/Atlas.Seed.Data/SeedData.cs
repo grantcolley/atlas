@@ -7,7 +7,7 @@ namespace Atlas.Seed.Data
 {
     public class SeedData
     {
-        private static ApplicationDbContext dbContext;
+        private static ApplicationDbContext? dbContext;
 
         private static readonly Dictionary<string, Permission> permissions = new();
         private static readonly Dictionary<string, Role> roles = new();
@@ -29,6 +29,8 @@ namespace Atlas.Seed.Data
 
         private static void TruncateTables()
         {
+            if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
+
             ((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE Audits");
             //((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE Logs");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE RoleUser");
@@ -49,6 +51,8 @@ namespace Atlas.Seed.Data
 
         private static void CreatePermissions()
         {
+            if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
+
             permissions.Add(Auth.USER, new Permission { Name = Auth.USER, Description = "Atlas User Permission" });
             permissions.Add(Auth.ADMIN, new Permission { Name = Auth.ADMIN, Description = "Atlas Administrator Permission" });
             permissions.Add(Auth.DEVELOPER, new Permission { Name = Auth.DEVELOPER, Description = "Atlas Developer Permission" });
@@ -63,6 +67,8 @@ namespace Atlas.Seed.Data
 
         private static void CreateRoles()
         {
+            if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
+
             roles.Add(Auth.USER, new Role { Name = Auth.USER, Description = "Atlas User Role" });
             roles.Add(Auth.ADMIN, new Role { Name = Auth.ADMIN, Description = "Atlas Administrator Role" });
             roles.Add(Auth.DEVELOPER, new Role { Name = Auth.DEVELOPER, Description = "Atlas Developer Role" });
@@ -86,6 +92,8 @@ namespace Atlas.Seed.Data
 
         private static void CreateUsers()
         {
+            if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
+
             users.Add("alice", new User { UserName = "alice", Email = "alice@email.com" });
             users.Add("bob", new User { UserName = "bob", Email = "bob@email.com" });
             users.Add("grant", new User { UserName = "grant", Email = "grant@email.com" });
@@ -100,6 +108,8 @@ namespace Atlas.Seed.Data
 
         private static void AssignUsersRoles()
         {
+            if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
+
             users["alice"].Roles.Add(roles[Auth.ADMIN]);
             users["bob"].Roles.Add(roles[Auth.USER]);
             users["grant"].Roles.Add(roles[Auth.DEVELOPER]);
@@ -109,6 +119,8 @@ namespace Atlas.Seed.Data
 
         private static void Navigation()
         {
+            if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
+
             var administration = new Module { Name = "Administration", Icon = "Engineering", Order = 2, Permission = Auth.ADMIN };
 
             dbContext.Modules.Add(administration);
