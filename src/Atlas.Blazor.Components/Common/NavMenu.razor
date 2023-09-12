@@ -1,6 +1,10 @@
-﻿@foreach (var module in _modules)
+﻿@if (_modules != null)
 {
-    @RenderModule(module);
+    @foreach (var module in _modules)
+    {
+        @RenderModule(module)
+        ;
+    }
 }
 
 @code {
