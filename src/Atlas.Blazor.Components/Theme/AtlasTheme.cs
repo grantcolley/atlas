@@ -6,7 +6,7 @@ namespace Atlas.Blazor.Components.Theme
     {
         public AtlasTheme()
         {
-            Palette = new Palette()
+            Palette = new PaletteLight()
             {
                 Primary = Colors.Blue.Darken1,
                 Secondary = Colors.DeepPurple.Accent2,
