@@ -1,0 +1,10 @@
+﻿@page "/alert/{AlertType}/{Title}/{Message}"
+
+@if (string.IsNullOrWhiteSpace(Title))
+{
+    <MudAlert Severity="@_severity">@Message</MudAlert>
+}
+else
+{
+    <MudAlert Severity="@_severity"><b>@Title</b>&nbsp;@Message</MudAlert>
+}
