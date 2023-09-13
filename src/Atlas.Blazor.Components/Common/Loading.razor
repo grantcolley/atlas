@@ -1,0 +1,17 @@
+﻿<div style="position: absolute; text-align: center; top: 30vh; width: 100%;">
+    @if(!string.IsNullOrWhiteSpace(Title))
+    {
+        <MudText Typo="Typo.h6">@Title</MudText>
+    }
+
+    @if(!string.IsNullOrWhiteSpace(Message))
+    {
+        <p>
+            <MudText Typo="Typo.body2">@Message</MudText>
+        </p>
+    }
+
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
+            style="font-size: 16pt; height: 36px; width: 36px;">
+    </span>
+</div>
