@@ -1,6 +1,7 @@
 using Atlas.Blazor.Components.Cache;
 using Atlas.Blazor.Components.Interfaces;
 using Atlas.Blazor.Components.Services;
+using Atlas.Core.Constants;
 using Atlas.Core.Models;
 using Atlas.Requests.API;
 using Atlas.Requests.Interfaces;
@@ -35,7 +36,7 @@ builder.Services
         options.Audience = builder.Configuration["Auth0:Audience"] ?? throw new NullReferenceException("Auth0:Audience");
     });
 
-builder.Services.AddHttpClient("atlas-api", client =>
+builder.Services.AddHttpClient(AtlasConstants.ATLAS_API, client =>
 {
     client.BaseAddress = new Uri("https://localhost:44420");
 });
@@ -49,8 +50,16 @@ builder.Services.AddTransient<IModuleRequests, ModuleRequests>(sp =>
 {
     var tokenProvider = sp.GetRequiredService<TokenProvider>();
     var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
-    var httpClient = httpClientFactory.CreateClient("atlas-api");
+    var httpClient = httpClientFactory.CreateClient(AtlasConstants.ATLAS_API);
     return new ModuleRequests(httpClient, tokenProvider);
+});
+
+builder.Services.AddTransient<IComponentArgsRequests, ComponentArgsRequests>(sp =>
+{
+    var tokenProvider = sp.GetRequiredService<TokenProvider>();
+    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    var httpClient = httpClientFactory.CreateClient(AtlasConstants.ATLAS_API);
+    return new ComponentArgsRequests(httpClient, tokenProvider);
 });
 
 var app = builder.Build();
