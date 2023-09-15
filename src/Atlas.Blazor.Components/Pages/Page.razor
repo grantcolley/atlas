@@ -1,0 +1,21 @@
+﻿@using System
+
+@page "/Page/{ComponentArgsId:int}"
+
+@inherits PageBase
+
+<AuthorizeView>
+    <Authorized Context="page">
+        @if (_componentArgs == null)
+        {
+            <Loading Title="Loading Title" Message="Loading message..."/>
+        }
+        else
+        {
+            <DynamicComponent @key=_componentArgs.ComponentArgsId Type="_componentArgs.GetComponentType()" Parameters="_componentArgs.GetComponentParametersDictionary()" />
+        }
+    </Authorized>
+    <NotAuthorized>
+        <LoginMessage/>
+    </NotAuthorized>
+</AuthorizeView>
