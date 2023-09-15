@@ -1,6 +1,7 @@
 using Atlas.API.Endpoints;
 using Atlas.API.Interfaces;
 using Atlas.API.Services;
+using Atlas.Core.Constants;
 using Atlas.Core.Models;
 using Atlas.Data.Access.Constants;
 using Atlas.Data.Access.Context;
@@ -48,6 +49,7 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IClaimService, ClaimService>();
 builder.Services.AddScoped<INavigationData, NavigationData>();
+builder.Services.AddScoped<IComponentArgsData, ComponentArgsData>();
 builder.Services.AddScoped<IWeatherForecastData, WeatherForecastData>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -107,15 +109,23 @@ app.MapGet("/weatherforecast", WeatherForecastEndpoint.GetWeatherForecast)
 .WithDescription("Gets the weather forecast")
 .Produces<IEnumerable<WeatherForecast>>(StatusCodes.Status200OK)
 .Produces(StatusCodes.Status500InternalServerError)
-.RequireAuthorization("atlas-user");
+.RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-app.MapGet("/claimmodules", NavigationEndpoint.GetClaimModules)
+app.MapGet($"/{AtlasAPIEndpoints.CLAIM_MODULES}", NavigationEndpoint.GetClaimModules)
 .WithOpenApi()
-.WithName("claimmodules")
+.WithName(AtlasAPIEndpoints.CLAIM_MODULES)
 .WithDescription("Gets the user's authorized modules")
 .Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
 .Produces(StatusCodes.Status500InternalServerError)
-.RequireAuthorization("atlas-user");
+.RequireAuthorization(Auth.ATLAS_USER_CLAIM);
+
+app.MapGet($"/{AtlasAPIEndpoints.COMPONENT_ARGS}/componentCode", ComponentArgsEndpoint.GetComponentArgs)
+.WithOpenApi()
+.WithName(AtlasAPIEndpoints.COMPONENT_ARGS)
+.WithDescription("Gets args associated with a component to be rendered in the browser")
+.Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
 var useSeedData = bool.Parse(builder.Configuration["SeedData:UseSeedData"] ?? "false");
 
