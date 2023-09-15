@@ -6,7 +6,7 @@ namespace Atlas.API.Endpoints
 {
     internal static class NavigationEndpoint
     {
-        internal static async Task<IResult> GetClaimModules(IClaimService claimService, INavigationData navigationData, CancellationToken cancellationToken)
+        internal static async Task<IResult> GetClaimModules(INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
         {
             try
             {
