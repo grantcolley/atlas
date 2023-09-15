@@ -15,6 +15,10 @@ namespace Atlas.Core.Models
         [Required]
         public Category? Category { get; set; }
 
+        //[Required]   TODO remove comments....
+        [StringLength(30)]
+        public string? ComponentCode { get; set; }
+
         [Required]
         [StringLength(50)]
         public string? Name { get; set; }
@@ -33,7 +37,7 @@ namespace Atlas.Core.Models
 
         public string NavigateFullPath()
         {
-            return $@"{NavigatePage}\";
+            return $@"{NavigatePage}\{ComponentCode}";
         }
 
         public bool IsPermitted(IEnumerable<string?> permissions)
@@ -51,6 +55,9 @@ namespace Atlas.Core.Models
     {
         public MenuItemValidator()
         {
+            RuleFor(v => v.ComponentCode)
+                .NotNull().WithMessage("Component Code is required");
+
             RuleFor(v => v.Category)
                 .NotNull().WithMessage("Category is required");
 
