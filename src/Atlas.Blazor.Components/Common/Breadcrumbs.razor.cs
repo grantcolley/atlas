@@ -9,7 +9,7 @@ namespace Atlas.Blazor.Components.Common
     public abstract class BreadcrumbsBase : ComponentBase, IDisposable
     {
         [Inject]
-        public IStateNotificationService? StateNotification { get; set; }
+        public IStateNotificationService? StateNotificationService { get; set; }
 
         protected List<BreadcrumbItem> _breadcrumbs = new();
 
@@ -17,19 +17,19 @@ namespace Atlas.Blazor.Components.Common
 
         public void Dispose()
         {
-            StateNotification?.Deregister(StateNotifications.BREADCRUMBS);
+            StateNotificationService?.Deregister(StateNotifications.BREADCRUMBS);
 
             GC.SuppressFinalize(this);
         }
 
         protected override Task OnInitializedAsync()
         {
-            if (StateNotification == null)
+            if (StateNotificationService == null)
             {
-                throw new NullReferenceException(nameof(StateNotification));
+                throw new NullReferenceException(nameof(StateNotificationService));
             }
 
-            StateNotification.Register(StateNotifications.BREADCRUMBS, BreadcrumbNotification);
+            StateNotificationService.Register(StateNotifications.BREADCRUMBS, BreadcrumbNotification);
 
             _breadcrumbs.Add(new BreadcrumbItem("Home", href: "/", icon: Icons.Material.Filled.Home));
 
