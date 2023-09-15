@@ -12,6 +12,7 @@ namespace Atlas.Seed.Data
         private static readonly Dictionary<string, Permission> permissions = new();
         private static readonly Dictionary<string, Role> roles = new();
         private static readonly Dictionary<string, User> users = new();
+        private static readonly Dictionary<string, ComponentArgs> componentArgs = new();
 
         public static void Initialise(ApplicationDbContext applicationDbContext)
         {
@@ -24,6 +25,7 @@ namespace Atlas.Seed.Data
             CreateUsers();
             AssignUsersRoles();
 
+            ComponentArgs();
             Navigation();
         }
 
@@ -42,6 +44,8 @@ namespace Atlas.Seed.Data
             ((DbContext)dbContext).Database.ExecuteSqlRaw("DBCC CHECKIDENT (Roles, RESEED, 1)");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("DELETE FROM Permissions");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("DBCC CHECKIDENT (Permissions, RESEED, 1)");
+            ((DbContext)dbContext).Database.ExecuteSqlRaw("DELETE FROM ComponentArgs");
+            ((DbContext)dbContext).Database.ExecuteSqlRaw("DBCC CHECKIDENT (ComponentArgs, RESEED, 1)");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE MenuItems");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("DELETE FROM Categories");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("DBCC CHECKIDENT (Categories, RESEED, 1)");
@@ -117,6 +121,24 @@ namespace Atlas.Seed.Data
             dbContext.SaveChanges();
         }
 
+        private static void ComponentArgs()
+        {
+            if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
+
+            ComponentArgs modulesComponentArgs = new()
+            {
+                ComponentCode = ComponentCodes.MODULES,
+                ComponentName = "Atlas.Blazor.Components.Common.Component1, Atlas.Blazor.Components",
+                DisplayName = "Hello World!"
+            };
+
+            dbContext.ComponentArgs.Add(modulesComponentArgs);
+
+            componentArgs.Add(modulesComponentArgs.ComponentCode, modulesComponentArgs);
+
+            dbContext.SaveChanges();
+        }
+
         private static void Navigation()
         {
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
@@ -142,7 +164,7 @@ namespace Atlas.Seed.Data
             var rolesMenuItem = new MenuItem { Name = "Roles", Icon = "Lock", NavigatePage = "Page", Order = 2, Permission = Auth.ADMIN, Category = authorisationCategory };
             var permissionsMenuItem = new MenuItem { Name = "Permissions", Icon = "Key", NavigatePage = "Page", Order = 3, Permission = Auth.ADMIN, Category = authorisationCategory };
 
-            var modulesMenuItem = new MenuItem { Name = "Modules", Icon = "AutoAwesomeMosaic", NavigatePage = "Page", Order = 1, Permission = Auth.ADMIN, Category = navigationCategory };
+            var modulesMenuItem = new MenuItem { Name = "Modules", Icon = "AutoAwesomeMosaic", NavigatePage = "Page", Order = 1, Permission = Auth.ADMIN, Category = navigationCategory, ComponentCode = componentArgs[ComponentCodes.MODULES].ComponentCode };
             var categoriesMenuItem = new MenuItem { Name = "Categories", Icon = "AutoAwesomeMotion", NavigatePage = "Page", Order = 2, Permission = Auth.ADMIN, Category = navigationCategory };
             var menuItemsMenuItem = new MenuItem { Name = "MenuItems", Icon = "Article", NavigatePage = "Page", Order = 3, Permission = Auth.ADMIN, Category = navigationCategory };
             
