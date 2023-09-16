@@ -23,8 +23,10 @@ namespace Atlas.Requests.API
             if(componentCode == null) throw new ArgumentNullException(nameof(componentCode));
 
             return await JsonSerializer.DeserializeAsync<ComponentArgs?>
-                (await _httpClient.GetStreamAsync($"{AtlasAPIEndpoints.COMPONENT_ARGS}/{componentCode}").ConfigureAwait(false),
-                new JsonSerializerOptions(JsonSerializerDefaults.Web)).ConfigureAwait(false);
+                (await _httpClient.GetStreamAsync($"{AtlasAPIEndpoints.COMPONENT_ARGS}/{componentCode}")
+                .ConfigureAwait(false),
+                new JsonSerializerOptions(JsonSerializerDefaults.Web))
+                .ConfigureAwait(false);
         }
     }
 }
