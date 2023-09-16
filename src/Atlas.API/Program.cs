@@ -119,7 +119,7 @@ app.MapGet($"/{AtlasAPIEndpoints.CLAIM_MODULES}", NavigationEndpoint.GetClaimMod
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-app.MapGet($"/{AtlasAPIEndpoints.COMPONENT_ARGS}/componentCode", ComponentArgsEndpoint.GetComponentArgs)
+app.MapGet($"/{AtlasAPIEndpoints.COMPONENT_ARGS}/{{componentCode}}", ComponentArgsEndpoint.GetComponentArgs)
 .WithOpenApi()
 .WithName(AtlasAPIEndpoints.COMPONENT_ARGS)
 .WithDescription("Gets args associated with a component to be rendered in the browser")
