@@ -2,8 +2,7 @@
 {
     @foreach (var module in _modules)
     {
-        @RenderModule(module)
-        ;
+        @RenderModule(module);
     }
 }
 
@@ -37,7 +36,7 @@
         {
             if (authState.User.HasClaim(c => c.Value.Equals(Core.Constants.Auth.ATLAS_USER_CLAIM)))
             {
-                    _modules = await ModuleRequest.GetModulesAsync().ConfigureAwait(false);
+                _modules = await ModuleRequest.GetModulesAsync().ConfigureAwait(false);
             }
         }
 
@@ -54,7 +53,7 @@
                     <MudNavGroup Title="@category.Name" Icon=@IconHelper.GetOutlined(category.Icon) HideExpandIcon="true" Expanded="true">
                         @foreach (var menuItem in category.MenuItems)
                         {
-                            <MudNavLink Href="@menuItem.NavigateFullPath()" Icon=@IconHelper.GetOutlined(menuItem.Icon) @onclick:stopPropagation Match="NavLinkMatch.All">@menuItem.Name</MudNavLink>
+                            <MudNavLink Href=@menuItem.NavigateFullPath() Icon=@IconHelper.GetOutlined(menuItem.Icon) @onclick:stopPropagation="true" Match="NavLinkMatch.All">@menuItem.Name</MudNavLink>
                         }
                     </MudNavGroup>
                 }
