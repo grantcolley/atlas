@@ -15,9 +15,9 @@ namespace Atlas.Core.Models
         [Required]
         public Category? Category { get; set; }
 
-        //[Required]   TODO remove comments....
+        [Required]
         [StringLength(30)]
-        public string? ComponentCode { get; set; }
+        public string ComponentCode { get; set; } = string.Empty;
 
         [Required]
         [StringLength(50)]
@@ -34,11 +34,6 @@ namespace Atlas.Core.Models
         [Required]
         [StringLength(50)]
         public string? NavigatePage { get; set; }
-
-        public string NavigateFullPath()
-        {
-            return $@"{NavigatePage}\{ComponentCode}";
-        }
 
         public bool IsPermitted(IEnumerable<string?> permissions)
         {
