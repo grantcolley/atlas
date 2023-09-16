@@ -8,17 +8,20 @@
 
 @code {
     [Inject]
-    public IStateNotificationService StateNotificationService { get; set; }
+    public IStateNotificationService? StateNotificationService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        var breadcrumb = new Breadcrumb
-            {
-                ResetToHome = true
-            };
+        if (StateNotificationService != null)
+        {
+            var breadcrumb = new Breadcrumb
+                {
+                    ResetToHome = true
+                };
 
-        await StateNotificationService.NotifyStateHasChangedAsync(StateNotifications.BREADCRUMBS, breadcrumb)
-            .ConfigureAwait(false);
+            await StateNotificationService.NotifyStateHasChangedAsync(StateNotifications.BREADCRUMBS, breadcrumb)
+                .ConfigureAwait(false);
+        }
 
         await base.OnInitializedAsync();
     }
