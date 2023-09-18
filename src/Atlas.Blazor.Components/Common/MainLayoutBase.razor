@@ -3,8 +3,12 @@
 <MudSnackbarProvider/>
 
 <MudLayout>
-    <MudAppBar Elevation="0">    
-        <MudImage ObjectFit="@ObjectFit.Fill" Height="50" Width="200" Src="/images/Atlas.png" Alt="Atlas"/>
+    <MudAppBar Elevation="0">
+        <MudTooltip Text="@(_drawerOpen ? Buttons.NAVIGATION_MENU_TOOLTIP_HIDE : Buttons.NAVIGATION_MENU_TOOLTIP_SHOW)">
+            <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" OnClick="@((e) => DrawerToggle())" Class="ml-3" />
+        </MudTooltip>
+        <MudImage Height="30" Width="30" Src="/images/Atlas.png" Alt="Atlas"/>
+        <Breadcrumbs />
         <MudSpacer />
         @LoginDisplayFragment
         <MudTooltip Text="@(_isDarkMode ? Mode.LIGHT : Mode.DARK)" Color="Color.Inherit">
@@ -26,20 +30,11 @@
     <MudMainContent>
         <AuthorizeView>
             <Authorized>
-                <MudHidden Breakpoint="Breakpoint.SmAndDown">
-                    <MudToolBar DisableGutters="true">
-                        <MudTooltip Text="@(_drawerOpen ? Buttons.NAVIGATION_MENU_TOOLTIP_HIDE : Buttons.NAVIGATION_MENU_TOOLTIP_SHOW)">
-                            <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" OnClick="@((e) => DrawerToggle())" Class="ml-3" />
-                        </MudTooltip>
-                        <Breadcrumbs/>
-                        <MudSpacer />
-                    </MudToolBar>
-                </MudHidden>
+                <MudContainer MaxWidth="MaxWidth.False">
+                    @BodyFragment
+                </MudContainer>
             </Authorized>
         </AuthorizeView>
-        <MudContainer MaxWidth="MaxWidth.False">
-            @BodyFragment
-        </MudContainer>
     </MudMainContent>
 </MudLayout>
 
