@@ -128,7 +128,7 @@ namespace Atlas.Seed.Data
             ComponentArgs modulesComponentArgs = new()
             {
                 ComponentCode = ComponentCodes.MODULES,
-                ComponentName = "Atlas.Blazor.Components.Common.Component1, Atlas.Blazor.Components",
+                ComponentName = "Atlas.Blazor.Shared.Components.Component1, Atlas.Blazor.Shared",
                 DisplayName = "Hello World!"
             };
 
