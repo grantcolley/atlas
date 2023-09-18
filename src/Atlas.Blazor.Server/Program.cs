@@ -1,6 +1,6 @@
-using Atlas.Blazor.Components.Cache;
-using Atlas.Blazor.Components.Interfaces;
-using Atlas.Blazor.Components.Services;
+using Atlas.Blazor.Shared.Cache;
+using Atlas.Blazor.Shared.Interfaces;
+using Atlas.Blazor.Shared.Services;
 using Atlas.Core.Constants;
 using Atlas.Core.Models;
 using Atlas.Requests.API;
