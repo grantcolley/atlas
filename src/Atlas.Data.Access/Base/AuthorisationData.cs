@@ -1,11 +1,10 @@
 ﻿using Atlas.Core.Models;
-using Atlas.Data.Access.Base;
 using Atlas.Data.Access.Context;
 using Atlas.Data.Access.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Atlas.Data.Access.Data
+namespace Atlas.Data.Access.Base
 {
     public abstract class AuthorisationData<T> : DataBase<T>, IAuthorisationData
     {
@@ -16,7 +15,7 @@ namespace Atlas.Data.Access.Data
 
         public async Task<Authorisation?> GetAuthorisationAsync(string? claim)
         {
-            if(string.IsNullOrWhiteSpace(claim))
+            if (string.IsNullOrWhiteSpace(claim))
             {
                 return default;
             }
@@ -29,8 +28,8 @@ namespace Atlas.Data.Access.Data
                 .FirstOrDefaultAsync(u => u.Email != null && u.Email.Equals(claim))
                 .ConfigureAwait(false);
 
-            if(user != null
-                && user.Email != null) 
+            if (user != null
+                && user.Email != null)
             {
                 SetUser(user.Email);
 
