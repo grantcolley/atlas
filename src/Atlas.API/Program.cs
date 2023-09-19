@@ -127,6 +127,14 @@ app.MapGet($"/{AtlasAPIEndpoints.COMPONENT_ARGS}/{{componentCode}}", ComponentAr
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
+app.MapGet($"/{AtlasAPIEndpoints.GET_MODULES}", NavigationEndpoint.GetModules)
+.WithOpenApi()
+.WithName(AtlasAPIEndpoints.GET_MODULES)
+.WithDescription("Gets a list of modules")
+.Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization(Auth.ATLAS_USER_CLAIM);
+
 var useSeedData = bool.Parse(builder.Configuration["SeedData:UseSeedData"] ?? "false");
 
 if (useSeedData)
