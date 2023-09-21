@@ -46,12 +46,12 @@ builder.Services.AddSingleton<IAtlasCache, AtlasCache>();
 builder.Services.AddSingleton<IStateNotificationService, StateNotificationService>();
 builder.Services.AddTransient<IDialogService, DialogService>();
 
-builder.Services.AddTransient<IModuleRequests, ModuleRequests>(sp =>
+builder.Services.AddTransient<INavigationRequests, NavigationRequests>(sp =>
 {
     var tokenProvider = sp.GetRequiredService<TokenProvider>();
     var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
     var httpClient = httpClientFactory.CreateClient(AtlasConstants.ATLAS_API);
-    return new ModuleRequests(httpClient, tokenProvider);
+    return new NavigationRequests(httpClient, tokenProvider);
 });
 
 builder.Services.AddTransient<IComponentArgsRequests, ComponentArgsRequests>(sp =>
