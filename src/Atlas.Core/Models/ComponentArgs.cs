@@ -34,12 +34,17 @@ namespace Atlas.Core.Models
             return Type.GetType(ComponentName);
         }
 
-        public Dictionary<string, object> GetComponentParametersDictionary()
+        public Dictionary<string, object> ToDynamicComponentParameters()
         {
-            Dictionary<string, object> parameters = new()
+            return new()
             {
                 { "ComponentArgs", this }
             };
+        }
+
+        public Dictionary<string, string> GetComponentParameters()
+        {
+            Dictionary<string, string> parameters = new();
 
             if(!string.IsNullOrWhiteSpace(ComponentParameters))
             {
