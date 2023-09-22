@@ -12,7 +12,7 @@
         }
         else
         {
-            <DynamicComponent @key=_componentArgs.ComponentArgsId Type="_componentArgs.GetComponentType()" Parameters="_componentArgs.GetComponentParametersDictionary()" />
+            <DynamicComponent @key=_componentArgs.ComponentArgsId Type="_componentArgs.GetComponentType()" Parameters="_componentArgs.ToDynamicComponentParameters()" />
         }
     </Authorized>
     <NotAuthorized>
