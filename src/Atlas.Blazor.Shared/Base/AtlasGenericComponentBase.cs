@@ -7,5 +7,7 @@ namespace Atlas.Blazor.Shared.Base
     {
         [Inject]
         public IGenericRequests? GenericRequests { get; set; }
+
+        protected bool _loaded = false;
     }
 }
