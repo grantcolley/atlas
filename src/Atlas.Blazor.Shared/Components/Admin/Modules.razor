@@ -1,0 +1,11 @@
+﻿@inherits ModulesBase
+
+@if (!_loaded)
+{
+    <Loading Title="Modules" Message="Loading..." />
+}
+else
+{
+    <TableView T="Module"  DisplayHeader="@ComponentArgs?.DisplayName" Source="@_modules" 
+                Fields="_fields" IdentifierField="@_identifierField" NavigationEndpoint="@_navigationEndpoint" />
+}
