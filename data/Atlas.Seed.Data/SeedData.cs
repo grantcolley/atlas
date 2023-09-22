@@ -128,8 +128,9 @@ namespace Atlas.Seed.Data
             ComponentArgs modulesComponentArgs = new()
             {
                 ComponentCode = ComponentCodes.MODULES,
-                ComponentName = "Atlas.Blazor.Shared.Components.Component1, Atlas.Blazor.Shared",
-                DisplayName = "Hello World!"
+                ComponentName = "Atlas.Blazor.Shared.Components.Admin.Modules, Atlas.Blazor.Shared",
+                DisplayName = "Modules",
+                ComponentParameters = "Fields=ModuleId,Name,Permission;FieldsDelimiter=,;IdentifierField=ModuleId"
             };
 
             dbContext.ComponentArgs.Add(modulesComponentArgs);
