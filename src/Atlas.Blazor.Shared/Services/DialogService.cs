@@ -1,4 +1,4 @@
-﻿using Atlas.Blazor.Shared.Components;
+﻿using Atlas.Blazor.Shared.Components.Shared;
 using MudBlazor;
 
 namespace Atlas.Blazor.Shared.Services

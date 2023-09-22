@@ -4,7 +4,7 @@ using Atlas.Blazor.Shared.Models;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace Atlas.Blazor.Shared.Components
+namespace Atlas.Blazor.Shared.Components.Shared
 {
     public abstract class BreadcrumbsBase : ComponentBase, IDisposable
     {

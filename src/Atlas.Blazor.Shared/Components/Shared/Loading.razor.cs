@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace Atlas.Blazor.Shared.Components
+namespace Atlas.Blazor.Shared.Components.Shared
 {
     public partial class Loading : ComponentBase
     {
