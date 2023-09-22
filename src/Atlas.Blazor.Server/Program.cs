@@ -62,6 +62,14 @@ builder.Services.AddTransient<IComponentArgsRequests, ComponentArgsRequests>(sp 
     return new ComponentArgsRequests(httpClient, tokenProvider);
 });
 
+builder.Services.AddTransient<IGenericRequests, GenericRequests>(sp =>
+{
+    var tokenProvider = sp.GetRequiredService<TokenProvider>();
+    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    var httpClient = httpClientFactory.CreateClient(AtlasConstants.ATLAS_API);
+    return new GenericRequests(httpClient, tokenProvider);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
