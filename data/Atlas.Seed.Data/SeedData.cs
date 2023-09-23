@@ -130,12 +130,25 @@ namespace Atlas.Seed.Data
                 ComponentCode = ComponentCodes.MODULES,
                 ComponentName = "Atlas.Blazor.Shared.Components.Admin.Modules, Atlas.Blazor.Shared",
                 DisplayName = "Modules",
+                RoutingPage = "PageRouter",
+                RoutingComponentCode = "Module",
                 ComponentParameters = "Fields=ModuleId,Name,Permission;FieldsDelimiter=,;IdentifierField=ModuleId"
             };
 
+            ComponentArgs moduleComponentArgs = new()
+            {
+                ComponentCode = ComponentCodes.MODULE,
+                ComponentName = "Atlas.Blazor.Shared.Components.Admin.Module, Atlas.Blazor.Shared",
+                DisplayName = "Module",
+                RoutingPage = "PageRouter",
+                RoutingComponentCode = "Module"
+            };
+
             dbContext.ComponentArgs.Add(modulesComponentArgs);
+            dbContext.ComponentArgs.Add(moduleComponentArgs);
 
             componentArgs.Add(modulesComponentArgs.ComponentCode, modulesComponentArgs);
+            componentArgs.Add(moduleComponentArgs.ComponentCode, moduleComponentArgs);
 
             dbContext.SaveChanges();
         }
@@ -161,13 +174,13 @@ namespace Atlas.Seed.Data
 
             dbContext.SaveChanges();
 
-            var usersMenuItem = new MenuItem { Name = "Users", Icon = "SupervisedUserCircle", NavigatePage = "Page", Order = 1, Permission = Auth.ADMIN, Category = authorisationCategory };
-            var rolesMenuItem = new MenuItem { Name = "Roles", Icon = "Lock", NavigatePage = "Page", Order = 2, Permission = Auth.ADMIN, Category = authorisationCategory };
-            var permissionsMenuItem = new MenuItem { Name = "Permissions", Icon = "Key", NavigatePage = "Page", Order = 3, Permission = Auth.ADMIN, Category = authorisationCategory };
+            var usersMenuItem = new MenuItem { Name = "Users", Icon = "SupervisedUserCircle", NavigatePage = "PageRouter", Order = 1, Permission = Auth.ADMIN, Category = authorisationCategory };
+            var rolesMenuItem = new MenuItem { Name = "Roles", Icon = "Lock", NavigatePage = "PageRouter", Order = 2, Permission = Auth.ADMIN, Category = authorisationCategory };
+            var permissionsMenuItem = new MenuItem { Name = "Permissions", Icon = "Key", NavigatePage = "PageRouter", Order = 3, Permission = Auth.ADMIN, Category = authorisationCategory };
 
-            var modulesMenuItem = new MenuItem { Name = "Modules", Icon = "AutoAwesomeMosaic", NavigatePage = "Page", Order = 1, Permission = Auth.ADMIN, Category = navigationCategory, ComponentCode = componentArgs[ComponentCodes.MODULES].ComponentCode };
-            var categoriesMenuItem = new MenuItem { Name = "Categories", Icon = "AutoAwesomeMotion", NavigatePage = "Page", Order = 2, Permission = Auth.ADMIN, Category = navigationCategory };
-            var menuItemsMenuItem = new MenuItem { Name = "MenuItems", Icon = "Article", NavigatePage = "Page", Order = 3, Permission = Auth.ADMIN, Category = navigationCategory };
+            var modulesMenuItem = new MenuItem { Name = "Modules", Icon = "AutoAwesomeMosaic", NavigatePage = "PageRouter", Order = 1, Permission = Auth.ADMIN, Category = navigationCategory, ComponentCode = componentArgs[ComponentCodes.MODULES].ComponentCode };
+            var categoriesMenuItem = new MenuItem { Name = "Categories", Icon = "AutoAwesomeMotion", NavigatePage = "PageRouter", Order = 2, Permission = Auth.ADMIN, Category = navigationCategory };
+            var menuItemsMenuItem = new MenuItem { Name = "MenuItems", Icon = "Article", NavigatePage = "PageRouter", Order = 3, Permission = Auth.ADMIN, Category = navigationCategory };
             
             authorisationCategory.MenuItems.Add(usersMenuItem);
             authorisationCategory.MenuItems.Add(rolesMenuItem);
