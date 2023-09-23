@@ -9,7 +9,6 @@ namespace Atlas.Blazor.Shared.Components.Admin
     {
         protected IEnumerable<Module>? _modules;
         protected IEnumerable<string>? _fields;
-        protected string? _navigationEndpoint;
         protected string? _identifierField;
 
         protected override async Task OnInitializedAsync()
@@ -33,8 +32,6 @@ namespace Atlas.Blazor.Shared.Components.Admin
             _fields = parameters["Fields"].Split(fieldsDelimiter);
 
             _identifierField = parameters["IdentifierField"];
-
-            _navigationEndpoint = AtlasAPIEndpoints.GET_MODULE;
 
             IResponse<IEnumerable<Module>> response = await GenericRequests.GetGenericListAsync<Module>(AtlasAPIEndpoints.GET_MODULES)
                 .ConfigureAwait(false);

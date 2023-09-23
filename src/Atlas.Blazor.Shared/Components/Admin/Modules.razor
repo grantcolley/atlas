@@ -6,6 +6,7 @@
 }
 else
 {
-    <TableView T="Module"  DisplayHeader="@ComponentArgs?.DisplayName" Source="@_modules" 
-                Fields="_fields" IdentifierField="@_identifierField" NavigationEndpoint="@_navigationEndpoint" />
+    <TableView T="Module" DisplayHeader="@ComponentArgs?.DisplayName" 
+                Source="@_modules" Fields="_fields" IdentifierField="@_identifierField" 
+                RoutingPage="@ComponentArgs?.RoutingPage" RoutingComponentCode="@ComponentArgs?.RoutingComponentCode" />
 }
