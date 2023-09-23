@@ -25,6 +25,12 @@ namespace Atlas.Core.Models
         [StringLength(150)]
         public string? ComponentParameters { get; set; } = string.Empty;
 
+        [StringLength(50)]
+        public string? RoutingPage { get; set; } = string.Empty;
+
+        [StringLength(30)]
+        public string? RoutingComponentCode { get; set; } = string.Empty;
+
         [NotMapped]
         public int? ModelInstanceId { get; set; }
 
