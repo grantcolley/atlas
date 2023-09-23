@@ -11,7 +11,7 @@ namespace Atlas.Data.Access.Context
         {
             IConfigurationRoot configuration
                 = new ConfigurationBuilder().SetBasePath(
-                    Directory.GetCurrentDirectory()).AddJsonFile(@Directory.GetCurrentDirectory() + "/../Atlas.API/appsettings.json").Build();
+                    Directory.GetCurrentDirectory()).AddJsonFile(@Directory.GetCurrentDirectory() + "/../Atlas.API/appsettings.Development.json").Build();
             
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
 
