@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Atlas.Core.Models
 {
@@ -23,6 +24,9 @@ namespace Atlas.Core.Models
 
         [StringLength(150)]
         public string? ComponentParameters { get; set; } = string.Empty;
+
+        [NotMapped]
+        public int? ModelInstanceId { get; set; }
 
         public Type? GetComponentType()
         {
