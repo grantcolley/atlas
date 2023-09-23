@@ -1,8 +1,9 @@
 ﻿@using System
 
-@page "/Page/{ComponentCode}"
+@page "/PageRouter/{ComponentCode}"
+@page "/PageRouter/{ComponentCode}/{Id:int?}"
 
-@inherits PageBase
+@inherits PageRouterBase
 
 <AuthorizeView>
     <Authorized Context="page">

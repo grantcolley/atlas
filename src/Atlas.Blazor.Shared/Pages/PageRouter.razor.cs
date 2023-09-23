@@ -7,13 +7,16 @@ using Microsoft.AspNetCore.Components;
 
 namespace Atlas.Blazor.Shared.Pages
 {
-    public abstract class PageBase : AtlasComponentBase
+    public abstract class PageRouterBase : AtlasComponentBase
     {
         [Inject]
         public IComponentArgsRequests? ComponentArgsRequests { get; set; }
 
         [Parameter]
         public string? ComponentCode { get; set; }
+
+        [Parameter]
+        public int? Id { get; set; }
 
         protected ComponentArgs? _componentArgs = default;
 
@@ -31,6 +34,11 @@ namespace Atlas.Blazor.Shared.Pages
 
                 if (_componentArgs != null)
                 {
+                    if(Id.HasValue)
+                    {
+                        _componentArgs.ModelInstanceId = Id.Value;
+                    }
+
                     var breadcrumb = new Breadcrumb
                     {
                         Text = _componentArgs.DisplayName,
