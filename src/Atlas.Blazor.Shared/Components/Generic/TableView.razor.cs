@@ -12,7 +12,10 @@ namespace Atlas.Blazor.Shared.Components.Generic
         public string DisplayHeader { get; set; } = string.Empty;
 
         [Parameter]
-        public string NavigationEndpoint { get; set; } = string.Empty;
+        public string RoutingPage { get; set; } = string.Empty;
+
+        [Parameter]
+        public string RoutingComponentCode { get; set; } = string.Empty;
 
         [Parameter]
         public IEnumerable<T> Source { get; set; } = Enumerable.Empty<T>();
@@ -38,13 +41,27 @@ namespace Atlas.Blazor.Shared.Components.Generic
 
         protected void HeaderButtonClick()
         {
-            NavigationManager?.NavigateTo($"{NavigationEndpoint}/{0}");
+            if (string.IsNullOrEmpty(IdentifierField))
+            {
+                NavigationManager?.NavigateTo($"{RoutingPage}/{RoutingComponentCode}");
+            }
+            else
+            {
+                NavigationManager?.NavigateTo($"{RoutingPage}/{RoutingComponentCode}/{0}");
+            }
         }
 
         protected void RowButtonClick(T item)
         {
-            object? id = DynamicType?.GetValue(item, IdentifierField);
-            NavigationManager?.NavigateTo($"{NavigationEndpoint}/{id}");
+            if(string.IsNullOrEmpty(IdentifierField))
+            {
+                NavigationManager?.NavigateTo($"{RoutingPage}/{RoutingComponentCode}");
+            }
+            else
+            {
+                object? id = DynamicType?.GetValue(item, IdentifierField);
+                NavigationManager?.NavigateTo($"{RoutingPage}/{RoutingComponentCode}/{id}");
+            }
         }
 
         private bool FilterItem(T item, string? filter)
