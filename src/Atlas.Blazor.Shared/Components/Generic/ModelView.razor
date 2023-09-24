@@ -1,0 +1,56 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+
+@typeparam T where T : class, new()
+@inherits ModelViewBase<T>
+
+@if (_model == null)
+{
+    <Loading Title="@TitleField" Message="Loading..."/>
+}
+else
+{
+    @if(_alert == null)
+    {
+        <EditForm Model="@_model" OnValidSubmit="@SubmitAsync">
+            <FluentValidationValidator/>
+            <MudToolBar DisableGutters="true" Style="border-bottom: 1px solid gray;">
+                @if (_isSaveInProgress)
+                {
+                    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+                }
+                else if (!_isDeleteInProgress)
+                {
+                    <MudTooltip Text="Save" Arrow="true">
+                        <MudIconButton ButtonType="ButtonType.Submit" Color="Color.Inherit" Icon="@Icons.Material.Filled.Save"/>
+                    </MudTooltip>
+                }
+
+                <MudText Typo="Typo.h6">@TitleField</MudText>
+
+                <ValidationBadge Title="@TitleField" Messages="@_messages" />
+
+                <MudSpacer />
+
+                @if (_isDeleteInProgress)
+                {
+                    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+                }
+                else if (!_isSaveInProgress)
+                {
+                    <MudTooltip Text="Delete" Arrow="true">
+                        <MudIconButton Color="Color.Inherit" Icon="@Icons.Material.Filled.Delete" OnClick="DeleteAsync" />
+                    </MudTooltip>
+                }
+            </MudToolBar>
+            <MudPaper>
+                <MudContainer MaxWidth="MaxWidth.False">
+                    @ModelBodyFragment
+                </MudContainer>
+            </MudPaper>
+        </EditForm>
+    }
+    else
+    {
+        <Alert AlertType="@_alert.AlertType" Title="@_alert.Title" Message="@_alert.Message" />
+    }
+}
