@@ -2,6 +2,9 @@
 using Atlas.Requests.Base;
 using Atlas.Requests.Interfaces;
 using Atlas.Requests.Model;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace Atlas.Requests.API
 {
@@ -17,7 +20,7 @@ namespace Atlas.Requests.API
         {
         }
 
-        public async Task<IResponse<IEnumerable<T>>> GetGenericListAsync<T>(string endpoint) where T : class, new()
+        public async Task<IResponse<IEnumerable<T>>> GetListAsync<T>(string endpoint) where T : class, new()
         {
             using var httpResponseMessage = await _httpClient.GetAsync(endpoint).ConfigureAwait(false);
 
@@ -38,7 +41,7 @@ namespace Atlas.Requests.API
             return response;
         }
 
-        public async Task<IResponse<T>> GetGenericModelAsync<T>(int id, string endpoint) where T : class, new()
+        public async Task<IResponse<T>> GetModelAsync<T>(int id, string endpoint) where T : class, new()
         {
             using var httpResponseMessage = await _httpClient.GetAsync($"{endpoint}/{id}").ConfigureAwait(false);
 
@@ -58,5 +61,34 @@ namespace Atlas.Requests.API
 
             return response;
         }
+
+        public async Task<IResponse<T>> CreateModelAsync<T>(T model, string endpoint) where T : class, new()
+        {
+            using var addResponse = await _httpClient.PostAsJsonAsync(endpoint, model)
+                .ConfigureAwait(false);
+
+            return await GetResponseAsync<T>(addResponse)
+                .ConfigureAwait(false);
+        }
+
+        public async Task<IResponse<T>> UpdateModelAsync<T>(T model, string endpoint) where T : class, new()
+        {
+            using var updateResponse = await _httpClient.PutAsJsonAsync(endpoint, model)
+                .ConfigureAwait(false);
+
+            return await GetResponseAsync<T>(updateResponse)
+                .ConfigureAwait(false);
+        }
+
+        public async Task<IResponse<int>> DeleteModelAsync(int id, string endpoint)
+        {
+            var apiEndpoint = $@"{endpoint}/{id}";
+            using var httpResponseMessage = await _httpClient.DeleteAsync(apiEndpoint)
+                .ConfigureAwait(false);
+
+            return await GetResponseAsync<int>(httpResponseMessage)
+                .ConfigureAwait(false);
+        }
+
     }
 }
