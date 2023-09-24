@@ -78,7 +78,7 @@ namespace Atlas.Data.Access.Data
                 .ConfigureAwait(false);
         }
 
-        public async Task<Module> AddModuleAsync(Module module, CancellationToken cancellationToken)
+        public async Task<Module> CreateModuleAsync(Module module, CancellationToken cancellationToken)
         {
             Module newModule = new()
             {
@@ -152,7 +152,7 @@ namespace Atlas.Data.Access.Data
                 .ConfigureAwait(false);
         }
 
-        public async Task<Category> AddCategoryAsync(Category category, CancellationToken cancellationToken)
+        public async Task<Category> CreateCategoryAsync(Category category, CancellationToken cancellationToken)
         {
             if (category.Module == null)
             {
@@ -266,7 +266,7 @@ namespace Atlas.Data.Access.Data
                 .ConfigureAwait(false);
         }
 
-        public async Task<MenuItem> AddMenuItemAsync(MenuItem menuItem, CancellationToken cancellationToken)
+        public async Task<MenuItem> CreateMenuItemAsync(MenuItem menuItem, CancellationToken cancellationToken)
         {
             if (menuItem.Category == null)
             {
