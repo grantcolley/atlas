@@ -5,11 +5,12 @@ using Atlas.Requests.Interfaces;
 
 namespace Atlas.Blazor.Shared.Components.Admin
 {
-    public abstract class ModulesBase : AtlasGenericComponentBase
+    public abstract class ModulesBase : AtlasGenericComponentArgsBase
     {
         protected IEnumerable<Module>? _modules;
         protected IEnumerable<string>? _fields;
         protected string? _identifierField;
+        protected bool _loaded = false;
 
         protected override async Task OnInitializedAsync()
         {
@@ -33,7 +34,7 @@ namespace Atlas.Blazor.Shared.Components.Admin
 
             _identifierField = parameters["IdentifierField"];
 
-            IResponse<IEnumerable<Module>> response = await GenericRequests.GetGenericListAsync<Module>(AtlasAPIEndpoints.GET_MODULES)
+            IResponse<IEnumerable<Module>> response = await GenericRequests.GetListAsync<Module>(AtlasAPIEndpoints.GET_MODULES)
                 .ConfigureAwait(false);
 
             if(response.IsSuccess)
