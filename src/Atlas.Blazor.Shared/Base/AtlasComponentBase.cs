@@ -1,6 +1,7 @@
 ﻿using Atlas.Blazor.Shared.Constants;
 using Atlas.Blazor.Shared.Interfaces;
 using Atlas.Blazor.Shared.Models;
+using Atlas.Requests.Interfaces;
 using Microsoft.AspNetCore.Components;
 
 namespace Atlas.Blazor.Shared.Base
@@ -12,6 +13,23 @@ namespace Atlas.Blazor.Shared.Base
 
         [Inject]
         public IStateNotificationService? StateNotificationService { get; set; }
+
+        [Inject]
+        public IDialogService? DialogService { get; set; }
+
+        protected T? GetResponse<T>(IResponse<T> response)
+        {
+            if (!response.IsSuccess
+                && !string.IsNullOrWhiteSpace(response.Message))
+            {
+                RaiseAlert(response.Message);
+                return default;
+            }
+            else
+            {
+                return response.Result;
+            }
+        }
 
         protected void RaiseAlert(string message)
         {
