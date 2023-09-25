@@ -1,4 +1,5 @@
 using Atlas.API.Endpoints;
+using Atlas.API.Extensions;
 using Atlas.API.Interfaces;
 using Atlas.API.Services;
 using Atlas.Core.Constants;
@@ -99,49 +100,15 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.MapHealthChecks("/health");
-
-app.MapGet("/error", () => Results.Problem());
+app.MapEndpoints();
 
 app.MapGet("/weatherforecast", WeatherForecastEndpoint.GetWeatherForecast)
-.WithOpenApi()
-.WithName("weatherorecast")
-.WithDescription("Gets the weather forecast")
-.Produces<IEnumerable<WeatherForecast>>(StatusCodes.Status200OK)
-.Produces(StatusCodes.Status500InternalServerError)
-.RequireAuthorization(Auth.ATLAS_USER_CLAIM);
-
-app.MapGet($"/{AtlasAPIEndpoints.CLAIM_MODULES}", NavigationEndpoint.GetClaimModules)
-.WithOpenApi()
-.WithName(AtlasAPIEndpoints.CLAIM_MODULES)
-.WithDescription("Gets the user's authorized modules")
-.Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
-.Produces(StatusCodes.Status500InternalServerError)
-.RequireAuthorization(Auth.ATLAS_USER_CLAIM);
-
-app.MapGet($"/{AtlasAPIEndpoints.COMPONENT_ARGS}/{{componentCode}}", ComponentArgsEndpoint.GetComponentArgs)
-.WithOpenApi()
-.WithName(AtlasAPIEndpoints.COMPONENT_ARGS)
-.WithDescription("Gets args associated with a component to be rendered in the browser")
-.Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
-.Produces(StatusCodes.Status500InternalServerError)
-.RequireAuthorization(Auth.ATLAS_USER_CLAIM);
-
-app.MapGet($"/{AtlasAPIEndpoints.GET_MODULES}", AdministrationEndpoints.GetModules)
-.WithOpenApi()
-.WithName(AtlasAPIEndpoints.GET_MODULES)
-.WithDescription("Gets a list of modules")
-.Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
-.Produces(StatusCodes.Status500InternalServerError)
-.RequireAuthorization(Auth.ATLAS_USER_CLAIM);
-
-app.MapGet($"/{AtlasAPIEndpoints.GET_MODULE}/{{id:int}}", AdministrationEndpoints.GetModule)
-.WithOpenApi()
-.WithName(AtlasAPIEndpoints.GET_MODULE)
-.WithDescription("Gets a module for the given id. If id is 0 then returns a new instance of a blank module for creation.")
-.Produces<Module>(StatusCodes.Status200OK)
-.Produces(StatusCodes.Status500InternalServerError)
-.RequireAuthorization(Auth.ATLAS_USER_CLAIM);
+    .WithOpenApi()
+    .WithName("weatherorecast")
+    .WithDescription("Gets the weather forecast")
+    .Produces<IEnumerable<WeatherForecast>>(StatusCodes.Status200OK)
+    .Produces(StatusCodes.Status500InternalServerError)
+    .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
 var useSeedData = bool.Parse(builder.Configuration["SeedData:UseSeedData"] ?? "false");
 
