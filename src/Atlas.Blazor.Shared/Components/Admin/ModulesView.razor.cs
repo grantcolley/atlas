@@ -5,7 +5,7 @@ using Atlas.Requests.Interfaces;
 
 namespace Atlas.Blazor.Shared.Components.Admin
 {
-    public abstract class ModulesBase : AtlasGenericComponentArgsBase
+    public abstract class ModulesViewBase : AtlasGenericComponentArgsBase
     {
         protected IEnumerable<Module>? _modules;
         protected IEnumerable<string>? _fields;
