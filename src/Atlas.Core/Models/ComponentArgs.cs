@@ -32,7 +32,7 @@ namespace Atlas.Core.Models
         public string? RoutingComponentCode { get; set; } = string.Empty;
 
         [NotMapped]
-        public int? ModelInstanceId { get; set; }
+        public int ModelInstanceId { get; set; }
 
         public Type? GetComponentType()
         {
