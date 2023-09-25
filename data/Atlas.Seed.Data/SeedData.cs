@@ -128,7 +128,7 @@ namespace Atlas.Seed.Data
             ComponentArgs modulesComponentArgs = new()
             {
                 ComponentCode = ComponentCodes.MODULES,
-                ComponentName = "Atlas.Blazor.Shared.Components.Admin.Modules, Atlas.Blazor.Shared",
+                ComponentName = "Atlas.Blazor.Shared.Components.Admin.ModulesView, Atlas.Blazor.Shared",
                 DisplayName = "Modules",
                 RoutingPage = "PageRouter",
                 RoutingComponentCode = "Module",
@@ -138,7 +138,7 @@ namespace Atlas.Seed.Data
             ComponentArgs moduleComponentArgs = new()
             {
                 ComponentCode = ComponentCodes.MODULE,
-                ComponentName = "Atlas.Blazor.Shared.Components.Admin.Module, Atlas.Blazor.Shared",
+                ComponentName = "Atlas.Blazor.Shared.Components.Admin.ModuleView, Atlas.Blazor.Shared",
                 DisplayName = "Module",
                 RoutingPage = "PageRouter",
                 RoutingComponentCode = "Module"
