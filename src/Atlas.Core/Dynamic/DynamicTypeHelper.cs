@@ -12,11 +12,11 @@ namespace Atlas.Core.Dynamic
     /// </summary>
     public static class DynamicTypeHelper
     {
-        private static readonly IDictionary<Type, object> cache = new Dictionary<Type, object>();
+        private static readonly IDictionary<Type, object> _cache = new Dictionary<Type, object>();
 
-        private static int counter;
+        private static int _counter;
 
-        private static readonly object cacheLock = new();
+        private static readonly object _cacheLock = new();
 
         /// <summary>
         /// Gets an instance of a <see cref="DynamicTypeHelper"/> for the specified type.
@@ -26,11 +26,11 @@ namespace Atlas.Core.Dynamic
         /// <returns>An instance of a <see cref="DynamicTypeHelper"/> for the specified type.</returns>
         public static DynamicType<T> Get<T>() where T : class, new()
         {
-            lock (cacheLock)
+            lock (_cacheLock)
             {
                 var t = typeof(T);
 
-                if (cache.TryGetValue(t, out object? result))
+                if (_cache.TryGetValue(t, out object? result))
                 {
                     return (DynamicType<T>)result;
                 }
@@ -38,7 +38,7 @@ namespace Atlas.Core.Dynamic
                 var propertyInfos = PropertyInfoHelper.GetPropertyInfos(t);
                 var typeHelper = CreateTypeHelper<T>(propertyInfos);
 
-                cache.Add(t, typeHelper);
+                _cache.Add(t, typeHelper);
                 return typeHelper;
             }
         }
@@ -46,8 +46,8 @@ namespace Atlas.Core.Dynamic
         private static DynamicType<T> CreateTypeHelper<T>(IEnumerable<PropertyInfo> propertyInfos) where T : class, new()
         {
             var capacity = propertyInfos.Count() - 1;
-            var getters = new Dictionary<string, Func<T, object>>(capacity);
-            var setters = new Dictionary<string, Action<T, object>>(capacity);
+            var getters = new Dictionary<string, Func<T, object?>>(capacity);
+            var setters = new Dictionary<string, Action<T, object?>>(capacity);
 
             var createInstance = CreateInstance<T>();
 
@@ -95,7 +95,7 @@ namespace Atlas.Core.Dynamic
             return (Func<T, object>)dynMethod.CreateDelegate(typeof(Func<T, object>));
         }
 
-        private static Action<T, object> SetValue<T>(PropertyInfo propertyInfo)
+        private static Action<T, object?> SetValue<T>(PropertyInfo propertyInfo)
         {
             var setAccessor = propertyInfo.GetSetMethod();
 
@@ -113,12 +113,12 @@ namespace Atlas.Core.Dynamic
             }
             il.EmitCall(OpCodes.Callvirt, setAccessor, null);
             il.Emit(OpCodes.Ret);
-            return (Action<T, object>)dynMethod.CreateDelegate(typeof(Action<T, object>));
+            return (Action<T, object?>)dynMethod.CreateDelegate(typeof(Action<T, object?>));
         }
 
         private static int GetNextCounterValue()
         {
-            return Interlocked.Increment(ref counter);
+            return Interlocked.Increment(ref _counter);
         }
     }
 }
