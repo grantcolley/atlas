@@ -73,7 +73,7 @@ namespace Atlas.Blazor.Shared.Components.Generic
 
             foreach (var field in Fields)
             {
-                string? value = DynamicType?.GetValue(item, field).ToString();
+                string? value = DynamicType?.GetValue(item, field)?.ToString();
 
                 if (value != null
                     && value.ToString().Contains(filter, StringComparison.OrdinalIgnoreCase))
