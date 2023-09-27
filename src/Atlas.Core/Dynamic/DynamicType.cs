@@ -11,8 +11,8 @@ namespace Atlas.Core.Dynamic
     /// <typeparam name="T">The specified type.</typeparam>
     public class DynamicType<T>
     {
-        private readonly Dictionary<string, Func<T, object>> getters;
-        private readonly Dictionary<string, Action<T, object>> setters;
+        private readonly Dictionary<string, Func<T, object?>> _getters;
+        private readonly Dictionary<string, Action<T, object?>> _setters;
 
         /// <summary>
         /// Initialises a new instance of the DynamicTypeHelper.
@@ -22,12 +22,12 @@ namespace Atlas.Core.Dynamic
         /// <param name="setters">A dictionary of dynamic methods for property setters.</param>
         /// <param name="supportedProperties">A list of property info's for supported properties.</param>
         public DynamicType(Func<T> createInstance,
-            Dictionary<string, Func<T, object>> getters,
-            Dictionary<string, Action<T, object>> setters,
+            Dictionary<string, Func<T, object?>> getters,
+            Dictionary<string, Action<T, object?>> setters,
             IEnumerable<PropertyInfo> supportedProperties)
         {
-            this.getters = getters;
-            this.setters = setters;
+            _getters = getters;
+            _setters = setters;
             CreateInstance = createInstance;
             SupportedProperties = supportedProperties;
         }
@@ -35,12 +35,12 @@ namespace Atlas.Core.Dynamic
         /// <summary>
         /// Gets a dynamic method for creating new instance of the specified type
         /// </summary>
-        public Func<T> CreateInstance { get; private set; }
+        public Func<T> CreateInstance { get; }
 
         /// <summary>
         /// Gets a list of property info's for supported properties.
         /// </summary>
-        public IEnumerable<PropertyInfo> SupportedProperties { get; private set; }
+        public IEnumerable<PropertyInfo> SupportedProperties { get; }
 
         /// <summary>
         /// Gets a <see cref="PropertyInfo"/> from the <see cref="SupportedProperties"/> list.
@@ -58,14 +58,14 @@ namespace Atlas.Core.Dynamic
         /// <param name="target">The target property.</param>
         /// <param name="fieldName">The property name.</param>
         /// <param name="value">The value to set.</param>
-        public void SetValue(T target, string fieldName, object value)
+        public void SetValue(T target, string fieldName, object? value)
         {
-            if (!setters.ContainsKey(fieldName))
+            if (!_setters.ContainsKey(fieldName))
             {
                 throw new KeyNotFoundException(fieldName + " not supported.");
             }
 
-            setters[fieldName](target, value);
+            _setters[fieldName](target, value);
             return;
         }
 
@@ -75,14 +75,14 @@ namespace Atlas.Core.Dynamic
         /// <param name="target">The target property.</param>
         /// <param name="fieldName">The property name.</param>
         /// <returns>The value of the property.</returns>
-        public object GetValue(T target, string fieldName)
+        public object? GetValue(T target, string fieldName)
         {
-            if (!getters.ContainsKey(fieldName))
+            if (!_getters.ContainsKey(fieldName))
             {
                 throw new KeyNotFoundException(fieldName + " not supported.");
             }
 
-            return getters[fieldName](target);
+            return _getters[fieldName](target);
         }
     }
 }
