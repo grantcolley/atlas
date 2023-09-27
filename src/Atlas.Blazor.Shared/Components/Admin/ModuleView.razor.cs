@@ -3,7 +3,7 @@ using Atlas.Core.Constants;
 
 namespace Atlas.Blazor.Shared.Components.Admin
 {
-    public abstract class ModuleViewBase : AtlasComponentArgsBase
+    public abstract class ModuleViewBase : ComponentArgsBase
     {
         protected string _identityField = "ModuleId";
         protected string _titleField = "Name";
