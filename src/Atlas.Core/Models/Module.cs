@@ -1,4 +1,5 @@
-﻿using Atlas.Core.Interfaces;
+﻿using Atlas.Core.Attributes;
+using Atlas.Core.Interfaces;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -14,8 +15,11 @@ namespace Atlas.Core.Models
             Categories = new List<Category>();
         }
 
+        [ModelPropertyRenderAttribute(Component = "", Label = "Model Id", Order = 1, Tooltip = "Model Id")]
         public int ModuleId { get; set; }
+
         public int Order { get; set; }
+
         public List<Category> Categories { get; set; }
 
         [Required]
