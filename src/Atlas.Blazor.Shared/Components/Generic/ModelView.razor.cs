@@ -10,7 +10,7 @@ using MudBlazor;
 
 namespace Atlas.Blazor.Shared.Components.Generic
 {
-    public abstract class ModelViewBase<T> : AtlasGenericComponentBase, IDisposable where T : class, new()
+    public abstract class ModelViewBase<T> : GenericComponentBase, IDisposable where T : class, new()
     {
         [Parameter]
         public int Id { get; set; }
@@ -130,9 +130,10 @@ namespace Atlas.Blazor.Shared.Components.Generic
             {
                 IResponse<T> response;
 
-                int id = (int)DynamicType.GetValue(_model, IdentityField);
+                int? id = (int?)DynamicType.GetValue(_model, IdentityField);
 
-                if (id.Equals(0))
+                if (id.HasValue == false
+                    || id.Equals(0))
                 {
                     response = await GenericRequests
                         .CreateModelAsync<T>(_model, CreateEndpoint)
@@ -206,18 +207,19 @@ namespace Atlas.Blazor.Shared.Components.Generic
                 throw new ArgumentNullException(nameof(DeleteEndpoint));
             }
 
-            int id = (int)DynamicType.GetValue(_model, IdentityField);
+            int? id = (int?)DynamicType.GetValue(_model, IdentityField);
 
-            if (id.Equals(0))
+            if (id.HasValue == false
+                || id.Equals(0))
             {
                 await DialogService.ShowAsync(
-                    "Delete", $"Cannot delete an object with Id equal to 0",
+                    "Delete", $"Cannot delete an object with Id equal to 0 or null",
                     "Close", false, Color.Warning, false)
                     .ConfigureAwait(false);
                 return;
             }
 
-            string? title = DynamicType.GetValue(_model, TitleField).ToString();
+            string? title = DynamicType?.GetValue(_model, TitleField)?.ToString();
 
             var deleteResult = await DialogService.ShowAsync(
                 "Delete", $"Do you really want to delete {title}",
@@ -232,7 +234,7 @@ namespace Atlas.Blazor.Shared.Components.Generic
             _isDeleteInProgress = true;
 
             var response = await GenericRequests
-                .DeleteModelAsync(id, DeleteEndpoint)
+                .DeleteModelAsync(id.Value, DeleteEndpoint)
                 .ConfigureAwait(false);
 
             var result = GetResponse(response);
