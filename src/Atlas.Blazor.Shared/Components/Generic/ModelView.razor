@@ -25,9 +25,9 @@ else
                     </MudTooltip>
                 }
 
-                <MudText Typo="Typo.h6">@TitleField</MudText>
+                <MudText Typo="Typo.h6">@_title</MudText>
 
-                <ValidationBadge Title="@TitleField" Messages="@_messages" />
+                <ValidationBadge Title="@_title" Messages="@_messages" />
 
                 <MudSpacer />
 
@@ -42,10 +42,8 @@ else
                     </MudTooltip>
                 }
             </MudToolBar>
-            <MudPaper>
-                <MudContainer MaxWidth="MaxWidth.False">
-                    @ModelBodyFragment
-                </MudContainer>
+            <MudPaper Class=" border-none pa-4" Elevation="0">
+                @ModelBodyFragment
             </MudPaper>
         </EditForm>
     }

@@ -43,6 +43,8 @@ namespace Atlas.Blazor.Shared.Components.Generic
 
         protected List<string> _messages = new();
 
+        protected string? _title;
+
         protected bool _isSaveInProgress = false;
 
         protected bool _isDeleteInProgress = false;
@@ -80,6 +82,12 @@ namespace Atlas.Blazor.Shared.Components.Generic
                 if (response.IsSuccess)
                 {
                     _model = response.Result;
+
+                    if (_model != null
+                        && TitleField != null)
+                    {
+                        _title = DynamicType?.GetValue(_model, TitleField)?.ToString();
+                    }
                 }
                 else if (!string.IsNullOrWhiteSpace(response.Message))
                 {
@@ -182,11 +190,6 @@ namespace Atlas.Blazor.Shared.Components.Generic
                 throw new ArgumentNullException(nameof(IdentityField));
             }
 
-            if (TitleField == null)
-            {
-                throw new ArgumentNullException(nameof(TitleField));
-            }
-
             if (DynamicType == null)
             {
                 throw new ArgumentNullException(nameof(DynamicType));
@@ -219,10 +222,8 @@ namespace Atlas.Blazor.Shared.Components.Generic
                 return;
             }
 
-            string? title = DynamicType?.GetValue(_model, TitleField)?.ToString();
-
             var deleteResult = await DialogService.ShowAsync(
-                "Delete", $"Do you really want to delete {title}",
+                "Delete", $"Do you really want to delete {_title}",
                 "Delete", true, Color.Warning, false)
                 .ConfigureAwait(false);
 
