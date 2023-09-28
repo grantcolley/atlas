@@ -1,0 +1,24 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using System.Reflection
+@using System.Linq.Expressions
+
+@typeparam T where T : class, new()
+@inherits LabelBase<T>
+
+<div class="mb-1">
+    <div class="row">
+        <div class="col-sm-4">
+            @if (string.IsNullOrWhiteSpace(ModelPropertyRender?.Tooltip))
+            {
+                <MudTextField Value="@PropertyValue" Variant="Variant.Outlined" ReadOnly="true" Label="@ModelPropertyRender?.Label" />
+            }
+            else
+            {
+                <MudTooltip Text="@ModelPropertyRender?.Tooltip" Placement="Placement.Top" Arrow="true">
+                    <MudTextField Value="@PropertyValue" Variant="Variant.Outlined" ReadOnly="true" Label="@ModelPropertyRender?.Label" />
+                </MudTooltip>    
+            }
+        </div>
+        <div class="col-sm-8" />
+    </div>
+</div>

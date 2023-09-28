@@ -1,0 +1,10 @@
+﻿@typeparam T where T : class, new()
+@inherits ModelPropertyRolloutBase<T>
+
+@if(_modelPropertyRenders != null)
+{
+    @foreach (ModelPropertyRender<T> modelPropertyRender in _modelPropertyRenders)
+    {
+        @RenderView(modelPropertyRender)
+    }
+}
