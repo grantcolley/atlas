@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Atlas.Blazor.Shared.Base
 {
-    public class AtlasGenericComponentArgsBase : AtlasComponentArgsBase
+    public class GenericComponentBase : AtlasComponentBase
     {
         [Inject]
         public IGenericRequests? GenericRequests { get; set; }
