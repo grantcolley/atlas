@@ -15,7 +15,7 @@ namespace Atlas.Core.Models
             Categories = new List<Category>();
         }
 
-        [ModelPropertyRenderAttribute(Component = "", Label = "Model Id", Order = 1, Tooltip = "Model Id")]
+        [ModelPropertyRenderAttribute(Component = "Atlas.Blazor.Shared.Components.Mud.Label`1, Atlas.Blazor.Shared", Label = "Model Id", Order = 1, Tooltip = "Model Id")]
         public int ModuleId { get; set; }
 
         public int Order { get; set; }
@@ -24,14 +24,17 @@ namespace Atlas.Core.Models
 
         [Required]
         [StringLength(50)]
+        [ModelPropertyRenderAttribute(Component = "Atlas.Blazor.Shared.Components.Mud.Text`1, Atlas.Blazor.Shared", Label = "Name", Order = 2, Tooltip = "Name")]
         public string? Name { get; set; }
 
         [Required]
         [StringLength(30)]
+        [ModelPropertyRenderAttribute(Component = "Atlas.Blazor.Shared.Components.Mud.Text`1, Atlas.Blazor.Shared", Label = "Icon", Order = 4, Tooltip = "Icon")]
         public string? Icon { get; set; }
 
         [Required]
         [StringLength(50)]
+        [ModelPropertyRenderAttribute(Component = "Atlas.Blazor.Shared.Components.Mud.Text`1, Atlas.Blazor.Shared", Label = "Permission", Order = 5, Tooltip = "Permission")]
         public string? Permission { get; set; }
 
         public bool IsPermitted(IEnumerable<string?> permissions)
