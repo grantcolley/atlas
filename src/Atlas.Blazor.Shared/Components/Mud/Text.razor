@@ -5,20 +5,17 @@
 @typeparam T where T : class, new()
 @inherits TextBase<T>
 
-<div class="mb-1">
-    <div class="row">
-        <div class="col-sm-4">
-            @if (string.IsNullOrWhiteSpace(ModelPropertyRender?.Tooltip))
-            {
-                <MudTextField @bind-Value="@PropertyValue" For="FieldExpression" Variant="Variant.Outlined" Label="@ModelPropertyRender?.Label" />
-            }
-            else
-            {
-                <MudTooltip Text="@ModelPropertyRender?.Tooltip" Placement="Placement.Top" Arrow="true">
-                    <MudTextField @bind-Value="@PropertyValue" For="FieldExpression" Variant="Variant.Outlined" Label="@ModelPropertyRender?.Label" ReadOnly="@(ModelPropertyRender == null ? false : ModelPropertyRender.ReadOnly)" />
-                </MudTooltip>    
-            }
-        </div>
-        <div class="col-sm-8" />
-    </div>
-</div>
+@if (string.IsNullOrWhiteSpace(ModelPropertyRender?.Tooltip))
+{
+    <MudTextField @bind-Value="@PropertyValue" For="FieldExpression" Variant="Variant.Outlined" Label="@ModelPropertyRender?.Label" />
+}
+else
+{
+    <MudTooltip Text="@ModelPropertyRender?.Tooltip" Placement="Placement.Top" Arrow="true" RootStyle="width: 100%">
+        <MudTextField @bind-Value="@PropertyValue"
+                        For="FieldExpression"
+                        Label="@ModelPropertyRender?.Label"
+                        ReadOnly="@(ModelPropertyRender == null ? false : ModelPropertyRender.ReadOnly)"
+                        Variant="Variant.Outlined"/>
+    </MudTooltip>    
+}
