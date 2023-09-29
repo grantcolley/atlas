@@ -3,8 +3,12 @@
 
 @if(_modelPropertyRenders != null)
 {
-    @foreach (ModelPropertyRender<T> modelPropertyRender in _modelPropertyRenders)
-    {
-        @RenderView(modelPropertyRender)
-    }
+    <MudStack Spacing="4">
+
+        @foreach (ModelPropertyRender<T> modelPropertyRender in _modelPropertyRenders)
+        {
+            @RenderView(modelPropertyRender)
+        }
+
+    </MudStack>
 }
