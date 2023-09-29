@@ -42,9 +42,11 @@ else
                     </MudTooltip>
                 }
             </MudToolBar>
-            <MudPaper Class=" border-none pa-4" Elevation="0">
-                @ModelBodyFragment
-            </MudPaper>
+            <div class="container container-body float-start">
+                <div class="row" style="margin-top:20px;margin-bottom:20px">
+                    @ModelBodyFragment
+                </div>
+            </div>
         </EditForm>
     }
     else
