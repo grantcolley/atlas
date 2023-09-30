@@ -5,13 +5,13 @@
 
 @if (_model == null)
 {
-    <Loading Title="@TitleField" Message="Loading..."/>
+    <Loading Title="@_title" Message="Loading..."/>
 }
 else
 {
     @if(_alert == null)
     {
-        <EditForm Model="@_model" OnValidSubmit="@SubmitAsync">
+        <EditForm EditContext="CurrentEditContext" OnValidSubmit="@SubmitAsync">
             <FluentValidationValidator/>
             <MudToolBar DisableGutters="true" Style="border-bottom: 1px solid gray;">
                 @if (_isSaveInProgress)
