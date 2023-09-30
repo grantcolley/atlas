@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Atlas.Blazor.Shared.Components.Generic
 {
-    public abstract class ModelPropertyRolloutBase<T> : ComponentBase where T : class, new()
+    public abstract class GenericModelPropertyRolloutBase<T> : ComponentBase where T : class, new()
     {
         [Parameter]
         public T? Model { get; set; }

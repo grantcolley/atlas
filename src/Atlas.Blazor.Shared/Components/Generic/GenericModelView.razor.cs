@@ -1,7 +1,6 @@
 ﻿using Atlas.Blazor.Shared.Base;
 using Atlas.Blazor.Shared.Constants;
 using Atlas.Blazor.Shared.Models;
-using Atlas.Core.Constants;
 using Atlas.Core.Dynamic;
 using Atlas.Requests.Interfaces;
 using Microsoft.AspNetCore.Components;
@@ -10,7 +9,7 @@ using MudBlazor;
 
 namespace Atlas.Blazor.Shared.Components.Generic
 {
-    public abstract class ModelViewBase<T> : GenericComponentBase, IDisposable where T : class, new()
+    public abstract class GenericModelViewBase<T> : GenericComponentBase, IDisposable where T : class, new()
     {
         [Parameter]
         public int Id { get; set; }
@@ -22,6 +21,9 @@ namespace Atlas.Blazor.Shared.Components.Generic
         public string? TitleField { get; set; }
 
         [Parameter]
+        public string? GetEndpoint { get; set; }
+
+        [Parameter]
         public string? CreateEndpoint { get; set; }
 
         [Parameter]
@@ -29,9 +31,6 @@ namespace Atlas.Blazor.Shared.Components.Generic
 
         [Parameter]
         public string? DeleteEndpoint { get; set; }
-
-        [Parameter]
-        public RenderFragment? ModelBodyFragment { get; set; }
 
         protected EditContext? CurrentEditContext { get; set; }
 
@@ -66,6 +65,11 @@ namespace Atlas.Blazor.Shared.Components.Generic
                 throw new ArgumentNullException(nameof(GenericRequests));
             }
 
+            if (GetEndpoint == null)
+            {
+                throw new ArgumentNullException(nameof(GetEndpoint));
+            }
+
             await base.OnInitializedAsync();
 
             DynamicType = DynamicTypeHelper.Get<T>();
@@ -80,7 +84,7 @@ namespace Atlas.Blazor.Shared.Components.Generic
             {
                 _title = $"{typeof(T).Name} {Id}";
 
-                IResponse<T> response = await GenericRequests.GetModelAsync<T>(Id, AtlasAPIEndpoints.GET_MODULE)
+                IResponse<T> response = await GenericRequests.GetModelAsync<T>(Id, GetEndpoint)
                     .ConfigureAwait(false);
 
                 if (response.IsSuccess)
@@ -252,7 +256,7 @@ namespace Atlas.Blazor.Shared.Components.Generic
             _alert = new Alert
             {
                 AlertType = Alerts.INFO,
-                Title = TitleField,
+                Title = _title,
                 Message = $"has been deleted."
             };
 
