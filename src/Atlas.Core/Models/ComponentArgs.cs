@@ -8,7 +8,6 @@ namespace Atlas.Core.Models
     public class ComponentArgs : ModelBase
     {
         public int ComponentArgsId { get; set; }
-        public bool NavigateResetBreadcrumb { get; set; }
 
         [Required]
         [StringLength(30)]
