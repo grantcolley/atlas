@@ -1,17 +1,12 @@
-﻿@inherits ModuleViewBase
+﻿@inherits ComponentArgsBase
 
-@if (!_loaded
-    || ComponentArgs == null)
+@if (ComponentArgs != null)
 {
-    <Loading Title="Module" Message="Loading..." />
-}
-else
-{
-
-    <ModelView T="Module" Id="@ComponentArgs.ModelInstanceId" IdentityField="@_identityField" TitleField="@_titleField"
-                    CreateEndpoint="@_createEndpoint" UpdateEndpoint="@_updateEndpoint" DeleteEndpoint="@_deleteEndpoint">
-        <ModelBodyFragment>
-            <ModelPropertyRollout T="Module" Model="@_module" />
-        </ModelBodyFragment>
-    </ModelView>
+    <GenericModelView T="Module" 
+               Id="@ComponentArgs.ModelInstanceId"
+               IdentityField="ModuleId" TitleField="Name"
+               GetEndpoint="@AtlasAPIEndpoints.GET_MODULE"
+               CreateEndpoint="@AtlasAPIEndpoints.CREATE_MODULE"
+               UpdateEndpoint="@AtlasAPIEndpoints.UPDATE_MODULE"
+               DeleteEndpoint="@AtlasAPIEndpoints.DELETE_MODULE"/>
 }
