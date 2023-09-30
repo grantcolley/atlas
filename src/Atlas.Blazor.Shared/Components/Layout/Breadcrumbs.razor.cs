@@ -50,18 +50,31 @@ namespace Atlas.Blazor.Shared.Components.Layout
                 }
                 else
                 {
-                    if (_breadcrumbs.Count > 1
-                        && breadcrumb.ResetAfterHome)
-                    {
-                        _breadcrumbs.RemoveRange(1, _breadcrumbs.Count - 1);
-                    }
-
-                    var lastBreadcrumb = _breadcrumbs.Last();
-
                     if (breadcrumb.Text != null
-                        && !lastBreadcrumb.Text.Equals(breadcrumb.Text))
+                        && breadcrumb.Href != null)
                     {
-                        _breadcrumbs.Add(new BreadcrumbItem(breadcrumb.Text, breadcrumb.Href));
+                        int breadcrumbIndex = -1;
+
+                        for (int i = 0; i < _breadcrumbs.Count; i++)
+                        {
+                            if (_breadcrumbs[i].Href != null
+                                && _breadcrumbs[i].Text == breadcrumb.Text
+                                && _breadcrumbs[i].Href == breadcrumb.Href)
+                            {
+                                breadcrumbIndex = i;
+                                break;
+                            }
+                        }
+
+                        if(breadcrumbIndex == -1)
+                        {
+                            _breadcrumbs.Add(new BreadcrumbItem(breadcrumb.Text, breadcrumb.Href));
+                        }
+                        else
+                        {
+                            int removeFromIndex = breadcrumbIndex + 1;
+                            _breadcrumbs.RemoveRange(removeFromIndex, _breadcrumbs.Count - removeFromIndex);
+                        }
                     }
                 }
 
