@@ -73,9 +73,13 @@ namespace Atlas.Blazor.Shared.Components.Generic
             if (Id.Equals(0))
             {
                 _model = Activator.CreateInstance<T>();
+
+                _title = $"New {typeof(T).Name}";
             }
             else
             {
+                _title = $"{typeof(T).Name} {Id}";
+
                 IResponse<T> response = await GenericRequests.GetModelAsync<T>(Id, AtlasAPIEndpoints.GET_MODULE)
                     .ConfigureAwait(false);
 
