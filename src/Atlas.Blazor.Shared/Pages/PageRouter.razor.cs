@@ -39,11 +39,12 @@ namespace Atlas.Blazor.Shared.Pages
                         _componentArgs.ModelInstanceId = Id.Value;
                     }
 
+                    string idValue = Id.HasValue && Id.Value > 0 ? $" {Id.Value}" : string.Empty;
+
                     var breadcrumb = new Breadcrumb
                     {
-                        Text = _componentArgs.DisplayName,
-                        Href = NavigationManager.Uri.Remove(0, NavigationManager.BaseUri.Length - 1),
-                        ResetAfterHome = _componentArgs.NavigateResetBreadcrumb
+                        Text = $"{_componentArgs.DisplayName}{idValue}",
+                        Href = NavigationManager.Uri.Remove(0, NavigationManager.BaseUri.Length - 1)
                     };
 
                     await StateNotificationService.NotifyStateHasChangedAsync(StateNotifications.BREADCRUMBS, breadcrumb)
