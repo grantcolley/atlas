@@ -1,7 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Components.Forms
 
 @typeparam T where T : class, new()
-@inherits GenericModelViewBase<T>
+@typeparam TRender where TRender : ModelRender<T>, new()
+@inherits GenericModelViewBase<T, TRender>
 
 @if (_model == null)
 {
@@ -44,7 +45,7 @@ else
             </MudToolBar>
             <div class="container container-body float-start">
                 <div class="row" style="margin-top:20px;margin-bottom:20px">
-                    <GenericModelPropertyRollout T="@T" Model="@_model" />
+                    <GenericModelPropertyRollout T="@T" TRender="@TRender" Model="@_model" />
                 </div>
             </div>
         </EditForm>

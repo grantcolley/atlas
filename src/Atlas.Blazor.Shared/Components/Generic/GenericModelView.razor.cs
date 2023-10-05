@@ -1,6 +1,7 @@
 ﻿using Atlas.Blazor.Shared.Base;
 using Atlas.Blazor.Shared.Constants;
 using Atlas.Blazor.Shared.Models;
+using Atlas.Blazor.Shared.Render;
 using Atlas.Core.Dynamic;
 using Atlas.Requests.Interfaces;
 using Microsoft.AspNetCore.Components;
@@ -9,7 +10,9 @@ using MudBlazor;
 
 namespace Atlas.Blazor.Shared.Components.Generic
 {
-    public abstract class GenericModelViewBase<T> : GenericComponentBase, IDisposable where T : class, new()
+    public abstract class GenericModelViewBase<T, TRender> : GenericComponentBase, IDisposable
+        where T : class, new()
+        where TRender : ModelRender<T>, new()
     {
         [Parameter]
         public int Id { get; set; }
