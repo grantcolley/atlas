@@ -1,4 +1,4 @@
-﻿using Atlas.Core.Dynamic;
+﻿using Atlas.Blazor.Shared.Render;
 using Microsoft.AspNetCore.Components;
 
 namespace Atlas.Blazor.Shared.Base
