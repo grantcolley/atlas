@@ -42,8 +42,8 @@ builder.Services.AddHttpClient(AtlasConstants.ATLAS_API, client =>
 });
 
 builder.Services.AddScoped<TokenProvider>();
-builder.Services.AddSingleton<IAtlasCache, AtlasCache>();
-builder.Services.AddSingleton<IStateNotificationService, StateNotificationService>();
+builder.Services.AddScoped<IAtlasCache, AtlasCache>();
+builder.Services.AddScoped<IStateNotificationService, StateNotificationService>();
 builder.Services.AddTransient<IDialogService, DialogService>();
 
 builder.Services.AddTransient<INavigationRequests, NavigationRequests>(sp =>
