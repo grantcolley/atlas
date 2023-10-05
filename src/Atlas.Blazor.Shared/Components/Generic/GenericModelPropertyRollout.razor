@@ -1,5 +1,6 @@
 ﻿@typeparam T where T : class, new()
-@inherits GenericModelPropertyRolloutBase<T>
+@typeparam TRender where TRender : ModelRender<T>, new()
+@inherits GenericModelPropertyRolloutBase<T, TRender>
 
 @if(_modelPropertyRenders != null)
 {
