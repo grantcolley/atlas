@@ -2,7 +2,7 @@
 
 @if (ComponentArgs != null)
 {
-    <GenericModelView T="Module" 
+    <GenericModelView T="Module" TRender="ModuleRender"
                Id="@ComponentArgs.ModelInstanceId"
                IdentityField="ModuleId" TitleField="Name"
                GetEndpoint="@AtlasAPIEndpoints.GET_MODULE"
