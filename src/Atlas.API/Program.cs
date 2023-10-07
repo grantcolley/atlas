@@ -48,6 +48,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddScoped<IUserData, UserData>();
 builder.Services.AddScoped<IClaimService, ClaimService>();
 builder.Services.AddScoped<INavigationData, NavigationData>();
 builder.Services.AddScoped<IComponentArgsData, ComponentArgsData>();
