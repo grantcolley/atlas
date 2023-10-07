@@ -17,7 +17,7 @@
                                  Color="Color.Inherit"
                                  ToggledIcon="@Icons.Material.Filled.WbSunny"
                                  ToggledColor="Color.Inherit"
-                                 ToggledChanged="ToggledChanged"/>
+                                 ToggledChanged="ToggledChangedAsync" />
         </MudTooltip>
     </MudAppBar>
     <AuthorizeView>
@@ -40,7 +40,10 @@
 
 @code {
     [Inject]
-    public IAtlasCache? AtlasCache { get; set; }
+    public IUserRequests? UserRequests { get; set; }
+
+    [Inject]
+    internal AuthenticationStateProvider? AuthenticationStateProvider { get; set; }
 
     [Parameter]
     public RenderFragment? LoginDisplayFragment { get; set; }
@@ -52,27 +55,59 @@
     private bool _isDarkMode = false;
     private bool _drawerOpen = true;
 
-    protected override void OnParametersSet()
+    protected async override Task OnInitializedAsync()
     {
-        if (AtlasCache == null)
+        if (UserRequests == null)
         {
-            throw new NullReferenceException(nameof(AtlasCache));
+            throw new NullReferenceException(nameof(UserRequests));
         }
 
-        _isDarkMode = AtlasCache.Get<bool>(AtlasCacheKeys.IsDarkMode);
+        if (AuthenticationStateProvider == null)
+        {
+            throw new ArgumentNullException(nameof(AuthenticationStateProvider));
+        }
 
-        base.OnParametersSet();
+        await base.OnInitializedAsync();
+
+        bool isAuthenticatedAtlasUser = await AuthenticationStateProvider.IsAuthenticatedAtlasUser().ConfigureAwait(false);
+
+        if (isAuthenticatedAtlasUser)
+        {
+            string? theme = await UserRequests.GetThemeAsync().ConfigureAwait(false);
+
+            if (!string.IsNullOrEmpty(theme) && theme.Equals(AtlasConstants.THEME_DARK))
+            {
+                _isDarkMode = true;
+            }
+            else
+            {
+                _isDarkMode = false;
+            }
+        }
     }
 
-    private void ToggledChanged(bool value)
+    private async Task ToggledChangedAsync(bool value)
     {
-        if (AtlasCache == null)
+        if (UserRequests == null)
         {
-            throw new NullReferenceException(nameof(AtlasCache));
+            throw new NullReferenceException(nameof(UserRequests));
+        }
+
+        if (AuthenticationStateProvider == null)
+        {
+            throw new ArgumentNullException(nameof(AuthenticationStateProvider));
         }
 
         _isDarkMode = value;
-        AtlasCache.Set(AtlasCacheKeys.IsDarkMode, value);
+
+        bool isAuthenticatedAtlasUser = await AuthenticationStateProvider.IsAuthenticatedAtlasUser().ConfigureAwait(false);
+
+        if (isAuthenticatedAtlasUser)
+        {
+            string theme = _isDarkMode ? AtlasConstants.THEME_DARK : AtlasConstants.THEME_LIGHT;
+
+            await UserRequests.SetThemeAsync(theme).ConfigureAwait(false);
+        }
     }
 
     private void DrawerToggle()
