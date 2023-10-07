@@ -165,7 +165,12 @@ namespace Atlas.Blazor.Shared.Components.Generic
                         .ConfigureAwait(false);
                 }
 
-                _ = GetResponse(response);
+                _model = GetResponse(response);
+
+                await InvokeAsync(() =>
+                {
+                    StateHasChanged();
+                }).ConfigureAwait(true);
             }
 
             _isSaveInProgress = false;
