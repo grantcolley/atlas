@@ -2,7 +2,9 @@
 {
     public static class AtlasAPIEndpoints
     {
-        public const string CLAIM_MODULES = "claimmodules";
+        public const string GET_CLAIM_MODULES = "getclaimmodules";
+        public const string GET_THEME = "gettheme";
+        public const string SET_THEME = "settheme";
         public const string COMPONENT_ARGS = "componentargs";
         public const string GET_MODULE = "getmodule";
         public const string GET_MODULES = "getmodules";
