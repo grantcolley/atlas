@@ -8,7 +8,7 @@
 
 @code {
     [Inject]
-    internal INavigationRequests? ModuleRequest { get; set; }
+    internal IUserRequests? ModuleRequest { get; set; }
 
     [Inject]
     internal AuthenticationStateProvider? AuthenticationStateProvider { get; set; }
@@ -27,17 +27,11 @@
             throw new ArgumentNullException(nameof(ModuleRequest));
         }
 
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync().ConfigureAwait(false);
+        bool isAuthenticatedAtlasUser = await AuthenticationStateProvider.IsAuthenticatedAtlasUser().ConfigureAwait(false);
 
-        if (authState != null
-            && authState.User != null
-            && authState.User.Identity != null
-            && authState.User.Identity.IsAuthenticated)
+        if (isAuthenticatedAtlasUser)
         {
-            if (authState.User.HasClaim(c => c.Value.Equals(Core.Constants.Auth.ATLAS_USER_CLAIM)))
-            {
-                _modules = await ModuleRequest.GetClaimModulesAsync().ConfigureAwait(false);
-            }
+            _modules = await ModuleRequest.GetClaimModulesAsync().ConfigureAwait(false);
         }
 
         await base.OnParametersSetAsync().ConfigureAwait(false);
