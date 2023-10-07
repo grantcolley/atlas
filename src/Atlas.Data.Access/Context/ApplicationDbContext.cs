@@ -29,6 +29,11 @@ namespace Atlas.Data.Access.Context
             this._user = user;
         }
 
+        public string? GetUser()
+        {
+            return _user;
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<User>()
