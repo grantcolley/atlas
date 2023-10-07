@@ -35,7 +35,7 @@ namespace Atlas.Data.Access.Base
 
                 var permissionSet = user.GetUserPermissionSet();
 
-                return new Authorisation { User = claim, Permissions = permissionSet };
+                return new Authorisation { User = claim, Theme = user.Theme, Permissions = permissionSet };
             }
 
             return default;

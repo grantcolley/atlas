@@ -18,6 +18,7 @@ namespace Atlas.Core.Models
         }
 
         public int UserId { get; set; }
+        public string? Theme { get; set; }
         public List<Role> Roles { get; set; }
         public List<Permission> Permissions { get; set; }
 
