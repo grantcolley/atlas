@@ -1,4 +1,3 @@
-using Atlas.Blazor.Shared.Cache;
 using Atlas.Blazor.Shared.Interfaces;
 using Atlas.Blazor.Shared.Services;
 using Atlas.Core.Constants;
@@ -42,16 +41,15 @@ builder.Services.AddHttpClient(AtlasConstants.ATLAS_API, client =>
 });
 
 builder.Services.AddScoped<TokenProvider>();
-builder.Services.AddScoped<IAtlasCache, AtlasCache>();
 builder.Services.AddScoped<IStateNotificationService, StateNotificationService>();
 builder.Services.AddTransient<IDialogService, DialogService>();
 
-builder.Services.AddTransient<INavigationRequests, NavigationRequests>(sp =>
+builder.Services.AddTransient<IUserRequests, UserRequests>(sp =>
 {
     var tokenProvider = sp.GetRequiredService<TokenProvider>();
     var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
     var httpClient = httpClientFactory.CreateClient(AtlasConstants.ATLAS_API);
-    return new NavigationRequests(httpClient, tokenProvider);
+    return new UserRequests(httpClient, tokenProvider);
 });
 
 builder.Services.AddTransient<IComponentArgsRequests, ComponentArgsRequests>(sp =>
