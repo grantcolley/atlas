@@ -7,7 +7,10 @@
 
 @if (string.IsNullOrWhiteSpace(ModelPropertyRender?.Tooltip))
 {
-    <MudTextField Value="@PropertyValue" Variant="Variant.Outlined" ReadOnly="true" Label="@ModelPropertyRender?.Label" />
+    <MudTextField Value="@PropertyValue"
+                    Label="@ModelPropertyRender?.Label"
+                    Variant="Variant.Outlined" 
+                    ReadOnly="true" />
 }
 else
 {
