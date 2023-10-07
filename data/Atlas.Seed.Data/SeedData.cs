@@ -98,9 +98,9 @@ namespace Atlas.Seed.Data
         {
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-            users.Add("alice", new User { UserName = "alice", Email = "alice@email.com" });
-            users.Add("bob", new User { UserName = "bob", Email = "bob@email.com" });
-            users.Add("grant", new User { UserName = "grant", Email = "grant@email.com" });
+            users.Add("alice", new User { UserName = "alice", Email = "alice@email.com", Theme = "Light" });
+            users.Add("bob", new User { UserName = "bob", Email = "bob@email.com", Theme = "Light" });
+            users.Add("grant", new User { UserName = "grant", Email = "grant@email.com", Theme = "Light" });
 
             foreach (var user in users.Values)
             {
