@@ -11,17 +11,22 @@ namespace Atlas.Blazor.Shared.Components.Generic
         public T? Model { get; set; }
 
         protected IEnumerable<ModelPropertyRender<T>>? _modelPropertyRenders;
-        protected TRender _render =new();
+        protected TRender _render = new();
 
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync().ConfigureAwait(false);
 
-            if(Model == null) throw new ArgumentNullException(nameof(Model));
+            _render.Configure();           
+        }
 
-            _render.Configure();
-            
+        protected override void OnParametersSet()
+        {
+            if (Model == null) throw new ArgumentNullException(nameof(Model));
+
             _modelPropertyRenders = _render.GetModelPropertyRenders(Model);
+
+            base.OnParametersSet();
         }
 
         protected RenderFragment RenderView(ModelPropertyRender<T> modelPropertyRender) => __builder =>
