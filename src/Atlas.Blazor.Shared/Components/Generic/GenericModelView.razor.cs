@@ -80,25 +80,15 @@ namespace Atlas.Blazor.Shared.Components.Generic
             if (Id.Equals(0))
             {
                 _model = Activator.CreateInstance<T>();
-
-                _title = $"New {typeof(T).Name}";
             }
             else
             {
-                _title = $"{typeof(T).Name} {Id}";
-
                 IResponse<T> response = await GenericRequests.GetModelAsync<T>(Id, GetEndpoint)
                     .ConfigureAwait(false);
 
                 if (response.IsSuccess)
                 {
                     _model = response.Result;
-
-                    if (_model != null
-                        && TitleField != null)
-                    {
-                        _title = DynamicType?.GetValue(_model, TitleField)?.ToString();
-                    }
                 }
                 else if (!string.IsNullOrWhiteSpace(response.Message))
                 {
@@ -106,8 +96,7 @@ namespace Atlas.Blazor.Shared.Components.Generic
                 }
             }
 
-            CurrentEditContext = new EditContext(_model ?? throw new NullReferenceException(nameof(_model)));
-            CurrentEditContext.OnValidationStateChanged += CurrentEditContextOnValidationStateChanged;
+            CreateEditContext();
         }
 
         protected virtual async Task SubmitAsync()
@@ -157,20 +146,19 @@ namespace Atlas.Blazor.Shared.Components.Generic
                     response = await GenericRequests
                         .CreateModelAsync<T>(_model, CreateEndpoint)
                         .ConfigureAwait(false);
+
+                    _model = GetResponse(response);
                 }
                 else
                 {
                     response = await GenericRequests
                         .UpdateModelAsync<T>(_model, UpdateEndpoint)
                         .ConfigureAwait(false);
+
+                    _model = GetResponse(response);
                 }
 
-                _model = GetResponse(response);
-
-                await InvokeAsync(() =>
-                {
-                    StateHasChanged();
-                }).ConfigureAwait(true);
+                CreateEditContext();
             }
 
             _isSaveInProgress = false;
@@ -277,10 +265,7 @@ namespace Atlas.Blazor.Shared.Components.Generic
             {
                 if (disposing)
                 {
-                    if (CurrentEditContext != null)
-                    {
-                        CurrentEditContext.OnValidationStateChanged -= CurrentEditContextOnValidationStateChanged;
-                    }
+                    DisposeEditContext();
                 }
 
                 CurrentEditContext = null;
@@ -292,6 +277,37 @@ namespace Atlas.Blazor.Shared.Components.Generic
         private void CurrentEditContextOnValidationStateChanged(object? sender, ValidationStateChangedEventArgs e)
         {
             GetValidationMessages();
+        }
+
+        private void DisposeEditContext()
+        {
+            if (CurrentEditContext != null)
+            {
+                CurrentEditContext.OnValidationStateChanged -= CurrentEditContextOnValidationStateChanged;
+                CurrentEditContext = null;
+            }
+        }
+
+        private void CreateEditContext()
+        {
+            if (TitleField == null) throw new NullReferenceException(nameof(TitleField));
+            if (IdentityField == null) throw new NullReferenceException(nameof(IdentityField));
+
+            DisposeEditContext();
+
+            CurrentEditContext = new EditContext(_model ?? throw new NullReferenceException(nameof(_model)));
+            CurrentEditContext.OnValidationStateChanged += CurrentEditContextOnValidationStateChanged;
+
+            int? id = (int?)DynamicType?.GetValue(_model, IdentityField);
+
+            if (!id.HasValue || id.Value.Equals(0))
+            {
+                _title = $"New {typeof(T).Name}";
+            }
+            else
+            {
+                _title = $"{id} {DynamicType?.GetValue(_model, TitleField)?.ToString()}";
+            }
         }
     }
 }
