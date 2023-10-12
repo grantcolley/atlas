@@ -101,35 +101,14 @@ namespace Atlas.Blazor.Shared.Components.Generic
 
         protected virtual async Task SubmitAsync()
         {
-            if (_model == null)
-            {
-                throw new ArgumentNullException(nameof(_model));
-            }
-
-            if (IdentityField == null)
-            {
-                throw new ArgumentNullException(nameof(IdentityField));
-            }
-
-            if (DynamicType == null)
-            {
-                throw new ArgumentNullException(nameof(DynamicType));
-            }
-
-            if (GenericRequests == null)
-            {
-                throw new ArgumentNullException(nameof(GenericRequests));
-            }
-
-            if (CreateEndpoint == null)
-            {
-                throw new ArgumentNullException(nameof(GenericRequests));
-            }
-
-            if (UpdateEndpoint == null)
-            {
-                throw new ArgumentNullException(nameof(UpdateEndpoint));
-            }
+            if (_model == null) throw new NullReferenceException(nameof(_model));
+            if (IdentityField == null) throw new NullReferenceException(nameof(IdentityField));
+            if (TitleField == null) throw new NullReferenceException(nameof(IdentityField));
+            if (DynamicType == null) throw new NullReferenceException(nameof(DynamicType));
+            if (GenericRequests == null) throw new NullReferenceException(nameof(GenericRequests));
+            if (CreateEndpoint == null) throw new NullReferenceException(nameof(GenericRequests));
+            if (UpdateEndpoint == null) throw new NullReferenceException(nameof(UpdateEndpoint));
+            if (StateNotificationService == null) throw new NullReferenceException(nameof(StateNotificationService));
 
             _isSaveInProgress = true;
 
@@ -148,6 +127,22 @@ namespace Atlas.Blazor.Shared.Components.Generic
                         .ConfigureAwait(false);
 
                     _model = GetResponse(response);
+
+                    if (_model != null)
+                    {
+                        string newId = $"{DynamicType.GetValue(_model, IdentityField)?.ToString()}";
+                        string? href = NavigationManager?.Uri.Remove(0, NavigationManager.BaseUri.Length - 1);
+                        
+                        Breadcrumb breadcrumb = new Breadcrumb
+                        {
+                            Text = $"{DynamicType.GetValue(_model, TitleField)?.ToString()} {newId}",
+                            Href = $"{href?.Remove(href.Length - 1, 1)}{newId}",
+                            BreadcrumbAction = BreadcrumbAction.Update
+                        };
+
+                        await StateNotificationService.NotifyStateHasChangedAsync(StateNotifications.BREADCRUMBS, breadcrumb)
+                            .ConfigureAwait(false);
+                    }
                 }
                 else
                 {
