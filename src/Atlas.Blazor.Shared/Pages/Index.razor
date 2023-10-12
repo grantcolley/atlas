@@ -16,7 +16,7 @@
         {
             var breadcrumb = new Breadcrumb
                 {
-                    ResetToHome = true
+                    BreadcrumbAction = BreadcrumbAction.Home
                 };
 
             await StateNotificationService.NotifyStateHasChangedAsync(StateNotifications.BREADCRUMBS, breadcrumb)
