@@ -44,7 +44,7 @@ namespace Atlas.Blazor.Shared.Components.Layout
 
             if (breadcrumb != null)
             {
-                if (breadcrumb.ResetToHome)
+                if (breadcrumb.BreadcrumbAction.Equals(BreadcrumbAction.Home))
                 {
                     _breadcrumbs.RemoveRange(1, _breadcrumbs.Count - 1);
                 }
@@ -53,27 +53,38 @@ namespace Atlas.Blazor.Shared.Components.Layout
                     if (breadcrumb.Text != null
                         && breadcrumb.Href != null)
                     {
-                        int breadcrumbIndex = -1;
-
-                        for (int i = 0; i < _breadcrumbs.Count; i++)
+                        if (breadcrumb.BreadcrumbAction.Equals(BreadcrumbAction.Update))
                         {
-                            if (_breadcrumbs[i].Href != null
-                                && _breadcrumbs[i].Text == breadcrumb.Text
-                                && _breadcrumbs[i].Href == breadcrumb.Href)
+                            if(_breadcrumbs.Count > 1)
                             {
-                                breadcrumbIndex = i;
-                                break;
+                                _breadcrumbs.RemoveAt(_breadcrumbs.Count - 1);
+                                _breadcrumbs.Add(new BreadcrumbItem(breadcrumb.Text, breadcrumb.Href));
                             }
                         }
+                        else if (breadcrumb.BreadcrumbAction.Equals(BreadcrumbAction.Add))
+                        {
+                            int breadcrumbIndex = -1;
 
-                        if(breadcrumbIndex == -1)
-                        {
-                            _breadcrumbs.Add(new BreadcrumbItem(breadcrumb.Text, breadcrumb.Href));
-                        }
-                        else
-                        {
-                            int removeFromIndex = breadcrumbIndex + 1;
-                            _breadcrumbs.RemoveRange(removeFromIndex, _breadcrumbs.Count - removeFromIndex);
+                            for (int i = 0; i < _breadcrumbs.Count; i++)
+                            {
+                                if (_breadcrumbs[i].Href != null
+                                    && _breadcrumbs[i].Text == breadcrumb.Text
+                                    && _breadcrumbs[i].Href == breadcrumb.Href)
+                                {
+                                    breadcrumbIndex = i;
+                                    break;
+                                }
+                            }
+
+                            if (breadcrumbIndex == -1)
+                            {
+                                _breadcrumbs.Add(new BreadcrumbItem(breadcrumb.Text, breadcrumb.Href));
+                            }
+                            else
+                            {
+                                int removeFromIndex = breadcrumbIndex + 1;
+                                _breadcrumbs.RemoveRange(removeFromIndex, _breadcrumbs.Count - removeFromIndex);
+                            }
                         }
                     }
                 }
