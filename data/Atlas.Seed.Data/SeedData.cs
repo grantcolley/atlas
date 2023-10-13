@@ -1,4 +1,5 @@
-﻿using Atlas.Core.Constants;
+﻿using Atlas.Blazor.Shared.Constants;
+using Atlas.Core.Constants;
 using Atlas.Core.Models;
 using Atlas.Data.Access.Context;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,6 @@ namespace Atlas.Seed.Data
         private static readonly Dictionary<string, Permission> permissions = new();
         private static readonly Dictionary<string, Role> roles = new();
         private static readonly Dictionary<string, User> users = new();
-        private static readonly Dictionary<string, ComponentArgs> componentArgs = new();
 
         public static void Initialise(ApplicationDbContext applicationDbContext)
         {
@@ -25,7 +25,6 @@ namespace Atlas.Seed.Data
             CreateUsers();
             AssignUsersRoles();
 
-            ComponentArgs();
             Navigation();
         }
 
@@ -121,38 +120,6 @@ namespace Atlas.Seed.Data
             dbContext.SaveChanges();
         }
 
-        private static void ComponentArgs()
-        {
-            if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
-
-            ComponentArgs modulesComponentArgs = new()
-            {
-                ComponentCode = ComponentCodes.MODULES,
-                ComponentName = "Atlas.Blazor.Shared.Components.Admin.ModulesView, Atlas.Blazor.Shared",
-                DisplayName = "Modules",
-                RoutingPage = "PageRouter",
-                RoutingComponentCode = "Module",
-                ComponentParameters = "Fields=ModuleId,Name,Permission;FieldsDelimiter=,;IdentifierField=ModuleId"
-            };
-
-            ComponentArgs moduleComponentArgs = new()
-            {
-                ComponentCode = ComponentCodes.MODULE,
-                ComponentName = "Atlas.Blazor.Shared.Components.Admin.ModuleView, Atlas.Blazor.Shared",
-                DisplayName = "Module",
-                RoutingPage = "PageRouter",
-                RoutingComponentCode = "Module"
-            };
-
-            dbContext.ComponentArgs.Add(modulesComponentArgs);
-            dbContext.ComponentArgs.Add(moduleComponentArgs);
-
-            componentArgs.Add(modulesComponentArgs.ComponentCode, modulesComponentArgs);
-            componentArgs.Add(moduleComponentArgs.ComponentCode, moduleComponentArgs);
-
-            dbContext.SaveChanges();
-        }
-
         private static void Navigation()
         {
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
@@ -178,7 +145,7 @@ namespace Atlas.Seed.Data
             var rolesMenuItem = new MenuItem { Name = "Roles", Icon = "Lock", NavigatePage = "PageRouter", Order = 2, Permission = Auth.ADMIN, Category = authorisationCategory };
             var permissionsMenuItem = new MenuItem { Name = "Permissions", Icon = "Key", NavigatePage = "PageRouter", Order = 3, Permission = Auth.ADMIN, Category = authorisationCategory };
 
-            var modulesMenuItem = new MenuItem { Name = "Modules", Icon = "AutoAwesomeMosaic", NavigatePage = "PageRouter", Order = 1, Permission = Auth.ADMIN, Category = navigationCategory, ComponentCode = componentArgs[ComponentCodes.MODULES].ComponentCode };
+            var modulesMenuItem = new MenuItem { Name = "Modules", Icon = "AutoAwesomeMosaic", NavigatePage = "PageRouter", Order = 1, Permission = Auth.ADMIN, Category = navigationCategory, PageCode = PageArgsCodes.MODULES };
             var categoriesMenuItem = new MenuItem { Name = "Categories", Icon = "AutoAwesomeMotion", NavigatePage = "PageRouter", Order = 2, Permission = Auth.ADMIN, Category = navigationCategory };
             var menuItemsMenuItem = new MenuItem { Name = "MenuItems", Icon = "Article", NavigatePage = "PageRouter", Order = 3, Permission = Auth.ADMIN, Category = navigationCategory };
             
