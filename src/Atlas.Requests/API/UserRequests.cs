@@ -1,4 +1,5 @@
-﻿using Atlas.Core.Constants;
+﻿using Atlas.Core.Authentication;
+using Atlas.Core.Constants;
 using Atlas.Core.Models;
 using Atlas.Requests.Base;
 using Atlas.Requests.Interfaces;
