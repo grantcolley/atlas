@@ -1,4 +1,4 @@
-﻿using Atlas.Core.Models;
+﻿using Atlas.Blazor.Shared.Models;
 using Microsoft.AspNetCore.Components;
 
 namespace Atlas.Blazor.Shared.Base
@@ -6,6 +6,6 @@ namespace Atlas.Blazor.Shared.Base
     public class ComponentArgsBase : ComponentBase
     {
         [Parameter]
-        public ComponentArgs? ComponentArgs { get; set; }
+        public PageArgs? ComponentArgs { get; set; }
     }
 }

@@ -7,13 +7,13 @@
 
 <AuthorizeView>
     <Authorized Context="page">
-        @if (_componentArgs == null)
+        @if (_pageArgs == null)
         {
             <Loading Title="Loading Title" Message="Loading message..."/>
         }
         else
         {
-            <DynamicComponent @key=_componentArgs.ComponentArgsId Type="_componentArgs.GetComponentType()" Parameters="_componentArgs.ToDynamicComponentParameters()" />
+            <DynamicComponent @key=_pageArgs.PageCode Type="_pageArgs.GetComponentType()" Parameters="_pageArgs.ToDynamicComponentParameters()" />
         }
     </Authorized>
     <NotAuthorized>

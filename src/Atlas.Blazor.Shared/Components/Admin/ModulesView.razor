@@ -6,7 +6,7 @@
 }
 else
 {
-    <GenericTableView T="Module" DisplayHeader="@ComponentArgs?.DisplayName" 
+    <GenericTableView T="Module" DisplayHeader="@PageArgs?.DisplayName" 
                 Source="@_modules" Fields="@_fields" IdentifierField="@_identifierField" 
-                RoutingPage="@ComponentArgs?.RoutingPage" RoutingComponentCode="@ComponentArgs?.RoutingComponentCode" />
+                RoutingPage="@PageArgs?.RoutingPage" RoutingComponentCode="@PageArgs?.RoutingComponentCode" />
 }

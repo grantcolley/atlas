@@ -17,7 +17,7 @@ namespace Atlas.Core.Models
 
         [Required]
         [StringLength(30)]
-        public string ComponentCode { get; set; } = string.Empty;
+        public string PageCode { get; set; } = string.Empty;
 
         [Required]
         [StringLength(50)]
@@ -50,7 +50,7 @@ namespace Atlas.Core.Models
     {
         public MenuItemValidator()
         {
-            RuleFor(v => v.ComponentCode)
+            RuleFor(v => v.PageCode)
                 .NotNull().WithMessage("Component Code is required");
 
             RuleFor(v => v.Category)

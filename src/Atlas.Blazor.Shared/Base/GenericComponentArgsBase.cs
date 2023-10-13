@@ -1,4 +1,4 @@
-﻿using Atlas.Core.Models;
+﻿using Atlas.Blazor.Shared.Models;
 using Atlas.Requests.Interfaces;
 using Microsoft.AspNetCore.Components;
 
@@ -10,6 +10,6 @@ namespace Atlas.Blazor.Shared.Base
         public IGenericRequests? GenericRequests { get; set; }
 
         [Parameter]
-        public ComponentArgs? ComponentArgs { get; set; }
+        public PageArgs? PageArgs { get; set; }
     }
 }

@@ -19,14 +19,14 @@ namespace Atlas.Blazor.Shared.Components.Admin
                 throw new ArgumentNullException(nameof(GenericRequests));
             }
 
-            if (ComponentArgs == null)
+            if (PageArgs == null)
             {
-                throw new ArgumentNullException(nameof(ComponentArgs));
+                throw new ArgumentNullException(nameof(PageArgs));
             }
 
             await base.OnInitializedAsync().ConfigureAwait(false);
 
-            Dictionary<string, string> parameters = ComponentArgs.GetComponentParameters();
+            Dictionary<string, string> parameters = PageArgs.GetComponentParameters();
 
             string? fieldsDelimiter = parameters["FieldsDelimiter"];
 

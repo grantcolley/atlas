@@ -22,7 +22,6 @@ namespace Atlas.Data.Access.Context
         public DbSet<Module> Modules { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<MenuItem> MenuItems { get; set; }
-        public DbSet<ComponentArgs> ComponentArgs { get; set; }
 
         public void SetUser(string user)
         {
@@ -63,13 +62,6 @@ namespace Atlas.Data.Access.Context
             builder.Entity<MenuItem>()
                 .HasIndex(m => m.Name)
                 .IsUnique();
-
-            builder.Entity<ComponentArgs>()
-                .HasIndex(c => c.ComponentName)                
-                .IsUnique();
-
-            builder.Entity<ComponentArgs>()
-                .ToTable(cd => cd.HasCheckConstraint("CK_ComponentArgsId_GreaterThanZero", "ComponentArgsId > 0"));
         }
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

@@ -1,7 +1,9 @@
+using Atlas.Blazor.Shared.Constants;
 using Atlas.Blazor.Shared.Interfaces;
+using Atlas.Blazor.Shared.Models;
 using Atlas.Blazor.Shared.Services;
+using Atlas.Core.Authentication;
 using Atlas.Core.Constants;
-using Atlas.Core.Models;
 using Atlas.Requests.API;
 using Atlas.Requests.Interfaces;
 using Auth0.AspNetCore.Authentication;
@@ -10,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MudBlazor.Services;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 
@@ -40,6 +43,32 @@ builder.Services.AddHttpClient(AtlasConstants.ATLAS_API, client =>
     client.BaseAddress = new Uri("https://localhost:44420");
 });
 
+builder.Services.AddSingleton<IPageRouterService, PageRouterService>(sp =>
+{
+    List<PageArgs> pageArgs = new()
+    {
+            new PageArgs
+            {
+                PageCode = PageArgsCodes.MODULES,
+                ComponentName = "Atlas.Blazor.Shared.Components.Admin.ModulesView, Atlas.Blazor.Shared",
+                DisplayName = "Modules",
+                RoutingPage = "PageRouter",
+                RoutingComponentCode = "Module",
+                ComponentParameters = "Fields=ModuleId,Name,Permission;FieldsDelimiter=,;IdentifierField=ModuleId"
+            },
+            new PageArgs
+            {
+                PageCode = PageArgsCodes.MODULE,
+                ComponentName = "Atlas.Blazor.Shared.Components.Admin.ModuleView, Atlas.Blazor.Shared",
+                DisplayName = "Module",
+                RoutingPage = "PageRouter",
+                RoutingComponentCode = "Module"
+            }
+    };
+
+    return new PageRouterService(pageArgs);
+});
+
 builder.Services.AddScoped<TokenProvider>();
 builder.Services.AddScoped<IStateNotificationService, StateNotificationService>();
 builder.Services.AddTransient<IDialogService, DialogService>();
@@ -50,14 +79,6 @@ builder.Services.AddTransient<IUserRequests, UserRequests>(sp =>
     var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
     var httpClient = httpClientFactory.CreateClient(AtlasConstants.ATLAS_API);
     return new UserRequests(httpClient, tokenProvider);
-});
-
-builder.Services.AddTransient<IComponentArgsRequests, ComponentArgsRequests>(sp =>
-{
-    var tokenProvider = sp.GetRequiredService<TokenProvider>();
-    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
-    var httpClient = httpClientFactory.CreateClient(AtlasConstants.ATLAS_API);
-    return new ComponentArgsRequests(httpClient, tokenProvider);
 });
 
 builder.Services.AddTransient<IGenericRequests, GenericRequests>(sp =>

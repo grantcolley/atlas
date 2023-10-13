@@ -51,7 +51,6 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUserData, UserData>();
 builder.Services.AddScoped<IClaimService, ClaimService>();
 builder.Services.AddScoped<INavigationData, NavigationData>();
-builder.Services.AddScoped<IComponentArgsData, ComponentArgsData>();
 builder.Services.AddScoped<IWeatherForecastData, WeatherForecastData>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
