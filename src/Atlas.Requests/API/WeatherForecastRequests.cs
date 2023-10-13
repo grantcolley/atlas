@@ -1,4 +1,5 @@
-﻿using Atlas.Core.Models;
+﻿using Atlas.Core.Authentication;
+using Atlas.Core.Models;
 using Atlas.Requests.Base;
 using Atlas.Requests.Interfaces;
 using System.Text.Json;
