@@ -10,13 +10,10 @@ using MudBlazor;
 
 namespace Atlas.Blazor.Shared.Components.Generic
 {
-    public abstract class GenericModelViewBase<T, TRender> : GenericComponentBase, IDisposable
+    public abstract class GenericModelViewBase<T, TRender> : GenericPageArgsBase, IDisposable
         where T : class, new()
         where TRender : ModelRender<T>, new()
     {
-        [Parameter]
-        public int Id { get; set; }
-
         [Parameter]
         public string? IdentityField { get; set; }
 
@@ -63,38 +60,45 @@ namespace Atlas.Blazor.Shared.Components.Generic
 
         protected override async Task OnInitializedAsync()
         {
-            if (GenericRequests == null)
-            {
-                throw new ArgumentNullException(nameof(GenericRequests));
-            }
-
-            if (GetEndpoint == null)
-            {
-                throw new ArgumentNullException(nameof(GetEndpoint));
-            }
+            if (GenericRequests == null) throw new ArgumentNullException(nameof(GenericRequests));
+            if (GetEndpoint == null) throw new ArgumentNullException(nameof(GetEndpoint));
+            if (PageArgs == null) throw new ArgumentNullException(nameof(PageArgs));
 
             await base.OnInitializedAsync();
 
             DynamicType = DynamicTypeHelper.Get<T>();
 
-            if (Id.Equals(0))
+            string? breadcrumbText = null;
+
+            if (PageArgs.ModelInstanceId.Equals(0))
             {
                 _model = Activator.CreateInstance<T>();
+
+                breadcrumbText = $"New {typeof(T).Name}";
             }
             else
             {
-                IResponse<T> response = await GenericRequests.GetModelAsync<T>(Id, GetEndpoint)
+                IResponse<T> response = await GenericRequests.GetModelAsync<T>(PageArgs.ModelInstanceId, GetEndpoint)
                     .ConfigureAwait(false);
 
                 if (response.IsSuccess)
                 {
                     _model = response.Result;
+
+                    if(_model != null
+                        && !string.IsNullOrWhiteSpace(TitleField)) 
+                    {
+                        breadcrumbText = $"{PageArgs.ModelInstanceId} {DynamicType.GetValue(_model, TitleField)?.ToString()}";
+                    }
                 }
                 else if (!string.IsNullOrWhiteSpace(response.Message))
                 {
                     RaiseAlert(response.Message);
                 }
             }
+
+            await SendBreadcrumbAsync(BreadcrumbAction.Add, breadcrumbText)
+                .ConfigureAwait(false);
 
             CreateEditContext();
         }
@@ -132,15 +136,11 @@ namespace Atlas.Blazor.Shared.Components.Generic
                     {
                         string newId = $"{DynamicType.GetValue(_model, IdentityField)?.ToString()}";
                         string? href = NavigationManager?.Uri.Remove(0, NavigationManager.BaseUri.Length - 1);
-                        
-                        Breadcrumb breadcrumb = new Breadcrumb
-                        {
-                            Text = $"{DynamicType.GetValue(_model, TitleField)?.ToString()} {newId}",
-                            Href = $"{href?.Remove(href.Length - 1, 1)}{newId}",
-                            BreadcrumbAction = BreadcrumbAction.Update
-                        };
 
-                        await StateNotificationService.NotifyStateHasChangedAsync(StateNotifications.BREADCRUMBS, breadcrumb)
+                        await SendBreadcrumbAsync(
+                            BreadcrumbAction.Update, 
+                            $"{newId} {DynamicType.GetValue(_model, TitleField)?.ToString()}",
+                            $"{href?.Remove(href.LastIndexOf("/") + 1)}{newId}")
                             .ConfigureAwait(false);
                     }
                 }
@@ -179,35 +179,12 @@ namespace Atlas.Blazor.Shared.Components.Generic
 
         protected virtual async Task DeleteAsync()
         {
-            if (_model == null)
-            {
-                throw new ArgumentNullException(nameof(_model));
-            }
-
-            if (IdentityField == null)
-            {
-                throw new ArgumentNullException(nameof(IdentityField));
-            }
-
-            if (DynamicType == null)
-            {
-                throw new ArgumentNullException(nameof(DynamicType));
-            }
-
-            if (GenericRequests == null)
-            {
-                throw new ArgumentNullException(nameof(GenericRequests));
-            }
-
-            if (DialogService == null)
-            {
-                throw new ArgumentNullException(nameof(DialogService));
-            }
-
-            if (DeleteEndpoint == null)
-            {
-                throw new ArgumentNullException(nameof(DeleteEndpoint));
-            }
+            if (_model == null) throw new ArgumentNullException(nameof(_model));
+            if (IdentityField == null) throw new ArgumentNullException(nameof(IdentityField));
+            if (DynamicType == null) throw new ArgumentNullException(nameof(DynamicType));
+            if (GenericRequests == null) throw new ArgumentNullException(nameof(GenericRequests));
+            if (DialogService == null) throw new ArgumentNullException(nameof(DialogService));
+            if (DeleteEndpoint == null) throw new ArgumentNullException(nameof(DeleteEndpoint));
 
             int? id = (int?)DynamicType.GetValue(_model, IdentityField);
 
@@ -250,6 +227,9 @@ namespace Atlas.Blazor.Shared.Components.Generic
                 Title = _title,
                 Message = $"has been deleted."
             };
+
+            await SendBreadcrumbAsync(BreadcrumbAction.RemoveLast)
+                .ConfigureAwait(false);
 
             _isDeleteInProgress = false;
         }
