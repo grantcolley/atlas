@@ -15,7 +15,7 @@ namespace Atlas.Blazor.Shared.Components.Generic
         public string RoutingPage { get; set; } = string.Empty;
 
         [Parameter]
-        public string RoutingComponentCode { get; set; } = string.Empty;
+        public string RoutingPageCode { get; set; } = string.Empty;
 
         [Parameter]
         public IEnumerable<T> Source { get; set; } = Enumerable.Empty<T>();
@@ -43,11 +43,11 @@ namespace Atlas.Blazor.Shared.Components.Generic
         {
             if (string.IsNullOrEmpty(IdentifierField))
             {
-                NavigationManager?.NavigateTo($"{RoutingPage}/{RoutingComponentCode}");
+                NavigationManager?.NavigateTo($"{RoutingPage}/{RoutingPageCode}");
             }
             else
             {
-                NavigationManager?.NavigateTo($"{RoutingPage}/{RoutingComponentCode}/{0}");
+                NavigationManager?.NavigateTo($"{RoutingPage}/{RoutingPageCode}/{0}");
             }
         }
 
@@ -55,12 +55,12 @@ namespace Atlas.Blazor.Shared.Components.Generic
         {
             if(string.IsNullOrEmpty(IdentifierField))
             {
-                NavigationManager?.NavigateTo($"{RoutingPage}/{RoutingComponentCode}");
+                NavigationManager?.NavigateTo($"{RoutingPage}/{RoutingPageCode}");
             }
             else
             {
                 object? id = DynamicType?.GetValue(item, IdentifierField);
-                NavigationManager?.NavigateTo($"{RoutingPage}/{RoutingComponentCode}/{id}");
+                NavigationManager?.NavigateTo($"{RoutingPage}/{RoutingPageCode}/{id}");
             }
         }
 
