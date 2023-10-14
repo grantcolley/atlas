@@ -24,10 +24,7 @@ namespace Atlas.Blazor.Shared.Components.Layout
 
         protected override Task OnInitializedAsync()
         {
-            if (StateNotificationService == null)
-            {
-                throw new NullReferenceException(nameof(StateNotificationService));
-            }
+            if (StateNotificationService == null) throw new NullReferenceException(nameof(StateNotificationService));
 
             StateNotificationService.Register(StateNotifications.BREADCRUMBS, BreadcrumbNotification);
 
@@ -50,18 +47,17 @@ namespace Atlas.Blazor.Shared.Components.Layout
                 }
                 else
                 {
-                    if (breadcrumb.Text != null
+                    if (breadcrumb.BreadcrumbAction.Equals(BreadcrumbAction.RemoveLast)) 
+                    {
+                        if (_breadcrumbs.Count > 1)
+                        {
+                            _breadcrumbs.RemoveAt(_breadcrumbs.Count - 1);
+                        }
+                    }
+                    else if (breadcrumb.Text != null
                         && breadcrumb.Href != null)
                     {
-                        if (breadcrumb.BreadcrumbAction.Equals(BreadcrumbAction.Update))
-                        {
-                            if(_breadcrumbs.Count > 1)
-                            {
-                                _breadcrumbs.RemoveAt(_breadcrumbs.Count - 1);
-                                _breadcrumbs.Add(new BreadcrumbItem(breadcrumb.Text, breadcrumb.Href));
-                            }
-                        }
-                        else if (breadcrumb.BreadcrumbAction.Equals(BreadcrumbAction.Add))
+                        if (breadcrumb.BreadcrumbAction.Equals(BreadcrumbAction.Add))
                         {
                             int breadcrumbIndex = -1;
 
@@ -84,6 +80,14 @@ namespace Atlas.Blazor.Shared.Components.Layout
                             {
                                 int removeFromIndex = breadcrumbIndex + 1;
                                 _breadcrumbs.RemoveRange(removeFromIndex, _breadcrumbs.Count - removeFromIndex);
+                            }
+                        }
+                        else if (breadcrumb.BreadcrumbAction.Equals(BreadcrumbAction.Update))
+                        {
+                            if (_breadcrumbs.Count > 1)
+                            {
+                                _breadcrumbs.RemoveAt(_breadcrumbs.Count - 1);
+                                _breadcrumbs.Add(new BreadcrumbItem(breadcrumb.Text, breadcrumb.Href));
                             }
                         }
                     }
