@@ -25,7 +25,7 @@
             return Type.GetType(ComponentName);
         }
 
-        public Dictionary<string, object> ToDynamicParameters()
+        public Dictionary<string, object> ToParametersDictionary()
         {
             return new()
             {
