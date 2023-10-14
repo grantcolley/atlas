@@ -13,7 +13,7 @@
         }
         else
         {
-            <DynamicComponent @key=_pageArgs.PageCode Type="_pageArgs.GetComponentType()" Parameters="_pageArgs.ToDynamicParameters()" />
+            <DynamicComponent @key=_pageArgs.PageCode Type="_pageArgs.GetComponentType()" Parameters="_pageArgs.ToParametersDictionary()" />
         }
     </Authorized>
     <NotAuthorized>
