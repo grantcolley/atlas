@@ -5,10 +5,10 @@
         public string PageCode { get; set; } = string.Empty;
         public string DisplayName { get; set; } = string.Empty;
         public string ComponentName { get; set; } = string.Empty;
-        public string? ComponentParameters { get; set; } = string.Empty;
         public string? RoutingPage { get; set; } = string.Empty;
         public string? RoutingPageCode { get; set; } = string.Empty;
         public int ModelInstanceId { get; private set; }
+        public Dictionary<string, object> ModelParameters { get; set; } = new (); 
 
         public void SetModelInstanceId(int id)
         {
@@ -31,34 +31,6 @@
             {
                 { GetType().Name, this }
             };
-        }
-
-        public Dictionary<string, string> GetComponentParameters()
-        {
-            Dictionary<string, string> parameters = new();
-
-            if(!string.IsNullOrWhiteSpace(ComponentParameters))
-            {
-                string[] elements = ComponentParameters.Split(';');
-
-                if(elements.Length > 0) 
-                {
-                    foreach(string keyValue in elements) 
-                    {
-                        if(!string.IsNullOrWhiteSpace(keyValue))
-                        {
-                            string[] pair = keyValue.Split("=");
-
-                            if(pair.Length == 2)
-                            {
-                                parameters[pair[0]] = pair[1];
-                            }
-                        }
-                    }
-                }
-            }
-
-            return parameters;
         }
     }
 }
