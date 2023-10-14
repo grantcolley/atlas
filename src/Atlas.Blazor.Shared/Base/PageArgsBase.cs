@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Components;
 
 namespace Atlas.Blazor.Shared.Base
 {
-    public class ComponentArgsBase : ComponentBase
+    public class PageArgsBase : ComponentBase
     {
         [Parameter]
-        public PageArgs? ComponentArgs { get; set; }
+        public PageArgs? PageArgs { get; set; }
     }
 }
