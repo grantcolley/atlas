@@ -1,7 +1,7 @@
 ﻿@using System
 
-@page "/PageRouter/{ComponentCode}"
-@page "/PageRouter/{ComponentCode}/{Id:int?}"
+@page "/PageRouter/{PageCode}"
+@page "/PageRouter/{PageCode}/{Id:int?}"
 
 @inherits PageRouterBase
 
@@ -13,7 +13,7 @@
         }
         else
         {
-            <DynamicComponent @key=_pageArgs.PageCode Type="_pageArgs.GetComponentType()" Parameters="_pageArgs.ToDynamicComponentParameters()" />
+            <DynamicComponent @key=_pageArgs.PageCode Type="_pageArgs.GetComponentType()" Parameters="_pageArgs.ToDynamicParameters()" />
         }
     </Authorized>
     <NotAuthorized>
