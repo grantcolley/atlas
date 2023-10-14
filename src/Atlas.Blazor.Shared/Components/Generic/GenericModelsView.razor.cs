@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Atlas.Blazor.Shared.Components.Generic
 {
-    public abstract class GenericTableViewBase<T> : ComponentBase where T : class, new()
+    public abstract class GenericModelsViewBase<T> : ComponentBase where T : class, new()
     {
         [Inject]
         public NavigationManager? NavigationManager { get; set; }
