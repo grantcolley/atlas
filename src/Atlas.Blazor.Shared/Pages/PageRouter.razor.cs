@@ -36,18 +36,6 @@ namespace Atlas.Blazor.Shared.Pages
                     {
                         _pageArgs.SetModelInstanceId(Id.Value);
                     }
-
-                    string idValue = Id.HasValue && Id.Value > 0 ? $"{Id.Value}" : string.Empty;
-
-                    var breadcrumb = new Breadcrumb
-                    {
-                        Text = $"{_pageArgs.DisplayName} {idValue}",
-                        Href = NavigationManager.Uri.Remove(0, NavigationManager.BaseUri.Length - 1),
-                        BreadcrumbAction = BreadcrumbAction.Add
-                    };
-
-                    await StateNotificationService.NotifyStateHasChangedAsync(StateNotifications.BREADCRUMBS, breadcrumb)
-                        .ConfigureAwait(false);
                 }
             }
         }
