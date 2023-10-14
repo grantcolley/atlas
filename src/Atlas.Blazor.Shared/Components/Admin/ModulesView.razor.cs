@@ -8,31 +8,13 @@ namespace Atlas.Blazor.Shared.Components.Admin
     public abstract class ModulesViewBase : GenericPageArgsBase
     {
         protected IEnumerable<Module>? _modules;
-        protected IEnumerable<string>? _fields;
-        protected string? _identifierField;
         protected bool _loaded = false;
 
         protected override async Task OnInitializedAsync()
         {
-            if (GenericRequests == null)
-            {
-                throw new ArgumentNullException(nameof(GenericRequests));
-            }
-
-            if (PageArgs == null)
-            {
-                throw new ArgumentNullException(nameof(PageArgs));
-            }
+            if (GenericRequests == null) throw new ArgumentNullException(nameof(GenericRequests));
 
             await base.OnInitializedAsync().ConfigureAwait(false);
-
-            Dictionary<string, string> parameters = PageArgs.GetComponentParameters();
-
-            string? fieldsDelimiter = parameters["FieldsDelimiter"];
-
-            _fields = parameters["Fields"].Split(fieldsDelimiter);
-
-            _identifierField = parameters["IdentifierField"];
 
             IResponse<IEnumerable<Module>> response = await GenericRequests.GetListAsync<Module>(AtlasAPIEndpoints.GET_MODULES)
                 .ConfigureAwait(false);
