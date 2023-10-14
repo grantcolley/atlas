@@ -2,7 +2,7 @@
 {
     public static class PageArgsCodes
     {
-        public const string MODULE = "MODULE";
-        public const string MODULES = "MODULES";
+        public const string MODULE = "Module";
+        public const string MODULES = "Modules";
     }
 }
