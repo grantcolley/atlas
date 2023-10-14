@@ -11,6 +11,7 @@
     {
         Add,
         Home,
-        Update
+        Update,
+        RemoveLast
     }
 }
