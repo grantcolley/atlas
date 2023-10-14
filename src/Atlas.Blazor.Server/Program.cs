@@ -4,6 +4,7 @@ using Atlas.Blazor.Shared.Models;
 using Atlas.Blazor.Shared.Services;
 using Atlas.Core.Authentication;
 using Atlas.Core.Constants;
+using Atlas.Core.Models;
 using Atlas.Requests.API;
 using Atlas.Requests.Interfaces;
 using Auth0.AspNetCore.Authentication;
@@ -15,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
+using System.Xml.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,7 +56,15 @@ builder.Services.AddSingleton<IPageRouterService, PageRouterService>(sp =>
                 DisplayName = "Modules",
                 RoutingPage = "PageRouter",
                 RoutingPageCode = "Module",
-                ComponentParameters = "Fields=ModuleId,Name,Permission;FieldsDelimiter=,;IdentifierField=ModuleId"
+                ModelParameters = new()
+                {
+                    {
+                        "Fields", new List<string> { "ModuleId", "Name", "Permission" }
+                    },
+                    {
+                        "IdentifierField", "ModuleId"
+                    }
+                }
             },
             new PageArgs
             {
