@@ -43,8 +43,6 @@ namespace Atlas.Seed.Data
             ((DbContext)dbContext).Database.ExecuteSqlRaw("DBCC CHECKIDENT (Roles, RESEED, 1)");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("DELETE FROM Permissions");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("DBCC CHECKIDENT (Permissions, RESEED, 1)");
-            ((DbContext)dbContext).Database.ExecuteSqlRaw("DELETE FROM ComponentArgs");
-            ((DbContext)dbContext).Database.ExecuteSqlRaw("DBCC CHECKIDENT (ComponentArgs, RESEED, 1)");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE MenuItems");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("DELETE FROM Categories");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("DBCC CHECKIDENT (Categories, RESEED, 1)");
