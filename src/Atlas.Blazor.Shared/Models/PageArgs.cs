@@ -7,7 +7,7 @@
         public string ComponentName { get; set; } = string.Empty;
         public string? ComponentParameters { get; set; } = string.Empty;
         public string? RoutingPage { get; set; } = string.Empty;
-        public string? RoutingComponentCode { get; set; } = string.Empty;
+        public string? RoutingPageCode { get; set; } = string.Empty;
         public int ModelInstanceId { get; private set; }
 
         public void SetModelInstanceId(int id)
@@ -25,11 +25,11 @@
             return Type.GetType(ComponentName);
         }
 
-        public Dictionary<string, object> ToDynamicComponentParameters()
+        public Dictionary<string, object> ToDynamicParameters()
         {
             return new()
             {
-                { "ComponentArgs", this }
+                { GetType().Name, this }
             };
         }
 
