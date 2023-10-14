@@ -6,7 +6,5 @@
 }
 else
 {
-    <GenericModelsView T="Module" DisplayHeader="@PageArgs?.DisplayName" 
-                Source="@_modules" Fields="@_fields" IdentifierField="@_identifierField" 
-                RoutingPage="@PageArgs?.RoutingPage" RoutingPageCode="@PageArgs?.RoutingPageCode" />
+    <GenericModelsView T="Module" PageArgs="@PageArgs" Source="@_modules" />
 }
