@@ -1,9 +1,9 @@
-﻿@inherits ComponentArgsBase
+﻿@inherits PageArgsBase
 
-@if (ComponentArgs != null)
+@if (PageArgs != null)
 {
     <GenericModelView T="Module" TRender="ModuleRender"
-               Id="@ComponentArgs.ModelInstanceId"
+               Id="@PageArgs.ModelInstanceId"
                IdentityField="ModuleId" TitleField="Name"
                GetEndpoint="@AtlasAPIEndpoints.GET_MODULE"
                CreateEndpoint="@AtlasAPIEndpoints.CREATE_MODULE"
