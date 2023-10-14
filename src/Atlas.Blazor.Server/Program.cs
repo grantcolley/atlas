@@ -53,7 +53,7 @@ builder.Services.AddSingleton<IPageRouterService, PageRouterService>(sp =>
                 ComponentName = "Atlas.Blazor.Shared.Components.Admin.ModulesView, Atlas.Blazor.Shared",
                 DisplayName = "Modules",
                 RoutingPage = "PageRouter",
-                RoutingComponentCode = "Module",
+                RoutingPageCode = "Module",
                 ComponentParameters = "Fields=ModuleId,Name,Permission;FieldsDelimiter=,;IdentifierField=ModuleId"
             },
             new PageArgs
@@ -62,7 +62,7 @@ builder.Services.AddSingleton<IPageRouterService, PageRouterService>(sp =>
                 ComponentName = "Atlas.Blazor.Shared.Components.Admin.ModuleView, Atlas.Blazor.Shared",
                 DisplayName = "Module",
                 RoutingPage = "PageRouter",
-                RoutingComponentCode = "Module"
+                RoutingPageCode = "Module"
             }
     };
 
