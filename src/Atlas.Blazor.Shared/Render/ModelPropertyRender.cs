@@ -28,7 +28,7 @@ namespace Atlas.Blazor.Shared.Render
         public int Order { get { return _propertyRender.Order; } set { _propertyRender.Order = value; } }
         public string? Label { get { return _propertyRender.Label; } set { _propertyRender.Label = value; } }
         public string? Tooltip { get { return _propertyRender.Tooltip; } set { _propertyRender.Tooltip = value; } }
-        public string? Parameters { get { return _propertyRender.Parameters; } set { _propertyRender.Parameters = value; } }
+        public Dictionary<string, string> Parameters { get { return _propertyRender.Parameters; } set { _propertyRender.Parameters = value; } }
         public Type? ComponentType { get { return _propertyRender.ComponentType; } set { _propertyRender.ComponentType = value; } }
 
         public object? GetValue()
