@@ -19,17 +19,23 @@ namespace Atlas.Blazor.Shared.Render.Instances
                 .WithTooltip("Name")
                 .RenderOrder(2);
 
+            RenderProperty(m => m.Order)
+                .RenderAs(Element.Integer)
+                .WithLabel("Order")
+                .WithTooltip("Order")
+                .RenderOrder(3);
+
             RenderProperty(m => m.Icon)
                 .RenderAs(Element.Text)
                 .WithLabel("Icon")
                 .WithTooltip("Icon")
-                .RenderOrder(3);
+                .RenderOrder(4);
 
             RenderProperty(m => m.Permission)
                 .RenderAs(Element.Text)
                 .WithLabel("Permission")
                 .WithTooltip("Permission")
-                .RenderOrder(4);
+                .RenderOrder(5);
         }
     }
 }
