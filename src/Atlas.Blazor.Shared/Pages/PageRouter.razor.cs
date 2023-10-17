@@ -1,5 +1,4 @@
 ﻿using Atlas.Blazor.Shared.Base;
-using Atlas.Blazor.Shared.Constants;
 using Atlas.Blazor.Shared.Interfaces;
 using Atlas.Blazor.Shared.Models;
 using Microsoft.AspNetCore.Components;
@@ -24,8 +23,6 @@ namespace Atlas.Blazor.Shared.Pages
             await base.OnParametersSetAsync().ConfigureAwait(false);
 
             if (!string.IsNullOrWhiteSpace(PageCode)
-                && NavigationManager != null
-                && StateNotificationService != null
                 && PageRouterService != null)
             {
                 _pageArgs = PageRouterService.GetPageArgs(PageCode);
