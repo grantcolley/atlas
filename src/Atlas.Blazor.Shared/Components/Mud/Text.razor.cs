@@ -9,7 +9,7 @@ namespace Atlas.Blazor.Shared.Components.Mud
         {
             get
             {
-                if (ModelPropertyRender == null) throw new ArgumentNullException(nameof(ModelPropertyRender));
+                if (ModelPropertyRender == null) throw new NullReferenceException(nameof(ModelPropertyRender));
 
                 return Expression.Lambda<Func<string?>>(ModelPropertyRender.MemberExpression);
             }
