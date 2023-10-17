@@ -6,7 +6,7 @@
         int Order { get; set; }
         string? Label { get; set; }
         string? Tooltip { get; set; }
-        string? Parameters { get; set; }
+        Dictionary<string, string> Parameters { get; set; }
         Type? ComponentType { get; set; }
     }
 }
