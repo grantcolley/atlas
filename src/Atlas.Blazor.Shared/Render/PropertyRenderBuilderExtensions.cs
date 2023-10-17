@@ -38,12 +38,15 @@ namespace Atlas.Blazor.Shared.Render
             return propertyRenderBuilder;
         }
 
-        public static IPropertyRenderBuilder<T> WithParameters<T>(this IPropertyRenderBuilder<T> propertyRenderBuilder, string parameters)
+        public static IPropertyRenderBuilder<T> WithParameters<T>(this IPropertyRenderBuilder<T> propertyRenderBuilder, Dictionary<string, string> parameters)
             where T : class, new()
         {
-            if (string.IsNullOrWhiteSpace(parameters)) throw new ArgumentNullException(nameof(parameters));
+            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
 
-            propertyRenderBuilder.PropertyRender.Tooltip = parameters;
+            foreach (var parameter in parameters)
+            {
+                propertyRenderBuilder.PropertyRender.Parameters.Add(parameter.Key, parameter.Value);
+            }
 
             return propertyRenderBuilder;
         }
