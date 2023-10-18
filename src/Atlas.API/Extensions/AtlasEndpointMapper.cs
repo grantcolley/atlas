@@ -32,6 +32,14 @@ namespace Atlas.API.Extensions
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
+            app.MapGet($"/{AtlasAPIEndpoints.GET_OPTIONS}", OptionsEndpoints.GetOptions)
+                .WithOpenApi()
+                .WithName(AtlasAPIEndpoints.GET_OPTIONS)
+                .WithDescription("Gets option items for the specified options code")
+                .Produces<IEnumerable<OptionItem>?>(StatusCodes.Status200OK)
+                .Produces(StatusCodes.Status500InternalServerError)
+                .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
+
             return app;
         }
     }
