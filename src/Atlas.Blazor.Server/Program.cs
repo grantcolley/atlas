@@ -82,6 +82,7 @@ builder.Services.AddSingleton<IPageRouterService, PageRouterService>(sp =>
 builder.Services.AddScoped<TokenProvider>();
 builder.Services.AddScoped<IStateNotificationService, StateNotificationService>();
 builder.Services.AddTransient<IDialogService, DialogService>();
+builder.Services.AddTransient<IOptionsRequest, OptionsRequest>();
 
 builder.Services.AddTransient<IUserRequests, UserRequests>(sp =>
 {
