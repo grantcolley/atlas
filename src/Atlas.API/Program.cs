@@ -50,6 +50,7 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IUserData, UserData>();
 builder.Services.AddScoped<IClaimService, ClaimService>();
+builder.Services.AddScoped<IOptionsData, OptionsData>();
 builder.Services.AddScoped<INavigationData, NavigationData>();
 builder.Services.AddScoped<IWeatherForecastData, WeatherForecastData>();
 
