@@ -5,7 +5,7 @@
         public const string GET_CLAIM_MODULES = "getclaimmodules";
         public const string GET_THEME = "gettheme";
         public const string SET_THEME = "settheme";
-        public const string COMPONENT_ARGS = "componentargs";
+        public const string GET_OPTIONS = "getoptions";
         public const string GET_MODULE = "getmodule";
         public const string GET_MODULES = "getmodules";
         public const string CREATE_MODULE = "createmodule";
