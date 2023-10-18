@@ -11,35 +11,36 @@ namespace Atlas.Data.Access.Data
 {
     public class OptionsData : AuthorisationData<WeatherForecastData>, IOptionsData
     {
-        private readonly Dictionary<string, Func<IEnumerable<OptionsArg>, Task<IEnumerable<OptionItem>>>> optionItems = new();
+        private readonly Dictionary<string, Func<IEnumerable<OptionsArg>, CancellationToken, Task<IEnumerable<OptionItem>>>> optionItems = new();
 
         public OptionsData(ApplicationDbContext applicationDbContext, ILogger<WeatherForecastData> logger)
             : base(applicationDbContext, logger)
         {
-            optionItems[Options.PERMISSIONS_OPTION_ITEMS] = new Func<IEnumerable<OptionsArg>, Task<IEnumerable<OptionItem>>>(GetPermissionsOptionItems);
+            optionItems[Options.PERMISSIONS_OPTION_ITEMS] = new Func<IEnumerable<OptionsArg>, CancellationToken, Task<IEnumerable<OptionItem>>>(GetPermissionsOptionItems);
         }
 
-        public async Task<IEnumerable<OptionItem>> GetOptionsAsync(IEnumerable<OptionsArg> args)
+        public async Task<IEnumerable<OptionItem>> GetOptionsAsync(IEnumerable<OptionsArg> optionsArgs, CancellationToken cancellationToken)
         {
-            var optionsCode = args.FirstOptionsArgValue(Options.OPTIONS_CODE);
+            var optionsCode = optionsArgs.FirstOptionsArgValue(Options.OPTIONS_CODE);
 
             if(!string.IsNullOrWhiteSpace(optionsCode))
             {
                 if (optionItems.ContainsKey(optionsCode))
                 {
-                    return await optionItems[optionsCode].Invoke(args).ConfigureAwait(false);
+                    return await optionItems[optionsCode].Invoke(optionsArgs, cancellationToken)
+                        .ConfigureAwait(false);
                 }
             }
 
             throw new NotImplementedException(optionsCode);
         }
 
-        private async Task<IEnumerable<OptionItem>> GetPermissionsOptionItems(IEnumerable<OptionsArg> args)
+        private async Task<IEnumerable<OptionItem>> GetPermissionsOptionItems(IEnumerable<OptionsArg> optionsArgs, CancellationToken cancellationToken)
         {
             var configs = await _applicationDbContext.Permissions
                 .OrderBy(p => p.Name)
                 .AsNoTracking()
-                .ToListAsync()
+                .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
 
             List<OptionItem> optionItems = new() { new OptionItem() };
