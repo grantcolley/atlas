@@ -2,8 +2,8 @@
 
 namespace Atlas.Data.Access.Interfaces
 {
-    public interface IOptionsData
+    public interface IOptionsData : IAuthorisationData
     {
-        Task<IEnumerable<OptionItem>> GetOptionsAsync(IEnumerable<OptionsArg> args);
+        Task<IEnumerable<OptionItem>> GetOptionsAsync(IEnumerable<OptionsArg> optionsArgs, CancellationToken cancellationToken);
     }
 }
