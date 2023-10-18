@@ -85,7 +85,7 @@ namespace Atlas.Data.Access.Data
 
             user.Theme = theme;
 
-            await _applicationDbContext.SaveChangesAsync();
+            await _applicationDbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }
