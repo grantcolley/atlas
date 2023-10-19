@@ -11,7 +11,8 @@
                         MaxLength="@MaxLength" Min="@Min" Max="@Max"
                         For="FieldExpression" 
                         Variant="Variant.Outlined"
-                        Label="@ModelPropertyRender?.Label" />
+                        Label="@ModelPropertyRender?.Label"
+                        ReadOnly="@(ModelPropertyRender == null ? false : ModelPropertyRender.ReadOnly)" />
 }
 else
 {
