@@ -1,4 +1,5 @@
 ﻿using Atlas.Blazor.Shared.Constants;
+using Atlas.Core.Constants;
 using Atlas.Core.Models;
 
 namespace Atlas.Blazor.Shared.Render.Instances
@@ -32,9 +33,10 @@ namespace Atlas.Blazor.Shared.Render.Instances
                 .RenderOrder(4);
 
             RenderProperty(m => m.Permission)
-                .RenderAs(Element.Text)
+                .RenderAs(Element.Dropdown)
                 .WithLabel("Permission")
                 .WithTooltip("Permission")
+                .WithParameters(new Dictionary<string, string> { { Options.OPTIONS_CODE, Options.PERMISSIONS_OPTION_ITEMS } })
                 .RenderOrder(5);
         }
     }
