@@ -8,9 +8,10 @@
 @if (string.IsNullOrWhiteSpace(ModelPropertyRender?.Tooltip))
 {
     <MudTextField @bind-Value="@PropertyValue" 
-                    For="FieldExpression"
-                    Label="@ModelPropertyRender?.Label"
-                    Variant="Variant.Outlined" />
+                  For="FieldExpression"
+                  Label="@ModelPropertyRender?.Label"
+                  Variant="Variant.Outlined"
+                  ReadOnly="@(ModelPropertyRender == null ? false : ModelPropertyRender.ReadOnly)" />
 }
 else
 {
