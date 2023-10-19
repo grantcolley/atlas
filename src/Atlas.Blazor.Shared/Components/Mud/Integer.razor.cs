@@ -6,9 +6,9 @@ namespace Atlas.Blazor.Shared.Components.Mud
 {
     public class IntegerBase<T> : ModelPropertyRenderComponentBase<T> where T : class, new()
     {
-        protected int? maxLength = null;
-        protected int? min = null;
-        protected int? max = null;
+        protected int? _maxLength = null;
+        protected int? _min = null;
+        protected int? _max = null;
 
         protected override Task OnInitializedAsync()
         {
@@ -16,25 +16,25 @@ namespace Atlas.Blazor.Shared.Components.Mud
 
             if (ModelPropertyRender.Parameters.TryGetValue(ElementParams.MAX_LENGTH, out string? maxLengthArg))
             {
-                maxLength = int.Parse(maxLengthArg);
+                _maxLength = int.Parse(maxLengthArg);
             }
 
             if(ModelPropertyRender.Parameters.TryGetValue(ElementParams.MIN, out string? minArg))
             {
-                min = int.Parse(minArg);
+                _min = int.Parse(minArg);
             }
 
             if(ModelPropertyRender.Parameters.TryGetValue(ElementParams.MAX, out string? maxArg))
             {
-                max = int.Parse(maxArg);
+                _max = int.Parse(maxArg);
             }
 
             return base.OnInitializedAsync();
         }
 
-        public int MaxLength { get { return maxLength ?? int.MaxValue; } }
-        public int Max { get { return max ?? int.MaxValue; } }
-        public int Min { get { return min ?? int.MinValue; } }
+        public int MaxLength { get { return _maxLength ?? int.MaxValue; } }
+        public int Max { get { return _max ?? int.MaxValue; } }
+        public int Min { get { return _min ?? int.MinValue; } }
 
         public Expression<Func<int>> FieldExpression
         {
