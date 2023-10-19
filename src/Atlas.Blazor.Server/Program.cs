@@ -82,7 +82,6 @@ builder.Services.AddSingleton<IPageRouterService, PageRouterService>(sp =>
 builder.Services.AddScoped<TokenProvider>();
 builder.Services.AddScoped<IStateNotificationService, StateNotificationService>();
 builder.Services.AddTransient<IDialogService, DialogService>();
-builder.Services.AddTransient<IOptionsRequest, OptionsRequest>();
 
 builder.Services.AddTransient<IUserRequests, UserRequests>(sp =>
 {
@@ -90,6 +89,14 @@ builder.Services.AddTransient<IUserRequests, UserRequests>(sp =>
     var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
     var httpClient = httpClientFactory.CreateClient(AtlasConstants.ATLAS_API);
     return new UserRequests(httpClient, tokenProvider);
+});
+
+builder.Services.AddTransient<IOptionsRequest, OptionsRequest>(sp =>
+{
+    var tokenProvider = sp.GetRequiredService<TokenProvider>();
+    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    var httpClient = httpClientFactory.CreateClient(AtlasConstants.ATLAS_API);
+    return new OptionsRequest(httpClient, tokenProvider);
 });
 
 builder.Services.AddTransient<IGenericRequests, GenericRequests>(sp =>
