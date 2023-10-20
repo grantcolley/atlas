@@ -1,7 +1,24 @@
-﻿namespace Atlas.Blazor.Shared.Helpers
+﻿using Atlas.Blazor.Shared.Models;
+using System.Reflection;
+
+namespace Atlas.Blazor.Shared.Helpers
 {
     public static class IconHelper
     {
+        public static IEnumerable<IconOptionItem> GetIconOptionItems()
+        { 
+            List<IconOptionItem> icons = new();
+
+            FieldInfo[] fieldInfos = typeof(MudBlazor.Icons.Material.Outlined).GetFields(BindingFlags.Public | BindingFlags.Static);
+
+            foreach (FieldInfo fieldInfo in fieldInfos) 
+            {
+                icons.Add(new IconOptionItem { Id = fieldInfo.Name, Display = fieldInfo.Name, Icon = fieldInfo.GetRawConstantValue()?.ToString() });
+            }
+
+            return icons.OrderBy(i => i.Display);
+        }
+
         public static string? GetOutlined(string? name)
         {
             if (name == null)

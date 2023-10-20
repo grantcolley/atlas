@@ -27,7 +27,7 @@ namespace Atlas.Blazor.Shared.Render.Instances
                 .RenderOrder(3);
 
             RenderProperty(m => m.Icon)
-                .RenderAs(Element.Text)
+                .RenderAs(Element.IconDropdown)
                 .WithLabel("Icon")
                 .WithTooltip("Icon")
                 .RenderOrder(4);
