@@ -11,5 +11,15 @@
         public const string CREATE_MODULE = "createmodule";
         public const string UPDATE_MODULE = "updatemodule";
         public const string DELETE_MODULE = "deletemodule";
+        public const string GET_CATEGORY = "getcategory";
+        public const string GET_CATEGORIES = "getcategories";
+        public const string CREATE_CATEGORY = "createcategory";
+        public const string UPDATE_CATEGORY = "updatecategory";
+        public const string DELETE_CATEGORY = "deletecategory";
+        public const string GET_MENU_ITEM = "getmenuitem";
+        public const string GET_MENU_ITEMS = "getmenuitems";
+        public const string CREATE_MENU_ITEM = "createmenuitem";
+        public const string UPDATE_MENU_ITEM = "updatemenuitem";
+        public const string DELETE_MENU_ITEM = "deletemenuitem";
     }
 }
