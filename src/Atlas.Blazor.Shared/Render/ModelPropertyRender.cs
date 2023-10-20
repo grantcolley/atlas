@@ -11,11 +11,13 @@ namespace Atlas.Blazor.Shared.Render
         public ModelPropertyRender(T model, PropertyRender<T> propertyRender)
         {
             Model = model ?? throw new ArgumentNullException(nameof(model));
+
             _propertyRender = propertyRender ?? throw new ArgumentNullException(nameof(propertyRender));
 
             DynamicType = DynamicTypeHelper.Get<T>();
 
             ConstantExpression constantExpression = Expression.Constant(Model);
+
             MemberExpression = Expression.Property(constantExpression, propertyRender.PropertyName);
         }
 
