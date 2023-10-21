@@ -1,4 +1,5 @@
 using Atlas.Blazor.Shared.Constants;
+using Atlas.Blazor.Shared.Helpers;
 using Atlas.Blazor.Shared.Interfaces;
 using Atlas.Blazor.Shared.Models;
 using Atlas.Blazor.Shared.Services;
@@ -47,36 +48,7 @@ builder.Services.AddHttpClient(AtlasConstants.ATLAS_API, client =>
 
 builder.Services.AddSingleton<IPageRouterService, PageRouterService>(sp =>
 {
-    List<PageArgs> pageArgs = new()
-    {
-            new PageArgs
-            {
-                PageCode = PageArgsCodes.MODULES,
-                ComponentName = "Atlas.Blazor.Shared.Components.Admin.ModulesView, Atlas.Blazor.Shared",
-                DisplayName = "Modules",
-                RoutingPage = "PageRouter",
-                RoutingPageCode = "Module",
-                ModelParameters = new()
-                {
-                    {
-                        "Fields", new List<string> { "ModuleId", "Name", "Permission" }
-                    },
-                    {
-                        "IdentifierField", "ModuleId"
-                    }
-                }
-            },
-            new PageArgs
-            {
-                PageCode = PageArgsCodes.MODULE,
-                ComponentName = "Atlas.Blazor.Shared.Components.Admin.ModuleView, Atlas.Blazor.Shared",
-                DisplayName = "Module",
-                RoutingPage = "PageRouter",
-                RoutingPageCode = "Module"
-            }
-    };
-
-    return new PageRouterService(pageArgs);
+    return new PageRouterService(PageRouterHelper.GetPageArgs());
 });
 
 builder.Services.AddScoped<TokenProvider>();
