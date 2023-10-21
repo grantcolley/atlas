@@ -144,8 +144,8 @@ namespace Atlas.Seed.Data
             var permissionsMenuItem = new MenuItem { Name = "Permissions", Icon = "Key", NavigatePage = "PageRouter", Order = 3, Permission = Auth.ADMIN, Category = authorisationCategory };
 
             var modulesMenuItem = new MenuItem { Name = "Modules", Icon = "AutoAwesomeMosaic", NavigatePage = "PageRouter", Order = 1, Permission = Auth.ADMIN, Category = navigationCategory, PageCode = PageArgsCodes.MODULES };
-            var categoriesMenuItem = new MenuItem { Name = "Categories", Icon = "AutoAwesomeMotion", NavigatePage = "PageRouter", Order = 2, Permission = Auth.ADMIN, Category = navigationCategory };
-            var menuItemsMenuItem = new MenuItem { Name = "MenuItems", Icon = "Article", NavigatePage = "PageRouter", Order = 3, Permission = Auth.ADMIN, Category = navigationCategory };
+            var categoriesMenuItem = new MenuItem { Name = "Categories", Icon = "AutoAwesomeMotion", NavigatePage = "PageRouter", Order = 2, Permission = Auth.ADMIN, Category = navigationCategory, PageCode = PageArgsCodes.CATEGORIES };
+            var menuItemsMenuItem = new MenuItem { Name = "MenuItems", Icon = "Article", NavigatePage = "PageRouter", Order = 3, Permission = Auth.ADMIN, Category = navigationCategory, PageCode = PageArgsCodes.MENU_ITEMS };
             
             authorisationCategory.MenuItems.Add(usersMenuItem);
             authorisationCategory.MenuItems.Add(rolesMenuItem);
