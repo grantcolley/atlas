@@ -1,0 +1,12 @@
+﻿@inherits GenericPageArgsBase
+
+@if (PageArgs != null)
+{
+    <GenericModelView T="Category" TRender="CategoryRender"
+               PageArgs="@PageArgs"
+               IdentityField="CategoryId" TitleField="Name"
+               GetEndpoint="@AtlasAPIEndpoints.GET_CATEGORY"
+               CreateEndpoint="@AtlasAPIEndpoints.CREATE_CATEGORY"
+               UpdateEndpoint="@AtlasAPIEndpoints.UPDATE_CATEGORY"
+               DeleteEndpoint="@AtlasAPIEndpoints.DELETE_CATEGORY"/>
+}
