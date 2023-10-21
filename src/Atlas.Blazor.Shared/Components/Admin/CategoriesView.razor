@@ -1,0 +1,10 @@
+﻿@inherits CategoriesViewBase
+
+@if (!_loaded)
+{
+    <Loading Title="Categories" Message="Loading..." />
+}
+else
+{
+    <GenericModelsView T="Category" PageArgs="@PageArgs" Source="@_categories" />
+}
