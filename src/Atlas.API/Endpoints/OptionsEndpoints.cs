@@ -34,5 +34,32 @@ namespace Atlas.API.Endpoints
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+
+        internal static async Task<IResult> GetGenericOptions([FromBody] IEnumerable<OptionsArg> optionsArgs, IOptionsData optionsData, IClaimService claimService, CancellationToken cancellationToken)
+        {
+            try
+            {
+                Authorisation? authorisation = await optionsData.GetAuthorisationAsync(claimService.GetClaim())
+                    .ConfigureAwait(false);
+
+                if (authorisation == null
+                    || !authorisation.HasPermission(Auth.USER))
+                {
+                    return Results.Unauthorized();
+                }
+
+                string genericOptions = await optionsData.GetGenericOptionsAsync(optionsArgs, cancellationToken)
+                    .ConfigureAwait(false);
+
+                return Results.Ok(genericOptions);
+            }
+            catch (Exception)
+            {
+                // Exceptions thrown from optionsData.GetGenericOptionsAsync()
+                // have already been logged so simply return Status500InternalServerError.
+
+                return Results.StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
     }
 }

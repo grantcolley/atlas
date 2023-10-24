@@ -1,0 +1,45 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using System.Reflection
+@using System.Linq.Expressions
+
+@typeparam T where T : class, new()
+@inherits DropdownGenericBase<T>
+
+@if (string.IsNullOrWhiteSpace(ModelPropertyRender?.Tooltip))
+{
+    <MudSelect  T="GenericItem<T>"
+                @bind-Value="SelectedItem"
+                Label="@ModelPropertyRender?.Label"
+                Variant="Variant.Outlined" 
+                AnchorOrigin="Origin.BottomCenter" 
+                MultiSelection="false"
+                ReadOnly="@(ModelPropertyRender == null ? false : ModelPropertyRender.ReadOnly)">
+        @if (_optionItems != null)
+        {
+            @foreach (var optionItem in _optionItems)
+            {
+                <MudSelectItem T="GenericItem<T>" Value="@optionItem"/>
+            }
+        }
+    </MudSelect>            
+}
+else
+{
+    <MudTooltip Text="@ModelPropertyRender?.Tooltip" Placement="Placement.Top" Arrow="true" RootStyle="width: 100%">
+        <MudSelect T="GenericItem<T>" 
+                    @bind-Value="SelectedItem"
+                    Label="@ModelPropertyRender?.Label"
+                    Variant="Variant.Outlined" 
+                    AnchorOrigin="Origin.BottomCenter" 
+                    MultiSelection="false"
+                    ReadOnly="@(ModelPropertyRender == null ? false : ModelPropertyRender.ReadOnly)">
+            @if (_optionItems != null)
+            {
+                @foreach (var optionItem in _optionItems)
+                {
+                    <MudSelectItem T="GenericItem<T>" Value="@optionItem" />
+                }
+            }
+        </MudSelect>
+    </MudTooltip>    
+}
