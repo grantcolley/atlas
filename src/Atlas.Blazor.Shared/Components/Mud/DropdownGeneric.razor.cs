@@ -74,7 +74,8 @@ namespace Atlas.Blazor.Shared.Components.Mud
 
             var items = GetResponse(result);
 
-            if (items != null
+            if (propertyInfo != null
+                && items != null
                 && items.Any())
             {
                 _optionItems = items.Select(oi => new GenericItem<T>(oi, propertyInfo));
