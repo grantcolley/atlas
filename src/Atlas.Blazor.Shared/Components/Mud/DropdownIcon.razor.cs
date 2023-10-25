@@ -3,11 +3,10 @@ using Atlas.Blazor.Shared.Constants;
 using Atlas.Blazor.Shared.Helpers;
 using Atlas.Blazor.Shared.Models;
 using System.Linq.Expressions;
-using static MudBlazor.CategoryTypes;
 
 namespace Atlas.Blazor.Shared.Components.Mud
 {
-    public abstract class IconDropdownBase<T> : ModelPropertyRenderComponentBase<T> where T : class, new()
+    public abstract class DropdownBaseIcon<T> : ModelPropertyRenderComponentBase<T> where T : class, new()
     {
         protected IEnumerable<IconOptionItem>? _iconOptionItems;
 
