@@ -1,4 +1,6 @@
-﻿using Atlas.Blazor.Shared.Interfaces;
+﻿using Atlas.Blazor.Shared.Components.Generic;
+using Atlas.Blazor.Shared.Constants;
+using Atlas.Blazor.Shared.Interfaces;
 
 namespace Atlas.Blazor.Shared.Render
 {
@@ -12,6 +14,22 @@ namespace Atlas.Blazor.Shared.Render
             Type type = typeof(T);
 
             Type? genericType = Type.GetType(componentType)?.MakeGenericType(new[] { type });
+
+            propertyRenderBuilder.PropertyRender.ComponentType = genericType ?? throw new NullReferenceException(nameof(genericType));
+
+            return propertyRenderBuilder;
+        }
+
+        public static IPropertyRenderBuilder<T> RenderAsGenericComponent<T>(this IPropertyRenderBuilder<T> propertyRenderBuilder, string genericComponentType)
+            where T : class, new()
+        {
+            if (string.IsNullOrWhiteSpace(genericComponentType)) throw new ArgumentNullException(nameof(genericComponentType));
+
+            propertyRenderBuilder.PropertyRender.Parameters.Add(ElementParams.GENERIC_COMPONENT_NAME, genericComponentType);
+
+            Type type = typeof(T);
+
+            Type? genericType = typeof(GenericComponent<T>).GetType()?.MakeGenericType(new[] { type });
 
             propertyRenderBuilder.PropertyRender.ComponentType = genericType ?? throw new NullReferenceException(nameof(genericType));
 
