@@ -27,17 +27,23 @@ namespace Atlas.Blazor.Shared.Render.Instances
                 .RenderOrder(3);
 
             RenderProperty(m => m.Icon)
-                .RenderAs(Element.IconDropdown)
+                .RenderAs(Element.DropdownIcon)
                 .WithLabel("Icon")
                 .WithTooltip("Icon")
                 .RenderOrder(4);
+
+            RenderProperty(m => m.Module)
+                .RenderAsGenericComponent(Element.DropdownGeneric)
+                .WithLabel("Module")
+                .WithTooltip("Module")
+                .RenderOrder(5);
 
             RenderProperty(m => m.Permission)
                 .RenderAs(Element.Dropdown)
                 .WithLabel("Permission")
                 .WithTooltip("Permission")
                 .WithParameters(new Dictionary<string, string> { { Options.OPTIONS_CODE, Options.PERMISSIONS_OPTION_ITEMS } })
-                .RenderOrder(5);
+                .RenderOrder(6);
         }
     }
 }
