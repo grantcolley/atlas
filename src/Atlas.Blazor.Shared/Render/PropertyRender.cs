@@ -10,11 +10,11 @@ namespace Atlas.Blazor.Shared.Render
         }
 
         public string PropertyName { get; }
-
         public int Order { get; set; }
         public string? Label { get; set; }
         public string? Tooltip { get; set; }
         public Dictionary<string, string> Parameters { get; set; } = new();
         public Type? ComponentType { get; set; }
+        public Type? GenericType { get; set; }
     }
 }
