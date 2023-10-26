@@ -32,6 +32,7 @@ namespace Atlas.Blazor.Shared.Render
         public string? Tooltip { get { return _propertyRender.Tooltip; } set { _propertyRender.Tooltip = value; } }
         public Dictionary<string, string> Parameters { get { return _propertyRender.Parameters; } set { _propertyRender.Parameters = value; } }
         public Type? ComponentType { get { return _propertyRender.ComponentType; } set { _propertyRender.ComponentType = value; } }
+        public Type? GenericType { get { return _propertyRender.GenericType; } set { _propertyRender.GenericType = value; } }
 
         public object? GetValue()
         {
