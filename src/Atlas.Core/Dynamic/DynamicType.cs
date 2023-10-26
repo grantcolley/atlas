@@ -26,11 +26,18 @@ namespace Atlas.Core.Dynamic
             Dictionary<string, Action<T, object?>> setters,
             IEnumerable<PropertyInfo> supportedProperties)
         {
+            DeclaringType = typeof(T);
+
             _getters = getters;
             _setters = setters;
             CreateInstance = createInstance;
             SupportedProperties = supportedProperties;
         }
+
+        /// <summary>
+        /// Gets the declaring type.
+        /// </summary>
+        public Type DeclaringType { get; private set; }
 
         /// <summary>
         /// Gets a dynamic method for creating new instance of the specified type
