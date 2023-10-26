@@ -9,20 +9,22 @@ using Microsoft.AspNetCore.Components;
 
 namespace Atlas.Blazor.Shared.Components.Mud
 {
-    public abstract class DropdownGenericBase<T> : ModelPropertyRenderComponentBase<T> where T : class, new()
+    public abstract class DropdownGenericBase<T, TItem> : ModelPropertyRenderComponentBase<T> 
+        where T : class, new()
+        where TItem : ModelBase, new()
     {
         [Inject]
         public IOptionsRequest? OptionsRequest { get; set; }
 
-        protected IEnumerable<GenericItem<T>>? _optionItems;
+        protected IEnumerable<GenericItem<TItem>>? _optionItems;
 
         private IEnumerable<OptionsArg>? _optionsArgs;
 
-        private GenericItem<T>? _selectedItem;
+        private GenericItem<TItem>? _selectedItem;
 
         private string? _displayField;
 
-        public GenericItem<T>? SelectedItem
+        public GenericItem<TItem>? SelectedItem
         {
             get
             {
@@ -49,7 +51,7 @@ namespace Atlas.Blazor.Shared.Components.Mud
 
             _optionsArgs = ModelPropertyRender.Parameters.ToOptionsArgs();
 
-            OptionsArg? displayFieldArgs = _optionsArgs.FirstOptionsArgDefault(ElementParams.DISPLAY_FIELD);
+            OptionsArg? displayFieldArgs = _optionsArgs.FirstOptionsArgDefault(ElementParams.GENERIC_MODEL_DISPLAY_FIELD);
             {
                 if (displayFieldArgs != null
                     && !string.IsNullOrWhiteSpace(displayFieldArgs.Value))
@@ -70,7 +72,7 @@ namespace Atlas.Blazor.Shared.Components.Mud
 
             var propertyInfo = PropertyInfoHelper.GetPropertyInfo(typeof(T), _displayField ?? throw new NullReferenceException(nameof(_displayField)));
 
-            var result = await OptionsRequest.GetOptionItemsAsync<T>(_optionsArgs).ConfigureAwait(false);
+            var result = await OptionsRequest.GetOptionItemsAsync<TItem>(_optionsArgs).ConfigureAwait(false);
 
             var items = GetResponse(result);
 
@@ -78,7 +80,7 @@ namespace Atlas.Blazor.Shared.Components.Mud
                 && items != null
                 && items.Any())
             {
-                _optionItems = items.Select(oi => new GenericItem<T>(oi, propertyInfo));
+                _optionItems = items.Select(oi => new GenericItem<TItem>(oi, propertyInfo));
 
                 if (ModelPropertyRender?.GetValue() != null)
                 {
