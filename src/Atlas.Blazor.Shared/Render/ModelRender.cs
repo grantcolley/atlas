@@ -23,6 +23,21 @@ namespace Atlas.Blazor.Shared.Render
             return new PropertyRenderBuilder<T>(propertyRender);
         }
 
+        protected IPropertyRenderBuilder<T> RenderGenericProperty<TProperty>(Expression<Func<T, TProperty>> expression)
+        {
+            MemberInfo? memberInfo = expression.GetMemberInfo();
+
+            if (memberInfo == null) throw new NullReferenceException(nameof(memberInfo));
+
+            PropertyRender<T> propertyRender = new(memberInfo.Name);
+
+            propertyRender.GenericType = expression.ReturnType;
+
+            _propertyRenders.Add(propertyRender);
+
+            return new PropertyRenderBuilder<T>(propertyRender);
+        }
+
         public IEnumerable<ModelPropertyRender<T>> GetModelPropertyRenders(T model)
         {
             List<ModelPropertyRender<T>> modelPropertyRenders = new();
