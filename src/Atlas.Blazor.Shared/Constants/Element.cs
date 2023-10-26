@@ -3,7 +3,7 @@
     public static class Element
     {
         public const string Dropdown = "Atlas.Blazor.Shared.Components.Mud.Dropdown`1, Atlas.Blazor.Shared";
-        public const string DropdownGeneric = "Atlas.Blazor.Shared.Components.Mud.DropdownGeneric`1, Atlas.Blazor.Shared";
+        public const string DropdownGeneric = "Atlas.Blazor.Shared.Components.Mud.DropdownGeneric`2, Atlas.Blazor.Shared";
         public const string DropdownIcon = "Atlas.Blazor.Shared.Components.Mud.DropdownIcon`1, Atlas.Blazor.Shared";
         public const string Integer = "Atlas.Blazor.Shared.Components.Mud.Integer`1, Atlas.Blazor.Shared";
         public const string Label = "Atlas.Blazor.Shared.Components.Mud.Label`1, Atlas.Blazor.Shared";
