@@ -6,6 +6,17 @@ namespace Atlas.Blazor.Shared.Render
 {
     public static class PropertyRenderBuilderExtensions
     {
+        public static IPropertyRenderBuilder<T> RenderAsDropdownGeneric<T>(this IPropertyRenderBuilder<T> propertyRenderBuilder, string genericModelDisplayField)
+            where T : class, new()
+        {
+            if (string.IsNullOrWhiteSpace(genericModelDisplayField)) throw new ArgumentNullException(nameof(genericModelDisplayField));
+            if (propertyRenderBuilder.PropertyRender.GenericType == null) throw new NullReferenceException(nameof(propertyRenderBuilder.PropertyRender.GenericType));
+
+            propertyRenderBuilder.PropertyRender.Parameters.Add(ElementParams.GENERIC_MODEL_DISPLAY_FIELD, genericModelDisplayField);
+
+            return propertyRenderBuilder.RenderAsGenericComponent<T>(Element.DropdownGeneric);
+        }
+
         public static IPropertyRenderBuilder<T> RenderAs<T>(this IPropertyRenderBuilder<T> propertyRenderBuilder, string componentType)
             where T : class, new()
         {
@@ -14,22 +25,6 @@ namespace Atlas.Blazor.Shared.Render
             Type type = typeof(T);
 
             Type? genericType = Type.GetType(componentType)?.MakeGenericType(new[] { type });
-
-            propertyRenderBuilder.PropertyRender.ComponentType = genericType ?? throw new NullReferenceException(nameof(genericType));
-
-            return propertyRenderBuilder;
-        }
-
-        public static IPropertyRenderBuilder<T> RenderAsGenericComponent<T>(this IPropertyRenderBuilder<T> propertyRenderBuilder, string genericComponentType)
-            where T : class, new()
-        {
-            if (string.IsNullOrWhiteSpace(genericComponentType)) throw new ArgumentNullException(nameof(genericComponentType));
-
-            propertyRenderBuilder.PropertyRender.Parameters.Add(ElementParams.GENERIC_COMPONENT_NAME, genericComponentType);
-
-            Type type = typeof(T);
-
-            Type? genericType = typeof(GenericComponent<T>).GetType()?.MakeGenericType(new[] { type });
 
             propertyRenderBuilder.PropertyRender.ComponentType = genericType ?? throw new NullReferenceException(nameof(genericType));
 
@@ -73,6 +68,20 @@ namespace Atlas.Blazor.Shared.Render
             where T : class, new()
         {
             propertyRenderBuilder.PropertyRender.Order = order;
+
+            return propertyRenderBuilder;
+        }
+
+        private static IPropertyRenderBuilder<T> RenderAsGenericComponent<T>(this IPropertyRenderBuilder<T> propertyRenderBuilder, string genericComponentType)
+            where T : class, new()
+        {
+            if (string.IsNullOrWhiteSpace(genericComponentType)) throw new ArgumentNullException(nameof(genericComponentType));
+
+            propertyRenderBuilder.PropertyRender.Parameters.Add(ElementParams.GENERIC_COMPONENT_NAME, genericComponentType);
+
+            Type? genericType = typeof(GenericComponent<T>);
+
+            propertyRenderBuilder.PropertyRender.ComponentType = genericType ?? throw new NullReferenceException(nameof(genericType));
 
             return propertyRenderBuilder;
         }
