@@ -26,6 +26,7 @@ builder.Services.AddHealthChecks();
 builder.Services.Configure<JsonOptions>(options =>
 {
     options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    options.SerializerOptions.IgnoreReadOnlyFields = true;
 });
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
