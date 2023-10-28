@@ -80,8 +80,6 @@ namespace Atlas.Data.Access.Data
 
             if (modules.Any())
             {
-                modules.Insert(0, new Module());
-
                 return JsonSerializer.Serialize(modules, new JsonSerializerOptions {  });
             }
             else
