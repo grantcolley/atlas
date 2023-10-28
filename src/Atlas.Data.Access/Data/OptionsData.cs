@@ -72,7 +72,7 @@ namespace Atlas.Data.Access.Data
 
         private async Task<string> GetModulesAsync(IEnumerable<OptionsArg> optionsArgs, CancellationToken cancellationToken)
         {
-            var modules = await _applicationDbContext.Modules
+            List<Module> modules = await _applicationDbContext.Modules
                 .AsNoTracking()
                 .OrderBy(m => m.Name)
                 .ToListAsync(cancellationToken)
@@ -80,7 +80,9 @@ namespace Atlas.Data.Access.Data
 
             if (modules.Any())
             {
-                return JsonSerializer.Serialize(modules);
+                modules.Insert(0, new Module());
+
+                return JsonSerializer.Serialize(modules, new JsonSerializerOptions {  });
             }
             else
             {
