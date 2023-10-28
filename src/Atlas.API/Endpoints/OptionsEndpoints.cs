@@ -3,6 +3,7 @@ using Atlas.Core.Constants;
 using Atlas.Core.Models;
 using Atlas.Data.Access.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 namespace Atlas.API.Endpoints
 {
@@ -51,7 +52,7 @@ namespace Atlas.API.Endpoints
                 string genericOptions = await optionsData.GetGenericOptionsAsync(optionsArgs, cancellationToken)
                     .ConfigureAwait(false);
 
-                return Results.Ok(genericOptions);
+                return Results.Text(genericOptions, "application/json", Encoding.UTF8);
             }
             catch (Exception)
             {
