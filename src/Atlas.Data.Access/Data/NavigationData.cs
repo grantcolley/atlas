@@ -123,6 +123,7 @@ namespace Atlas.Data.Access.Data
                 CategoryId = category.CategoryId,
                 Name = category.Name,
                 Order = category.Order,
+                Icon = category.Icon,
                 Permission = category.Permission,
                 Module = module
             };
