@@ -153,7 +153,10 @@ namespace Atlas.Blazor.Shared.Components.Generic
                     _model = GetResponse(response);
                 }
 
-                CreateEditContext();
+                if(_model != null) 
+                {
+                    CreateEditContext();
+                }
             }
 
             _isSaveInProgress = false;
