@@ -70,7 +70,7 @@ namespace Atlas.Blazor.Shared.Components.Mud
 
             await base.OnParametersSetAsync().ConfigureAwait(false);
 
-            var propertyInfo = PropertyInfoHelper.GetPropertyInfo(typeof(T), _displayField ?? throw new NullReferenceException(nameof(_displayField)));
+            var propertyInfo = PropertyInfoHelper.GetPropertyInfo(typeof(TItem), _displayField ?? throw new NullReferenceException(nameof(_displayField)));
 
             var result = await OptionsRequest.GetOptionItemsAsync<TItem>(_optionsArgs).ConfigureAwait(false);
 
@@ -85,6 +85,7 @@ namespace Atlas.Blazor.Shared.Components.Mud
                 if (ModelPropertyRender?.GetValue() != null)
                 {
                     var value = propertyInfo?.GetValue(ModelPropertyRender.GetValue());
+
                     if (value != null)
                     {
                         _selectedItem = _optionItems.FirstOrDefault(
