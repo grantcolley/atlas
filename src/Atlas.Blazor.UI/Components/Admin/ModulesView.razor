@@ -1,10 +1,6 @@
-﻿@inherits ModulesViewBase
+﻿@inherits GenericPageArgsBase
 
-@if (!_loaded)
+@if (PageArgs != null)
 {
-    <Loading Title="Modules" Message="Loading..." />
-}
-else
-{
-    <GenericModelsView T="Module" PageArgs="@PageArgs" Source="@_modules" />
+    <GenericModelsView T="Module" PageArgs="@PageArgs" Endpoint="@AtlasAPIEndpoints.GET_MODULES" />
 }

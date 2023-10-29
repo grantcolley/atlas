@@ -1,10 +1,6 @@
-﻿@inherits CategoriesViewBase
+﻿@inherits GenericPageArgsBase
 
-@if (!_loaded)
+@if (PageArgs != null)
 {
-    <Loading Title="Categories" Message="Loading..." />
-}
-else
-{
-    <GenericModelsView T="Category" PageArgs="@PageArgs" Source="@_categories" />
+    <GenericModelsView T="Category" PageArgs="@PageArgs" Endpoint="@AtlasAPIEndpoints.GET_CATEGORIES" />
 }

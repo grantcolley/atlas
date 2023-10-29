@@ -1,6 +1,7 @@
 ﻿using Atlas.Blazor.UI.Base;
 using Atlas.Blazor.UI.Models;
 using Atlas.Core.Dynamic;
+using Atlas.Requests.Interfaces;
 using Microsoft.AspNetCore.Components;
 
 namespace Atlas.Blazor.UI.Components.Generic
@@ -8,7 +9,9 @@ namespace Atlas.Blazor.UI.Components.Generic
     public abstract class GenericModelsViewBase<T> : GenericPageArgsBase where T : class, new()
     {
         [Parameter]
-        public IEnumerable<T> Source { get; set; } = Enumerable.Empty<T>();
+        public string? Endpoint { get; set; }
+
+        protected IEnumerable<T>? Source = Enumerable.Empty<T>();
 
         protected bool FilterFunction(T item) => FilterItem(item, FilterString);
 
@@ -18,26 +21,47 @@ namespace Atlas.Blazor.UI.Components.Generic
 
         protected string? FilterString;
 
+        protected bool Loaded = false;
+
         private string _routingPath = string.Empty;
 
         private string _identifierField = string.Empty;
 
         protected override async Task OnInitializedAsync()
         {
-            if(PageArgs == null) throw new ArgumentNullException(nameof(PageArgs));
-
-            Fields = (IEnumerable<string>)PageArgs.ModelParameters["Fields"];
-
-            _identifierField = (string)PageArgs.ModelParameters["IdentifierField"];
-
-            _routingPath = $@"{PageArgs.RoutingPage}\{PageArgs.RoutingPageCode}";
+            if (PageArgs == null) throw new NullReferenceException(nameof(PageArgs));
+            if (GenericRequests == null) throw new NullReferenceException(nameof(GenericRequests));
+            if (string.IsNullOrWhiteSpace(Endpoint)) throw new NullReferenceException(nameof(Endpoint));
 
             await base.OnInitializedAsync().ConfigureAwait(false);
 
-            DynamicType = DynamicTypeHelper.Get<T>();
-
-            await SendBreadcrumbAsync(BreadcrumbAction.Add, PageArgs.DisplayName)
+            IResponse<IEnumerable<T>> response = await GenericRequests.GetListAsync<T>(Endpoint)
                 .ConfigureAwait(false);
+
+            if (!response.IsSuccess)
+            {
+                if(!string.IsNullOrWhiteSpace(response.Message))
+                {
+                    RaiseAlert(response.Message);
+                }
+            }
+            else
+            {
+                Source = response.Result;
+
+                Fields = (IEnumerable<string>)PageArgs.ModelParameters["Fields"];
+
+                _identifierField = (string)PageArgs.ModelParameters["IdentifierField"];
+
+                _routingPath = $@"{PageArgs.RoutingPage}\{PageArgs.RoutingPageCode}";
+
+                DynamicType = DynamicTypeHelper.Get<T>();
+
+                await SendBreadcrumbAsync(BreadcrumbAction.Add, PageArgs.DisplayName)
+                    .ConfigureAwait(false);
+
+                Loaded = true;
+            }
         }
 
         protected void HeaderButtonClick()
