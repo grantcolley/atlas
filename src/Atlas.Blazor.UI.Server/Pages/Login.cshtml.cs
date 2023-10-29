@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 
-namespace Atlas.Blazor.Server.Pages
+namespace Atlas.Blazor.UI.Server.Pages
 {
     public class LoginModel : PageModel
     {

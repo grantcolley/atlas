@@ -1,8 +1,8 @@
-using Atlas.Blazor.Shared.Constants;
-using Atlas.Blazor.Shared.Helpers;
-using Atlas.Blazor.Shared.Interfaces;
-using Atlas.Blazor.Shared.Models;
-using Atlas.Blazor.Shared.Services;
+using Atlas.Blazor.UI.Constants;
+using Atlas.Blazor.UI.Helpers;
+using Atlas.Blazor.UI.Interfaces;
+using Atlas.Blazor.UI.Models;
+using Atlas.Blazor.UI.Services;
 using Atlas.Core.Authentication;
 using Atlas.Core.Constants;
 using Atlas.Core.Models;

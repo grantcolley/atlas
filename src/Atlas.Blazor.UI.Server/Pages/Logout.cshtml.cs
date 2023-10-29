@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 
-namespace Atlas.Blazor.Server.Pages
+namespace Atlas.Blazor.UI.Server.Pages
 {
     [Authorize]
     public class LogoutModel : PageModel
