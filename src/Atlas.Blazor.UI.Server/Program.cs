@@ -1,11 +1,8 @@
-using Atlas.Blazor.UI.Constants;
 using Atlas.Blazor.UI.Helpers;
 using Atlas.Blazor.UI.Interfaces;
-using Atlas.Blazor.UI.Models;
 using Atlas.Blazor.UI.Services;
 using Atlas.Core.Authentication;
 using Atlas.Core.Constants;
-using Atlas.Core.Models;
 using Atlas.Requests.API;
 using Atlas.Requests.Interfaces;
 using Auth0.AspNetCore.Authentication;
@@ -14,10 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MudBlazor.Services;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
-using System.Xml.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
