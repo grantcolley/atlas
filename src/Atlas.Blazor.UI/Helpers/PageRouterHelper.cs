@@ -12,7 +12,7 @@ namespace Atlas.Blazor.UI.Helpers
                     new PageArgs
                     {
                         PageCode = PageArgsCodes.MODULES,
-                        ComponentName = "Atlas.Blazor.UI.Components.Admin.ModulesView, Atlas.Blazor.UI",
+                        ComponentName = "Atlas.Blazor.UI.Components.Administration.ModulesView, Atlas.Blazor.UI",
                         DisplayName = "Modules",
                         RoutingPage = "PageRouter",
                         RoutingPageCode = "Module",
@@ -29,7 +29,7 @@ namespace Atlas.Blazor.UI.Helpers
                     new PageArgs
                     {
                         PageCode = PageArgsCodes.MODULE,
-                        ComponentName = "Atlas.Blazor.UI.Components.Admin.ModuleView, Atlas.Blazor.UI",
+                        ComponentName = "Atlas.Blazor.UI.Components.Administration.ModuleView, Atlas.Blazor.UI",
                         DisplayName = "Category",
                         RoutingPage = "PageRouter",
                         RoutingPageCode = "Module"
@@ -37,7 +37,7 @@ namespace Atlas.Blazor.UI.Helpers
                     new PageArgs
                     {
                         PageCode = PageArgsCodes.CATEGORIES,
-                        ComponentName = "Atlas.Blazor.UI.Components.Admin.CategoriesView, Atlas.Blazor.UI",
+                        ComponentName = "Atlas.Blazor.UI.Components.Administration.CategoriesView, Atlas.Blazor.UI",
                         DisplayName = "Categories",
                         RoutingPage = "PageRouter",
                         RoutingPageCode = "Category",
@@ -54,10 +54,35 @@ namespace Atlas.Blazor.UI.Helpers
                     new PageArgs
                     {
                         PageCode = PageArgsCodes.CATEGORY,
-                        ComponentName = "Atlas.Blazor.UI.Components.Admin.CategoryView, Atlas.Blazor.UI",
+                        ComponentName = "Atlas.Blazor.UI.Components.Administration.CategoryView, Atlas.Blazor.UI",
                         DisplayName = "Category",
                         RoutingPage = "PageRouter",
                         RoutingPageCode = "Category"
+                    },
+                    new PageArgs
+                    {
+                        PageCode = PageArgsCodes.MENU_ITEMS,
+                        ComponentName = "Atlas.Blazor.UI.Components.Administration.MenuItemsView, Atlas.Blazor.UI",
+                        DisplayName = "Menu Items",
+                        RoutingPage = "PageRouter",
+                        RoutingPageCode = "MenuItem",
+                        ModelParameters = new()
+                        {
+                            {
+                                "Fields", new List<string> { "MenuItemId", "Name", "Permission" }
+                            },
+                            {
+                                "IdentifierField", "MenuItemId"
+                            }
+                        }
+                    },
+                    new PageArgs
+                    {
+                        PageCode = PageArgsCodes.MENU_ITEM,
+                        ComponentName = "Atlas.Blazor.UI.Components.Administration.MenuItemView, Atlas.Blazor.UI",
+                        DisplayName = "Menu Item",
+                        RoutingPage = "PageRouter",
+                        RoutingPageCode = "MenuItem"
                     }
             };
 
