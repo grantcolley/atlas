@@ -51,7 +51,7 @@ namespace Atlas.Core.Models
         public MenuItemValidator()
         {
             RuleFor(v => v.PageCode)
-                .NotNull().WithMessage("Component Code is required");
+                .NotNull().WithMessage("Page Code is required");
 
             RuleFor(v => v.Category)
                 .NotNull().WithMessage("Category is required");
