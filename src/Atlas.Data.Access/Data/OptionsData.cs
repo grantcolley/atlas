@@ -21,6 +21,7 @@ namespace Atlas.Data.Access.Data
             optionItems[Options.PERMISSIONS_OPTION_ITEMS] = new Func<IEnumerable<OptionsArg>, CancellationToken, Task<IEnumerable<OptionItem>>>(GetPermissionsOptionItemsAsync);
 
             genericOptionItems[Options.MODULES_OPTION_ITEMS] = new Func<IEnumerable<OptionsArg>, CancellationToken, Task<string>>(GetModulesAsync);
+            genericOptionItems[Options.CATEGORIES_OPTION_ITEMS] = new Func<IEnumerable<OptionsArg>, CancellationToken, Task<string>>(GetCategoriesAsync);
         }
 
         public async Task<IEnumerable<OptionItem>> GetOptionsAsync(IEnumerable<OptionsArg> optionsArgs, CancellationToken cancellationToken)
@@ -80,11 +81,29 @@ namespace Atlas.Data.Access.Data
 
             if (modules.Any())
             {
-                return JsonSerializer.Serialize(modules, new JsonSerializerOptions {  });
+                return JsonSerializer.Serialize(modules);
             }
             else
             {
                 return JsonSerializer.Serialize(new List<Module>());
+            }
+        }
+
+        private async Task<string> GetCategoriesAsync(IEnumerable<OptionsArg> optionsArgs, CancellationToken cancellationToken)
+        {
+            List<Category> categories = await _applicationDbContext.Categories
+                .AsNoTracking()
+                .OrderBy(c => c.Name)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            if (categories.Any())
+            {
+                return JsonSerializer.Serialize(categories);
+            }
+            else
+            {
+                return JsonSerializer.Serialize(new List<Category>());
             }
         }
     }
