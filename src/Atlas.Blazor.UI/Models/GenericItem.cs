@@ -25,9 +25,13 @@ namespace Atlas.Blazor.UI.Models
             {
                 return false;
             }
+                        
+            if (obj is not GenericItem<T> genericItem)
+            {
+                return false;
+            }
 
-            var optionItem = obj as GenericItem<T>;
-            return optionItem?.Name == this.Name;
+            return genericItem?.Name == this.Name;
         }
 
         public override int GetHashCode()
