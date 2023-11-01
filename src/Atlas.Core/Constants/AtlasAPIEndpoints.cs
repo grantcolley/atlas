@@ -22,5 +22,11 @@
         public const string CREATE_MENU_ITEM = "createmenuitem";
         public const string UPDATE_MENU_ITEM = "updatemenuitem";
         public const string DELETE_MENU_ITEM = "deletemenuitem";
+        public const string GET_USER = "getuser";
+        public const string GET_USERS = "getusers";
+        public const string GET_ROLE = "getrole";
+        public const string GET_ROLES = "getroles";
+        public const string GET_PERMISSION = "getpermission";
+        public const string GET_PERMISSIONS = "getpermissions";
     }
 }
