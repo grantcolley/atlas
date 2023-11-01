@@ -83,6 +83,81 @@ namespace Atlas.Blazor.UI.Helpers
                         DisplayName = "Menu Item",
                         RoutingPage = "PageRouter",
                         RoutingPageCode = "MenuItem"
+                    },
+                    new PageArgs
+                    {
+                        PageCode = PageArgsCodes.USERS,
+                        ComponentName = "Atlas.Blazor.UI.Components.Administration.UsersView, Atlas.Blazor.UI",
+                        DisplayName = "Users",
+                        RoutingPage = "PageRouter",
+                        RoutingPageCode = "User",
+                        ModelParameters = new()
+                        {
+                            {
+                                "Fields", new List<string> { "UserId", "Name", "Email" }
+                            },
+                            {
+                                "IdentifierField", "UserId"
+                            }
+                        }
+                    },
+                    new PageArgs
+                    {
+                        PageCode = PageArgsCodes.USER,
+                        ComponentName = "Atlas.Blazor.UI.Components.Administration.UserView, Atlas.Blazor.UI",
+                        DisplayName = "User",
+                        RoutingPage = "PageRouter",
+                        RoutingPageCode = "User"
+                    },
+                    new PageArgs
+                    {
+                        PageCode = PageArgsCodes.ROLES,
+                        ComponentName = "Atlas.Blazor.UI.Components.Administration.RolesView, Atlas.Blazor.UI",
+                        DisplayName = "Roles",
+                        RoutingPage = "PageRouter",
+                        RoutingPageCode = "Role",
+                        ModelParameters = new()
+                        {
+                            {
+                                "Fields", new List<string> { "RoleId", "Name" }
+                            },
+                            {
+                                "IdentifierField", "RoleId"
+                            }
+                        }
+                    },
+                    new PageArgs
+                    {
+                        PageCode = PageArgsCodes.ROLE,
+                        ComponentName = "Atlas.Blazor.UI.Components.Administration.RoleView, Atlas.Blazor.UI",
+                        DisplayName = "Role",
+                        RoutingPage = "PageRouter",
+                        RoutingPageCode = "Role"
+                    },
+                    new PageArgs
+                    {
+                        PageCode = PageArgsCodes.PERMISSIONS,
+                        ComponentName = "Atlas.Blazor.UI.Components.Administration.PermissionsView, Atlas.Blazor.UI",
+                        DisplayName = "Permissions",
+                        RoutingPage = "PageRouter",
+                        RoutingPageCode = "Permission",
+                        ModelParameters = new()
+                        {
+                            {
+                                "Fields", new List<string> { "PermissionId", "Name" }
+                            },
+                            {
+                                "IdentifierField", "PermissionId"
+                            }
+                        }
+                    },
+                    new PageArgs
+                    {
+                        PageCode = PageArgsCodes.PERMISSION,
+                        ComponentName = "Atlas.Blazor.UI.Components.Administration.PermissionView, Atlas.Blazor.UI",
+                        DisplayName = "Permission",
+                        RoutingPage = "PageRouter",
+                        RoutingPageCode = "Permission"
                     }
             };
 
