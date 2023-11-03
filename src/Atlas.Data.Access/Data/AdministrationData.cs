@@ -15,17 +15,17 @@ namespace Atlas.Data.Access.Data
         {
         }
 
-        public async Task<IEnumerable<User>> GetUsersAsync()
+        public async Task<IEnumerable<User>> GetUsersAsync(CancellationToken cancellationToken)
         {
             return await _applicationDbContext.Users
                 .Include(u => u.Permissions)
                 .Include(u => u.Roles)
                 .AsNoTracking()
-                .ToListAsync()
+                .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
         }
 
-        public async Task<User> GetUserAsync(int userId)
+        public async Task<User> GetUserAsync(int userId, CancellationToken cancellationToken)
         {
             User user;
 
@@ -39,20 +39,20 @@ namespace Atlas.Data.Access.Data
                     .Include(u => u.Permissions)
                     .Include(u => u.Roles)
                     .AsNoTracking()
-                    .FirstAsync(u => u.UserId.Equals(userId))
+                    .FirstAsync(u => u.UserId.Equals(userId), cancellationToken)
                     .ConfigureAwait(false);
             }
 
-            user.PermissionChecklist = await GetPermissionChecklistAsync(user.Permissions)
+            user.PermissionChecklist = await GetPermissionChecklistAsync(user.Permissions, cancellationToken)
                 .ConfigureAwait(false);
 
-            user.RoleChecklist = await GetRoleChecklistAsync(user.Roles)
+            user.RoleChecklist = await GetRoleChecklistAsync(user.Roles, cancellationToken)
                 .ConfigureAwait(false);
 
             return user;
         }
 
-        public async Task<User> AddUserAsync(User addUser)
+        public async Task<User> AddUserAsync(User addUser, CancellationToken cancellationToken)
         {
             var user = new User
             {
@@ -61,11 +61,11 @@ namespace Atlas.Data.Access.Data
             };
 
             await _applicationDbContext.Users
-                .AddAsync(user)
+                .AddAsync(user, cancellationToken)
                 .ConfigureAwait(false);
 
             await _applicationDbContext
-                .SaveChangesAsync()
+                .SaveChangesAsync(cancellationToken)
                 .ConfigureAwait(false);
 
             if (addUser.Permissions.Any()
@@ -75,36 +75,29 @@ namespace Atlas.Data.Access.Data
                 user.Roles.AddRange(addUser.Roles);
 
                 await _applicationDbContext
-                    .SaveChangesAsync()
+                    .SaveChangesAsync(cancellationToken)
                     .ConfigureAwait(false);
 
-                user.PermissionChecklist = await GetPermissionChecklistAsync(user.Permissions)
+                user.PermissionChecklist = await GetPermissionChecklistAsync(user.Permissions, cancellationToken)
                     .ConfigureAwait(false);
 
-                user.RoleChecklist = await GetRoleChecklistAsync(user.Roles)
+                user.RoleChecklist = await GetRoleChecklistAsync(user.Roles, cancellationToken)
                     .ConfigureAwait(false);
             }
 
             return user;
         }
 
-        public async Task<User> UpdateUserAsync(User updateUser)
+        public async Task<User> UpdateUserAsync(User updateUser, CancellationToken cancellationToken)
         {
             var user = await _applicationDbContext.Users
                 .Include(u => u.Permissions)
                 .Include(u => u.Roles)
-                .FirstAsync(u => u.UserId.Equals(updateUser.UserId))
+                .FirstAsync(u => u.UserId.Equals(updateUser.UserId), cancellationToken)
                 .ConfigureAwait(false);
 
-            if (!user.UserName.Equals(updateUser.UserName))
-            {
-                user.UserName = updateUser.UserName;
-            }
-
-            if (!user.Email.Equals(updateUser.Email))
-            {
-                user.Email = updateUser.Email;
-            }
+            user.UserName = updateUser.UserName;
+            user.Email = updateUser.Email;
 
             var permissions = ExtractSelectedPemissions(updateUser.PermissionChecklist);
 
@@ -143,53 +136,53 @@ namespace Atlas.Data.Access.Data
             _applicationDbContext.Users.Update(user);
 
             await _applicationDbContext
-                .SaveChangesAsync()
+                .SaveChangesAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            user.PermissionChecklist = await GetPermissionChecklistAsync(user.Permissions)
+            user.PermissionChecklist = await GetPermissionChecklistAsync(user.Permissions, cancellationToken)
                 .ConfigureAwait(false);
 
-            user.RoleChecklist = await GetRoleChecklistAsync(user.Roles)
+            user.RoleChecklist = await GetRoleChecklistAsync(user.Roles, cancellationToken)
                 .ConfigureAwait(false);
 
             return user;
         }
 
-        public async Task<int> DeleteUserAsync(int userId)
+        public async Task<int> DeleteUserAsync(int userId, CancellationToken cancellationToken)
         {
             var user = await _applicationDbContext.Users
-                .FirstAsync(u => u.UserId.Equals(userId))
+                .FirstAsync(u => u.UserId.Equals(userId), cancellationToken)
                 .ConfigureAwait(false);
 
             _applicationDbContext.Users.Remove(user);
 
             return await _applicationDbContext
-                .SaveChangesAsync()
+                .SaveChangesAsync(cancellationToken)
                 .ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<Permission>> GetPermissionsAsync()
+        public async Task<IEnumerable<Permission>> GetPermissionsAsync(CancellationToken cancellationToken)
         {
             return await _applicationDbContext.Permissions
                 .AsNoTracking()
-                .ToListAsync()
+                .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
         }
 
-        public async Task<Permission> GetPermissionAsync(int permissionId)
+        public async Task<Permission> GetPermissionAsync(int permissionId, CancellationToken cancellationToken)
         {
             var permissions = await _applicationDbContext.Permissions
                 .AsNoTracking()
                 .Include(p => p.Roles)
                 .Include(p => p.Users)
-                .FirstAsync(p => p.PermissionId.Equals(permissionId))
+                .FirstAsync(p => p.PermissionId.Equals(permissionId), cancellationToken)
                 .ConfigureAwait(false);
 
             var roles = await _applicationDbContext.Roles
                 .Include(r => r.Users)
                 .Where(r => r.Permissions.Any(p => p.PermissionId.Equals(permissionId)))
                 .AsNoTracking()
-                .ToListAsync()
+                .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
 
             var users = roles
@@ -205,65 +198,61 @@ namespace Atlas.Data.Access.Data
             return permissions;
         }
 
-        public async Task<Permission> AddPermissionAsync(Permission permission)
+        public async Task<Permission> AddPermissionAsync(Permission permission, CancellationToken cancellationToken)
         {
             await _applicationDbContext.Permissions
-                .AddAsync(permission)
+                .AddAsync(permission, cancellationToken)
                 .ConfigureAwait(false);
 
             await _applicationDbContext
-                .SaveChangesAsync()
+                .SaveChangesAsync(cancellationToken)
                 .ConfigureAwait(false);
 
             return permission;
         }
 
-        public async Task<Permission> UpdatePermissionAsync(Permission permission)
+        public async Task<Permission> UpdatePermissionAsync(Permission permission, CancellationToken cancellationToken)
         {
             var existing = await _applicationDbContext.Permissions
-                .FirstOrDefaultAsync(p => p.PermissionId.Equals(permission.PermissionId))
-                .ConfigureAwait(false);
-
-            if (existing == null)
-            {
-                throw new NullReferenceException(
+                .FirstOrDefaultAsync(p => p.PermissionId.Equals(permission.PermissionId), cancellationToken)
+                .ConfigureAwait(false) 
+                ?? throw new NullReferenceException(
                     $"{nameof(permission)} PermissionId {permission.PermissionId} not found.");
-            }
 
             _applicationDbContext
                 .Entry(existing)
                 .CurrentValues.SetValues(permission);
 
             await _applicationDbContext
-                .SaveChangesAsync()
+                .SaveChangesAsync(cancellationToken)
                 .ConfigureAwait(false);
 
             return permission;
         }
 
-        public async Task<int> DeletePermissionAsync(int permissionId)
+        public async Task<int> DeletePermissionAsync(int permissionId, CancellationToken cancellationToken)
         {
             var permission = await _applicationDbContext.Permissions
-                .FirstAsync(p => p.PermissionId.Equals(permissionId))
+                .FirstAsync(p => p.PermissionId.Equals(permissionId), cancellationToken)
                 .ConfigureAwait(false);
 
             _applicationDbContext.Permissions.Remove(permission);
 
             return await _applicationDbContext
-                .SaveChangesAsync()
+                .SaveChangesAsync(cancellationToken)
                 .ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<Role>> GetRolesAsync()
+        public async Task<IEnumerable<Role>> GetRolesAsync(CancellationToken cancellationToken)
         {
             return await _applicationDbContext.Roles
                 .Include(p => p.Permissions)
                 .AsNoTracking()
-                .ToListAsync()
+                .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
         }
 
-        public async Task<Role> GetRoleAsync(int roleId)
+        public async Task<Role> GetRoleAsync(int roleId, CancellationToken cancellationToken)
         {
             Role role;
 
@@ -277,17 +266,17 @@ namespace Atlas.Data.Access.Data
                     .Include(r => r.Users)
                     .Include(r => r.Permissions)
                     .AsNoTracking()
-                    .FirstAsync(r => r.RoleId.Equals(roleId))
+                    .FirstAsync(r => r.RoleId.Equals(roleId), cancellationToken)
                     .ConfigureAwait(false);
             }
 
-            role.PermissionChecklist = await GetPermissionChecklistAsync(role.Permissions)
+            role.PermissionChecklist = await GetPermissionChecklistAsync(role.Permissions, cancellationToken)
                 .ConfigureAwait(false);
 
             return role;
         }
 
-        public async Task<Role> AddRoleAsync(Role addRole)
+        public async Task<Role> AddRoleAsync(Role addRole, CancellationToken cancellationToken)
         {
             var role = new Role
             {
@@ -298,11 +287,11 @@ namespace Atlas.Data.Access.Data
             var permissions = ExtractSelectedPemissions(addRole.PermissionChecklist);
 
             await _applicationDbContext.Roles
-                .AddAsync(role)
+                .AddAsync(role, cancellationToken)
                 .ConfigureAwait(false);
 
             await _applicationDbContext
-                .SaveChangesAsync()
+                .SaveChangesAsync(cancellationToken)
                 .ConfigureAwait(false);
 
             if (permissions.Any())
@@ -310,32 +299,25 @@ namespace Atlas.Data.Access.Data
                 role.Permissions.AddRange(permissions);
 
                 await _applicationDbContext
-                    .SaveChangesAsync()
+                    .SaveChangesAsync(cancellationToken)
                     .ConfigureAwait(false);
             }
 
-            role.PermissionChecklist = await GetPermissionChecklistAsync(role.Permissions)
+            role.PermissionChecklist = await GetPermissionChecklistAsync(role.Permissions, cancellationToken)
                 .ConfigureAwait(false);
 
             return role;
         }
 
-        public async Task<Role> UpdateRoleAsync(Role updateRole)
+        public async Task<Role> UpdateRoleAsync(Role updateRole, CancellationToken cancellationToken)
         {
             var role = await _applicationDbContext.Roles
                 .Include(r => r.Permissions)
-                .FirstAsync(r => r.RoleId.Equals(updateRole.RoleId))
+                .FirstAsync(r => r.RoleId.Equals(updateRole.RoleId), cancellationToken)
                 .ConfigureAwait(false);
 
-            if (!role.Name.Equals(updateRole.Name))
-            {
-                role.Name = updateRole.Name;
-            }
-
-            if (!role.Description.Equals(updateRole.Description))
-            {
-                role.Description = updateRole.Description;
-            }
+            role.Name = updateRole.Name;
+            role.Description = updateRole.Description;
 
             var permissions = ExtractSelectedPemissions(updateRole.PermissionChecklist);
 
@@ -357,31 +339,31 @@ namespace Atlas.Data.Access.Data
             _applicationDbContext.Roles.Update(role);
 
             await _applicationDbContext
-                .SaveChangesAsync()
+                .SaveChangesAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            role.PermissionChecklist = await GetPermissionChecklistAsync(role.Permissions)
+            role.PermissionChecklist = await GetPermissionChecklistAsync(role.Permissions, cancellationToken)
                 .ConfigureAwait(false);
 
             return role;
         }
 
-        public async Task<int> DeleteRoleAsync(int roleId)
+        public async Task<int> DeleteRoleAsync(int roleId, CancellationToken cancellationToken)
         {
             var role = await _applicationDbContext.Roles
-                .FirstAsync(r => r.RoleId.Equals(roleId))
+                .FirstAsync(r => r.RoleId.Equals(roleId), cancellationToken)
                 .ConfigureAwait(false);
 
             _applicationDbContext.Roles.Remove(role);
 
             return await _applicationDbContext
-                .SaveChangesAsync()
+                .SaveChangesAsync(cancellationToken)
                 .ConfigureAwait(false);
         }
 
-        private async Task<List<ChecklistItem>> GetPermissionChecklistAsync(List<Permission> modelPermissions)
+        private async Task<List<ChecklistItem>> GetPermissionChecklistAsync(List<Permission> modelPermissions, CancellationToken cancellationToken)
         {
-            var permissions = await GetPermissionsAsync()
+            var permissions = await GetPermissionsAsync(cancellationToken)
                 .ConfigureAwait(false);
 
             var permissionChecklist = (from p in permissions
@@ -399,12 +381,12 @@ namespace Atlas.Data.Access.Data
             return permissionChecklist;
         }
 
-        private async Task<List<ChecklistItem>> GetRoleChecklistAsync(List<Role> modelRoles)
+        private async Task<List<ChecklistItem>> GetRoleChecklistAsync(List<Role> modelRoles, CancellationToken cancellationToken)
         {
-            var roles = await GetRolesAsync()
+            var roles = await GetRolesAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            Func<Role, ChecklistItem> createChecklistItem = (role) =>
+            static ChecklistItem createChecklistItem(Role role)
             {
                 var checklistItem = new ChecklistItem
                 {
@@ -420,7 +402,7 @@ namespace Atlas.Data.Access.Data
                 checklistItem.SubItems.AddRange(permissions);
 
                 return checklistItem;
-            };
+            }
 
             var roleChecklist = (from r in roles
                                  select createChecklistItem(r)).ToList();
