@@ -8,11 +8,11 @@ namespace Atlas.API.Endpoints
 {
     internal static class AdministrationEndpoints
     {
-        internal static async Task<IResult> GetModules(INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> GetUsers(IAdministrationData administrationData, IClaimService claimService, CancellationToken cancellationToken)
         {
             try
             {
-                Authorisation? authorisation = await navigationData.GetAuthorisationAsync(claimService.GetClaim())
+                Authorisation? authorisation = await administrationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -21,25 +21,25 @@ namespace Atlas.API.Endpoints
                     return Results.Unauthorized();
                 }
 
-                IEnumerable<Module>? modules = await navigationData.GetModulesAsync(cancellationToken)
+                IEnumerable<User>? users = await administrationData.GetUsersAsync(cancellationToken)
                     .ConfigureAwait(false);
 
-                return Results.Ok(modules);
+                return Results.Ok(users);
             }
             catch (Exception)
             {
-                // Exceptions thrown from navigationData.GetModulesAsync()
+                // Exceptions thrown from administrationData.GetUsersAsync()
                 // have already been logged so simply return Status500InternalServerError.
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> GetModule(int id, INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> GetUser(int id, IAdministrationData administrationData, IClaimService claimService, CancellationToken cancellationToken)
         {
             try
             {
-                Authorisation? authorisation = await navigationData.GetAuthorisationAsync(claimService.GetClaim())
+                Authorisation? authorisation = await administrationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -48,25 +48,25 @@ namespace Atlas.API.Endpoints
                     return Results.Unauthorized();
                 }
 
-                Module? module = await navigationData.GetModuleAsync(id, cancellationToken)
+                User? user = await administrationData.GetUserAsync(id, cancellationToken)
                     .ConfigureAwait(false);
 
-                return Results.Ok(module);
+                return Results.Ok(user);
             }
             catch (Exception)
             {
-                // Exceptions thrown from navigationData.GetModuleAsync()
+                // Exceptions thrown from administrationData.GetUserAsync()
                 // have already been logged so simply return Status500InternalServerError.
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> CreateModule([FromBody] Module module, INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> CreateUser([FromBody] User user, IAdministrationData administrationData, IClaimService claimService, CancellationToken cancellationToken)
         {
             try
             {
-                Authorisation? authorisation = await navigationData.GetAuthorisationAsync(claimService.GetClaim())
+                Authorisation? authorisation = await administrationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -75,25 +75,25 @@ namespace Atlas.API.Endpoints
                     return Results.Unauthorized();
                 }
 
-                Module? newModule = await navigationData.CreateModuleAsync(module, cancellationToken)
+                User? newUser = await administrationData.CreateUserAsync(user, cancellationToken)
                     .ConfigureAwait(false);
 
-                return Results.Ok(newModule);
+                return Results.Ok(newUser);
             }
             catch (Exception)
             {
-                // Exceptions thrown from navigationData.CreateModuleAsync()
+                // Exceptions thrown from administrationData.CreateUserAsync()
                 // have already been logged so simply return Status500InternalServerError.
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> UpdateModule([FromBody] Module module, INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> UpdateUser([FromBody] User user, IAdministrationData administrationData, IClaimService claimService, CancellationToken cancellationToken)
         {
             try
             {
-                Authorisation? authorisation = await navigationData.GetAuthorisationAsync(claimService.GetClaim())
+                Authorisation? authorisation = await administrationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -102,25 +102,25 @@ namespace Atlas.API.Endpoints
                     return Results.Unauthorized();
                 }
 
-                Module? updatedModule = await navigationData.UpdateModuleAsync(module, cancellationToken)
+                User? updatedUser = await administrationData.UpdateUserAsync(user, cancellationToken)
                     .ConfigureAwait(false);
 
-                return Results.Ok(updatedModule);
+                return Results.Ok(updatedUser);
             }
             catch (Exception)
             {
-                // Exceptions thrown from navigationData.UpdateModuleAsync()
+                // Exceptions thrown from administrationData.UpdateUserAsync()
                 // have already been logged so simply return Status500InternalServerError.
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> DeleteModule(int id, INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> DeleteUser(int id, IAdministrationData administrationData, IClaimService claimService, CancellationToken cancellationToken)
         {
             try
             {
-                Authorisation? authorisation = await navigationData.GetAuthorisationAsync(claimService.GetClaim())
+                Authorisation? authorisation = await administrationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -129,25 +129,25 @@ namespace Atlas.API.Endpoints
                     return Results.Unauthorized();
                 }
 
-                int affectedRows = await navigationData.DeleteModuleAsync(id, cancellationToken)
+                int affectedRows = await administrationData.DeleteUserAsync(id, cancellationToken)
                     .ConfigureAwait(false);
 
                 return Results.Ok(affectedRows);
             }
             catch (Exception)
             {
-                // Exceptions thrown from navigationData.DeleteModuleAsync()
+                // Exceptions thrown from administrationData.DeleteUserAsync()
                 // have already been logged so simply return Status500InternalServerError.
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> GetCategories(INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> GetRoles(IAdministrationData administrationData, IClaimService claimService, CancellationToken cancellationToken)
         {
             try
             {
-                Authorisation? authorisation = await navigationData.GetAuthorisationAsync(claimService.GetClaim())
+                Authorisation? authorisation = await administrationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -156,25 +156,25 @@ namespace Atlas.API.Endpoints
                     return Results.Unauthorized();
                 }
 
-                IEnumerable<Category>? categories = await navigationData.GetCategoriesAsync(cancellationToken)
+                IEnumerable<Role>? roles = await administrationData.GetRolesAsync(cancellationToken)
                     .ConfigureAwait(false);
 
-                return Results.Ok(categories);
+                return Results.Ok(roles);
             }
             catch (Exception)
             {
-                // Exceptions thrown from navigationData.GetCategoriesAsync()
+                // Exceptions thrown from administrationData.GetRolesAsync()
                 // have already been logged so simply return Status500InternalServerError.
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> GetCategory(int id, INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> GetRole(int id, IAdministrationData administrationData, IClaimService claimService, CancellationToken cancellationToken)
         {
             try
             {
-                Authorisation? authorisation = await navigationData.GetAuthorisationAsync(claimService.GetClaim())
+                Authorisation? authorisation = await administrationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -183,25 +183,25 @@ namespace Atlas.API.Endpoints
                     return Results.Unauthorized();
                 }
 
-                Category? category = await navigationData.GetCategoryAsync(id, cancellationToken)
+                Role? role = await administrationData.GetRoleAsync(id, cancellationToken)
                     .ConfigureAwait(false);
 
-                return Results.Ok(category);
+                return Results.Ok(role);
             }
             catch (Exception)
             {
-                // Exceptions thrown from navigationData.GetCategoryAsync()
+                // Exceptions thrown from administrationData.GetRoleAsync()
                 // have already been logged so simply return Status500InternalServerError.
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> CreateCategory([FromBody] Category category, INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> CreateRole([FromBody] Role role, IAdministrationData administrationData, IClaimService claimService, CancellationToken cancellationToken)
         {
             try
             {
-                Authorisation? authorisation = await navigationData.GetAuthorisationAsync(claimService.GetClaim())
+                Authorisation? authorisation = await administrationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -210,25 +210,25 @@ namespace Atlas.API.Endpoints
                     return Results.Unauthorized();
                 }
 
-                Category? newCategory = await navigationData.CreateCategoryAsync(category, cancellationToken)
+                Role? newRole = await administrationData.CreateRoleAsync(role, cancellationToken)
                     .ConfigureAwait(false);
 
-                return Results.Ok(newCategory);
+                return Results.Ok(newRole);
             }
             catch (Exception)
             {
-                // Exceptions thrown from navigationData.CreateCategoryAsync()
+                // Exceptions thrown from administrationData.CreateRoleAsync()
                 // have already been logged so simply return Status500InternalServerError.
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> UpdateCategory([FromBody] Category category, INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> UpdateRole([FromBody] Role role, IAdministrationData administrationData, IClaimService claimService, CancellationToken cancellationToken)
         {
             try
             {
-                Authorisation? authorisation = await navigationData.GetAuthorisationAsync(claimService.GetClaim())
+                Authorisation? authorisation = await administrationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -237,25 +237,25 @@ namespace Atlas.API.Endpoints
                     return Results.Unauthorized();
                 }
 
-                Category? updatedCategory = await navigationData.UpdateCategoryAsync(category, cancellationToken)
+                Role? updatedRole = await administrationData.UpdateRoleAsync(role, cancellationToken)
                     .ConfigureAwait(false);
 
-                return Results.Ok(updatedCategory);
+                return Results.Ok(updatedRole);
             }
             catch (Exception)
             {
-                // Exceptions thrown from navigationData.UpdateCategoryAsync()
+                // Exceptions thrown from administrationData.UpdateRoleAsync()
                 // have already been logged so simply return Status500InternalServerError.
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> DeleteCategory(int id, INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> DeleteRole(int id, IAdministrationData administrationData, IClaimService claimService, CancellationToken cancellationToken)
         {
             try
             {
-                Authorisation? authorisation = await navigationData.GetAuthorisationAsync(claimService.GetClaim())
+                Authorisation? authorisation = await administrationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -264,24 +264,25 @@ namespace Atlas.API.Endpoints
                     return Results.Unauthorized();
                 }
 
-                int affectedRows = await navigationData.DeleteCategoryAsync(id, cancellationToken)
+                int affectedRows = await administrationData.DeleteRoleAsync(id, cancellationToken)
                     .ConfigureAwait(false);
 
                 return Results.Ok(affectedRows);
             }
             catch (Exception)
             {
-                // Exceptions thrown from navigationData.DeleteCategoryAsync()
+                // Exceptions thrown from administrationData.DeleteRoleAsync()
                 // have already been logged so simply return Status500InternalServerError.
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
-        internal static async Task<IResult> GetMenuItems(INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
+
+        internal static async Task<IResult> GetPermissions(IAdministrationData administrationData, IClaimService claimService, CancellationToken cancellationToken)
         {
             try
             {
-                Authorisation? authorisation = await navigationData.GetAuthorisationAsync(claimService.GetClaim())
+                Authorisation? authorisation = await administrationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -290,25 +291,25 @@ namespace Atlas.API.Endpoints
                     return Results.Unauthorized();
                 }
 
-                IEnumerable<MenuItem>? menuItems = await navigationData.GetMenuItemsAsync(cancellationToken)
+                IEnumerable<Permission>? permissions = await administrationData.GetPermissionsAsync(cancellationToken)
                     .ConfigureAwait(false);
 
-                return Results.Ok(menuItems);
+                return Results.Ok(permissions);
             }
             catch (Exception)
             {
-                // Exceptions thrown from navigationData.GetMenuItemsAsync()
+                // Exceptions thrown from administrationData.GetPermissionAsync()
                 // have already been logged so simply return Status500InternalServerError.
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> GetMenuItem(int id, INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> GetPermission(int id, IAdministrationData administrationData, IClaimService claimService, CancellationToken cancellationToken)
         {
             try
             {
-                Authorisation? authorisation = await navigationData.GetAuthorisationAsync(claimService.GetClaim())
+                Authorisation? authorisation = await administrationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -317,25 +318,25 @@ namespace Atlas.API.Endpoints
                     return Results.Unauthorized();
                 }
 
-                MenuItem? menuItem = await navigationData.GetMenuItemAsync(id, cancellationToken)
+                Permission? permission = await administrationData.GetPermissionAsync(id, cancellationToken)
                     .ConfigureAwait(false);
 
-                return Results.Ok(menuItem);
+                return Results.Ok(permission);
             }
             catch (Exception)
             {
-                // Exceptions thrown from navigationData.GetMenuItemAsync()
+                // Exceptions thrown from administrationData.GetPermissionAsync()
                 // have already been logged so simply return Status500InternalServerError.
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> CreateMenuItem([FromBody] MenuItem menuItem, INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> CreatePermission([FromBody] Permission permission, IAdministrationData administrationData, IClaimService claimService, CancellationToken cancellationToken)
         {
             try
             {
-                Authorisation? authorisation = await navigationData.GetAuthorisationAsync(claimService.GetClaim())
+                Authorisation? authorisation = await administrationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -344,25 +345,25 @@ namespace Atlas.API.Endpoints
                     return Results.Unauthorized();
                 }
 
-                MenuItem? newMenuItem = await navigationData.CreateMenuItemAsync(menuItem, cancellationToken)
+                Permission? newPermission = await administrationData.CreatePermissionAsync(permission, cancellationToken)
                     .ConfigureAwait(false);
 
-                return Results.Ok(newMenuItem);
+                return Results.Ok(newPermission);
             }
             catch (Exception)
             {
-                // Exceptions thrown from navigationData.CreateMenuItemAsync()
+                // Exceptions thrown from administrationData.CreatePermissionAsync()
                 // have already been logged so simply return Status500InternalServerError.
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> UpdateMenuItem([FromBody] MenuItem menuItem, INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> UpdatePermission([FromBody] Permission permission, IAdministrationData administrationData, IClaimService claimService, CancellationToken cancellationToken)
         {
             try
             {
-                Authorisation? authorisation = await navigationData.GetAuthorisationAsync(claimService.GetClaim())
+                Authorisation? authorisation = await administrationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -371,25 +372,25 @@ namespace Atlas.API.Endpoints
                     return Results.Unauthorized();
                 }
 
-                MenuItem? updatedMenuItem = await navigationData.UpdateMenuItemAsync(menuItem, cancellationToken)
+                Permission? updatedPermission = await administrationData.UpdatePermissionAsync(permission, cancellationToken)
                     .ConfigureAwait(false);
 
-                return Results.Ok(updatedMenuItem);
+                return Results.Ok(updatedPermission);
             }
             catch (Exception)
             {
-                // Exceptions thrown from navigationData.UpdateMenuItemAsync()
+                // Exceptions thrown from administrationData.UpdatePermissionAsync()
                 // have already been logged so simply return Status500InternalServerError.
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> DeleteMenuItem(int id, INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> DeletePermission(int id, IAdministrationData administrationData, IClaimService claimService, CancellationToken cancellationToken)
         {
             try
             {
-                Authorisation? authorisation = await navigationData.GetAuthorisationAsync(claimService.GetClaim())
+                Authorisation? authorisation = await administrationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -398,14 +399,14 @@ namespace Atlas.API.Endpoints
                     return Results.Unauthorized();
                 }
 
-                int affectedRows = await navigationData.DeleteMenuItemAsync(id, cancellationToken)
+                int affectedRows = await administrationData.DeletePermissionAsync(id, cancellationToken)
                     .ConfigureAwait(false);
 
                 return Results.Ok(affectedRows);
             }
             catch (Exception)
             {
-                // Exceptions thrown from navigationData.DeleteMenuItemAsync()
+                // Exceptions thrown from administrationData.DeletePermissionAsync()
                 // have already been logged so simply return Status500InternalServerError.
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
