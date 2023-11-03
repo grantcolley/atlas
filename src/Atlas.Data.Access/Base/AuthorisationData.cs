@@ -13,7 +13,7 @@ namespace Atlas.Data.Access.Base
         {
         }
 
-        public async Task<Authorisation?> GetAuthorisationAsync(string? claim)
+        public async Task<Authorisation?> GetAuthorisationAsync(string? claim, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(claim))
             {
@@ -25,7 +25,7 @@ namespace Atlas.Data.Access.Base
                 .Include(u => u.Permissions)
                 .Include(u => u.Roles)
                 .ThenInclude(r => r.Permissions)
-                .FirstOrDefaultAsync(u => u.Email != null && u.Email.Equals(claim))
+                .FirstOrDefaultAsync(u => u.Email != null && u.Email.Equals(claim), cancellationToken)
                 .ConfigureAwait(false);
 
             if (user != null
