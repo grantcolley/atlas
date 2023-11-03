@@ -6,124 +6,124 @@ namespace Atlas.API.Extensions
 {
     public static class AdministrationEndpointMapper
     {
-        public static WebApplication? MapAtlasAdministration(this WebApplication app)
+        public static WebApplication? MapAtlasAdministrationEndpoints(this WebApplication app)
         {
-            app.MapGet($"/{AtlasAPIEndpoints.GET_MODULES}", NavigationEndpoints.GetModules)
+            app.MapGet($"/{AtlasAPIEndpoints.GET_USERS}", AdministrationEndpoints.GetUsers)
                 .WithOpenApi()
-                .WithName(AtlasAPIEndpoints.GET_MODULES)
-                .WithDescription("Gets a list of modules")
+                .WithName(AtlasAPIEndpoints.GET_USERS)
+                .WithDescription("Gets a list of users")
                 .Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapGet($"/{AtlasAPIEndpoints.GET_MODULE}/{{id:int}}", NavigationEndpoints.GetModule)
+            app.MapGet($"/{AtlasAPIEndpoints.GET_USER}/{{id:int}}", AdministrationEndpoints.GetUser)
                 .WithOpenApi()
-                .WithName(AtlasAPIEndpoints.GET_MODULE)
-                .WithDescription("Gets a module for the given id. If id is 0 then returns a new instance of a blank module for creation.")
+                .WithName(AtlasAPIEndpoints.GET_USER)
+                .WithDescription("Gets a user for the given id. If id is 0 then returns a new instance of a blank user for creation.")
                 .Produces<Module>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapPost($"/{AtlasAPIEndpoints.CREATE_MODULE}", NavigationEndpoints.CreateModule)
+            app.MapPost($"/{AtlasAPIEndpoints.CREATE_USER}", AdministrationEndpoints.CreateUser)
                 .WithOpenApi()
-                .WithName(AtlasAPIEndpoints.CREATE_MODULE)
-                .WithDescription("Create a new module.")
+                .WithName(AtlasAPIEndpoints.CREATE_USER)
+                .WithDescription("Create a new user.")
                 .Produces<Module>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapPut($"/{AtlasAPIEndpoints.UPDATE_MODULE}", NavigationEndpoints.UpdateModule)
+            app.MapPut($"/{AtlasAPIEndpoints.UPDATE_USER}", AdministrationEndpoints.UpdateUser)
                 .WithOpenApi()
-                .WithName(AtlasAPIEndpoints.UPDATE_MODULE)
-                .WithDescription("Updates the module.")
+                .WithName(AtlasAPIEndpoints.UPDATE_USER)
+                .WithDescription("Updates the user.")
                 .Produces<Module>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapDelete($"/{AtlasAPIEndpoints.DELETE_MODULE}/{{id:int}}", NavigationEndpoints.DeleteModule)
+            app.MapDelete($"/{AtlasAPIEndpoints.DELETE_USER}/{{id:int}}", AdministrationEndpoints.DeleteUser)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.DELETE_MODULE)
-                .WithDescription("Delete's a module of the given id.")
+                .WithDescription("Delete's a user of the given id.")
                 .Produces<Module>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapGet($"/{AtlasAPIEndpoints.GET_CATEGORIES}", NavigationEndpoints.GetCategories)
+            app.MapGet($"/{AtlasAPIEndpoints.GET_ROLES}", AdministrationEndpoints.GetRoles)
                 .WithOpenApi()
-                .WithName(AtlasAPIEndpoints.GET_CATEGORIES)
-                .WithDescription("Gets a list of categories")
+                .WithName(AtlasAPIEndpoints.GET_ROLES)
+                .WithDescription("Gets a list of roles")
                 .Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapGet($"/{AtlasAPIEndpoints.GET_CATEGORY}/{{id:int}}", NavigationEndpoints.GetCategory)
+            app.MapGet($"/{AtlasAPIEndpoints.GET_ROLE}/{{id:int}}", AdministrationEndpoints.GetRole)
                 .WithOpenApi()
-                .WithName(AtlasAPIEndpoints.GET_CATEGORY)
-                .WithDescription("Gets a category for the given id. If id is 0 then returns a new instance of a blank category for creation.")
+                .WithName(AtlasAPIEndpoints.GET_ROLE)
+                .WithDescription("Gets a role for the given id. If id is 0 then returns a new instance of a blank role for creation.")
                 .Produces<Module>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapPost($"/{AtlasAPIEndpoints.CREATE_CATEGORY}", NavigationEndpoints.CreateCategory)
+            app.MapPost($"/{AtlasAPIEndpoints.CREATE_ROLE}", AdministrationEndpoints.CreateRole)
                 .WithOpenApi()
-                .WithName(AtlasAPIEndpoints.CREATE_CATEGORY)
-                .WithDescription("Create a new category.")
+                .WithName(AtlasAPIEndpoints.CREATE_ROLE)
+                .WithDescription("Create a new role.")
                 .Produces<Module>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapPut($"/{AtlasAPIEndpoints.UPDATE_CATEGORY}", NavigationEndpoints.UpdateCategory)
+            app.MapPut($"/{AtlasAPIEndpoints.UPDATE_ROLE}", AdministrationEndpoints.UpdateRole)
                 .WithOpenApi()
-                .WithName(AtlasAPIEndpoints.UPDATE_CATEGORY)
-                .WithDescription("Updates the category.")
+                .WithName(AtlasAPIEndpoints.UPDATE_ROLE)
+                .WithDescription("Updates the role.")
                 .Produces<Module>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapDelete($"/{AtlasAPIEndpoints.DELETE_CATEGORY}/{{id:int}}", NavigationEndpoints.DeleteCategory)
+            app.MapDelete($"/{AtlasAPIEndpoints.DELETE_ROLE}/{{id:int}}", AdministrationEndpoints.DeleteRole)
                 .WithOpenApi()
-                .WithName(AtlasAPIEndpoints.DELETE_CATEGORY)
-                .WithDescription("Delete's a category of the given id.")
+                .WithName(AtlasAPIEndpoints.DELETE_ROLE)
+                .WithDescription("Delete's a role of the given id.")
                 .Produces<Module>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapGet($"/{AtlasAPIEndpoints.GET_MENU_ITEMS}", NavigationEndpoints.GetMenuItems)
+            app.MapGet($"/{AtlasAPIEndpoints.GET_PERMISSIONS}", AdministrationEndpoints.GetPermissions)
                 .WithOpenApi()
-                .WithName(AtlasAPIEndpoints.GET_MENU_ITEMS)
-                .WithDescription("Gets a list of menu items")
+                .WithName(AtlasAPIEndpoints.GET_PERMISSIONS)
+                .WithDescription("Gets a list of permissions")
                 .Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapGet($"/{AtlasAPIEndpoints.GET_MENU_ITEM}/{{id:int}}", NavigationEndpoints.GetMenuItem)
+            app.MapGet($"/{AtlasAPIEndpoints.GET_PERMISSION}/{{id:int}}", AdministrationEndpoints.GetPermission)
                 .WithOpenApi()
-                .WithName(AtlasAPIEndpoints.GET_MENU_ITEM)
-                .WithDescription("Gets a menu item for the given id. If id is 0 then returns a new instance of a blank menu item for creation.")
+                .WithName(AtlasAPIEndpoints.GET_PERMISSION)
+                .WithDescription("Gets a permission for the given id. If id is 0 then returns a new instance of a blank permission for creation.")
                 .Produces<Module>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapPost($"/{AtlasAPIEndpoints.CREATE_MENU_ITEM}", NavigationEndpoints.CreateMenuItem)
+            app.MapPost($"/{AtlasAPIEndpoints.CREATE_PERMISSION}", AdministrationEndpoints.CreatePermission)
                 .WithOpenApi()
-                .WithName(AtlasAPIEndpoints.CREATE_MENU_ITEM)
-                .WithDescription("Create a new menu item.")
+                .WithName(AtlasAPIEndpoints.CREATE_PERMISSION)
+                .WithDescription("Create a new permission.")
                 .Produces<Module>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapPut($"/{AtlasAPIEndpoints.UPDATE_MENU_ITEM}", NavigationEndpoints.UpdateMenuItem)
+            app.MapPut($"/{AtlasAPIEndpoints.UPDATE_PERMISSION}", AdministrationEndpoints.UpdatePermission)
                 .WithOpenApi()
-                .WithName(AtlasAPIEndpoints.UPDATE_MENU_ITEM)
-                .WithDescription("Updates the menu item.")
+                .WithName(AtlasAPIEndpoints.UPDATE_PERMISSION)
+                .WithDescription("Updates the permission.")
                 .Produces<Module>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapDelete($"/{AtlasAPIEndpoints.DELETE_MENU_ITEM}/{{id:int}}", NavigationEndpoints.DeleteMenuItem)
+            app.MapDelete($"/{AtlasAPIEndpoints.DELETE_PERMISSION}/{{id:int}}", AdministrationEndpoints.DeletePermission)
                 .WithOpenApi()
-                .WithName(AtlasAPIEndpoints.DELETE_MENU_ITEM)
-                .WithDescription("Delete's a menu item of the given id.")
+                .WithName(AtlasAPIEndpoints.DELETE_PERMISSION)
+                .WithDescription("Delete's a permission of the given id.")
                 .Produces<Module>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
