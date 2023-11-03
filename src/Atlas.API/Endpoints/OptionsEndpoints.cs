@@ -13,7 +13,7 @@ namespace Atlas.API.Endpoints
         {
             try
             {
-                Authorisation? authorisation = await optionsData.GetAuthorisationAsync(claimService.GetClaim())
+                Authorisation? authorisation = await optionsData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -40,7 +40,7 @@ namespace Atlas.API.Endpoints
         {
             try
             {
-                Authorisation? authorisation = await optionsData.GetAuthorisationAsync(claimService.GetClaim())
+                Authorisation? authorisation = await optionsData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
