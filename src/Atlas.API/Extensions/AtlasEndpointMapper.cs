@@ -6,7 +6,7 @@ namespace Atlas.API.Extensions
 {
     public static class AtlasEndpointMapper
     {
-        public static WebApplication? MapAtlas(this WebApplication app)
+        public static WebApplication? MapAtlasEndpoints(this WebApplication app)
         {
             app.MapGet($"/{AtlasAPIEndpoints.GET_CLAIM_MODULES}", UserEndpoint.GetClaimModules)
                 .WithOpenApi()
