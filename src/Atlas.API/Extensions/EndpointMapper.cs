@@ -8,9 +8,11 @@
 
             app.MapGet("/error", () => Results.Problem());
 
-            app.MapAtlas();
+            app.MapAtlasEndpoints();
 
-            app.MapAtlasAdministration();
+            app.MapAtlasNavigationEndpoints();
+
+            app.MapAtlasAdministrationEndpoints();
 
             return app;
         }
