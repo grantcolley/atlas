@@ -11,7 +11,7 @@ namespace Atlas.API.Endpoints
         {
             try
             {
-                Authorisation? authorisation = await userData.GetAuthorisationAsync(claimService.GetClaim())
+                Authorisation? authorisation = await userData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -38,7 +38,7 @@ namespace Atlas.API.Endpoints
         {
             try
             {
-                Authorisation? authorisation = await userData.GetAuthorisationAsync(claimService.GetClaim())
+                Authorisation? authorisation = await userData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -62,7 +62,7 @@ namespace Atlas.API.Endpoints
         {
             try
             {
-                Authorisation? authorisation = await userData.GetAuthorisationAsync(claimService.GetClaim())
+                Authorisation? authorisation = await userData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
