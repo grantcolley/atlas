@@ -52,7 +52,7 @@ namespace Atlas.Data.Access.Data
             return user;
         }
 
-        public async Task<User> AddUserAsync(User addUser, CancellationToken cancellationToken)
+        public async Task<User> CreateUserAsync(User addUser, CancellationToken cancellationToken)
         {
             var user = new User
             {
@@ -198,7 +198,7 @@ namespace Atlas.Data.Access.Data
             return permissions;
         }
 
-        public async Task<Permission> AddPermissionAsync(Permission permission, CancellationToken cancellationToken)
+        public async Task<Permission> CreatePermissionAsync(Permission permission, CancellationToken cancellationToken)
         {
             await _applicationDbContext.Permissions
                 .AddAsync(permission, cancellationToken)
@@ -276,7 +276,7 @@ namespace Atlas.Data.Access.Data
             return role;
         }
 
-        public async Task<Role> AddRoleAsync(Role addRole, CancellationToken cancellationToken)
+        public async Task<Role> CreateRoleAsync(Role addRole, CancellationToken cancellationToken)
         {
             var role = new Role
             {
