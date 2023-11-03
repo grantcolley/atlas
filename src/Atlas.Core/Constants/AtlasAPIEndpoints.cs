@@ -24,9 +24,18 @@
         public const string DELETE_MENU_ITEM = "deletemenuitem";
         public const string GET_USER = "getuser";
         public const string GET_USERS = "getusers";
+        public const string CREATE_USER = "createuser";
+        public const string UPDATE_USER = "updateuser";
+        public const string DELETE_USER = "deleteuser";
         public const string GET_ROLE = "getrole";
         public const string GET_ROLES = "getroles";
+        public const string CREATE_ROLE = "createrole";
+        public const string UPDATE_ROLE = "updaterole";
+        public const string DELETE_ROLE = "deleterole";
         public const string GET_PERMISSION = "getpermission";
         public const string GET_PERMISSIONS = "getpermissions";
+        public const string CREATE_PERMISSION = "createpermission";
+        public const string UPDATE_PERMISSION = "updatepermission";
+        public const string DELETE_PERMISSION = "deletepermission";
     }
 }
