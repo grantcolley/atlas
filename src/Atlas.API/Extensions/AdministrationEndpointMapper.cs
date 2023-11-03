@@ -42,7 +42,7 @@ namespace Atlas.API.Extensions
 
             app.MapDelete($"/{AtlasAPIEndpoints.DELETE_USER}/{{id:int}}", AdministrationEndpoints.DeleteUser)
                 .WithOpenApi()
-                .WithName(AtlasAPIEndpoints.DELETE_MODULE)
+                .WithName(AtlasAPIEndpoints.DELETE_USER)
                 .WithDescription("Delete's a user of the given id.")
                 .Produces<Module>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
