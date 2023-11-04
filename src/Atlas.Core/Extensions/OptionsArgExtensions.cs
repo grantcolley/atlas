@@ -8,7 +8,7 @@ namespace Atlas.Core.Extensions
     {
         public static IEnumerable<OptionsArg> ToOptionsArgs(this Dictionary<string, string> parameters)
         { 
-            List<OptionsArg> optionsArgs = new List<OptionsArg>();
+            List<OptionsArg> optionsArgs = new();
 
             foreach (KeyValuePair<string, string> kvp in parameters) 
             {
