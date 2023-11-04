@@ -1,5 +1,5 @@
-﻿using Atlas.Blazor.UI.Constants;
-using Atlas.Blazor.UI.Models;
+﻿using Atlas.Blazor.UI.Models;
+using Atlas.Core.Constants;
 
 namespace Atlas.Blazor.UI.Helpers
 {
@@ -11,7 +11,7 @@ namespace Atlas.Blazor.UI.Helpers
             {
                     new PageArgs
                     {
-                        PageCode = PageArgsCodes.MODULES,
+                        PageCode = PageCodes.MODULES,
                         ComponentName = "Atlas.Blazor.UI.Components.Administration.ModulesView, Atlas.Blazor.UI",
                         DisplayName = "Modules",
                         RoutingPage = "PageRouter",
@@ -28,7 +28,7 @@ namespace Atlas.Blazor.UI.Helpers
                     },
                     new PageArgs
                     {
-                        PageCode = PageArgsCodes.MODULE,
+                        PageCode = PageCodes.MODULE,
                         ComponentName = "Atlas.Blazor.UI.Components.Administration.ModuleView, Atlas.Blazor.UI",
                         DisplayName = "Category",
                         RoutingPage = "PageRouter",
@@ -36,7 +36,7 @@ namespace Atlas.Blazor.UI.Helpers
                     },
                     new PageArgs
                     {
-                        PageCode = PageArgsCodes.CATEGORIES,
+                        PageCode = PageCodes.CATEGORIES,
                         ComponentName = "Atlas.Blazor.UI.Components.Administration.CategoriesView, Atlas.Blazor.UI",
                         DisplayName = "Categories",
                         RoutingPage = "PageRouter",
@@ -53,7 +53,7 @@ namespace Atlas.Blazor.UI.Helpers
                     },
                     new PageArgs
                     {
-                        PageCode = PageArgsCodes.CATEGORY,
+                        PageCode = PageCodes.CATEGORY,
                         ComponentName = "Atlas.Blazor.UI.Components.Administration.CategoryView, Atlas.Blazor.UI",
                         DisplayName = "Category",
                         RoutingPage = "PageRouter",
@@ -61,7 +61,7 @@ namespace Atlas.Blazor.UI.Helpers
                     },
                     new PageArgs
                     {
-                        PageCode = PageArgsCodes.MENU_ITEMS,
+                        PageCode = PageCodes.MENU_ITEMS,
                         ComponentName = "Atlas.Blazor.UI.Components.Administration.MenuItemsView, Atlas.Blazor.UI",
                         DisplayName = "Menu Items",
                         RoutingPage = "PageRouter",
@@ -78,7 +78,7 @@ namespace Atlas.Blazor.UI.Helpers
                     },
                     new PageArgs
                     {
-                        PageCode = PageArgsCodes.MENU_ITEM,
+                        PageCode = PageCodes.MENU_ITEM,
                         ComponentName = "Atlas.Blazor.UI.Components.Administration.MenuItemView, Atlas.Blazor.UI",
                         DisplayName = "Menu Item",
                         RoutingPage = "PageRouter",
@@ -86,7 +86,7 @@ namespace Atlas.Blazor.UI.Helpers
                     },
                     new PageArgs
                     {
-                        PageCode = PageArgsCodes.USERS,
+                        PageCode = PageCodes.USERS,
                         ComponentName = "Atlas.Blazor.UI.Components.Administration.UsersView, Atlas.Blazor.UI",
                         DisplayName = "Users",
                         RoutingPage = "PageRouter",
@@ -103,7 +103,7 @@ namespace Atlas.Blazor.UI.Helpers
                     },
                     new PageArgs
                     {
-                        PageCode = PageArgsCodes.USER,
+                        PageCode = PageCodes.USER,
                         ComponentName = "Atlas.Blazor.UI.Components.Administration.UserView, Atlas.Blazor.UI",
                         DisplayName = "User",
                         RoutingPage = "PageRouter",
@@ -111,7 +111,7 @@ namespace Atlas.Blazor.UI.Helpers
                     },
                     new PageArgs
                     {
-                        PageCode = PageArgsCodes.ROLES,
+                        PageCode = PageCodes.ROLES,
                         ComponentName = "Atlas.Blazor.UI.Components.Administration.RolesView, Atlas.Blazor.UI",
                         DisplayName = "Roles",
                         RoutingPage = "PageRouter",
@@ -128,7 +128,7 @@ namespace Atlas.Blazor.UI.Helpers
                     },
                     new PageArgs
                     {
-                        PageCode = PageArgsCodes.ROLE,
+                        PageCode = PageCodes.ROLE,
                         ComponentName = "Atlas.Blazor.UI.Components.Administration.RoleView, Atlas.Blazor.UI",
                         DisplayName = "Role",
                         RoutingPage = "PageRouter",
@@ -136,7 +136,7 @@ namespace Atlas.Blazor.UI.Helpers
                     },
                     new PageArgs
                     {
-                        PageCode = PageArgsCodes.PERMISSIONS,
+                        PageCode = PageCodes.PERMISSIONS,
                         ComponentName = "Atlas.Blazor.UI.Components.Administration.PermissionsView, Atlas.Blazor.UI",
                         DisplayName = "Permissions",
                         RoutingPage = "PageRouter",
@@ -153,7 +153,7 @@ namespace Atlas.Blazor.UI.Helpers
                     },
                     new PageArgs
                     {
-                        PageCode = PageArgsCodes.PERMISSION,
+                        PageCode = PageCodes.PERMISSION,
                         ComponentName = "Atlas.Blazor.UI.Components.Administration.PermissionView, Atlas.Blazor.UI",
                         DisplayName = "Permission",
                         RoutingPage = "PageRouter",
