@@ -9,23 +9,19 @@ namespace Atlas.Requests.Base
     {
         protected readonly HttpClient _httpClient;
 
-        protected RequestBase(HttpClient httpClient, TokenProvider tokenProvider)
-            : this(httpClient)
+        protected RequestBase(HttpClient httpClient) : this(httpClient, null)
         {
-            if (tokenProvider == null)
-            {
-                throw new ArgumentNullException(nameof(tokenProvider));
-            }
+        }
 
-            if (_httpClient.DefaultRequestHeaders.Authorization == null)
+        protected RequestBase(HttpClient httpClient, TokenProvider? tokenProvider)
+        {
+            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+
+            if (tokenProvider != null
+                && _httpClient.DefaultRequestHeaders.Authorization == null)
             {
                 _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {tokenProvider.AccessToken}");
             }
-        }
-
-        protected RequestBase(HttpClient httpClient)
-        {
-            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
 
         protected static async Task<IResponse<T>> GetResponseAsync<T>(HttpResponseMessage httpResponseMessage)
