@@ -139,9 +139,9 @@ namespace Atlas.Seed.Data
 
             dbContext.SaveChanges();
 
-            var usersMenuItem = new MenuItem { Name = "Users", Icon = "SupervisedUserCircle", NavigatePage = "PageRouter", Order = 1, Permission = Auth.ADMIN, Category = authorisationCategory };
-            var rolesMenuItem = new MenuItem { Name = "Roles", Icon = "Lock", NavigatePage = "PageRouter", Order = 2, Permission = Auth.ADMIN, Category = authorisationCategory };
-            var permissionsMenuItem = new MenuItem { Name = "Permissions", Icon = "Key", NavigatePage = "PageRouter", Order = 3, Permission = Auth.ADMIN, Category = authorisationCategory };
+            var usersMenuItem = new MenuItem { Name = "Users", Icon = "SupervisedUserCircle", NavigatePage = "PageRouter", Order = 1, Permission = Auth.ADMIN, Category = authorisationCategory, PageCode = PageCodes.USERS };
+            var rolesMenuItem = new MenuItem { Name = "Roles", Icon = "Lock", NavigatePage = "PageRouter", Order = 2, Permission = Auth.ADMIN, Category = authorisationCategory, PageCode = PageCodes.ROLES };
+            var permissionsMenuItem = new MenuItem { Name = "Permissions", Icon = "Key", NavigatePage = "PageRouter", Order = 3, Permission = Auth.ADMIN, Category = authorisationCategory, PageCode = PageCodes.PERMISSIONS };
 
             var modulesMenuItem = new MenuItem { Name = "Modules", Icon = "AutoAwesomeMosaic", NavigatePage = "PageRouter", Order = 1, Permission = Auth.ADMIN, Category = navigationCategory, PageCode = PageCodes.MODULES };
             var categoriesMenuItem = new MenuItem { Name = "Categories", Icon = "AutoAwesomeMotion", NavigatePage = "PageRouter", Order = 2, Permission = Auth.ADMIN, Category = navigationCategory, PageCode = PageCodes.CATEGORIES };
