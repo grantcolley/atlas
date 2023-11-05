@@ -47,9 +47,10 @@ namespace Atlas.Blazor.UI.Render.Instances
                 .RenderOrder(6);
 
             RenderProperty(m => m.PageCode)
-                .RenderAs(Element.Text)
+                .RenderAs(Element.Dropdown)
                 .WithLabel("Page Code")
                 .WithTooltip("Page Code")
+                .WithParameters(new Dictionary<string, string> { { Options.OPTIONS_CODE, Options.PAGE_CODES } })
                 .RenderOrder(7);
 
             RenderProperty(m => m.NavigatePage)
