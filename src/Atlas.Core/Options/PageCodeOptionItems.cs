@@ -22,7 +22,7 @@ namespace Atlas.Core.Options
               .OrderBy(oi => oi.Display)
               .ToList();
 
-            List<OptionItem> optionItems = new() { new OptionItem() };
+            List<OptionItem> optionItems = new();
 
             if(options != null)
             {
