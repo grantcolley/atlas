@@ -23,7 +23,7 @@ namespace Atlas.Requests.API
         public OptionsRequest(HttpClient httpClient, TokenProvider? tokenProvider)
             : base(httpClient, tokenProvider)
         {
-            _localOptionItems.Add(typeof(PageCodeOptionItems).Name, new PageCodeOptionItems());
+            _localOptionItems.Add(Options.PAGE_CODES, new PageCodeOptionItems());
         }
 
         public async Task<IResponse<IEnumerable<OptionItem>?>> GetOptionItems(IEnumerable<OptionsArg> optionsArgs)
