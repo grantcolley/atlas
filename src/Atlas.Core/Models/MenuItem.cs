@@ -17,7 +17,7 @@ namespace Atlas.Core.Models
 
         [Required]
         [StringLength(30)]
-        public string PageCode { get; set; } = string.Empty;
+        public string? PageCode { get; set; }
 
         [Required]
         [StringLength(50)]
