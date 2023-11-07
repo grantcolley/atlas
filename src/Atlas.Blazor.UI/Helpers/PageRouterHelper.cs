@@ -94,7 +94,7 @@ namespace Atlas.Blazor.UI.Helpers
                         ModelParameters = new()
                         {
                             {
-                                "Fields", new List<string> { "UserId", "Name", "Email" }
+                                "Fields", new List<string> { "UserId", "UserName", "Email" }
                             },
                             {
                                 "IdentifierField", "UserId"
