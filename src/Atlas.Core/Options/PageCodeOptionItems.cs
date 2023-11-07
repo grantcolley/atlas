@@ -16,7 +16,7 @@ namespace Atlas.Core.Options
               .Where(f => f.FieldType == typeof(string))
               .Select(f => new OptionItem
               {
-                  Id = f.Name,
+                  Id = (string?)f.GetValue(null),
                   Display = (string?)f.GetValue(null)
               })
               .OrderBy(oi => oi.Display)
