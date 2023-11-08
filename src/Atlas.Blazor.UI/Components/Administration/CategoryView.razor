@@ -2,7 +2,7 @@
 
 @if (PageArgs != null)
 {
-    <GenericModelView T="Category" TRender="CategoryRender"
+    <GenericModelDocumentView T="Category" TRender="CategoryRender"
                PageArgs="@PageArgs"
                IdentityField="CategoryId" TitleField="Name"
                GetEndpoint="@AtlasAPIEndpoints.GET_CATEGORY"
