@@ -2,7 +2,7 @@
 
 @if (PageArgs != null)
 {
-    <GenericModelView T="Module" TRender="ModuleRender"
+    <GenericModelDocumentView T="Module" TRender="ModuleRender"
                PageArgs="@PageArgs"
                IdentityField="ModuleId" TitleField="Name"
                GetEndpoint="@AtlasAPIEndpoints.GET_MODULE"
