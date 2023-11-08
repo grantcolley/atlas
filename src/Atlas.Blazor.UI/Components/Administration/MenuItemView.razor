@@ -2,7 +2,7 @@
 
 @if (PageArgs != null)
 {
-    <GenericModelView T="MenuItem" TRender="MenuItemRender"
+    <GenericModelDocumentView T="MenuItem" TRender="MenuItemRender"
                PageArgs="@PageArgs"
                IdentityField="MenuItemId" TitleField="Name"
                GetEndpoint="@AtlasAPIEndpoints.GET_MENU_ITEM"
