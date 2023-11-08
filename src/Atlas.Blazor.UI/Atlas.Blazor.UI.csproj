@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Components\Generic\GenericTabView.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Blazored.FluentValidation" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.10" />
@@ -26,18 +22,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Atlas.Core\Atlas.Core.csproj" />
     <ProjectReference Include="..\Atlas.Requests\Atlas.Requests.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Components\Generic\GenericTabView.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Components\Generic\GenericTabView.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Components\Generic\GenericTabView.razor" />
   </ItemGroup>
 
 </Project>
