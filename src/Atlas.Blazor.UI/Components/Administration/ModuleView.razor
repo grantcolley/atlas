@@ -8,13 +8,5 @@
                GetEndpoint="@AtlasAPIEndpoints.GET_MODULE"
                CreateEndpoint="@AtlasAPIEndpoints.CREATE_MODULE"
                UpdateEndpoint="@AtlasAPIEndpoints.UPDATE_MODULE"
-               DeleteEndpoint="@AtlasAPIEndpoints.DELETE_MODULE">
-         <BodyFragment>
-            <div class="container container-body float-start">
-                <div class="row" style="margin-top:20px;margin-bottom:20px">
-                    <GenericModelPropertyRollout T="Module" TRender="ModuleRender" Model="@_model" />
-                </div>
-            </div>
-         </BodyFragment>
-    </GenericModelView>
+               DeleteEndpoint="@AtlasAPIEndpoints.DELETE_MODULE" />
 }
