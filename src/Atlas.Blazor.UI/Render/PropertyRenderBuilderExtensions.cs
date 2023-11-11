@@ -31,6 +31,23 @@ namespace Atlas.Blazor.UI.Render
             return propertyRenderBuilder;
         }
 
+        public static IPropertyRenderBuilder<T> InContainer<T>(this IPropertyRenderBuilder<T> propertyRenderBuilder, string containerCode)
+            where T : class, new()
+        {
+            if (string.IsNullOrWhiteSpace(containerCode)) throw new ArgumentNullException(nameof(containerCode));
+
+            if(propertyRenderBuilder.PropertyRender.ModelRender.ContainerExists(containerCode))
+            {
+                propertyRenderBuilder.PropertyRender.ContainerCode = containerCode;
+            }
+            else
+            {
+                throw new NullReferenceException($"{containerCode} does not exist");
+            }
+
+            return propertyRenderBuilder;
+        }
+
         public static IPropertyRenderBuilder<T> WithLabel<T>(this IPropertyRenderBuilder<T> propertyRenderBuilder, string label)
             where T : class, new()
         {
