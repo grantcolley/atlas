@@ -52,12 +52,11 @@ namespace Atlas.Blazor.UI.Components.Mud
             _optionsArgs = ModelPropertyRender.Parameters.ToOptionsArgs();
 
             OptionsArg? displayFieldArgs = _optionsArgs.FirstOptionsArgDefault(ElementParams.GENERIC_MODEL_DISPLAY_FIELD);
+
+            if (displayFieldArgs != null
+                && !string.IsNullOrWhiteSpace(displayFieldArgs.Value))
             {
-                if (displayFieldArgs != null
-                    && !string.IsNullOrWhiteSpace(displayFieldArgs.Value))
-                {
-                    _displayField = displayFieldArgs.Value;
-                }
+                _displayField = displayFieldArgs.Value;
             }
 
             base.OnInitialized();
