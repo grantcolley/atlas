@@ -60,6 +60,23 @@ namespace Atlas.Blazor.UI.Render
             return modelPropertyRenders;
         }
 
+        public IEnumerable<ModelPropertyRender<T>> GetContainerPropertyRenders(string containerCode, T model)
+        {
+            if (containerCode == null) throw new ArgumentNullException(nameof(containerCode));
+
+            List<ModelPropertyRender<T>> modelPropertyRenders = new();
+
+            IEnumerable<PropertyRender<T>> propertyRenders = _propertyRenders.Where(
+                p => !string.IsNullOrWhiteSpace(p.ContainerCode) && p.ContainerCode.Equals(containerCode));
+
+            foreach (PropertyRender<T> propertyRender in propertyRenders)
+            {
+                modelPropertyRenders.Add(new ModelPropertyRender<T>(model, propertyRender));
+            }
+
+            return modelPropertyRenders;
+        }
+
         public IEnumerable<Container> GetContainers()
         {
             return _renderContainers.OrderBy(c => c.Order);
