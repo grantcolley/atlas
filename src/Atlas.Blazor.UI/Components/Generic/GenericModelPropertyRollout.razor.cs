@@ -10,6 +10,9 @@ namespace Atlas.Blazor.UI.Components.Generic
         [Parameter]
         public T? Model { get; set; }
 
+        [Parameter]
+        public string? ContainerCode { get; set; }
+
         protected IEnumerable<ModelPropertyRender<T>>? _modelPropertyRenders;
         protected TRender _render = new();
 
@@ -24,7 +27,14 @@ namespace Atlas.Blazor.UI.Components.Generic
         {
             if (Model == null) throw new ArgumentNullException(nameof(Model));
 
-            _modelPropertyRenders = _render.GetModelPropertyRenders(Model);
+            if(string.IsNullOrWhiteSpace(ContainerCode))
+            {
+                _modelPropertyRenders = _render.GetModelPropertyRenders(Model);
+            }
+            else
+            {
+                _modelPropertyRenders = _render.GetContainerPropertyRenders(ContainerCode, Model);
+            }
 
             base.OnParametersSet();
         }
