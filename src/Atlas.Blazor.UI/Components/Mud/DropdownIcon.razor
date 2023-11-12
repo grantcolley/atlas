@@ -3,7 +3,7 @@
 @using System.Linq.Expressions
 
 @typeparam T where T : class, new()
-@inherits DropdownBaseIcon<T>
+@inherits DropdownIconBase<T>
 
 @if (string.IsNullOrWhiteSpace(ModelPropertyRender?.Tooltip))
 {

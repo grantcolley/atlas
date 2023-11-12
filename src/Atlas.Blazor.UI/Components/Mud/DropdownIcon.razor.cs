@@ -2,11 +2,13 @@
 using Atlas.Blazor.UI.Constants;
 using Atlas.Blazor.UI.Helpers;
 using Atlas.Blazor.UI.Models;
+using Atlas.Core.Extensions;
+using Atlas.Core.Models;
 using System.Linq.Expressions;
 
 namespace Atlas.Blazor.UI.Components.Mud
 {
-    public abstract class DropdownBaseIcon<T> : ModelPropertyRenderComponentBase<T> where T : class, new()
+    public abstract class DropdownIconBase<T> : ModelPropertyRenderComponentBase<T> where T : class, new()
     {
         protected IEnumerable<IconOptionItem>? _iconOptionItems;
 
@@ -41,9 +43,17 @@ namespace Atlas.Blazor.UI.Components.Mud
 
         protected override void OnInitialized()
         {
+            if (ModelPropertyRender == null) throw new NullReferenceException(nameof(ModelPropertyRender));
+
             base.OnInitialized();
 
-            _iconOptionItems = IconHelper.GetIconOptionItems();
+            IEnumerable<OptionsArg> optionsArgs = ModelPropertyRender.Parameters.ToOptionsArgs();
+
+            OptionsArg? iconsArgs = optionsArgs.FirstOptionsArgDefault(IconsOptions.ICONS_CODE);
+
+            if (iconsArgs == null || string.IsNullOrWhiteSpace(iconsArgs.Value)) throw new NullReferenceException(nameof(iconsArgs));
+
+            _iconOptionItems = IconHelper.GetIconOptionItems(iconsArgs.Value);
         }
 
         protected override async Task OnParametersSetAsync()
