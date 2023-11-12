@@ -59,12 +59,11 @@ namespace Atlas.Blazor.UI.Components.Mud
             _optionsArgs = ModelPropertyRender.Parameters.ToOptionsArgs();
 
             OptionsArg? isNumericIdArgs = _optionsArgs.FirstOptionsArgDefault(ElementParams.IS_NUMERIC_ID);
+
+            if (isNumericIdArgs != null
+                && !string.IsNullOrWhiteSpace(isNumericIdArgs.Value))
             {
-                if (isNumericIdArgs != null
-                    && !string.IsNullOrWhiteSpace(isNumericIdArgs.Value))
-                {
-                    _isNumericId = bool.Parse(isNumericIdArgs.Value);
-                }
+                _isNumericId = bool.Parse(isNumericIdArgs.Value);
             }
 
             base.OnInitialized();
