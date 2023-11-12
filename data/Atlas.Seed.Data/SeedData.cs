@@ -97,7 +97,7 @@ namespace Atlas.Seed.Data
 
             users.Add("alice", new User { UserName = "alice", Email = "alice@email.com", Theme = "LightMode" });
             users.Add("bob", new User { UserName = "bob", Email = "bob@email.com", Theme = "LightMode" });
-            users.Add("grant", new User { UserName = "grant", Email = "grant@email.com", Theme = "LightMode" });
+            users.Add("grant", new User { UserName = "grant", Email = "grant@email.com", Theme = "DarkMode" });
 
             foreach (var user in users.Values)
             {
