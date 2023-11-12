@@ -41,6 +41,7 @@ namespace Atlas.Blazor.UI.Render.Instances
                 .InContainer(userContainerCode)
                 .WithLabel("Theme")
                 .WithTooltip("Theme")
+                .WithParameters(new Dictionary<string, string> { { IconsOptions.ICONS_CODE, IconsOptions.THEME } })
                 .RenderOrder(4);
         }
     }
