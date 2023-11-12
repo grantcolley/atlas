@@ -43,16 +43,21 @@ else
                     </MudTooltip>
                 }
             </MudToolBar>
-            <MudTabs Elevation="1" Rounded="true" ApplyEffectsToContainer="true">
-@*              @foreach (var page in DynamicModel.RootContainers)
+            @if(_containers != null)
+            {
+                <MudTabs Elevation="1" Rounded="true" ApplyEffectsToContainer="true">
+                    @foreach (Container container in _containers)
+                    {
+                        <MudTabPanel Text="@(container.Title)" OnClick=@(() => SetActivePage(container)) />
+                    }
+                </MudTabs>
+                @if (_activeContainer != null)
                 {
-                    <MudTabPanel Text="@(page.Label)" OnClick=@(() => SetActivePage(page)) />
-                } *@
-            </MudTabs>
-@*             @if (activePage != null)
-               {
-                   <DynamicComponent @key=activePage.ContainerId Type="activePage.DynamicComponent" Parameters="activePage.Parameters" />
-               } *@
+                    <GenericModelPropertyRollout T="@T" TRender="@TRender" Model="@_model"
+                                             ContainerCode="@_activeContainer.ContainerCode"
+                                             @key=@_activeContainer.ContainerCode />
+                }
+            }
         </EditForm>
     }
     else
