@@ -1,5 +1,4 @@
-﻿using Atlas.Blazor.UI.Base;
-using Atlas.Blazor.UI.Render;
+﻿using Atlas.Blazor.UI.Render;
 
 namespace Atlas.Blazor.UI.Components.Generic
 {
@@ -7,11 +6,17 @@ namespace Atlas.Blazor.UI.Components.Generic
         where T : class, new()
         where TRender : ModelRender<T>, new()
     {
-        protected object activePage { get; set; }
+        protected IEnumerable<Container>? _containers { get; set; }
+        protected Container? _activeContainer { get; set; }
+        private TRender _render = new();
 
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync().ConfigureAwait(false);
+
+            _render.Configure();
+
+            _containers = _render.GetContainers();
 
             SetActivePage();
         }
@@ -26,22 +31,24 @@ namespace Atlas.Blazor.UI.Components.Generic
             return base.OnAfterRenderAsync(firstRender);
         }
 
-        protected void SetActivePage(object page)
+        protected void SetActivePage(Container page)
         {
-            activePage = page;
+            _activeContainer = page;
         }
 
         private void SetActivePage()
         {
-            //if (DynamicModel != null)
-            //{
-            //    if (activePage != null)
-            //    {
-            //        activePage = DynamicModel.RootContainers.FirstOrDefault(c => c.ContainerId.Equals(activePage.ContainerId));
-            //    }
+            if (_containers != null)
+            {
+                if (_activeContainer != null)
+                {
+                    _activeContainer = _containers.FirstOrDefault(c =>
+                        !string.IsNullOrWhiteSpace(c.ContainerCode)
+                        && c.ContainerCode.Equals(_activeContainer.ContainerCode));
+                }
 
-            //    activePage ??= DynamicModel.RootContainers.First();
-            //}
+                _activeContainer ??= _containers.FirstOrDefault();
+            }
         }
     }
 }
