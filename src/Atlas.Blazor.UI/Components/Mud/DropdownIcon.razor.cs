@@ -66,8 +66,6 @@ namespace Atlas.Blazor.UI.Components.Mud
                 selectedItem = _iconOptionItems.FirstOrDefault(o => o.Id != null && o.Id.Equals(id));
             }
 
-            //selectedItem ??= _iconOptionItems.First();
-
             PropertyValue = selectedItem?.Id;
         }
     }
