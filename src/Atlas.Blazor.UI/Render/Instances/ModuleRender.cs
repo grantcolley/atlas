@@ -30,6 +30,7 @@ namespace Atlas.Blazor.UI.Render.Instances
                 .RenderAs(Element.DropdownIcon)
                 .WithLabel("Icon")
                 .WithTooltip("Icon")
+                .WithParameters(new Dictionary<string, string> { { IconsOptions.ICONS_CODE, IconsOptions.ALL } })
                 .RenderOrder(4);
 
             RenderProperty(m => m.Permission)
