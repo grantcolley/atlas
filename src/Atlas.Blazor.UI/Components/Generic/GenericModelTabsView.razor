@@ -53,9 +53,13 @@ else
                 </MudTabs>
                 @if (_activeContainer != null)
                 {
-                    <GenericModelPropertyRollout T="@T" TRender="@TRender" Model="@_model"
-                                             ContainerCode="@_activeContainer.ContainerCode"
-                                             @key=@_activeContainer.ContainerCode />
+                    <div class="container container-body float-start">
+                        <div class="row" style="margin-top:20px;margin-bottom:20px">
+                            <GenericModelPropertyRollout T="@T" TRender="@TRender" Model="@_model"
+                                                         ContainerCode="@_activeContainer.ContainerCode"
+                                                         @key=@_activeContainer.ContainerCode />
+                        </div>
+                    </div>
                 }
             }
         </EditForm>
