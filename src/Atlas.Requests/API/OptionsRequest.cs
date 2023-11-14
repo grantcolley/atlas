@@ -24,6 +24,7 @@ namespace Atlas.Requests.API
             : base(httpClient, tokenProvider)
         {
             _localOptionItems.Add(Options.PAGE_CODES, new PageCodeOptionItems());
+            _localOptionItems.Add(Options.NAVIGATION_PAGES, new NavigationPageOptionItems());
         }
 
         public async Task<IResponse<IEnumerable<OptionItem>?>> GetOptionItems(IEnumerable<OptionsArg> optionsArgs)
