@@ -1,10 +1,12 @@
 ﻿using Atlas.Blazor.UI.Base;
 using Atlas.Blazor.UI.Interfaces;
 using Atlas.Blazor.UI.Models;
+using Atlas.Core.Attributes;
 using Microsoft.AspNetCore.Components;
 
 namespace Atlas.Blazor.UI.Pages
 {
+    [NavigationPageAttribute]
     public abstract class PageRouterBase : AtlasComponentBase
     {
         [Inject]
