@@ -45,7 +45,11 @@ else
             </MudToolBar>
             <div class="container container-body float-start">
                 <div class="row" style="margin-top:20px;margin-bottom:20px">
-                    <GenericModelPropertyRollout T="@T" TRender="@TRender" Model="@_model" />
+                    <MudGrid>
+                        <MudItem xs="6">
+                            <GenericModelPropertyRollout T="@T" TRender="@TRender" Model="@_model" />
+                        </MudItem>
+                    </MudGrid>
                 </div>
             </div>
         </EditForm>
