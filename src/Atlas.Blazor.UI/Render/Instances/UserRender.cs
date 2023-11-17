@@ -43,6 +43,20 @@ namespace Atlas.Blazor.UI.Render.Instances
                 .WithTooltip("Theme")
                 .WithParameters(new Dictionary<string, string> { { IconsOptions.ICONS_CODE, IconsOptions.THEME } })
                 .RenderOrder(4);
+
+            RenderProperty(u => u.RoleChecklist)
+                .RenderAs(Element.Checklist)
+                .InContainer(rolesContainerCode)
+                .WithLabel("Roles")
+                .WithTooltip("Roles")
+                .RenderOrder(1);
+
+            RenderProperty(u => u.PermissionChecklist)
+                .RenderAs(Element.Checklist)
+                .InContainer(permissionsContainerCode)
+                .WithLabel("Permissions")
+                .WithTooltip("Permissions")
+                .RenderOrder(1);
         }
     }
 }
