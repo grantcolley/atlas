@@ -2,6 +2,7 @@
 {
     public static class Element
     {
+        public const string Checklist = "Atlas.Blazor.UI.Components.Custom.Checklist`1, Atlas.Blazor.UI";
         public const string Dropdown = "Atlas.Blazor.UI.Components.Mud.Dropdown`1, Atlas.Blazor.UI";
         public const string DropdownGeneric = "Atlas.Blazor.UI.Components.Mud.DropdownGeneric`2, Atlas.Blazor.UI";
         public const string DropdownIcon = "Atlas.Blazor.UI.Components.Mud.DropdownIcon`1, Atlas.Blazor.UI";
