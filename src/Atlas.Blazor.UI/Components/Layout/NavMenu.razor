@@ -47,7 +47,7 @@
                     <MudNavGroup Title="@category.Name" Icon=@IconHelper.GetOutlined(category.Icon) HideExpandIcon="true" Expanded="true">
                         @foreach (var menuItem in category.MenuItems)
                         {
-                            <MudNavLink Href=@($@"{menuItem.NavigatePage}\{menuItem.PageCode}") Icon=@IconHelper.GetOutlined(menuItem.Icon) @onclick:stopPropagation="true" Match="NavLinkMatch.All">@menuItem.Name</MudNavLink>
+                            <MudNavLink Href=@($@"{menuItem.NavigatePage}\Reset\{menuItem.PageCode}\{true}") Icon=@IconHelper.GetOutlined(menuItem.Icon) @onclick:stopPropagation="true" Match="NavLinkMatch.All">@menuItem.Name</MudNavLink>
                         }
                     </MudNavGroup>
                 }
