@@ -1,4 +1,5 @@
 ﻿using Atlas.Blazor.UI.Base;
+using Atlas.Blazor.UI.Constants;
 using Atlas.Blazor.UI.Interfaces;
 using Atlas.Blazor.UI.Models;
 using Atlas.Core.Attributes;
@@ -18,11 +19,29 @@ namespace Atlas.Blazor.UI.Pages
         [Parameter]
         public int? Id { get; set; }
 
+        [Parameter]
+        public bool? ResetBreadcrumbRoot { get; set; }
+
         protected PageArgs? _pageArgs = default;
 
         protected override async Task OnParametersSetAsync()
         {
             await base.OnParametersSetAsync().ConfigureAwait(false);
+
+            if(ResetBreadcrumbRoot.HasValue
+                && ResetBreadcrumbRoot.Value)
+            {
+                if (StateNotificationService != null)
+                {
+                    var breadcrumb = new Breadcrumb
+                    {
+                        BreadcrumbAction = BreadcrumbAction.Home
+                    };
+
+                    await StateNotificationService.NotifyStateHasChangedAsync(StateNotifications.BREADCRUMBS, breadcrumb)
+                        .ConfigureAwait(false);
+                }
+            }
 
             if (!string.IsNullOrWhiteSpace(PageCode)
                 && PageRouterService != null)
