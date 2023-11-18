@@ -19,7 +19,7 @@
 <MudTable Items="@_checklist" Hover="true" CustomHeader="true"
           Filter="new Func<ChecklistItem,bool>(FilterFunction)">
     <ToolBarContent>
-        <MudTextField @bind-Value="FilterString" Placeholder="Filter" Adornment="Adornment.Start" 
+        <MudTextField @bind-Value="FilterString" Placeholder="Filter" Adornment="Adornment.Start" Immediate="true"
                       AdornmentIcon="@Icons.Material.Filled.FilterAlt" IconSize="Size.Medium" Class="mt-0"></MudTextField>
     </ToolBarContent>
     <RowTemplate>
