@@ -64,17 +64,6 @@ namespace Atlas.Blazor.UI.Components.Custom
                 return true;
             }
 
-            if (item.Description != null
-                && item.Description.ToString().Contains(filter, StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-
-            if (item.Id.ToString().Contains(filter, StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-
             return false;
         }
     }
