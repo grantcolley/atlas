@@ -1,0 +1,33 @@
+﻿@typeparam T where T : class, new()
+@inherits ReadListBase<T>
+
+@if(HasLabel)
+{
+    @if (string.IsNullOrWhiteSpace(ModelPropertyRender?.Tooltip))
+    {
+        <MudText Typo="LabelTypo" Class="mb-2 pl-4">@ModelPropertyRender?.Label</MudText>
+    }
+    else
+    {
+        <MudTooltip Text="@ModelPropertyRender.Tooltip" Placement="Placement.Top" Arrow="true">
+            <MudText Typo="LabelTypo" Class="mb-2 pl-4">@ModelPropertyRender?.Label</MudText>
+            </MudTooltip>
+    }
+
+}
+
+<MudTable Items="@_list" Hover="true" CustomHeader="true" Striped="true"
+          Filter="new Func<string,bool>(FilterFunction)">
+    <ToolBarContent>
+        <MudTextField @bind-Value="FilterString" Placeholder="Filter" Adornment="Adornment.Start" Immediate="true"
+                      AdornmentIcon="@Icons.Material.Filled.FilterAlt" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <RowTemplate>
+        <MudTd>
+            @context
+        </MudTd> 
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
