@@ -35,6 +35,20 @@ namespace Atlas.Blazor.UI.Render.Instances
                 .WithLabel("Description")
                 .WithTooltip("Description")
                 .RenderOrder(3);
+
+            RenderProperty(p => p.RoleList)
+                .RenderAs(Element.ReadList)
+                .InContainer(rolesContainerCode)
+                .WithLabel("Roles")
+                .WithTooltip("Roles")
+                .RenderOrder(1);
+
+            RenderProperty(p => p.UserList)
+                .RenderAs(Element.ReadList)
+                .InContainer(usersContainerCode)
+                .WithLabel("Users")
+                .WithTooltip("Users")
+                .RenderOrder(1);
         }
     }
 }
