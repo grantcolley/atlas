@@ -1,4 +1,4 @@
-﻿namespace Atlas.Blazor.UI.Server.Models
+﻿namespace Atlas.Blazor.Server.Models
 {
     public class InitialApplicationState
     {

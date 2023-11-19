@@ -1,6 +1,6 @@
-using Atlas.Blazor.UI.Helpers;
-using Atlas.Blazor.UI.Interfaces;
-using Atlas.Blazor.UI.Services;
+using Atlas.Blazor.Helpers;
+using Atlas.Blazor.Interfaces;
+using Atlas.Blazor.Services;
 using Atlas.Core.Authentication;
 using Atlas.Core.Constants;
 using Atlas.Requests.API;
