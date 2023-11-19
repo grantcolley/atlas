@@ -1,4 +1,4 @@
-﻿using Atlas.Blazor.UI.Constants;
+﻿using Atlas.Blazor.Constants;
 using Atlas.Core.Constants;
 using Atlas.Core.Models;
 using Atlas.Data.Access.Context;
