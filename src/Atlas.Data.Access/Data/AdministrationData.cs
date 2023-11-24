@@ -57,7 +57,8 @@ namespace Atlas.Data.Access.Data
             var user = new User
             {
                 UserName = addUser.UserName,
-                Email = addUser.Email
+                Email = addUser.Email,
+                Theme = addUser.Theme
             };
 
             await _applicationDbContext.Users
