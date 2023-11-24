@@ -96,8 +96,9 @@ namespace Atlas.Data.Access.Data
                 .FirstAsync(u => u.UserId.Equals(updateUser.UserId), cancellationToken)
                 .ConfigureAwait(false);
 
-            user.UserName = updateUser.UserName;
-            user.Email = updateUser.Email;
+            _applicationDbContext
+                .Entry(user)
+                .CurrentValues.SetValues(updateUser);
 
             var permissions = ExtractSelectedPemissions(updateUser.PermissionChecklist);
 
@@ -315,6 +316,10 @@ namespace Atlas.Data.Access.Data
                 .Include(r => r.Permissions)
                 .FirstAsync(r => r.RoleId.Equals(updateRole.RoleId), cancellationToken)
                 .ConfigureAwait(false);
+
+            _applicationDbContext
+                .Entry(role)
+                .CurrentValues.SetValues(updateRole);
 
             role.Name = updateRole.Name;
             role.Description = updateRole.Description;
