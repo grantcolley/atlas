@@ -14,6 +14,8 @@
 
             app.MapAtlasAdministrationEndpoints();
 
+            app.MapAtlasModulesEndpoints();
+
             return app;
         }
     }

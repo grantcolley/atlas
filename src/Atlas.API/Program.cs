@@ -1,9 +1,6 @@
-using Atlas.API.Endpoints;
 using Atlas.API.Extensions;
 using Atlas.API.Interfaces;
 using Atlas.API.Services;
-using Atlas.Core.Constants;
-using Atlas.Core.Models;
 using Atlas.Data.Access.Constants;
 using Atlas.Data.Access.Context;
 using Atlas.Data.Access.Data;
@@ -14,6 +11,7 @@ using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text.Json.Serialization;
+using Weather.Data.Access.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -104,14 +102,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapEndpoints();
-
-app.MapGet("/weatherforecast", WeatherForecastEndpoint.GetWeatherForecast)
-    .WithOpenApi()
-    .WithName("weatherorecast")
-    .WithDescription("Gets the weather forecast")
-    .Produces<IEnumerable<WeatherForecast>>(StatusCodes.Status200OK)
-    .Produces(StatusCodes.Status500InternalServerError)
-    .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
 var useSeedData = bool.Parse(builder.Configuration["SeedData:UseSeedData"] ?? "false");
 

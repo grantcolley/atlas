@@ -1,10 +1,9 @@
-﻿using Atlas.Core.Models;
-using Atlas.Data.Access.Base;
+﻿using Atlas.Data.Access.Base;
 using Atlas.Data.Access.Context;
-using Atlas.Data.Access.Interfaces;
 using Microsoft.Extensions.Logging;
+using Weather.Core.Model;
 
-namespace Atlas.Data.Access.Data
+namespace Weather.Data.Access.Data
 {
     public class WeatherForecastData : AuthorisationData<WeatherForecastData>, IWeatherForecastData
     {
@@ -21,14 +20,17 @@ namespace Atlas.Data.Access.Data
 
         public async Task<IEnumerable<WeatherForecast>> GetWeatherForecastsAsync(CancellationToken cancellationToken)
         {
-            var rng = new Random();
-            WeatherForecast[] weatherForecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            // Simulate asynchronous loading to demonstrate streaming rendering
+            await Task.Delay(500);
+
+            var startDate = DateOnly.FromDateTime(DateTime.Now);
+            var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
+            IEnumerable<WeatherForecast>? weatherForecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+                Date = startDate.AddDays(index),
+                TemperatureC = Random.Shared.Next(-20, 55),
+                Summary = summaries[Random.Shared.Next(summaries.Length)]
+            }).ToArray();
 
             return await Task.FromResult(weatherForecasts);
         }

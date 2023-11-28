@@ -1,5 +1,6 @@
 using Atlas.Blazor.Helpers;
 using Atlas.Blazor.Interfaces;
+using Atlas.Blazor.Server.Extensions;
 using Atlas.Blazor.Services;
 using Atlas.Core.Authentication;
 using Atlas.Core.Constants;
@@ -13,6 +14,8 @@ using MudBlazor.Services;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
+using Weather.Client.Components;
+using Weather.Client.Requests;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,6 +75,14 @@ builder.Services.AddTransient<IGenericRequests, GenericRequests>(sp =>
     var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
     var httpClient = httpClientFactory.CreateClient(AtlasConstants.ATLAS_API);
     return new GenericRequests(httpClient, tokenProvider);
+});
+
+builder.Services.AddTransient<IWeatherForecastRequests, WeatherForecastRequests>(sp =>
+{
+    var tokenProvider = sp.GetRequiredService<TokenProvider>();
+    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    var httpClient = httpClientFactory.CreateClient(AtlasConstants.ATLAS_API);
+    return new WeatherForecastRequests(httpClient, tokenProvider);
 });
 
 var app = builder.Build();

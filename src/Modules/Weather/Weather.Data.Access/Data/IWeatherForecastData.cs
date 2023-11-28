@@ -1,6 +1,7 @@
-﻿using Atlas.Core.Models;
+﻿using Atlas.Data.Access.Interfaces;
+using Weather.Core.Model;
 
-namespace Atlas.Data.Access.Interfaces
+namespace Weather.Data.Access.Data
 {
     public interface IWeatherForecastData : IAuthorisationData
     {

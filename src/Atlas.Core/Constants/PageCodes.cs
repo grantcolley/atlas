@@ -14,5 +14,6 @@
         public const string ROLES = "Roles";
         public const string PERMISSION = "Permission";
         public const string PERMISSIONS = "Permissions";
+        public const string WEATHER_DISPLAY = "WeatherDisplay";
     }
 }

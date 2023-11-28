@@ -10,12 +10,12 @@ using System.Text.Json;
 
 namespace Atlas.Data.Access.Data
 {
-    public class OptionsData : AuthorisationData<WeatherForecastData>, IOptionsData
+    public class OptionsData : AuthorisationData<OptionsData>, IOptionsData
     {
         private readonly Dictionary<string, Func<IEnumerable<OptionsArg>, CancellationToken, Task<IEnumerable<OptionItem>>>> optionItems = new();
         private readonly Dictionary<string, Func<IEnumerable<OptionsArg>, CancellationToken, Task<string>>> genericOptionItems = new();
 
-        public OptionsData(ApplicationDbContext applicationDbContext, ILogger<WeatherForecastData> logger)
+        public OptionsData(ApplicationDbContext applicationDbContext, ILogger<OptionsData> logger)
             : base(applicationDbContext, logger)
         {
             optionItems[Options.PERMISSIONS_OPTION_ITEMS] = new Func<IEnumerable<OptionsArg>, CancellationToken, Task<IEnumerable<OptionItem>>>(GetPermissionsOptionItemsAsync);

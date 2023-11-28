@@ -161,6 +161,16 @@ namespace Atlas.Blazor.Helpers
                     }
             };
 
+            // Additional Modules
+            pageArgs.Add(new PageArgs
+            {
+                PageCode = PageCodes.WEATHER_DISPLAY,
+                ComponentName = "Weather.Client.Components.WeatherDisplay, Weather.Client",
+                DisplayName = "Weather Forecast",
+                RoutingPage = "PageRouter",
+                RoutingPageCode = PageCodes.WEATHER_DISPLAY
+            });
+
             return pageArgs;
         }
     }
