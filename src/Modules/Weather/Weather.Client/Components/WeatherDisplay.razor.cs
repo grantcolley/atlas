@@ -21,6 +21,9 @@ namespace Weather.Client.Components
         {
             if(WeatherForecastRequests == null) throw new NullReferenceException(nameof(WeatherForecastRequests));
 
+            await SendBreadcrumbAsync(BreadcrumbAction.Add, PageArgs?.DisplayName)
+                .ConfigureAwait(false);
+
             IResponse<IEnumerable<WeatherForecast>> result = await WeatherForecastRequests.GetWeatherForecastsAsync();
 
             Forecasts = GetResponse(result);
