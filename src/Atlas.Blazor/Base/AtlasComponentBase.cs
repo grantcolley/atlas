@@ -54,5 +54,34 @@ namespace Atlas.Blazor.Base
 
             NavigationManager?.NavigateTo(alert.Page);
         }
+
+        protected async Task SendBreadcrumbAsync(BreadcrumbAction breadcrumbAction, string? text = null, string? href = null)
+        {
+            if (breadcrumbAction == BreadcrumbAction.Add
+                && breadcrumbAction == BreadcrumbAction.Update
+                && (string.IsNullOrWhiteSpace(text)
+                || (string.IsNullOrWhiteSpace(href))))
+            {
+                return;
+            }
+
+            if (StateNotificationService == null) throw new NullReferenceException(nameof(StateNotificationService));
+            if (NavigationManager == null) throw new NullReferenceException(nameof(NavigationManager));
+
+            if (breadcrumbAction == BreadcrumbAction.Add)
+            {
+                href = NavigationManager.Uri.Remove(0, NavigationManager.BaseUri.Length - 1);
+            }
+
+            var breadcrumb = new Breadcrumb
+            {
+                Text = text,
+                Href = href,
+                BreadcrumbAction = breadcrumbAction
+            };
+
+            await StateNotificationService.NotifyStateHasChangedAsync(StateNotifications.BREADCRUMBS, breadcrumb)
+                .ConfigureAwait(false);
+        }
     }
 }
