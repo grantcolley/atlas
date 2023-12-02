@@ -10,3 +10,5 @@
 ###### 
 
 [Identity vs OIDC Server](https://learn.microsoft.com/en-us/aspnet/core/security/how-to-choose-identity-solution?view=aspnetcore-8.0#identity-vs-oidc-server)
+
+[Pass tokens to a server-side Blazor app](https://learn.microsoft.com/en-us/aspnet/core/blazor/security/server/additional-scenarios?view=aspnetcore-8.0#pass-tokens-to-a-server-side-blazor-app)
