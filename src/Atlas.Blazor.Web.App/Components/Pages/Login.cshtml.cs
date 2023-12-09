@@ -1,6 +1,7 @@
 using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Threading.Tasks;
 
 namespace Atlas.Blazor.Web.App.Components.Pages
 {
