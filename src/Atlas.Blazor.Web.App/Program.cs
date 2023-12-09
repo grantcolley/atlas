@@ -1,3 +1,4 @@
+using Atlas.Blazor.Base;
 using Atlas.Blazor.Helpers;
 using Atlas.Blazor.Interfaces;
 using Atlas.Blazor.Services;
@@ -7,8 +8,13 @@ using Atlas.Core.Constants;
 using Atlas.Requests.API;
 using Atlas.Requests.Interfaces;
 using Auth0.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using MudBlazor.Services;
+using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
 using Weather.Client.Requests;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -95,6 +101,7 @@ app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
+    .AddAdditionalAssemblies(typeof(AtlasComponentBase).Assembly)
     .AddInteractiveServerRenderMode();
 
 app.UseAuthentication();
