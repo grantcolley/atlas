@@ -1,5 +1,9 @@
+using Atlas.Blazor.Base;
 using Atlas.Blazor.Web.App.Components;
 using Atlas.Core.Authentication;
+using Atlas.Core.Constants;
+using Atlas.Requests.API;
+using Atlas.Requests.Interfaces;
 using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,6 +11,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.FluentUI.AspNetCore.Components;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
+using Weather.Client.Requests;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +36,52 @@ builder.Services
         options.Audience = builder.Configuration["Auth0:Audience"] ?? throw new NullReferenceException("Auth0:Audience");
     });
 
+builder.Services.AddHttpClient(AtlasConstants.ATLAS_API, client =>
+{
+    client.BaseAddress = new Uri("https://localhost:44420");
+});
+
+//builder.Services.AddSingleton<IPageRouterService, PageRouterService>(sp =>
+//{
+//    return new PageRouterService(PageRouterHelper.GetPageArgs());
+//});
+
 builder.Services.AddScoped<TokenProvider>();
+//builder.Services.AddScoped<IStateNotificationService, StateNotificationService>();
+builder.Services.AddTransient<IDialogService, DialogService>();
+
+builder.Services.AddTransient<IUserRequests, UserRequests>(sp =>
+{
+    var tokenProvider = sp.GetRequiredService<TokenProvider>();
+    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    var httpClient = httpClientFactory.CreateClient(AtlasConstants.ATLAS_API);
+    return new UserRequests(httpClient, tokenProvider);
+});
+
+builder.Services.AddTransient<IOptionsRequest, OptionsRequest>(sp =>
+{
+    var tokenProvider = sp.GetRequiredService<TokenProvider>();
+    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    var httpClient = httpClientFactory.CreateClient(AtlasConstants.ATLAS_API);
+    return new OptionsRequest(httpClient, tokenProvider);
+});
+
+builder.Services.AddTransient<IGenericRequests, GenericRequests>(sp =>
+{
+    var tokenProvider = sp.GetRequiredService<TokenProvider>();
+    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    var httpClient = httpClientFactory.CreateClient(AtlasConstants.ATLAS_API);
+    return new GenericRequests(httpClient, tokenProvider);
+});
+
+builder.Services.AddTransient<IWeatherForecastRequests, WeatherForecastRequests>(sp =>
+{
+    var tokenProvider = sp.GetRequiredService<TokenProvider>();
+    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    var httpClient = httpClientFactory.CreateClient(AtlasConstants.ATLAS_API);
+    return new WeatherForecastRequests(httpClient, tokenProvider);
+});
+
 
 var app = builder.Build();
 
@@ -48,6 +99,11 @@ app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
+    .AddAdditionalAssemblies(typeof(Weather.Client._Imports).Assembly)
     .AddInteractiveServerRenderMode();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.Run();
