@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\Atlas.Blazor\Atlas.Blazor.csproj" />
     <ProjectReference Include="..\..\..\Atlas.Requests\Atlas.Requests.csproj" />
     <ProjectReference Include="..\Weather.Core\Weather.Core.csproj" />
