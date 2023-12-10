@@ -1,0 +1,29 @@
+﻿@page "/logout"
+@using Auth0.AspNetCore.Authentication;
+@using Microsoft.AspNetCore.Authentication.Cookies;
+@using System.Threading.Tasks;
+
+@code {
+    [CascadingParameter]
+    public HttpContext? HttpContext { get; set; }
+
+    [Inject]
+    public NavigationManager? NavigationManager { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (HttpContext == null) throw new NullReferenceException(nameof(HttpContext));
+        if (NavigationManager == null) throw new NullReferenceException(nameof(NavigationManager));
+
+        string redirectUri = @"/";
+
+        var authenticationProperties = new LogoutAuthenticationPropertiesBuilder()
+             .WithRedirectUri(redirectUri)
+             .Build();
+
+        await HttpContext.SignOutAsync(Auth0Constants.AuthenticationScheme, authenticationProperties);
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+        NavigationManager.NavigateTo(redirectUri);
+    }
+}
