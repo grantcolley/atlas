@@ -15,5 +15,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Atlas.Core\Atlas.Core.csproj" />
     <ProjectReference Include="..\Atlas.Requests\Atlas.Requests.csproj" />
+    <ProjectReference Include="..\Modules\Weather\Weather.Client\Weather.Client.csproj" />
   </ItemGroup>
 </Project>
