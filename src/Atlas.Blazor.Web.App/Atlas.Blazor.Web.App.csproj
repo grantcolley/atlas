@@ -9,6 +9,7 @@
   <ItemGroup>
 	<PackageReference Include="Auth0.AspNetCore.Authentication" Version="1.4.0" />
 	<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.0" />
+	<PackageReference Include="Microsoft.Fast.Components.FluentUI.Icons" Version="3.4.0" />
 	<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.*-* " />
   </ItemGroup>
 
