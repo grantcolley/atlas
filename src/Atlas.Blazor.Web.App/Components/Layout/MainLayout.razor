@@ -1,9 +1,20 @@
 ﻿@inherits LayoutComponentBase
 
+@using Microsoft.FluentUI.AspNetCore.Components.DesignTokens
+
 <FluentLayout>
     <FluentHeader>
-        Atlas
+        <img src="/images/Atlas.png" Height="30" Width="30" />
+        <FluentSpacer />
         <LoginDisplay/>
+        @if(_isDarkMode)
+        {
+            <FluentIcon Value="@(new Icons.Regular.Size24.Lightbulb())"/>
+        }
+        else
+        {
+            <FluentIcon Value="@(new Icons.Regular.Size24.WeatherMoon())"/>
+        }
     </FluentHeader>
     <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
         <NavMenu />
@@ -28,3 +39,45 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+@code{
+
+    [Inject]
+    public AccentBaseColor? AccentBaseColor { get; set; }
+
+    [Inject]
+    public BaseLayerLuminance? BaseLayerLuminance { get; set; }
+
+    protected bool _isDarkMode = false;
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (AccentBaseColor == null) throw new NullReferenceException(nameof(AccentBaseColor));
+
+        if (firstRender)
+        {
+            string? exchangeColor = OfficeColor.Exchange.ToAttributeValue();
+            await AccentBaseColor.WithDefault(exchangeColor?.ToSwatch()).ConfigureAwait(false);
+        }
+
+        // save preference to cookie
+
+        await ChangeModeAsync().ConfigureAwait(false);
+    }
+
+    protected async Task ChangeModeAsync(bool changeToDarkMode)
+    {
+        _isDarkMode = changeToDarkMode;
+
+        await ChangeModeAsync().ConfigureAwait(false);
+    }
+
+    private async Task ChangeModeAsync()
+    {
+        if (BaseLayerLuminance == null) throw new NullReferenceException(nameof(BaseLayerLuminance));
+
+        StandardLuminance luminance = _isDarkMode ? StandardLuminance.DarkMode : StandardLuminance.LightMode;
+
+        await BaseLayerLuminance.WithDefault(luminance.GetLuminanceValue()).ConfigureAwait(false);
+    }
+}
