@@ -1,4 +1,3 @@
-using Atlas.Blazor.Base;
 using Atlas.Blazor.Web.App.Components;
 using Atlas.Core.Authentication;
 using Atlas.Core.Constants;
@@ -18,7 +17,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+    .AddInteractiveServerComponents()
+    .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddFluentUIComponents();
 
@@ -99,8 +99,9 @@ app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
-    .AddAdditionalAssemblies(typeof(Weather.Client._Imports).Assembly)
-    .AddInteractiveServerRenderMode();
+    .AddAdditionalAssemblies(typeof(Weather.Client._Imports).Assembly, typeof(Atlas.Blazor.WebAssembly._Imports).Assembly)
+    .AddInteractiveServerRenderMode()
+    .AddInteractiveWebAssemblyRenderMode();
 
 app.UseAuthentication();
 
