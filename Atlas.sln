@@ -39,6 +39,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas.Blazor.Server", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas.Blazor.Web.App", "src\Atlas.Blazor.Web.App\Atlas.Blazor.Web.App.csproj", "{0A290B68-E10A-4B67-A978-4875ED982B29}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas.Blazor.WebAssembly", "src\Atlas.Blazor.WebAssembly\Atlas.Blazor.WebAssembly.csproj", "{B0E427F9-09BF-4858-9AB0-D3FDD17472B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +103,10 @@ Global
 		{0A290B68-E10A-4B67-A978-4875ED982B29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A290B68-E10A-4B67-A978-4875ED982B29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A290B68-E10A-4B67-A978-4875ED982B29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0E427F9-09BF-4858-9AB0-D3FDD17472B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0E427F9-09BF-4858-9AB0-D3FDD17472B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0E427F9-09BF-4858-9AB0-D3FDD17472B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0E427F9-09BF-4858-9AB0-D3FDD17472B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -122,6 +128,7 @@ Global
 		{242BF3E1-96C5-4C3B-BFBA-C39CE9515CB8} = {4D561DB1-6F2C-4895-88D3-91379F9CFEE6}
 		{492685D0-2DF0-4096-9284-2EE5EE9CF9ED} = {4D561DB1-6F2C-4895-88D3-91379F9CFEE6}
 		{0A290B68-E10A-4B67-A978-4875ED982B29} = {4D561DB1-6F2C-4895-88D3-91379F9CFEE6}
+		{B0E427F9-09BF-4858-9AB0-D3FDD17472B9} = {4D561DB1-6F2C-4895-88D3-91379F9CFEE6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {35D4493E-72A3-403D-AB40-7AADFBC20D09}
