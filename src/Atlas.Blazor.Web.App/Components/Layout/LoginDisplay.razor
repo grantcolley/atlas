@@ -2,14 +2,21 @@
 
 <AuthorizeView>
     <Authorized>
-        @context.User?.Identity?.Name!
-        <FluentAnchor Href="logout" Target="_blank" Appearance="Appearance.Stealth">
-            <FluentIcon Value="@(new Icons.Regular.Size20.ArrowExit())" />
+        
+        <FluentAnchor Id="logout" Href="logout" Target="_blank" Appearance="Appearance.Lightweight" IconEnd="@(new Icons.Regular.Size20.ArrowExit())">
+            @context.User?.Identity?.Name
         </FluentAnchor>
+
+        <FluentTooltip Anchor="logout" Position=TooltipPosition.Bottom>Logout</FluentTooltip>
+
     </Authorized>
     <NotAuthorized>
-        <FluentAnchor Href="login" Target="_blank" Appearance="Appearance.Stealth">
-            <FluentIcon Value="@(new Icons.Regular.Size20.ArrowEnter())" />
+        
+        <FluentAnchor Id="login" Href="login" Target="_blank" Appearance="Appearance.Lightweight" IconEnd="@(new Icons.Regular.Size20.ArrowEnter())">
+            Login
         </FluentAnchor>
+
+        <FluentTooltip Anchor="login" Position=TooltipPosition.Bottom>Login</FluentTooltip>
+
     </NotAuthorized>
 </AuthorizeView>
