@@ -3,9 +3,13 @@
 <AuthorizeView>
     <Authorized>
         @context.User?.Identity?.Name!
-        <FluentAnchor Href="logout" Target="_blank">Logout</FluentAnchor>
+        <FluentAnchor Href="logout" Target="_blank" Appearance="Appearance.Stealth">
+            <FluentIcon Value="@(new Icons.Regular.Size20.ArrowExit())" />
+        </FluentAnchor>
     </Authorized>
     <NotAuthorized>
-        <FluentAnchor Href="login" Target="_blank">Login</FluentAnchor>
+        <FluentAnchor Href="login" Target="_blank" Appearance="Appearance.Stealth">
+            <FluentIcon Value="@(new Icons.Regular.Size20.ArrowEnter())" />
+        </FluentAnchor>
     </NotAuthorized>
 </AuthorizeView>
