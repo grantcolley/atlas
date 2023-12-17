@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.FluentUI.AspNetCore.Components;
+using Microsoft.FluentUI.AspNetCore.Components.Components.Tooltip;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
@@ -46,6 +47,7 @@ builder.Services.AddHttpClient(AtlasConstants.ATLAS_API, client =>
 //    return new PageRouterService(PageRouterHelper.GetPageArgs());
 //});
 
+builder.Services.AddScoped<ITooltipService, TooltipService>();
 builder.Services.AddScoped<TokenProvider>();
 //builder.Services.AddScoped<IStateNotificationService, StateNotificationService>();
 builder.Services.AddTransient<IDialogService, DialogService>();
