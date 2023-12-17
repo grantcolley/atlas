@@ -1,0 +1,32 @@
+﻿@rendermode InteractiveWebAssembly
+
+<FluentDesignTheme @bind-Mode="@_mode" @bind-OfficeColor="@_officeColor" StorageName="atlas-theme" />
+
+@if (_mode == DesignThemeModes.Dark)
+{
+    <FluentIcon Value="@(new Icons.Regular.Size24.Lightbulb())" Title="Light mode" @onclick="ChangeToLightMode" />
+}
+else
+{
+    <FluentIcon Value="@(new Icons.Regular.Size24.WeatherMoon())" Title="Dark mode" @onclick="ChangeToDarkMode" />
+}
+
+@code {
+    protected DesignThemeModes _mode;
+    protected OfficeColor? _officeColor = OfficeColor.Default;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    private void ChangeToDarkMode()
+    {
+        _mode = DesignThemeModes.Dark;
+    }
+
+    private void ChangeToLightMode()
+    {
+        _mode = DesignThemeModes.Light;
+    }
+}
