@@ -1,7 +1,9 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<FluentLabel Typo="Typography.HeroTitle">Atlas</FluentLabel>
 
-<h1>Hello, world!</h1>
-
-Welcome to your new Fluent Blazor app.
+<AuthorizeView>
+    <NotAuthorized>
+        <FluentLabel Typo="Typography.Body">Please log in.</FluentLabel>
+    </NotAuthorized>
+</AuthorizeView>
