@@ -3,7 +3,7 @@
 <AuthorizeView>
     <Authorized>
         
-        <FluentAnchor Id="logout" Href="logout" Target="_blank" Appearance="Appearance.Lightweight" IconEnd="@(new Icons.Regular.Size20.ArrowExit())">
+        <FluentAnchor Id="logout" Href="logout" Target="_self" Appearance="Appearance.Lightweight" IconEnd="@(new Icons.Regular.Size20.ArrowExit())">
             @context.User?.Identity?.Name
         </FluentAnchor>
 
@@ -12,7 +12,7 @@
     </Authorized>
     <NotAuthorized>
         
-        <FluentAnchor Id="login" Href="login" Target="_blank" Appearance="Appearance.Lightweight" IconEnd="@(new Icons.Regular.Size20.ArrowEnter())">
+        <FluentAnchor Id="login" Href="login" Target="_self" Appearance="Appearance.Lightweight" IconEnd="@(new Icons.Regular.Size20.ArrowEnter())">
             Login
         </FluentAnchor>
 
