@@ -8,6 +8,14 @@ namespace Atlas.API.Extensions
     {
         public static WebApplication? MapAtlasEndpoints(this WebApplication app)
         {
+            app.MapGet($"/{AtlasAPIEndpoints.GET_CLAIM_AUTHORIZATION}", UserEndpoint.GetClaimModules)
+                .WithOpenApi()
+                .WithName(AtlasAPIEndpoints.GET_CLAIM_AUTHORIZATION)
+                .WithDescription("Gets the user's authorization")
+                .Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
+                .Produces(StatusCodes.Status500InternalServerError)
+                .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
+
             app.MapGet($"/{AtlasAPIEndpoints.GET_CLAIM_MODULES}", UserEndpoint.GetClaimModules)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.GET_CLAIM_MODULES)
