@@ -7,6 +7,30 @@ namespace Atlas.API.Endpoints
 {
     internal static class UserEndpoint
     {
+        internal static async Task<IResult> GetClaimAuthorisation(IUserData userData, IClaimService claimService, CancellationToken cancellationToken)
+        {
+            try
+            {
+                Authorisation? authorisation = await userData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                    .ConfigureAwait(false);
+
+                if (authorisation == null
+                    || string.IsNullOrWhiteSpace(authorisation.User))
+                {
+                    return Results.Unauthorized();
+                }
+
+                return Results.Ok(authorisation);
+            }
+            catch (Exception)
+            {
+                // Exceptions thrown from userData.GetAuthorisationAsync(claim)
+                // have already been logged so simply return Status500InternalServerError.
+
+                return Results.StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
         internal static async Task<IResult> GetClaimModules(IUserData userData, IClaimService claimService, CancellationToken cancellationToken)
         {
             try
