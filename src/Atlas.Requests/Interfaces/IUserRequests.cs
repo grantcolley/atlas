@@ -1,4 +1,5 @@
 ﻿using Atlas.Core.Models;
+using System.Security.Claims;
 
 namespace Atlas.Requests.Interfaces
 {
@@ -7,5 +8,6 @@ namespace Atlas.Requests.Interfaces
         Task<string?> GetThemeAsync();
         Task SetThemeAsync(string theme);
         Task<IEnumerable<Module>?> GetClaimModulesAsync();
+        Task<Authorisation?> GetAuthorisationAsync(ClaimsPrincipal principal);
     }
 }
