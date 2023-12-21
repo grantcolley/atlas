@@ -1,6 +1,8 @@
+using Atlas.Blazor.WebAssembly.Authentication;
 using Atlas.Core.Constants;
 using Atlas.Requests.API;
 using Atlas.Requests.Interfaces;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.FluentUI.AspNetCore.Components.Components.Tooltip;
@@ -8,6 +10,10 @@ using System;
 using System.Net.Http;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
+
+builder.Services.AddAuthorizationCore();
+builder.Services.AddCascadingAuthenticationState();
+builder.Services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticationStateProvider>();
 
 builder.Services.AddHttpClient(AtlasConstants.ATLAS_API, client =>
 {
