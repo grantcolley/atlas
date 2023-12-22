@@ -36,7 +36,7 @@ namespace Atlas.API.Extensions
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.SET_THEME)
                 .WithDescription("Sets the user's theme preference")
-                .Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
+                .Produces(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
