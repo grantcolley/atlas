@@ -98,7 +98,7 @@ namespace Atlas.API.Endpoints
                 await userData.SetThemePreferenceAsync(theme, cancellationToken)
                     .ConfigureAwait(false);
 
-                return Results.Ok();
+                return Results.Ok(true);
             }
             catch (Exception)
             {
