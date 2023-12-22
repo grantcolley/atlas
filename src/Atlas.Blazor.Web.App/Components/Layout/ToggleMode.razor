@@ -1,0 +1,69 @@
+﻿@rendermode InteractiveServer
+
+@inherits AtlasComponentBase;
+
+<FluentDesignTheme @bind-Mode="@_mode" StorageName="@AtlasConstants.ATLAS_THEME_STORAGE" />
+
+@if (_mode == DesignThemeModes.Dark)
+{
+    <FluentIcon Id="light" Value="@(new Icons.Regular.Size24.Lightbulb())" OnClick="ChangeToLightModeAsync" />
+
+    <FluentTooltip Anchor="light" Position=TooltipPosition.Start>Light mode</FluentTooltip>
+}
+else
+{
+    <FluentIcon Id="dark" Value="@(new Icons.Regular.Size24.WeatherMoon())" OnClick="ChangeToDarkModeAsync" />
+
+    <FluentTooltip Anchor="dark" Position=TooltipPosition.Start>Dark mode</FluentTooltip>
+}
+
+@code {
+    [Inject]
+    public IUserRequests? UserRequests { get; set; }
+
+    [Inject]
+    internal AuthenticationStateProvider? AuthenticationStateProvider { get; set; }
+
+    private DesignThemeModes _mode;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    private async Task ChangeToDarkModeAsync()
+    {
+        await ToggleModeAsync(DesignThemeModes.Dark).ConfigureAwait(false);
+    }
+
+    private async Task ChangeToLightModeAsync()
+    {
+        await ToggleModeAsync(DesignThemeModes.Light).ConfigureAwait(false);
+    }
+
+    private async Task ToggleModeAsync(DesignThemeModes mode)
+    {
+        if (UserRequests == null)
+        {
+            throw new NullReferenceException(nameof(UserRequests));
+        }
+
+        if (AuthenticationStateProvider == null)
+        {
+            throw new ArgumentNullException(nameof(AuthenticationStateProvider));
+        }
+
+        _mode = mode;
+
+        bool isAuthenticatedAtlasUser = await AuthenticationStateProvider.IsAuthenticatedAtlasUser().ConfigureAwait(false);
+
+        if (isAuthenticatedAtlasUser)
+        {
+            string theme = _mode == DesignThemeModes.Dark ? AtlasConstants.THEME_DARK : AtlasConstants.THEME_LIGHT;
+
+            IResponse<bool> response = await UserRequests.SetThemeAsync(theme).ConfigureAwait(false);
+
+            GetResponse(response);
+        }
+    }
+}

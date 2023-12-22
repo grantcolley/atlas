@@ -1,0 +1,18 @@
+﻿@page "/PageRouter/{PageCode}"
+@page "/PageRouter/{PageCode}/{Id:int?}"
+@page "/PageRouter/Reset/{PageCode}/{ResetBreadcrumbRoot:bool?}"
+
+@inherits PageRouterBase
+
+<AuthorizeView>
+    <Authorized Context="page">
+        @if (_pageArgs == null)
+        {
+            <Loading Title="Loading Title" Message="Loading message..."/>
+        }
+        else
+        {
+            <DynamicComponent @key=_pageArgs.PageCode Type="_pageArgs.GetComponentType()" Parameters="_pageArgs.ToParametersDictionary()" />
+        }
+    </Authorized>
+</AuthorizeView>
