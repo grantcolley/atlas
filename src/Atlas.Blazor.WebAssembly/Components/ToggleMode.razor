@@ -47,11 +47,11 @@ else
 
         bool isAuthenticatedAtlasUser = false;
 
-        if (isAuthenticatedAtlasUser)
-        {
+        // if (isAuthenticatedAtlasUser)
+        // {
             string theme = _mode == DesignThemeModes.Dark ? AtlasConstants.THEME_DARK : AtlasConstants.THEME_LIGHT;
 
             await UserRequests.SetThemeAsync(theme).ConfigureAwait(false);
-        }
+        // }
     }
 }

@@ -1,12 +1,12 @@
-using Atlas.Blazor.Web.App.Account;
+using Atlas.Blazor.Web.App.Interfaces;
 using Atlas.Blazor.Web.App.Components;
+using Atlas.Blazor.Web.App.Services;
 using Atlas.Core.Authentication;
 using Atlas.Core.Constants;
 using Atlas.Requests.API;
 using Atlas.Requests.Interfaces;
 using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.FluentUI.AspNetCore.Components;
@@ -20,8 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents()
-    .AddInteractiveWebAssemblyComponents();
+    .AddInteractiveServerComponents();
 
 builder.Services.AddFluentUIComponents();
 
@@ -51,9 +50,8 @@ builder.Services.AddHttpClient(AtlasConstants.ATLAS_API, client =>
 
 builder.Services.AddScoped<ITooltipService, TooltipService>();
 builder.Services.AddScoped<TokenProvider>();
-builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
-//builder.Services.AddScoped<IStateNotificationService, StateNotificationService>();
-builder.Services.AddTransient<IDialogService, DialogService>();
+builder.Services.AddScoped<IStateNotificationService, StateNotificationService>();
+//builder.Services.AddTransient<IDialogService, DialogService>();
 
 builder.Services.AddTransient<IUserRequests, UserRequests>(sp =>
 {
@@ -104,9 +102,8 @@ app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
-    .AddAdditionalAssemblies(typeof(Weather.Client._Imports).Assembly, typeof(Atlas.Blazor.WebAssembly._Imports).Assembly)
-    .AddInteractiveServerRenderMode()
-    .AddInteractiveWebAssemblyRenderMode();
+    .AddAdditionalAssemblies(typeof(Weather.Client._Imports).Assembly)
+    .AddInteractiveServerRenderMode();
 
 app.UseAuthentication();
 
