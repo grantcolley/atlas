@@ -39,9 +39,12 @@ namespace Atlas.Requests.API
                 .ConfigureAwait(false);
         }
 
-        public async Task SetThemeAsync(string theme)
+        public async Task<IResponse<bool>> SetThemeAsync(string theme)
         {
-            await _httpClient.PostAsJsonAsync(AtlasAPIEndpoints.SET_THEME, theme)
+            using var response = await _httpClient.PostAsJsonAsync(AtlasAPIEndpoints.SET_THEME, theme)
+                .ConfigureAwait(false);
+
+            return await GetResponseAsync<bool>(response)
                 .ConfigureAwait(false);
         }
 
