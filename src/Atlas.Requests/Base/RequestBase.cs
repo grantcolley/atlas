@@ -18,6 +18,7 @@ namespace Atlas.Requests.Base
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
 
             if (tokenProvider != null
+                && !string.IsNullOrWhiteSpace(tokenProvider.AccessToken)
                 && _httpClient.DefaultRequestHeaders.Authorization == null)
             {
                 _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {tokenProvider.AccessToken}");
