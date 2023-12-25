@@ -1,5 +1,6 @@
-using Atlas.Blazor.Web.App.Interfaces;
 using Atlas.Blazor.Web.App.Components;
+using Atlas.Blazor.Web.App.Interfaces;
+using Atlas.Blazor.Web.App.Routing;
 using Atlas.Blazor.Web.App.Services;
 using Atlas.Core.Authentication;
 using Atlas.Core.Constants;
@@ -43,10 +44,10 @@ builder.Services.AddHttpClient(AtlasConstants.ATLAS_API, client =>
     client.BaseAddress = new Uri("https://localhost:44420");
 });
 
-//builder.Services.AddSingleton<IPageRouterService, PageRouterService>(sp =>
-//{
-//    return new PageRouterService(PageRouterHelper.GetPageArgs());
-//});
+builder.Services.AddSingleton<IPageRouterService, PageRouterService>(sp =>
+{
+    return new PageRouterService(PageRouterConfiguration.GetPageArgs());
+});
 
 builder.Services.AddScoped<ITooltipService, TooltipService>();
 builder.Services.AddScoped<TokenProvider>();
