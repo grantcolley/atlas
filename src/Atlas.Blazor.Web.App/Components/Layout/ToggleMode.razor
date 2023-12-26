@@ -26,11 +26,6 @@ else
 
     private DesignThemeModes _mode;
 
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-    }
-
     private async Task ChangeToDarkModeAsync()
     {
         await ToggleModeAsync(DesignThemeModes.Dark).ConfigureAwait(false);
