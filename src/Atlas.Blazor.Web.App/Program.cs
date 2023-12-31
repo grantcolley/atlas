@@ -1,4 +1,5 @@
 using Atlas.Blazor.Web.App.Components;
+using Atlas.Blazor.Web.App.Identity;
 using Atlas.Blazor.Web.App.Interfaces;
 using Atlas.Blazor.Web.App.Routing;
 using Atlas.Blazor.Web.App.Services;
@@ -39,10 +40,12 @@ builder.Services
         options.Audience = builder.Configuration["Auth0:Audience"] ?? throw new NullReferenceException("Auth0:Audience");
     });
 
+builder.Services.AddCircuitServicesAccessor();
+
 builder.Services.AddHttpClient(AtlasConstants.ATLAS_API, client =>
 {
     client.BaseAddress = new Uri("https://localhost:44420");
-});
+}).AddHttpMessageHandler<AuthenticationStateHandler>();
 
 builder.Services.AddSingleton<IPageRouterService, PageRouterService>(sp =>
 {
@@ -52,6 +55,7 @@ builder.Services.AddSingleton<IPageRouterService, PageRouterService>(sp =>
 builder.Services.AddScoped<ITooltipService, TooltipService>();
 builder.Services.AddScoped<TokenProvider>();
 builder.Services.AddScoped<IStateNotificationService, StateNotificationService>();
+builder.Services.AddTransient<AuthenticationStateHandler>();
 //builder.Services.AddTransient<IDialogService, DialogService>();
 
 builder.Services.AddTransient<IUserRequests, UserRequests>(sp =>
