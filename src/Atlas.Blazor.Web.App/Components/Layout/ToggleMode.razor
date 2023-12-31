@@ -1,6 +1,4 @@
-﻿@rendermode InteractiveServer
-
-@inherits AtlasComponentBase;
+﻿@inherits AtlasComponentBase;
 
 <FluentDesignTheme @bind-Mode="@_mode" StorageName="@AtlasConstants.ATLAS_THEME_STORAGE" />
 
@@ -17,12 +15,14 @@ else
     <FluentTooltip Anchor="dark" Position=TooltipPosition.Start>Dark mode</FluentTooltip>
 }
 
+@using Atlas.Blazor.Web.App.Identity
+
 @code {
     [Inject]
-    public IUserRequests? UserRequests { get; set; }
+    internal AuthenticationStateProvider? AuthenticationStateProvider { get; set; }
 
     [Inject]
-    internal AuthenticationStateProvider? AuthenticationStateProvider { get; set; }
+    public IUserRequests? UserRequests { get; set; }
 
     private DesignThemeModes _mode;
 
@@ -38,15 +38,8 @@ else
 
     private async Task ToggleModeAsync(DesignThemeModes mode)
     {
-        if (UserRequests == null)
-        {
-            throw new NullReferenceException(nameof(UserRequests));
-        }
-
-        if (AuthenticationStateProvider == null)
-        {
-            throw new ArgumentNullException(nameof(AuthenticationStateProvider));
-        }
+        if (UserRequests == null) throw new NullReferenceException(nameof(UserRequests));
+        if (AuthenticationStateProvider == null) throw new ArgumentNullException(nameof(AuthenticationStateProvider));
 
         _mode = mode;
 
