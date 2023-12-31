@@ -6,3 +6,23 @@
         </Found>
     </Router>
 </CascadingAuthenticationState>
+
+@code {
+    [Inject]
+    public TokenProvider? TokenProvider { get; set; }
+
+    [CascadingParameter]
+    public HttpContext? HttpContext { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (HttpContext == null) throw new NullReferenceException(nameof(HttpContext));
+        if (TokenProvider == null) throw new NullReferenceException(nameof(TokenProvider));
+
+        await base.OnInitializedAsync().ConfigureAwait(false);
+
+        TokenProvider.AccessToken = await HttpContext.GetTokenAsync("access_token").ConfigureAwait(false);
+        TokenProvider.RefreshToken = await HttpContext.GetTokenAsync("refresh_token").ConfigureAwait(false);
+        TokenProvider.IdToken = await HttpContext.GetTokenAsync("id_token").ConfigureAwait(false);
+    }
+}
