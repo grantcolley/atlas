@@ -2,6 +2,7 @@
 using Atlas.Blazor.Web.App.Interfaces;
 using Atlas.Blazor.Web.App.Models;
 using Atlas.Core.Authentication;
+using Atlas.Requests.Base;
 using Atlas.Requests.Interfaces;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -22,32 +23,39 @@ namespace Atlas.Blazor.Web.App.Base
         public IStateNotificationService? StateNotificationService { get; set; }
 
         [Inject]
-        public TokenProvider? SourceTokenProvider { get; set; }
+        public TokenProvider? TokenProvider { get; set; }
 
         //[Inject]
         //public IDialogService? DialogService { get; set; }
 
-        protected TokenProvider? TokenProvider;
+        private TokenProvider? _tokenProvider;
 
         private PersistingComponentStateSubscription persistingComponentStateSubscription;
 
-        protected override Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
             if (ApplicationState == null) throw new NullReferenceException(nameof(ApplicationState));
-            if (SourceTokenProvider == null) throw new NullReferenceException(nameof(SourceTokenProvider));
+            if (TokenProvider == null) throw new NullReferenceException(nameof(TokenProvider));
 
             persistingComponentStateSubscription = ApplicationState.RegisterOnPersisting(PersistTokenProvider);
 
             if (ApplicationState.TryTakeFromJson<TokenProvider>(PersistState.TOKEN_PROVIDER, out var tokenProvider))
             {
-                TokenProvider = tokenProvider;
+                _tokenProvider = tokenProvider;
             }
             else
             {
-                TokenProvider = SourceTokenProvider;
+                _tokenProvider = TokenProvider;
             }
 
-            return base.OnInitializedAsync();
+            base.OnInitialized();
+        }
+
+        protected void SetBearerToken(IRequestBase? requestBase)
+        {
+            if (requestBase == null) throw new NullReferenceException(nameof(requestBase));
+
+            requestBase.SetBearerToken(_tokenProvider);
         }
 
         private Task PersistTokenProvider()
@@ -55,7 +63,7 @@ namespace Atlas.Blazor.Web.App.Base
             if (ApplicationState == null) throw new NullReferenceException(nameof(ApplicationState));
             if (TokenProvider == null) throw new NullReferenceException(nameof(TokenProvider));
 
-            ApplicationState.PersistAsJson(PersistState.TOKEN_PROVIDER, SourceTokenProvider);
+            ApplicationState.PersistAsJson(PersistState.TOKEN_PROVIDER, TokenProvider);
 
             return Task.CompletedTask;
         }
