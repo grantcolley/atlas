@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace Atlas.Requests.Base
 {
-    public abstract class RequestBase
+    public abstract class RequestBase : IRequestBase
     {
         protected readonly HttpClient _httpClient;
 
@@ -17,7 +17,13 @@ namespace Atlas.Requests.Base
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
 
-            if (tokenProvider != null
+            SetBearerToken(tokenProvider);
+        }
+
+        public void SetBearerToken(TokenProvider? tokenProvider)
+        {
+            if (_httpClient != null
+                && tokenProvider != null
                 && !string.IsNullOrWhiteSpace(tokenProvider.AccessToken)
                 && _httpClient.DefaultRequestHeaders.Authorization == null)
             {
