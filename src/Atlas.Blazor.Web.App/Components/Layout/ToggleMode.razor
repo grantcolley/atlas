@@ -26,6 +26,13 @@ else
 
     private DesignThemeModes _mode;
 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        SetBearerToken(UserRequests);
+    }
+
     private async Task ChangeToDarkModeAsync()
     {
         await ToggleModeAsync(DesignThemeModes.Dark).ConfigureAwait(false);
