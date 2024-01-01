@@ -3,7 +3,7 @@ using System.Security.Claims;
 
 namespace Atlas.Requests.Interfaces
 {
-    public interface IUserRequests
+    public interface IUserRequests : IRequestBase
     {
         Task<string?> GetThemeAsync();
         Task<IResponse<bool>> SetThemeAsync(string theme);
