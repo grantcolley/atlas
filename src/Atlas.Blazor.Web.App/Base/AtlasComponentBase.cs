@@ -39,7 +39,7 @@ namespace Atlas.Blazor.Web.App.Base
 
             persistingComponentStateSubscription = ApplicationState.RegisterOnPersisting(PersistTokenProvider);
 
-            if (ApplicationState.TryTakeFromJson<TokenProvider>(PersistState.TOKEN_PROVIDER, out var tokenProvider))
+            if (ApplicationState.TryTakeFromJson<TokenProvider>($"{GetType().Name}-{PersistState.TOKEN_PROVIDER}", out var tokenProvider))
             {
                 _tokenProvider = tokenProvider;
             }
@@ -63,7 +63,7 @@ namespace Atlas.Blazor.Web.App.Base
             if (ApplicationState == null) throw new NullReferenceException(nameof(ApplicationState));
             if (TokenProvider == null) throw new NullReferenceException(nameof(TokenProvider));
 
-            ApplicationState.PersistAsJson(PersistState.TOKEN_PROVIDER, TokenProvider);
+            ApplicationState.PersistAsJson($"{GetType().Name}-{PersistState.TOKEN_PROVIDER}", TokenProvider);
 
             return Task.CompletedTask;
         }
