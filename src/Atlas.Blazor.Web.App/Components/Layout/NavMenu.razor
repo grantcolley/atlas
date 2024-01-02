@@ -2,10 +2,30 @@
 @attribute [StreamRendering]
 
 <nav>
-    <FluentNavMenu Width="250" Collapsible="true" Title="Custom navigation menu">
-        <FluentNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icon.FromImageUrl("/images/home.svg")" IconColor="Color.Accent">Home</FluentNavLink>
-        <FluentNavLink Href="counter" Icon="@Icon.FromImageUrl("/images/counter.svg")" IconColor="Color.Accent">Counter</FluentNavLink>
-        <FluentNavLink Href="weather" Icon="@Icon.FromImageUrl("/images/weather.svg")" IconColor="Color.Accent">Weather</FluentNavLink>
+    <FluentNavMenu Width="250" Collapsible="true" Title="Atlas navigation menu">
+
+        @if (_modules != null)
+        {
+            @foreach (Module module in _modules)
+            {
+                <FluentNavGroup Expanded="true" Title="@module.Name" Icon="@(new Icons.Regular.Size20.EarthLeaf())">
+
+                    @foreach(Category category in module.Categories)
+                    {
+                        <FluentNavGroup Expanded="true" Title="@category.Name" Icon="@(new Icons.Regular.Size20.EarthLeaf())">
+
+                            @foreach(MenuItem menuItem in category.MenuItems)
+                            {
+                                <FluentNavLink Href=@($@"{menuItem.NavigatePage}\Reset\{menuItem.PageCode}\{true}") @onclick:stopPropagation="true" Icon="@(new Icons.Regular.Size20.LeafOne())">@menuItem.Name</FluentNavLink>
+                            }
+
+                        </FluentNavGroup>
+                    }
+
+                </FluentNavGroup>
+            }
+        }
+
     </FluentNavMenu>
 </nav>
 
