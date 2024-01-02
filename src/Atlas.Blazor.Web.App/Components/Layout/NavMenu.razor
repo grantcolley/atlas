@@ -1,6 +1,5 @@
-﻿@* To get access to all Fluent UI System icons, install the Microsoft.FluentUI.AspNetCore.Compoents.Icon package *@
-@* See all the diffeent ways on how to use icons at https://www.fluentui-blazor.net/Icon *@
-@rendermode InteractiveServer
+﻿@inherits AtlasComponentBase;
+@attribute [StreamRendering]
 
 <nav>
     <FluentNavMenu Width="250" Collapsible="true" Title="Custom navigation menu">
@@ -10,4 +9,59 @@
     </FluentNavMenu>
 </nav>
 
+@code {
+    [Inject]
+    internal IUserRequests? UserRequests { get; set; }
 
+    [Inject]
+    internal AuthenticationStateProvider? AuthenticationStateProvider { get; set; }
+
+    private IEnumerable<Module>? _modules = new List<Module>();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        SetBearerToken(UserRequests);
+    }
+
+    protected async override Task OnParametersSetAsync()
+    {
+        if (AuthenticationStateProvider == null)
+        {
+            throw new ArgumentNullException(nameof(AuthenticationStateProvider));    
+        }
+
+        if (UserRequests == null)
+        {
+            throw new ArgumentNullException(nameof(UserRequests));
+        }
+
+        bool isAuthenticatedAtlasUser = await AuthenticationStateProvider.IsAuthenticatedAtlasUser().ConfigureAwait(false);
+
+        if (isAuthenticatedAtlasUser)
+        {
+            _modules = await UserRequests.GetClaimModulesAsync().ConfigureAwait(false);
+        }
+
+        await base.OnParametersSetAsync().ConfigureAwait(false);
+    }
+
+    // private RenderFragment RenderModule(Module module) => __builder =>
+    // {
+    //     @if (module != null)
+    //     {
+    //         <MudNavGroup Title="@module.Name" Icon=@IconHelper.GetOutlined(module.Icon) HideExpandIcon="true" Expanded="true">
+    //             @foreach (var category in module.Categories)
+    //             {
+    //                 <MudNavGroup Title="@category.Name" Icon=@IconHelper.GetOutlined(category.Icon) HideExpandIcon="true" Expanded="true">
+    //                     @foreach (var menuItem in category.MenuItems)
+    //                     {
+    //                         <MudNavLink Href=@($@"{menuItem.NavigatePage}\Reset\{menuItem.PageCode}\{true}") Icon=@IconHelper.GetOutlined(menuItem.Icon) @onclick:stopPropagation="true" Match="NavLinkMatch.All">@menuItem.Name</MudNavLink>
+    //                     }
+    //                 </MudNavGroup>
+    //             }
+    //         </MudNavGroup>
+    //     }
+    // };
+}
