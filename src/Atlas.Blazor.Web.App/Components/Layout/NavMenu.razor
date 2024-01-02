@@ -1,11 +1,11 @@
 ﻿@inherits AtlasComponentBase;
 @attribute [StreamRendering]
 
-<nav>
-    <FluentNavMenu Width="250" Collapsible="true" Title="Atlas navigation menu">
+@if (_modules != null)
+{
+    <nav>
+        <FluentNavMenu Width="250" Collapsible="true" Title="Atlas navigation menu">
 
-        @if (_modules != null)
-        {
             @foreach (Module module in _modules)
             {
                 <FluentNavGroup Expanded="true" Title="@module.Name" Icon="@(new Icons.Regular.Size20.EarthLeaf())">
@@ -24,10 +24,10 @@
 
                 </FluentNavGroup>
             }
-        }
 
-    </FluentNavMenu>
-</nav>
+        </FluentNavMenu>
+    </nav>
+}
 
 @code {
     [Inject]
