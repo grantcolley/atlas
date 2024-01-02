@@ -34,7 +34,7 @@
     [Inject]
     internal AuthenticationStateProvider? AuthenticationStateProvider { get; set; }
 
-    private DesignThemeModes _mode;
+    private DesignThemeModes _mode = DesignThemeModes.System;
     private OfficeColor? _officeColor = OfficeColor.Default;
 
     protected async override Task OnInitializedAsync()
