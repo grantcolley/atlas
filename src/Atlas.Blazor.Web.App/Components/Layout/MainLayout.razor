@@ -10,7 +10,11 @@
         <ToggleMode @rendermode="InteractiveServer" />
     </FluentToolbar>
     <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
-        <NavMenu @rendermode="InteractiveServer" />
+        <AuthorizeView>
+            <Authorized>
+                <NavMenu @rendermode="InteractiveServer" />
+            </Authorized>
+        </AuthorizeView>
         <FluentBodyContent>
             <div class="content">
                 @Body
