@@ -1,0 +1,22 @@
+﻿@using Atlas.Core.Dynamic
+@using Microsoft.AspNetCore.Components.Forms
+
+@* @attribute [StreamRendering] *@
+@typeparam T where T : class, new()
+@inherits GenericModelsViewBase<T>
+
+@if (!Loaded)
+{
+    <Loading Title="@PageArgs?.DisplayName" Message="Loading..." />
+}
+else
+{
+    <FluentDataGrid Id="genericModelsSource" Items="@Source" GridTemplateColumns="1fr 1fr 1fr 2fr" TGridItem=@T>
+
+        @foreach (string field in Fields)
+        {
+            <PropertyColumn Title="@field" Property="@(f => DynamicType.GetValue(f, field))" Sortable="true" Align=Align.Start />
+        }
+
+    </FluentDataGrid>
+}

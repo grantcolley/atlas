@@ -41,6 +41,7 @@ builder.Services
     });
 
 builder.Services.AddCircuitServicesAccessor();
+builder.Services.AddCascadingAuthenticationState();
 
 builder.Services.AddHttpClient(AtlasConstants.ATLAS_API, client =>
 {
@@ -89,7 +90,6 @@ builder.Services.AddTransient<IWeatherForecastRequests, WeatherForecastRequests>
     var httpClient = httpClientFactory.CreateClient(AtlasConstants.ATLAS_API);
     return new WeatherForecastRequests(httpClient, tokenProvider);
 });
-
 
 var app = builder.Build();
 

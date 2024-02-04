@@ -1,17 +1,15 @@
-﻿<div style="position: absolute; text-align: center; top: 30vh; width: 100%;">
+﻿<FluentStack Orientation="Orientation.Vertical">
+    <div style="position: absolute; text-align: center; top: 30vh; width: 100%;">
+        @if(!string.IsNullOrWhiteSpace(Title))
+        {
+            <FluentLabel Typo="Typography.Header">@Title</FluentLabel>
+        }
 
-    @if(!string.IsNullOrWhiteSpace(Title))
-    {
-        <FluentLabel Typo="Typography.Header">@Title</FluentLabel>
-    }
-
-    @if(!string.IsNullOrWhiteSpace(Message))
-    {
-        <p>
+        @if(!string.IsNullOrWhiteSpace(Message))
+        {
             <FluentLabel Typo="Typography.Body">@Message</FluentLabel>
-        </p>
-    }
+        }
 
-    <FluentProgressRing Width="64px" />
-
-</div>
+        <FluentProgressRing Width="64px" />
+    </div>
+</FluentStack>

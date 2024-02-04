@@ -1,0 +1,6 @@
+﻿@inherits GenericPageArgsBase
+
+@if (PageArgs != null)
+{
+    <GenericModelsView T="Module" @rendermode="new InteractiveServerRenderMode(/*prerender: false*/)" PageArgs="@PageArgs" Endpoint="@AtlasAPIEndpoints.GET_MODULES" />
+}

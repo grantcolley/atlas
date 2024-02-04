@@ -1,6 +1,7 @@
 ﻿using Atlas.Blazor.Web.App.Constants;
 using Microsoft.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components;
+using System.Diagnostics;
 
 namespace Atlas.Blazor.Web.App.Pages
 {
@@ -19,6 +20,8 @@ namespace Atlas.Blazor.Web.App.Pages
 
         protected override void OnInitialized()
         {
+            Debug.WriteLine($"### {GetType().Name} - AlertBase - OnInitialized - START");
+
             _intent = AlertType switch
             {
                 Alerts.INFO => MessageIntent.Info,
@@ -29,6 +32,8 @@ namespace Atlas.Blazor.Web.App.Pages
             };
 
             base.OnInitialized();
+
+            Debug.WriteLine($"### {GetType().Name} - AlertBase - OnInitialized - END");
         }
     }
 }

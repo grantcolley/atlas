@@ -26,11 +26,15 @@ else
 
     private DesignThemeModes _mode;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync START");
+
+        await base.OnInitializedAsync();
 
         SetBearerToken(UserRequests);
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync END");
     }
 
     private async Task ChangeToDarkModeAsync()

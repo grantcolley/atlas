@@ -2,7 +2,7 @@
 
 namespace Atlas.Requests.Interfaces
 {
-    public interface IOptionsRequest
+    public interface IOptionsRequest : IRequestBase
     {
         Task<IResponse<IEnumerable<OptionItem>?>> GetOptionItems(IEnumerable<OptionsArg> optionsArgs);
         Task<IResponse<IEnumerable<T>>> GetOptionItemsAsync<T>(IEnumerable<OptionsArg> optionsArgs);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Atlas.Core.Authentication;
+using System;
 using System.Collections.Generic;
 
 namespace Atlas.Blazor.Web.App.Models
@@ -11,7 +12,9 @@ namespace Atlas.Blazor.Web.App.Models
         public string? RoutingPage { get; set; } = string.Empty;
         public string? RoutingPageCode { get; set; } = string.Empty;
         public int ModelInstanceId { get; private set; }
-        public Dictionary<string, object> ModelParameters { get; set; } = new (); 
+        public TokenProvider? TokenProvider { get; set; }
+
+        public Dictionary<string, string> ModelParameters { get; set; } = new (); 
 
         public void SetModelInstanceId(int id)
         {

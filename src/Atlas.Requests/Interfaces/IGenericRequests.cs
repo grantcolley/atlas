@@ -1,6 +1,6 @@
 ﻿namespace Atlas.Requests.Interfaces
 {
-    public interface IGenericRequests
+    public interface IGenericRequests : IRequestBase
     {
         Task<IResponse<IEnumerable<T>>> GetListAsync<T>(string endpoint) where T : class, new();
         Task<IResponse<T>> GetModelAsync<T>(int id, string endpoint) where T : class, new();

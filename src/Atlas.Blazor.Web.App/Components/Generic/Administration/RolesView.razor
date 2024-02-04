@@ -1,0 +1,6 @@
+﻿@inherits GenericPageArgsBase
+
+@if (PageArgs != null)
+{
+    <GenericModelsView T="Role" PageArgs="@PageArgs" Endpoint="@AtlasAPIEndpoints.GET_ROLES" />
+}

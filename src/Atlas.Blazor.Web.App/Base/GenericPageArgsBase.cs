@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Components;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Atlas.Blazor.Web.App.Pages;
+using Atlas.Core.Dynamic;
 
 namespace Atlas.Blazor.Web.App.Base
 {
-    public abstract class AtlasComponentBase : ComponentBase, IDisposable
+    public class GenericPageArgsBase : ComponentBase, IDisposable
     {
         [Inject]
         public PersistentComponentState? ApplicationState { get; set; }
@@ -22,45 +24,52 @@ namespace Atlas.Blazor.Web.App.Base
         public IStateNotificationService? StateNotificationService { get; set; }
 
         [Inject]
-        public TokenProvider? TokenProvider { get; set; }
+        public IGenericRequests? GenericRequests { get; set; }
+
+        [Parameter]
+        public PageArgs? PageArgs { get; set; }
+
+        protected TokenProvider? TokenProvider { get; set; }
 
         //[Inject]
         //public IDialogService? DialogService { get; set; }
 
-        public TokenProvider? LocalTokenProvider { get; set; }
+        //private TokenProvider? _tokenProvider;
 
         private PersistingComponentStateSubscription persistingComponentStateSubscription;
 
         protected override async Task OnInitializedAsync()
         {
+            if (PageArgs == null) throw new NullReferenceException(nameof(PageArgs));
             if (ApplicationState == null) throw new NullReferenceException(nameof(ApplicationState));
 
-            Debug.WriteLine($"### {GetType().Name} - AtlasComponentBase - OnInitializedAsync - START {TokenProvider?.AccessToken?.Substring(0, 10)}");
+            Debug.WriteLine($"### {GetType().Name} - GenericPageArgsBase - OnInitializedAsync - START {TokenProvider?.AccessToken?.Substring(0, 10)}");
 
-            if (TokenProvider != null)
+            await base.OnInitializedAsync();
+
+            TokenProvider = PageArgs.TokenProvider;
+
+            if (ApplicationState.TryTakeFromJson<TokenProvider>($"{GetType().Name}-{PersistState.TOKEN_PROVIDER}", out TokenProvider? tokenProvider))
             {
-                if (ApplicationState.TryTakeFromJson<TokenProvider>($"{GetType().Name}-{PersistState.TOKEN_PROVIDER}", out TokenProvider? tokenProvider))
-                {
-                    Debug.WriteLine($"### {GetType().Name} - AtlasComponentBase - OnInitializedAsync - TryTakeFromJson - {GetType().Name}-{PersistState.TOKEN_PROVIDER} - TRUE - {tokenProvider?.AccessToken?.Substring(0, 10)}");
-                    LocalTokenProvider = tokenProvider;
-                }
-                else
-                {
-                    persistingComponentStateSubscription = ApplicationState.RegisterOnPersisting(PersistTokenProvider);
-
-                    Debug.WriteLine($"### {GetType().Name} - AtlasComponentBase - OnInitializedAsync - TryTakeFromJson - {GetType().Name}-{PersistState.TOKEN_PROVIDER} - FALSE - {TokenProvider?.AccessToken?.Substring(0, 10)}");
-                    LocalTokenProvider = TokenProvider;
-                }
+                Debug.WriteLine($"### {GetType().Name} - GenericPageArgsBase - ApplicationState.TryTakeFromJson TRUE - {tokenProvider?.AccessToken?.Substring(0, 10)}");
+                TokenProvider = tokenProvider;
             }
-            
-            Debug.WriteLine($"### {GetType().Name} - AtlasComponentBase - OnInitializedAsync - END");
+            else
+            {
+                persistingComponentStateSubscription = ApplicationState.RegisterOnPersisting(PersistTokenProvider);
+
+                Debug.WriteLine($"### {GetType().Name} - GenericPageArgsBase - ApplicationState.TryTakeFromJson FALSE - {TokenProvider?.AccessToken?.Substring(0, 10)}");
+                TokenProvider = PageArgs.TokenProvider;
+            }
+
+            Debug.WriteLine($"### {GetType().Name} - GenericPageArgsBase - OnInitializedAsync - END");
         }
 
         protected void SetBearerToken(IRequestBase? requestBase)
         {
             if (requestBase == null) throw new NullReferenceException(nameof(requestBase));
-            
-            requestBase.SetBearerToken(LocalTokenProvider);
+
+            requestBase.SetBearerToken(TokenProvider);
         }
 
         protected T? GetResponse<T>(IResponse<T> response)
@@ -126,8 +135,8 @@ namespace Atlas.Blazor.Web.App.Base
                 BreadcrumbAction = breadcrumbAction
             };
 
-            await StateNotificationService.NotifyStateHasChangedAsync(StateNotifications.BREADCRUMBS, breadcrumb)
-                .ConfigureAwait(false);
+            //await StateNotificationService.NotifyStateHasChangedAsync(StateNotifications.BREADCRUMBS, breadcrumb)
+            //    .ConfigureAwait(false);
         }
 
         private Task PersistTokenProvider()
@@ -135,15 +144,15 @@ namespace Atlas.Blazor.Web.App.Base
             if (ApplicationState == null) throw new NullReferenceException(nameof(ApplicationState));
             if (TokenProvider == null) throw new NullReferenceException(nameof(TokenProvider));
 
-            Debug.WriteLine($"### {GetType().Name} - AtlasComponentBase - PersistTokenProvider - START");
+            Debug.WriteLine($"### {GetType().Name} - GenericPageArgsBase - PersistTokenProvider - START");
 
             if (!string.IsNullOrWhiteSpace(TokenProvider.AccessToken))
             {
-                Debug.WriteLine($"### {GetType().Name} - AtlasComponentBase - PersistTokenProvider - PersistAsJson - {GetType().Name}-{PersistState.TOKEN_PROVIDER} - {TokenProvider?.AccessToken?.Substring(0, 10)}");
+                Debug.WriteLine($"### {GetType().Name} - GenericPageArgsBase - PersistTokenProvider - PersistAsJson - {GetType().Name}-{PersistState.TOKEN_PROVIDER} - {TokenProvider?.AccessToken?.Substring(0, 10)}");
                 ApplicationState.PersistAsJson($"{GetType().Name}-{PersistState.TOKEN_PROVIDER}", TokenProvider);
             }
 
-            Debug.WriteLine($"### {GetType().Name} - AtlasComponentBase - PersistTokenProvider - END");
+            Debug.WriteLine($"### {GetType().Name} - GenericPageArgsBase - PersistTokenProvider - END");
 
             return Task.CompletedTask;
         }
@@ -152,7 +161,7 @@ namespace Atlas.Blazor.Web.App.Base
         {
             persistingComponentStateSubscription.Dispose();
 
-            Debug.WriteLine($"### {GetType().Name} - AtlasComponentBase - Dispose");
+            Debug.WriteLine($"### {GetType().Name} - GenericComponentBase - Dispose");
         }
     }
 }

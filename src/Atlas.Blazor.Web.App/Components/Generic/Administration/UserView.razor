@@ -1,0 +1,12 @@
+﻿@inherits GenericPageArgsBase
+
+@if (PageArgs != null)
+{
+    <GenericModelTabsView T="User" TRender="UserRender"
+               PageArgs="@PageArgs"
+               IdentityField="UserId" TitleField="UserName"
+               GetEndpoint="@AtlasAPIEndpoints.GET_USER"
+               CreateEndpoint="@AtlasAPIEndpoints.CREATE_USER"
+               UpdateEndpoint="@AtlasAPIEndpoints.UPDATE_USER"
+               DeleteEndpoint="@AtlasAPIEndpoints.DELETE_USER" />
+}

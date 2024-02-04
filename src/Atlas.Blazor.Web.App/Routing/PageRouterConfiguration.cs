@@ -13,14 +13,15 @@ namespace Atlas.Blazor.Web.App.Routing
                     new PageArgs
                     {
                         PageCode = PageCodes.MODULES,
-                        ComponentName = "Atlas.Blazor.Components.Administration.ModulesView, Atlas.Blazor",
+                        ComponentName = "Atlas.Blazor.Web.App.Components.Generic.Administration.ModulesView, Atlas.Blazor.Web.App",
                         DisplayName = "Modules",
                         RoutingPage = "PageRouter",
                         RoutingPageCode = "Module",
                         ModelParameters = new()
                         {
                             {
-                                "Fields", new List<string> { "ModuleId", "Name", "Permission" }
+                                //"Fields", "ModuleId;Name;Permission"
+                                "Fields", "Name;Permission"
                             },
                             {
                                 "IdentifierField", "ModuleId"
@@ -45,7 +46,7 @@ namespace Atlas.Blazor.Web.App.Routing
                         ModelParameters = new()
                         {
                             {
-                                "Fields", new List<string> { "CategoryId", "Name", "Permission" }
+                                "Fields", "CategoryId;Name;Permission"
                             },
                             {
                                 "IdentifierField", "CategoryId"
@@ -70,7 +71,7 @@ namespace Atlas.Blazor.Web.App.Routing
                         ModelParameters = new()
                         {
                             {
-                                "Fields", new List<string> { "MenuItemId", "Name", "Permission" }
+                                "Fields", "MenuItemId;Name;Permission"
                             },
                             {
                                 "IdentifierField", "MenuItemId"
@@ -95,7 +96,7 @@ namespace Atlas.Blazor.Web.App.Routing
                         ModelParameters = new()
                         {
                             {
-                                "Fields", new List<string> { "UserId", "UserName", "Email" }
+                                "Fields", "UserId;UserName;Email"
                             },
                             {
                                 "IdentifierField", "UserId"
@@ -120,7 +121,7 @@ namespace Atlas.Blazor.Web.App.Routing
                         ModelParameters = new()
                         {
                             {
-                                "Fields", new List<string> { "RoleId", "Name" }
+                                "Fields", "RoleId;Name"
                             },
                             {
                                 "IdentifierField", "RoleId"
@@ -145,7 +146,7 @@ namespace Atlas.Blazor.Web.App.Routing
                         ModelParameters = new()
                         {
                             {
-                                "Fields", new List<string> { "PermissionId", "Name" }
+                                "Fields", "PermissionId;Name"
                             },
                             {
                                 "IdentifierField", "PermissionId"

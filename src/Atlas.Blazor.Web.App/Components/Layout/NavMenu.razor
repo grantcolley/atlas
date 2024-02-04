@@ -1,5 +1,5 @@
-﻿@inherits AtlasComponentBase;
-@attribute [StreamRendering]
+﻿@attribute [StreamRendering]
+@inherits AtlasComponentBase;
 
 @if (_modules != null)
 {
@@ -38,15 +38,21 @@
 
     private IEnumerable<Module>? _modules = new List<Module>();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync START");
+
+        await base.OnInitializedAsync();
 
         SetBearerToken(UserRequests);
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync END");
     }
 
     protected async override Task OnParametersSetAsync()
     {
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnParametersSetAsync START");
+
         if (AuthenticationStateProvider == null)
         {
             throw new ArgumentNullException(nameof(AuthenticationStateProvider));    
@@ -65,6 +71,8 @@
         }
 
         await base.OnParametersSetAsync().ConfigureAwait(false);
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnParametersSetAsync END");
     }
 
     // private RenderFragment RenderModule(Module module) => __builder =>

@@ -4,7 +4,7 @@
 
 <FluentLayout>
     <FluentToolbar id="toolbar-fluent-components-two" style="width:100%">
-        <FluentIcon Value="@(new Icons.Regular.Size24.Globe())" />
+        <FluentIcon Value="@(new Icons.Filled.Size20.Globe())" />
         <FluentSpacer />
         <LoginDisplay />
         <ToggleMode @rendermode="InteractiveServer" />
@@ -38,11 +38,16 @@
     [Inject]
     internal AuthenticationStateProvider? AuthenticationStateProvider { get; set; }
 
+    // [Inject]
+    // public TokenProvider? tokenProvider { get; set; }
+
     private DesignThemeModes _mode = DesignThemeModes.System;
     private OfficeColor? _officeColor = OfficeColor.Default;
 
     protected async override Task OnInitializedAsync()
     {
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync START");
+
         if (UserRequests == null)
         {
             throw new NullReferenceException(nameof(UserRequests));
@@ -81,5 +86,7 @@
                 }
             }
         }
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync END");
     }
 }
