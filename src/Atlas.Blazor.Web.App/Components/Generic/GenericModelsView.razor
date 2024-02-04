@@ -18,5 +18,9 @@ else
             <PropertyColumn Title="@field" Property="@(f => DynamicType.GetValue(f, field))" Sortable="true" Align=Align.Start />
         }
 
+        <TemplateColumn Title="Edit" Align="Align.Center">
+            <FluentButton IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(() => RowButtonClick(context))" />
+        </TemplateColumn>
+
     </FluentDataGrid>
 }
