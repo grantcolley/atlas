@@ -38,7 +38,7 @@ namespace Atlas.Blazor.Web.App.Components.Generic
 
         protected T? _model;
 
-        protected DynamicType<T>? DynamicType;
+        protected DynamicType<T> DynamicType = DynamicTypeHelper.Get<T>();
 
         protected Alert? _alert;
 
@@ -68,15 +68,13 @@ namespace Atlas.Blazor.Web.App.Components.Generic
 
             await base.OnInitializedAsync();
 
-            DynamicType = DynamicTypeHelper.Get<T>();
-
-            string? breadcrumbText = null;
+            //string? breadcrumbText = null;
 
             if (PageArgs.ModelInstanceId.Equals(0))
             {
                 _model = Activator.CreateInstance<T>();
 
-                breadcrumbText = $"New {typeof(T).Name}";
+                //breadcrumbText = $"New {typeof(T).Name}";
             }
             else
             {
@@ -90,7 +88,7 @@ namespace Atlas.Blazor.Web.App.Components.Generic
                     if(_model != null
                         && !string.IsNullOrWhiteSpace(TitleField)) 
                     {
-                        breadcrumbText = $"{PageArgs.ModelInstanceId} {DynamicType.GetValue(_model, TitleField)?.ToString()}";
+                        //breadcrumbText = $"{PageArgs.ModelInstanceId} {DynamicType.GetValue(_model, TitleField)?.ToString()}";
                     }
                 }
                 else if (!string.IsNullOrWhiteSpace(response.Message))
@@ -99,8 +97,8 @@ namespace Atlas.Blazor.Web.App.Components.Generic
                 }
             }
 
-            await SendBreadcrumbAsync(BreadcrumbAction.Add, breadcrumbText)
-                .ConfigureAwait(false);
+            //await SendBreadcrumbAsync(BreadcrumbAction.Add, breadcrumbText)
+            //    .ConfigureAwait(false);
 
             CreateEditContext();
         }
