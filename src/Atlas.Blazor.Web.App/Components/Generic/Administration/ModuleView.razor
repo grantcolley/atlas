@@ -2,11 +2,13 @@
 
 @if (PageArgs != null)
 {
-    <GenericModelDocumentView T="Module" TRender="ModuleRender"
-               PageArgs="@PageArgs"
-               IdentityField="ModuleId" TitleField="Name"
-               GetEndpoint="@AtlasAPIEndpoints.GET_MODULE"
-               CreateEndpoint="@AtlasAPIEndpoints.CREATE_MODULE"
-               UpdateEndpoint="@AtlasAPIEndpoints.UPDATE_MODULE"
-               DeleteEndpoint="@AtlasAPIEndpoints.DELETE_MODULE" />
+    <GenericModelDocumentView 
+        T="Module" 
+        TRender="ModuleRender"
+        PageArgs="@PageArgs"
+        IdentityField="ModuleId" TitleField="Name"
+        GetEndpoint="@AtlasAPIEndpoints.GET_MODULE"
+        CreateEndpoint="@AtlasAPIEndpoints.CREATE_MODULE"
+        UpdateEndpoint="@AtlasAPIEndpoints.UPDATE_MODULE"
+        DeleteEndpoint="@AtlasAPIEndpoints.DELETE_MODULE" />
 }
