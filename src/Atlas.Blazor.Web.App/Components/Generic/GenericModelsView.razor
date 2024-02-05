@@ -11,14 +11,16 @@
 }
 else
 {
-    <FluentDataGrid Id="genericModelsSource" Items="@Source" GridTemplateColumns="1fr 1fr 1fr 2fr" TGridItem=@T>
+    <FluentLabel Color="Color.Accent" Typo="Typography.PageTitle">@PageArgs?.DisplayName</FluentLabel>
+
+    <FluentDataGrid Id="genericModelsSource" Items="@Source" Virtualize="true" ItemSize="46" GenerateHeader="GenerateHeaderOption.Sticky" TGridItem=@T>
 
         @foreach (string field in Fields)
         {
             <PropertyColumn Title="@field" Property="@(f => DynamicType.GetValue(f, field))" Sortable="true" Align=Align.Start />
         }
 
-        <TemplateColumn Title="Edit" Align="Align.Center">
+        <TemplateColumn Title="Edit" Align="@Align.End">
             <FluentButton IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(() => RowButtonClick(context))" />
         </TemplateColumn>
 
