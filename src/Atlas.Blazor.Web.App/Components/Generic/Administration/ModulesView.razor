@@ -2,5 +2,9 @@
 
 @if (PageArgs != null)
 {
-    <GenericModelsView T="Module" @rendermode="new InteractiveServerRenderMode(/*prerender: false*/)" PageArgs="@PageArgs" Endpoint="@AtlasAPIEndpoints.GET_MODULES" />
+    <GenericModelsView 
+        T="Module"
+        @rendermode="new InteractiveServerRenderMode()"
+        PageArgs="@PageArgs" 
+        Endpoint="@AtlasAPIEndpoints.GET_MODULES" />
 }
