@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Atlas.Blazor.Web.App.Components.Generic
 {
-    public abstract class GenericModelViewBase<T, TRender> : GenericPageArgsBase, IDisposable
+    public abstract class GenericModelViewBase<T, TRender> : GenericPageArgsBase
         where T : class, new()
         where TRender : ModelRender<T>, new()
     {
