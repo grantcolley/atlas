@@ -31,7 +31,7 @@ namespace Atlas.Blazor.Web.App.Routing
                     new PageArgs
                     {
                         PageCode = PageCodes.MODULE,
-                        ComponentName = "Atlas.Blazor.Components.Administration.ModuleView, Atlas.Blazor",
+                        ComponentName = "Atlas.Blazor.Web.App.Components.Generic.Administration.ModuleView, Atlas.Blazor.Web.App",
                         DisplayName = "Category",
                         RoutingPage = "PageRouter",
                         RoutingPageCode = "Module"
@@ -39,7 +39,7 @@ namespace Atlas.Blazor.Web.App.Routing
                     new PageArgs
                     {
                         PageCode = PageCodes.CATEGORIES,
-                        ComponentName = "Atlas.Blazor.Components.Administration.CategoriesView, Atlas.Blazor",
+                        ComponentName = "Atlas.Blazor.Web.App.Components.Generic.Administration.CategoriesView, Atlas.Blazor.Web.App",
                         DisplayName = "Categories",
                         RoutingPage = "PageRouter",
                         RoutingPageCode = "Category",
@@ -56,7 +56,7 @@ namespace Atlas.Blazor.Web.App.Routing
                     new PageArgs
                     {
                         PageCode = PageCodes.CATEGORY,
-                        ComponentName = "Atlas.Blazor.Components.Administration.CategoryView, Atlas.Blazor",
+                        ComponentName = "Atlas.Blazor.Web.App.Components.Generic.Administration.CategoryView, Atlas.Blazor.Web.App",
                         DisplayName = "Category",
                         RoutingPage = "PageRouter",
                         RoutingPageCode = "Category"
@@ -64,7 +64,7 @@ namespace Atlas.Blazor.Web.App.Routing
                     new PageArgs
                     {
                         PageCode = PageCodes.MENU_ITEMS,
-                        ComponentName = "Atlas.Blazor.Components.Administration.MenuItemsView, Atlas.Blazor",
+                        ComponentName = "Atlas.Blazor.Web.App.Components.Generic.Administration.MenuItemsView, Atlas.Blazor.Web.App",
                         DisplayName = "Menu Items",
                         RoutingPage = "PageRouter",
                         RoutingPageCode = "MenuItem",
@@ -81,7 +81,7 @@ namespace Atlas.Blazor.Web.App.Routing
                     new PageArgs
                     {
                         PageCode = PageCodes.MENU_ITEM,
-                        ComponentName = "Atlas.Blazor.Components.Administration.MenuItemView, Atlas.Blazor",
+                        ComponentName = "Atlas.Blazor.Web.App.Components.Generic.Administration.MenuItemView, Atlas.Blazor.Web.App",
                         DisplayName = "Menu Item",
                         RoutingPage = "PageRouter",
                         RoutingPageCode = "MenuItem"
@@ -89,7 +89,7 @@ namespace Atlas.Blazor.Web.App.Routing
                     new PageArgs
                     {
                         PageCode = PageCodes.USERS,
-                        ComponentName = "Atlas.Blazor.Components.Administration.UsersView, Atlas.Blazor",
+                        ComponentName = "Atlas.Blazor.Web.App.Components.Generic.Administration.UsersView, Atlas.Blazor.Web.App",
                         DisplayName = "Users",
                         RoutingPage = "PageRouter",
                         RoutingPageCode = "User",
@@ -106,7 +106,7 @@ namespace Atlas.Blazor.Web.App.Routing
                     new PageArgs
                     {
                         PageCode = PageCodes.USER,
-                        ComponentName = "Atlas.Blazor.Components.Administration.UserView, Atlas.Blazor",
+                        ComponentName = "Atlas.Blazor.Web.App.Components.Generic.Administration.UserView, Atlas.Blazor.Web.App",
                         DisplayName = "User",
                         RoutingPage = "PageRouter",
                         RoutingPageCode = "User"
@@ -114,7 +114,7 @@ namespace Atlas.Blazor.Web.App.Routing
                     new PageArgs
                     {
                         PageCode = PageCodes.ROLES,
-                        ComponentName = "Atlas.Blazor.Components.Administration.RolesView, Atlas.Blazor",
+                        ComponentName = "Atlas.Blazor.Web.App.Components.Generic.Administration.RolesView, Atlas.Blazor.Web.App",
                         DisplayName = "Roles",
                         RoutingPage = "PageRouter",
                         RoutingPageCode = "Role",
@@ -131,7 +131,7 @@ namespace Atlas.Blazor.Web.App.Routing
                     new PageArgs
                     {
                         PageCode = PageCodes.ROLE,
-                        ComponentName = "Atlas.Blazor.Components.Administration.RoleView, Atlas.Blazor",
+                        ComponentName = "Atlas.Blazor.Web.App.Components.Generic.Administration.RoleView, Atlas.Blazor.Web.App",
                         DisplayName = "Role",
                         RoutingPage = "PageRouter",
                         RoutingPageCode = "Role"
@@ -139,7 +139,7 @@ namespace Atlas.Blazor.Web.App.Routing
                     new PageArgs
                     {
                         PageCode = PageCodes.PERMISSIONS,
-                        ComponentName = "Atlas.Blazor.Components.Administration.PermissionsView, Atlas.Blazor",
+                        ComponentName = "Atlas.Blazor.Web.App.Components.Generic.Administration.PermissionsView, Atlas.Blazor.Web.App",
                         DisplayName = "Permissions",
                         RoutingPage = "PageRouter",
                         RoutingPageCode = "Permission",
@@ -156,7 +156,7 @@ namespace Atlas.Blazor.Web.App.Routing
                     new PageArgs
                     {
                         PageCode = PageCodes.PERMISSION,
-                        ComponentName = "Atlas.Blazor.Components.Administration.PermissionView, Atlas.Blazor",
+                        ComponentName = "Atlas.Blazor.Web.App.Components.Generic.Administration.PermissionView, Atlas.Blazor.Web.App",
                         DisplayName = "Permission",
                         RoutingPage = "PageRouter",
                         RoutingPageCode = "Permission"
