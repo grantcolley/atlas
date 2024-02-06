@@ -1,4 +1,4 @@
-﻿@* @using Microsoft.AspNetCore.Components.Forms
+﻿@using Microsoft.AspNetCore.Components.Forms
 
 @typeparam T where T : class, new()
 @typeparam TRender where TRender : ModelRender<T>, new()
@@ -13,7 +13,7 @@ else
     @if(_alert == null)
     {
         <EditForm EditContext="CurrentEditContext" OnValidSubmit="@SubmitAsync">
-            <FluentValidationValidator/>
+@*             <FluentValidationValidator/>
             <MudToolBar DisableGutters="true" Style="border-bottom: 1px solid gray;">
                 @if (_isSaveInProgress)
                 {
@@ -42,14 +42,14 @@ else
                         <MudIconButton Color="Color.Inherit" Icon="@Icons.Material.Filled.Delete" OnClick="DeleteAsync" />
                     </MudTooltip>
                 }
-            </MudToolBar>
+            </MudToolBar> *@
             <div class="container container-body float-start">
                 <div class="row" style="margin-top:20px;margin-bottom:20px">
-                    <MudGrid>
+@*                     <MudGrid>
                         <MudItem xs="6">
                             <GenericModelPropertyRollout T="@T" TRender="@TRender" Model="@_model" />
                         </MudItem>
-                    </MudGrid>
+                    </MudGrid> *@
                 </div>
             </div>
         </EditForm>
@@ -58,4 +58,4 @@ else
     {
         <Alert AlertType="@_alert.AlertType" Title="@_alert.Title" Message="@_alert.Message" />
     }
-} *@
+}
