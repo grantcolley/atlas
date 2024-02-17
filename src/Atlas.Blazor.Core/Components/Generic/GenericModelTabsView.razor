@@ -1,0 +1,75 @@
+﻿@* @using Microsoft.AspNetCore.Components.Forms
+
+@typeparam T where T : class, new()
+@typeparam TRender where TRender : ModelRender<T>, new()
+@inherits GenericModelTabsViewBase<T, TRender>
+
+@if (_model == null)
+{
+    <Loading Title="@_title" Message="Loading..." />
+}
+else
+{
+    @if (_alert == null)
+    {
+        <EditForm EditContext="CurrentEditContext" OnValidSubmit="@SubmitAsync">
+            <FluentValidationValidator />
+            <MudToolBar DisableGutters="true" Style="border-bottom: 1px solid gray;">
+                @if (_isSaveInProgress)
+                {
+                    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+                }
+                else if (!_isDeleteInProgress)
+                {
+                    <MudTooltip Text="Save" Arrow="true">
+                        <MudIconButton ButtonType="ButtonType.Submit" Color="Color.Inherit" Icon="@Icons.Material.Filled.Save" />
+                    </MudTooltip>
+                }
+
+                <MudText Typo="Typo.h6">@_title</MudText>
+
+                <ValidationBadge Title="@_title" Messages="@_messages" />
+
+                <MudSpacer />
+
+                @if (_isDeleteInProgress)
+                {
+                    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+                }
+                else if (!_isSaveInProgress)
+                {
+                    <MudTooltip Text="Delete" Arrow="true">
+                        <MudIconButton Color="Color.Inherit" Icon="@Icons.Material.Filled.Delete" OnClick="DeleteAsync" />
+                    </MudTooltip>
+                }
+            </MudToolBar>
+            @if(_containers != null)
+            {
+                <MudTabs Elevation="1" Rounded="true" ApplyEffectsToContainer="true">
+                    @foreach (Container container in _containers)
+                    {
+                        <MudTabPanel Text="@(container.Title)" OnClick=@(() => SetActivePage(container)) />
+                    }
+                </MudTabs>
+                @if (_activeContainer != null)
+                {
+                    <div class="container container-body float-start">
+                        <div class="row" style="margin-top:20px;margin-bottom:20px">
+                            <MudGrid>
+                                <MudItem xs="6">
+                                    <GenericModelPropertyRollout T="@T" TRender="@TRender" Model="@_model"
+                                                                 ContainerCode="@_activeContainer.ContainerCode"
+                                                                 @key=@_activeContainer.ContainerCode />
+                                </MudItem>
+                            </MudGrid>
+                        </div>
+                    </div>
+                }
+            }
+        </EditForm>
+    }
+    else
+    {
+        <Alert AlertType="@_alert.AlertType" Title="@_alert.Title" Message="@_alert.Message" />
+    }
+} *@

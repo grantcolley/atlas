@@ -1,0 +1,32 @@
+﻿@page "/alert/{AlertType}/{Title}/{Message}"
+@inherits AlertBase
+
+<FluentCard>
+
+    <FluentStack>
+
+        @{
+            switch (@AlertType)
+            {
+                case Alerts.INFO:
+                    <FluentIcon Value="@(new Icons.Regular.Size20.Info().WithColor(Color.Info))" />
+                    break;
+                case Alerts.SUCCESS:
+                    <FluentIcon Value="@(new Icons.Regular.Size20.Info().WithColor(Color.Success))" />
+                    break;
+                case Alerts.WARNING:
+                    <FluentIcon Value="@(new Icons.Regular.Size20.Warning().WithColor(Color.Warning))" />
+                    break;
+                case Alerts.ERROR:
+                    <FluentIcon Value="@(new Icons.Regular.Size20.ErrorCircle().WithColor(Color.Error))" />
+                    break;
+            }
+        }
+
+        <FluentLabel Typo="Typography.Header">@Title</FluentLabel>
+
+    </FluentStack>
+
+    <FluentLabel Typo="Typography.Body">@Message</FluentLabel>
+
+</FluentCard>
