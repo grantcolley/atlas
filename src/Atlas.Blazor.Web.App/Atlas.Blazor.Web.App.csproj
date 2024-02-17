@@ -7,14 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="Auth0.AspNetCore.Authentication" Version="1.4.0" />
-	<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.0" />
-	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0" />
-	<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.2.0" />
-	<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.2.0" />
+	<PackageReference Include="Auth0.AspNetCore.Authentication" Version="1.4.1" />
+	<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.2" />
+	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.2" />
+	<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.4.1" />
+	<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.4.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Atlas.Blazor.Core\Atlas.Blazor.Core.csproj" />
     <ProjectReference Include="..\Atlas.Core\Atlas.Core.csproj" />
     <ProjectReference Include="..\Atlas.Requests\Atlas.Requests.csproj" />
     <ProjectReference Include="..\Modules\Weather\Weather.Client\Weather.Client.csproj" />

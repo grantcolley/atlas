@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas.Blazor.Server", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas.Blazor.Web.App", "src\Atlas.Blazor.Web.App\Atlas.Blazor.Web.App.csproj", "{0A290B68-E10A-4B67-A978-4875ED982B29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas.Blazor.Core", "src\Atlas.Blazor.Core\Atlas.Blazor.Core.csproj", "{478C5FA2-7D74-4C0A-82BF-4CFF917C2F52}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas.Blazor.Core", "src\Atlas.Blazor.Core\Atlas.Blazor.Core.csproj", "{478C5FA2-7D74-4C0A-82BF-4CFF917C2F52}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
