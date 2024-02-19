@@ -104,7 +104,8 @@ app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
-    .AddAdditionalAssemblies(typeof(Weather.Client._Imports).Assembly)
+    .AddAdditionalAssemblies(typeof(Atlas.Blazor.Core.Components._Imports).Assembly, 
+                                typeof(Weather.Client._Imports).Assembly)
     .AddInteractiveServerRenderMode();
 
 app.UseAuthentication();
