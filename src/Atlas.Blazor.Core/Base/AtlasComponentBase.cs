@@ -145,6 +145,10 @@ namespace Atlas.Blazor.Core.Base
                 Debug.WriteLine($"### {GetType().Name} - AtlasComponentBase - PersistTokenProvider - PersistAsJson - {GetType().Name}-{PersistState.TOKEN_PROVIDER} - {TokenProvider?.AccessToken?.Substring(0, 10)}");
                 ApplicationState.PersistAsJson($"{GetType().Name}-{PersistState.TOKEN_PROVIDER}", TokenProvider);
             }
+            else
+            {
+                Debug.WriteLine($"### {GetType().Name} - AtlasComponentBase - PersistTokenProvider - TokenProvider.AccessToken = NULL");
+            }
 
             Debug.WriteLine($"### {GetType().Name} - AtlasComponentBase - PersistTokenProvider - END");
 
