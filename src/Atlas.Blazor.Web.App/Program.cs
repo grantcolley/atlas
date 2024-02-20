@@ -1,3 +1,5 @@
+using Atlas.Blazor.Core.Interfaces;
+using Atlas.Blazor.Core.Services;
 using Atlas.Blazor.Web.App.Components;
 using Atlas.Blazor.Web.App.Identity;
 using Atlas.Core.Authentication;
@@ -52,7 +54,7 @@ builder.Services.AddHttpClient(AtlasConstants.ATLAS_API, client =>
 
 builder.Services.AddScoped<ITooltipService, TooltipService>();
 builder.Services.AddScoped<TokenProvider>();
-//builder.Services.AddScoped<IStateNotificationService, StateNotificationService>();
+builder.Services.AddScoped<IStateNotificationService, StateNotificationService>();
 builder.Services.AddTransient<AuthenticationStateHandler>();
 //builder.Services.AddTransient<IDialogService, DialogService>();
 
