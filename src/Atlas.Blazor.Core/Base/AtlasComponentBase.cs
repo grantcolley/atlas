@@ -34,6 +34,9 @@ namespace Atlas.Blazor.Core.Base
         protected override async Task OnInitializedAsync()
         {
             if (ApplicationState == null) throw new NullReferenceException(nameof(ApplicationState));
+            if (NavigationManager == null) throw new NullReferenceException(nameof(NavigationManager));
+            if (StateNotificationService == null) throw new NullReferenceException(nameof(StateNotificationService));
+            if (TokenProvider == null) throw new NullReferenceException(nameof(TokenProvider));
 
             Debug.WriteLine($"### {GetType().Name} - AtlasComponentBase - OnInitializedAsync - START {TokenProvider?.AccessToken?.Substring(0, 10)}");
 
