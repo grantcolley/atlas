@@ -1,33 +1,35 @@
 ﻿@attribute [StreamRendering]
 @inherits AtlasComponentBase;
 
-@if (_modules != null)
-{
-    <nav>
-        <FluentNavMenu Width="250" Collapsible="true" Title="Atlas navigation menu">
+<AuthorizeView>
+    @if (_modules != null)
+    {
+        <nav>
+            <FluentNavMenu Width="250" Collapsible="true" Title="Atlas navigation menu">
 
-            @foreach (Module module in _modules)
-            {
-                <FluentNavGroup Expanded="true" Title="@module.Name" Icon="@(new Icons.Regular.Size20.EarthLeaf())">
+                @foreach (Module module in _modules)
+                {
+                    <FluentNavGroup Expanded="true" Title="@module.Name" Icon="@(new Icons.Regular.Size20.EarthLeaf())">
 
-                    @foreach(Category category in module.Categories)
-                    {
-                        <FluentNavGroup Expanded="true" Title="@category.Name" Icon="@(new Icons.Regular.Size20.EarthLeaf())">
+                        @foreach(Category category in module.Categories)
+                        {
+                            <FluentNavGroup Expanded="true" Title="@category.Name" Icon="@(new Icons.Regular.Size20.EarthLeaf())">
 
-                            @foreach(MenuItem menuItem in category.MenuItems)
-                            {
-                                <FluentNavLink Href=@($@"{menuItem.NavigatePage}\Reset\{menuItem.PageCode}\{true}") @onclick:stopPropagation="true" Icon="@(new Icons.Regular.Size20.LeafOne())">@menuItem.Name</FluentNavLink>
-                            }
+                                @foreach(MenuItem menuItem in category.MenuItems)
+                                {
+                                    <FluentNavLink Href=@($@"{menuItem.NavigatePage}\Reset\{menuItem.PageCode}\{true}") @onclick:stopPropagation="true" Icon="@(new Icons.Regular.Size20.LeafOne())">@menuItem.Name</FluentNavLink>
+                                }
 
-                        </FluentNavGroup>
-                    }
+                            </FluentNavGroup>
+                        }
 
-                </FluentNavGroup>
-            }
+                    </FluentNavGroup>
+                }
 
-        </FluentNavMenu>
-    </nav>
-}
+            </FluentNavMenu>
+        </nav>
+    }
+</AuthorizeView>
 
 @code {
     [Inject]
