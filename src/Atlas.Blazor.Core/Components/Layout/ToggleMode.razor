@@ -1,19 +1,21 @@
 ﻿@inherits AtlasComponentBase;
 
-<FluentDesignTheme @bind-Mode="@_mode" StorageName="@AtlasConstants.ATLAS_THEME_STORAGE" />
+<AuthorizeView>
+    <FluentDesignTheme @bind-Mode="@_mode" StorageName="@AtlasConstants.ATLAS_THEME_STORAGE" />
 
-@if (_mode == DesignThemeModes.Dark)
-{
-    <FluentIcon Id="light" Value="@(new Icons.Regular.Size24.Lightbulb())" OnClick="ChangeToLightModeAsync" />
+    @if (_mode == DesignThemeModes.Dark)
+    {
+        <FluentIcon Id="light" Value="@(new Icons.Regular.Size24.Lightbulb())" OnClick="ChangeToLightModeAsync" />
 
-    <FluentTooltip Anchor="light" Position=TooltipPosition.Start>Light mode</FluentTooltip>
-}
-else
-{
-    <FluentIcon Id="dark" Value="@(new Icons.Regular.Size24.WeatherMoon())" OnClick="ChangeToDarkModeAsync" />
+        <FluentTooltip Anchor="light" Position=TooltipPosition.Start>Light mode</FluentTooltip>
+    }
+    else
+    {
+        <FluentIcon Id="dark" Value="@(new Icons.Regular.Size24.WeatherMoon())" OnClick="ChangeToDarkModeAsync" />
 
-    <FluentTooltip Anchor="dark" Position=TooltipPosition.Start>Dark mode</FluentTooltip>
-}
+        <FluentTooltip Anchor="dark" Position=TooltipPosition.Start>Dark mode</FluentTooltip>
+    }
+</AuthorizeView>
 
 @code {
     [Inject]
