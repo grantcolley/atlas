@@ -17,6 +17,8 @@
         if (HttpContext == null) throw new NullReferenceException(nameof(HttpContext));
         if (NavigationManager == null) throw new NullReferenceException(nameof(NavigationManager));
 
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync START");
+
         string redirectUri = @"/";
 
         if (HttpContext.User.Identity != null
@@ -32,5 +34,7 @@
         await HttpContext.ChallengeAsync(
             Auth0Constants.AuthenticationScheme,
             authenticationProperties).ConfigureAwait(false);
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync END");
     }
 }
