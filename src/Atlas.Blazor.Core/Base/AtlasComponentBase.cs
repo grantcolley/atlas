@@ -51,7 +51,7 @@ namespace Atlas.Blazor.Core.Base
                 {
                     persistingComponentStateSubscription = ApplicationState.RegisterOnPersisting(PersistTokenProvider);
 
-                    Debug.WriteLine($"### {GetType().Name} - AtlasComponentBase - OnInitializedAsync - TryTakeFromJson - {GetType().Name}-{PersistState.TOKEN_PROVIDER} - FALSE - {TokenProvider?.AccessToken?.Substring(0, 10)}");
+                    Debug.WriteLine($"### {GetType().Name} - AtlasComponentBase - OnInitializedAsync - RegisterOnPersisting - {GetType().Name}-{PersistState.TOKEN_PROVIDER} - {TokenProvider?.AccessToken?.Substring(0, 10)}");
                     LocalTokenProvider = TokenProvider;
                 }
             }
