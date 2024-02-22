@@ -16,6 +16,8 @@
         if (HttpContext == null) throw new NullReferenceException(nameof(HttpContext));
         if (NavigationManager == null) throw new NullReferenceException(nameof(NavigationManager));
 
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync START");
+
         string redirectUri = @"/";
 
         var authenticationProperties = new LogoutAuthenticationPropertiesBuilder()
@@ -26,5 +28,7 @@
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
         NavigationManager.NavigateTo(redirectUri);
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync END");
     }
 }
