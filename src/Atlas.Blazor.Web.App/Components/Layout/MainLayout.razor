@@ -7,7 +7,11 @@
         <FluentIcon Value="@(new Icons.Filled.Size20.Globe())" />
         <FluentSpacer />
         <LoginDisplay />
-        <ToggleMode @rendermode="InteractiveServer" />
+        <AuthorizeView>
+            <Authorized>
+                <ToggleMode @rendermode="InteractiveServer" />
+            </Authorized>
+        </AuthorizeView>
     </FluentToolbar>
     <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
         <AuthorizeView>
