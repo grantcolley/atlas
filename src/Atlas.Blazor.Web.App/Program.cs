@@ -47,11 +47,6 @@ builder.Services.AddHttpClient(AtlasConstants.ATLAS_API, client =>
     client.BaseAddress = new Uri("https://localhost:44420");
 }).AddHttpMessageHandler<AuthenticationStateHandler>();
 
-//builder.Services.AddSingleton<IPageRouterService, PageRouterService>(sp =>
-//{
-//    return new PageRouterService(PageRouterConfiguration.GetPageArgs());
-//});
-
 builder.Services.AddScoped<ITooltipService, TooltipService>();
 builder.Services.AddScoped<TokenProvider>();
 builder.Services.AddScoped<IStateNotificationService, StateNotificationService>();
@@ -103,6 +98,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
