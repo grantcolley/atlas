@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text.Json.Serialization;
-using Weather.Data.Access.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,7 +51,6 @@ builder.Services.AddScoped<IClaimService, ClaimService>();
 builder.Services.AddScoped<IOptionsData, OptionsData>();
 builder.Services.AddScoped<INavigationData, NavigationData>();
 builder.Services.AddScoped<IAdministrationData, AdministrationData>();
-builder.Services.AddScoped<IWeatherForecastData, WeatherForecastData>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
