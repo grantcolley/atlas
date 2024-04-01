@@ -9,6 +9,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Atlas.Blazor.App.Client\Atlas.Blazor.App.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.3" />
+    <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.6.0" />
+    <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.6.0" />
   </ItemGroup>
 
 </Project>
