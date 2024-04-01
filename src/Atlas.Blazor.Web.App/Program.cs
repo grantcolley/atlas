@@ -1,10 +1,31 @@
 using Atlas.Blazor.Web.App.Components;
+using Auth0.AspNetCore.Authentication;
+using Microsoft.FluentUI.AspNetCore.Components;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddFluentUIComponents();
+
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+builder.Services
+    .AddAuth0WebAppAuthentication(Auth0Constants.AuthenticationScheme, options =>
+    {
+        options.Domain = builder.Configuration["Auth0:Domain"] ?? throw new NullReferenceException("Auth0:Domain");
+        options.ClientId = builder.Configuration["Auth0:ClientId"] ?? throw new NullReferenceException("Auth0:ClientId");
+        options.ClientSecret = builder.Configuration["Auth0:ClientSecret"] ?? throw new NullReferenceException("Auth0:ClientSecret");
+        options.ResponseType = "code";
+    }).WithAccessToken(options =>
+    {
+        options.Audience = builder.Configuration["Auth0:Audience"] ?? throw new NullReferenceException("Auth0:Audience");
+    });
+
+builder.Services.AddCascadingAuthenticationState();
 
 var app = builder.Build();
 
