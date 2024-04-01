@@ -1,11 +1,16 @@
-using Atlas.Blazor.Web.App.Client.Pages;
 using Atlas.Blazor.Web.App.Components;
+using Microsoft.FluentUI.AspNetCore.Components;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
+
+builder.Services.AddFluentUIComponents();
+
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 var app = builder.Build();
 
@@ -28,6 +33,7 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(Atlas.Blazor.Web.App.Client._Imports).Assembly);
+    .AddAdditionalAssemblies(typeof(Atlas.Blazor.Web.App.Client._Imports).Assembly,
+                                typeof(Atlas.Blazor.Components._Imports).Assembly);
 
 app.Run();
