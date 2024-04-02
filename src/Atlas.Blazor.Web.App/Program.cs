@@ -1,6 +1,8 @@
 using Atlas.Blazor.Web.App.Components;
+using Atlas.Core.Authentication;
 using Auth0.AspNetCore.Authentication;
 using Microsoft.FluentUI.AspNetCore.Components;
+using Microsoft.FluentUI.AspNetCore.Components.Components.Tooltip;
 using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +28,9 @@ builder.Services
     });
 
 builder.Services.AddCascadingAuthenticationState();
+
+builder.Services.AddScoped<ITooltipService, TooltipService>();
+builder.Services.AddScoped<TokenProvider>();
 
 var app = builder.Build();
 

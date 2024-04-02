@@ -1,6 +1,34 @@
-﻿<Router AppAssembly="typeof(Program).Assembly">
+﻿<Router AppAssembly="typeof(Program).Assembly"
+        AdditionalAssemblies="new [] { typeof(Atlas.Blazor.Components._Imports).Assembly}">
     <Found Context="routeData">
-        <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
+        <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
         <FocusOnNavigate RouteData="routeData" Selector="h1" />
     </Found>
 </Router>
+
+@code {
+    [Inject]
+    public TokenProvider? TokenProvider { get; set; }
+
+    [CascadingParameter]
+    public HttpContext? HttpContext { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (HttpContext == null) throw new NullReferenceException(nameof(HttpContext));
+        if (TokenProvider == null) throw new NullReferenceException(nameof(TokenProvider));
+
+        await base.OnInitializedAsync().ConfigureAwait(false);
+
+        var authorizationHeader = HttpContext.Request.Headers["access_token"];
+
+        if (authorizationHeader.ToString().StartsWith("Bearer"))
+        {
+            TokenProvider.AccessToken = authorizationHeader.ToString().Substring("Bearer ".Length).Trim();
+        }
+
+        // TokenProvider.AccessToken = await HttpContext.GetTokenAsync("access_token").ConfigureAwait(false);
+        // TokenProvider.RefreshToken = await HttpContext.GetTokenAsync("refresh_token").ConfigureAwait(false);
+        // TokenProvider.IdToken = await HttpContext.GetTokenAsync("id_token").ConfigureAwait(false);
+    }
+}

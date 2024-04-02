@@ -1,0 +1,20 @@
+﻿<AuthorizeView>
+    <Authorized>
+        
+        <FluentAnchor Id="logout" Href="logout" Target="_self" Appearance="Appearance.Lightweight" IconEnd="@(new Icons.Regular.Size20.ArrowExit())">
+            @* @context.User?.Identity?.Name  *@
+        </FluentAnchor>
+
+        <FluentTooltip Anchor="logout" Position=TooltipPosition.Bottom>Logout</FluentTooltip>
+
+    </Authorized>
+    <NotAuthorized>
+        
+        <FluentAnchor Id="login" Href="login" Target="_self" Appearance="Appearance.Lightweight" IconEnd="@(new Icons.Regular.Size20.ArrowEnter())">
+            Login
+        </FluentAnchor>
+
+        <FluentTooltip Anchor="login" Position=TooltipPosition.Bottom>Login</FluentTooltip>
+
+    </NotAuthorized>
+</AuthorizeView>
