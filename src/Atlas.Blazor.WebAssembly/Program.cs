@@ -10,6 +10,16 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
+builder.Services.AddOidcAuthentication(options =>
+{
+    var identityProvider = builder.Configuration["IdentityProvider:DefaultProvider"];
+
+    builder.Configuration.Bind(identityProvider, options.ProviderOptions);
+    options.UserOptions.RoleClaim = "role";
+    options.ProviderOptions.ResponseType = "code";
+    options.ProviderOptions.AdditionalProviderParameters.Add("audience", builder.Configuration[$"{identityProvider}:Audience"]);
+}).AddAccountClaimsPrincipalFactory<UserAccountFactory>();
+
 builder.Services.AddFluentUIComponents();
 
 builder.Services.AddAuthorizationCore();
