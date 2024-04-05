@@ -12,12 +12,10 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddOidcAuthentication(options =>
 {
-    var identityProvider = builder.Configuration["IdentityProvider:DefaultProvider"];
-
-    builder.Configuration.Bind(identityProvider, options.ProviderOptions);
+    builder.Configuration.Bind("Auth0", options.ProviderOptions);
     options.UserOptions.RoleClaim = "role";
     options.ProviderOptions.ResponseType = "code";
-    options.ProviderOptions.AdditionalProviderParameters.Add("audience", builder.Configuration[$"{identityProvider}:Audience"]);
+    options.ProviderOptions.AdditionalProviderParameters.Add("audience", builder.Configuration[$"Auth0:Audience"]);
 }).AddAccountClaimsPrincipalFactory<UserAccountFactory>();
 
 builder.Services.AddFluentUIComponents();
@@ -29,5 +27,24 @@ builder.Services.AddScoped<ITooltipService, TooltipService>();
 // https://code-maze.com/authenticationstateprovider-blazor-webassembly/
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
+app.MapGet("/login", async (HttpContext httpContext, string redirectUri = @"/") =>
+{
+    var authenticationProperties = new LoginAuthenticationPropertiesBuilder()
+            .WithRedirectUri(redirectUri)
+            .Build();
+
+    await httpContext.ChallengeAsync(Auth0Constants.AuthenticationScheme, authenticationProperties);
+});
+
+app.MapGet("/logout", async (HttpContext httpContext, string redirectUri = @"/") =>
+{
+    var authenticationProperties = new LogoutAuthenticationPropertiesBuilder()
+            .WithRedirectUri(redirectUri)
+            .Build();
+
+    await httpContext.SignOutAsync(Auth0Constants.AuthenticationScheme, authenticationProperties);
+    await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+});
 
 await builder.Build().RunAsync();
