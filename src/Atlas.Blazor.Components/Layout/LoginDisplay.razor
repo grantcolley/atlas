@@ -2,7 +2,7 @@
     <Authorized>
         
         <FluentAnchor Id="logout" Href="logout" Target="_self" Appearance="Appearance.Lightweight" IconEnd="@(new Icons.Regular.Size20.ArrowExit())">
-            @userName
+            @context.User.Identity?.Name
         </FluentAnchor>
 
         <FluentTooltip Anchor="logout" Position=TooltipPosition.Bottom>Logout</FluentTooltip>
@@ -18,25 +18,3 @@
 
     </NotAuthorized>
 </AuthorizeView>
-
-@code{
-    [Inject]
-    public AuthenticationStateProvider? AuthenticationStateProvider { get; set; }
-
-    private string? userName;
-
-    protected async override Task OnInitializedAsync()
-    {
-        if (AuthenticationStateProvider == null)
-        {
-            return;
-        }
-
-        bool isAuthenticatedAtlasUser = await AuthenticationStateProvider.IsAuthenticatedAtlasUser().ConfigureAwait(false);
-
-        if (isAuthenticatedAtlasUser)
-        {
-            userName = await AuthenticationStateProvider.AuthenticatedAtlasUserName().ConfigureAwait(false);
-        }
-    }
-}

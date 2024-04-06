@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Atlas.Blazor.Components\Atlas.Blazor.Components.csproj" />
+    <ProjectReference Include="..\Atlas.Core\Atlas.Core.csproj" />
   </ItemGroup>
 
 </Project>

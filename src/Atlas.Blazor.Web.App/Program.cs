@@ -49,7 +49,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
 
-app.MapGet("/login", async (HttpContext httpContext, string redirectUri = @"/") =>
+app.MapGet("login", async (HttpContext httpContext, string redirectUri = @"/") =>
 {
     var authenticationProperties = new LoginAuthenticationPropertiesBuilder()
             .WithRedirectUri(redirectUri)
@@ -58,7 +58,7 @@ app.MapGet("/login", async (HttpContext httpContext, string redirectUri = @"/") 
     await httpContext.ChallengeAsync(Auth0Constants.AuthenticationScheme, authenticationProperties);
 });
 
-app.MapGet("/logout", async (HttpContext httpContext, string redirectUri = @"/") =>
+app.MapGet("logout", async (HttpContext httpContext, string redirectUri = @"/") =>
 {
     var authenticationProperties = new LogoutAuthenticationPropertiesBuilder()
             .WithRedirectUri(redirectUri)
