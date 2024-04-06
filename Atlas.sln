@@ -23,9 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas.Migrations.SQLite", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas.Blazor.Components", "src\Atlas.Blazor.Components\Atlas.Blazor.Components.csproj", "{5E4FC01D-011E-41C8-AA33-5F77C8239361}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas.Blazor.WebAssembly", "src\Atlas.Blazor.WebAssembly\Atlas.Blazor.WebAssembly.csproj", "{5DA48875-BD89-494D-A87A-A81226992610}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas.Blazor.Web.App", "src\Atlas.Blazor.Web.App\Atlas.Blazor.Web.App.csproj", "{D45F0403-604F-4B70-B453-EC57E57F6ABD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas.Blazor.Web.App", "src\Atlas.Blazor.Web.App\Atlas.Blazor.Web.App.csproj", "{D45F0403-604F-4B70-B453-EC57E57F6ABD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas.Blazor.WebAssembly", "src\Atlas.Blazor.WebAssembly\Atlas.Blazor.WebAssembly.csproj", "{05079E90-9A1A-40CC-9118-11E4CA34BE62}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,14 +65,14 @@ Global
 		{5E4FC01D-011E-41C8-AA33-5F77C8239361}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E4FC01D-011E-41C8-AA33-5F77C8239361}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E4FC01D-011E-41C8-AA33-5F77C8239361}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5DA48875-BD89-494D-A87A-A81226992610}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5DA48875-BD89-494D-A87A-A81226992610}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5DA48875-BD89-494D-A87A-A81226992610}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5DA48875-BD89-494D-A87A-A81226992610}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D45F0403-604F-4B70-B453-EC57E57F6ABD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D45F0403-604F-4B70-B453-EC57E57F6ABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D45F0403-604F-4B70-B453-EC57E57F6ABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D45F0403-604F-4B70-B453-EC57E57F6ABD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05079E90-9A1A-40CC-9118-11E4CA34BE62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05079E90-9A1A-40CC-9118-11E4CA34BE62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05079E90-9A1A-40CC-9118-11E4CA34BE62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05079E90-9A1A-40CC-9118-11E4CA34BE62}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,8 +86,8 @@ Global
 		{63B373C4-A14E-4698-A159-2D32EF6E7E0F} = {3EAA21BB-8BC5-4B8A-AFDE-519610BD9CD9}
 		{9829A0EE-1814-49A6-B015-3EF0BEFAA457} = {3EAA21BB-8BC5-4B8A-AFDE-519610BD9CD9}
 		{5E4FC01D-011E-41C8-AA33-5F77C8239361} = {4D561DB1-6F2C-4895-88D3-91379F9CFEE6}
-		{5DA48875-BD89-494D-A87A-A81226992610} = {4D561DB1-6F2C-4895-88D3-91379F9CFEE6}
 		{D45F0403-604F-4B70-B453-EC57E57F6ABD} = {4D561DB1-6F2C-4895-88D3-91379F9CFEE6}
+		{05079E90-9A1A-40CC-9118-11E4CA34BE62} = {4D561DB1-6F2C-4895-88D3-91379F9CFEE6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {35D4493E-72A3-403D-AB40-7AADFBC20D09}
