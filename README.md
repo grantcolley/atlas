@@ -32,6 +32,8 @@ The Blazor WebAssembly Authentication library (`Authentication.js`) only support
 
 [Microsoft.AspNetCore.Components.WebAssembly.Authentication](https://www.nuget.org/packages/Microsoft.AspNetCore.Components.WebAssembly.Authentication) provides a set of primitives that help the app authenticate users and obtain tokens to call protected APIs.
 
+[attach-tokens-to-outgoing-requests](https://learn.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/additional-scenarios?view=aspnetcore-8.0#attach-tokens-to-outgoing-requests)
+
 ## Server Side Authentication
 
  
