@@ -41,7 +41,7 @@ The Blazor WebAssembly Authentication library (`Authentication.js`) only support
 
  # Appendix 1 Tips
  ## Toggling Dark/Light Theme
-Follow the [Fluent UI quick guide](https://fluentui-blazor.net/DesignTheme) then add this to the top of the `app.css` file in `wwwroot`:
+Follow the [Fluent UI quick guide](https://fluentui-blazor.net/DesignTheme) then import `reboot.css` by adding the following line to the top of the `app.css` file in `wwwroot`:
 
 ```C#
 @import '/_content/Microsoft.FluentUI.AspNetCore.Components/css/reboot.css';
