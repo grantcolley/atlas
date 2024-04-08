@@ -16,6 +16,8 @@
 * [Authentication](#authentication)
   * [Blazor WebAssembly Standalone Authentication](#webassembly-standalone-authentication)
   * [Blazor Server Side Authentication](#server-side-authentication)
+* [Appendix 1 Tips](#appendix-1-tips)
+  * [Toggling Dark/Light Theme](#toggling-darklight-theme) 
 
 # Hosting Models
 ## Blazor WebAssembly
@@ -36,5 +38,13 @@ The Blazor WebAssembly Authentication library (`Authentication.js`) only support
 
 ## Server Side Authentication
 
+
+ # Appendix 1 Tips
+ ## Toggling Dark/Light Theme
+Follow the [Fluent UI quick guide](https://fluentui-blazor.net/DesignTheme) then add this to the top of the `app.css` file in `wwwroot`:
+
+```C#
+@import '/_content/Microsoft.FluentUI.AspNetCore.Components/css/reboot.css';
+```
  
   
