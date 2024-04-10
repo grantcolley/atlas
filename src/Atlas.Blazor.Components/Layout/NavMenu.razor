@@ -1,0 +1,87 @@
+﻿@if (_modules != null)
+{
+    <nav>
+        <FluentNavMenu Width="250" Collapsible="true" Title="Atlas navigation menu">
+
+            @foreach (Module module in _modules)
+            {
+                <FluentNavGroup Expanded="true" Title="@module.Name" Icon="@(new Icons.Regular.Size20.EarthLeaf())">
+
+                    @foreach(Category category in module.Categories)
+                    {
+                        <FluentNavGroup Expanded="true" Title="@category.Name" Icon="@(new Icons.Regular.Size20.EarthLeaf())">
+
+                            @foreach(MenuItem menuItem in category.MenuItems)
+                            {
+                                <FluentNavLink Href=@($@"{menuItem.NavigatePage}\{menuItem.PageCode}\{true}") @onclick:stopPropagation="true" Icon="@(new Icons.Regular.Size20.LeafOne())">@menuItem.Name</FluentNavLink>
+                            }
+
+                        </FluentNavGroup>
+                    }
+
+                </FluentNavGroup>
+            }
+
+        </FluentNavMenu>
+    </nav>
+}
+
+@code {
+    [Inject]
+    internal IUserRequests? UserRequests { get; set; }
+
+    private IEnumerable<Module>? _modules = new List<Module>();
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? AuthenticationState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        ArgumentNullException.ThrowIfNull(UserRequests);
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync START");
+
+        if (AuthenticationState != null)
+        {
+            AuthenticationState authenticationState = await AuthenticationState;
+
+            if (authenticationState != null
+                && authenticationState.User != null
+                && authenticationState.User.Identity != null)
+            {
+                if (authenticationState.User.Identity.IsAuthenticated)
+                {
+                    System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync IsAuthenticated");
+
+                    _modules = await UserRequests.GetClaimModulesAsync().ConfigureAwait(false);
+                }
+            }
+        }
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync END");
+    }
+
+    protected async override Task OnParametersSetAsync()
+    {
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnParametersSetAsync START");
+
+        // if (AuthenticationStateProvider == null)
+        // {
+        //     throw new ArgumentNullException(nameof(AuthenticationStateProvider));    
+        // }
+
+        // if (UserRequests == null)
+        // {
+        //     throw new ArgumentNullException(nameof(UserRequests));
+        // }
+
+        // bool isAuthenticatedAtlasUser = await AuthenticationStateProvider.IsAuthenticatedAtlasUser().ConfigureAwait(false);
+
+        // if (isAuthenticatedAtlasUser)
+        // {
+        //     _modules = await UserRequests.GetClaimModulesAsync().ConfigureAwait(false);
+        // }
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnParametersSetAsync END");
+    }
+}
