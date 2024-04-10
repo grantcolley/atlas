@@ -8,6 +8,9 @@
 
 @code {
     [Inject]
+    public IAuthenticationService? AuthenticationService { get; set; }
+
+    [Inject]
     public TokenProvider? TokenProvider { get; set; }
 
     [CascadingParameter]
@@ -15,20 +18,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (HttpContext == null) throw new NullReferenceException(nameof(HttpContext));
-        if (TokenProvider == null) throw new NullReferenceException(nameof(TokenProvider));
+        ArgumentNullException.ThrowIfNull(HttpContext);
+        ArgumentNullException.ThrowIfNull(TokenProvider);
+        ArgumentNullException.ThrowIfNull(AuthenticationService);
 
-        await base.OnInitializedAsync().ConfigureAwait(false);
-
-        var authorizationHeader = HttpContext.Request.Headers["access_token"];
-
-        if (authorizationHeader.ToString().StartsWith("Bearer"))
-        {
-            TokenProvider.AccessToken = authorizationHeader.ToString().Substring("Bearer ".Length).Trim();
-        }
-
-        // TokenProvider.AccessToken = await HttpContext.GetTokenAsync("access_token").ConfigureAwait(false);
-        // TokenProvider.RefreshToken = await HttpContext.GetTokenAsync("refresh_token").ConfigureAwait(false);
-        // TokenProvider.IdToken = await HttpContext.GetTokenAsync("id_token").ConfigureAwait(false);
+        TokenProvider.AccessToken = await HttpContext.GetTokenAsync("access_token").ConfigureAwait(false);
+        TokenProvider.RefreshToken = await HttpContext.GetTokenAsync("refresh_token").ConfigureAwait(false);
+        TokenProvider.IdToken = await HttpContext.GetTokenAsync("id_token").ConfigureAwait(false);
     }
 }
