@@ -1,5 +1,8 @@
 using Atlas.Blazor.Web.App.Components;
 using Atlas.Core.Authentication;
+using Atlas.Core.Constants;
+using Atlas.Requests.API;
+using Atlas.Requests.Interfaces;
 using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -31,8 +34,21 @@ builder.Services
 
 builder.Services.AddCascadingAuthenticationState();
 
+builder.Services.AddHttpClient(AtlasConstants.ATLAS_API, client =>
+{
+    client.BaseAddress = new Uri("https://localhost:44420");
+});
+
 builder.Services.AddScoped<ITooltipService, TooltipService>();
 builder.Services.AddScoped<TokenProvider>();
+
+builder.Services.AddTransient<IUserRequests, UserRequests>(sp =>
+{
+    var tokenProvider = sp.GetRequiredService<TokenProvider>();
+    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    var httpClient = httpClientFactory.CreateClient(AtlasConstants.ATLAS_API);
+    return new UserRequests(httpClient, tokenProvider);
+});
 
 var app = builder.Build();
 
