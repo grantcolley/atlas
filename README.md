@@ -36,6 +36,8 @@ The Blazor WebAssembly Authentication library (`Authentication.js`) only support
 
 [attach-tokens-to-outgoing-requests](https://learn.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/additional-scenarios?view=aspnetcore-8.0#attach-tokens-to-outgoing-requests)
 
+[Additional Scenarios](https://learn.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/additional-scenarios)
+
 ## Server Side Authentication
 
 
