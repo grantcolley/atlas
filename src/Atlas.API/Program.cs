@@ -70,12 +70,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddAuthorization(o =>
-{
-    o.AddPolicy("atlas-user", p => p.
-        RequireAuthenticatedUser().
-        RequireRole("atlas-user"));
-});
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("atlas-user", policy =>
+    {
+        policy.RequireAuthenticatedUser().RequireRole("atlas-user");
+    });
 
 builder.Services.AddCors(options =>
 {
