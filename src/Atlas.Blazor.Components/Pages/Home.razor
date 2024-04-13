@@ -1,9 +1,14 @@
 ﻿@page "/"
 
-<FluentStack Orientation="Orientation.Vertical" 
-             VerticalAlignment="VerticalAlignment.Center" 
-             HorizontalAlignment="HorizontalAlignment.Center">
-    <div style="height:100px;" />
-    <FluentIcon Value="@(new Icons.Filled.Size48.Globe())" />
-    <FluentLabel Color="Color.Accent" Typo="Typography.HeroTitle">Atlas</FluentLabel>
-</FluentStack>
+<FluentGrid Spacing="10" Justify="JustifyContent.Center">
+    <FluentGridItem xs="12">
+    </FluentGridItem>
+    <FluentGridItem xs="3">
+        <FluentStack Orientation="Orientation.Horizontal"
+                        VerticalAlignment="VerticalAlignment.Center"
+                        HorizontalAlignment="HorizontalAlignment.Center">
+                        <FluentIcon Value="@(new Icons.Filled.Size48.Globe())" />
+                        <FluentLabel Color="Color.Accent" Typo="Typography.HeroTitle">Atlas</FluentLabel>
+        </FluentStack>
+    </FluentGridItem>
+</FluentGrid>
