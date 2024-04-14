@@ -26,7 +26,7 @@ namespace Atlas.Seed.Data
 
             Navigation();
 
-            AddWeatherModule();
+            //AddWeatherModule();
         }
 
         private static void TruncateTables()
@@ -130,74 +130,60 @@ namespace Atlas.Seed.Data
         {
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-            var administration = new Module { Name = "Administration", Icon = "Engineering", Order = 2, Permission = Auth.ADMIN };
+            var administration = new Module { Name = "Administration", Icon = "TableSettings", Order = 2, Permission = Auth.ADMIN };
 
             dbContext.Modules.Add(administration);
 
             dbContext.SaveChanges();
 
-            var authorisationCategory = new Category { Name = "Authorisation", Icon = "AdminPanelSettings", Order = 1, Permission = Auth.ADMIN, Module = administration };
-            var navigationCategory = new Category { Name = "Navigation", Icon = "Explore", Order = 2, Permission = Auth.DEVELOPER, Module = administration };
+            var authorisationCategory = new Category { Name = "Authorisation", Icon = "ShieldLock", Order = 1, Permission = Auth.ADMIN, Module = administration };
 
             administration.Categories.Add(authorisationCategory);
-            administration.Categories.Add(navigationCategory);
 
             dbContext.Categories.Add(authorisationCategory);
-            dbContext.Categories.Add(navigationCategory);
 
             dbContext.SaveChanges();
 
-            var usersMenuItem = new MenuItem { Name = "Users", Icon = "SupervisedUserCircle", NavigatePage = "PageRouter", Order = 1, Permission = Auth.ADMIN, Category = authorisationCategory, PageCode = PageCodes.USERS };
-            var rolesMenuItem = new MenuItem { Name = "Roles", Icon = "Lock", NavigatePage = "PageRouter", Order = 2, Permission = Auth.ADMIN, Category = authorisationCategory, PageCode = PageCodes.ROLES };
-            var permissionsMenuItem = new MenuItem { Name = "Permissions", Icon = "Key", NavigatePage = "PageRouter", Order = 3, Permission = Auth.ADMIN, Category = authorisationCategory, PageCode = PageCodes.PERMISSIONS };
-
-            var modulesMenuItem = new MenuItem { Name = "Modules", Icon = "AutoAwesomeMosaic", NavigatePage = "PageRouter", Order = 1, Permission = Auth.DEVELOPER, Category = navigationCategory, PageCode = PageCodes.MODULES };
-            var categoriesMenuItem = new MenuItem { Name = "Categories", Icon = "AutoAwesomeMotion", NavigatePage = "PageRouter", Order = 2, Permission = Auth.DEVELOPER, Category = navigationCategory, PageCode = PageCodes.CATEGORIES };
-            var menuItemsMenuItem = new MenuItem { Name = "MenuItems", Icon = "Article", NavigatePage = "PageRouter", Order = 3, Permission = Auth.DEVELOPER, Category = navigationCategory, PageCode = PageCodes.MENU_ITEMS };
+            var usersMenuItem = new MenuItem { Name = "Users", Icon = "PeopleLock", NavigatePage = "PageRouter", Order = 1, Permission = Auth.ADMIN, Category = authorisationCategory, PageCode = PageCodes.USERS };
+            var rolesMenuItem = new MenuItem { Name = "Roles", Icon = "LockMultiple", NavigatePage = "PageRouter", Order = 2, Permission = Auth.ADMIN, Category = authorisationCategory, PageCode = PageCodes.ROLES };
+            var permissionsMenuItem = new MenuItem { Name = "Permissions", Icon = "KeyMultiple", NavigatePage = "PageRouter", Order = 3, Permission = Auth.ADMIN, Category = authorisationCategory, PageCode = PageCodes.PERMISSIONS };
             
             authorisationCategory.MenuItems.Add(usersMenuItem);
             authorisationCategory.MenuItems.Add(rolesMenuItem);
             authorisationCategory.MenuItems.Add(permissionsMenuItem);
 
-            navigationCategory.MenuItems.Add(modulesMenuItem);
-            navigationCategory.MenuItems.Add(categoriesMenuItem);
-            navigationCategory.MenuItems.Add(menuItemsMenuItem);
-
             dbContext.MenuItems.Add(usersMenuItem);
             dbContext.MenuItems.Add(rolesMenuItem);
             dbContext.MenuItems.Add(permissionsMenuItem);
-            dbContext.MenuItems.Add(modulesMenuItem);
-            dbContext.MenuItems.Add(categoriesMenuItem);
-            dbContext.MenuItems.Add(menuItemsMenuItem);
 
             dbContext.SaveChanges();
         }
 
-        private static void AddWeatherModule()
-        {
-            if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
+        //private static void AddWeatherModule()
+        //{
+        //    if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-            var weather = new Module { Name = "Weather", Icon = "Thunderstorm", Order = 1, Permission = Auth.WEATHER_USER };
+        //    var weather = new Module { Name = "Weather", Icon = "Thunderstorm", Order = 1, Permission = Auth.WEATHER_USER };
 
-            dbContext.Modules.Add(weather);
+        //    dbContext.Modules.Add(weather);
 
-            dbContext.SaveChanges();
+        //    dbContext.SaveChanges();
 
-            var forecastCategory = new Category { Name = "Forecast", Icon = "WbCloudy", Order = 1, Permission = Auth.WEATHER_USER, Module = weather };
+        //    var forecastCategory = new Category { Name = "Forecast", Icon = "WbCloudy", Order = 1, Permission = Auth.WEATHER_USER, Module = weather };
 
-            weather.Categories.Add(forecastCategory);
+        //    weather.Categories.Add(forecastCategory);
 
-            dbContext.Categories.Add(forecastCategory);
+        //    dbContext.Categories.Add(forecastCategory);
 
-            dbContext.SaveChanges();
+        //    dbContext.SaveChanges();
 
-            var weatherForecastMenuItem = new MenuItem { Name = "Weather Display", Icon = "DeviceThermostat", NavigatePage = "PageRouter", Order = 1, Permission = Auth.WEATHER_USER, Category = forecastCategory, PageCode = PageCodes.WEATHER_DISPLAY };
+        //    var weatherForecastMenuItem = new MenuItem { Name = "Weather Display", Icon = "DeviceThermostat", NavigatePage = "PageRouter", Order = 1, Permission = Auth.WEATHER_USER, Category = forecastCategory, PageCode = PageCodes.WEATHER_DISPLAY };
 
-            forecastCategory.MenuItems.Add(weatherForecastMenuItem);
+        //    forecastCategory.MenuItems.Add(weatherForecastMenuItem);
 
-            dbContext.MenuItems.Add(weatherForecastMenuItem);
+        //    dbContext.MenuItems.Add(weatherForecastMenuItem);
 
-            dbContext.SaveChanges();
-        }
+        //    dbContext.SaveChanges();
+        //}
     }
 }
