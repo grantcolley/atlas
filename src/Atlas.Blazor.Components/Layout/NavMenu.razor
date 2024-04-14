@@ -5,15 +5,15 @@
 
             @foreach (Module module in _modules)
             {
-                <FluentNavGroup Expanded="true" Title="@module.Name" Icon="@(new Icons.Regular.Size20.EarthLeaf())">
+                <FluentNavGroup Expanded="true" Title="@module.Name" Icon="@IconHelper.GetRegularSize20(module.Icon)">
 
                     @foreach(Category category in module.Categories)
                     {
-                        <FluentNavGroup Expanded="true" Title="@category.Name" Icon="@(new Icons.Regular.Size20.EarthLeaf())">
+                        <FluentNavGroup Expanded="true" Title="@category.Name" Icon="@IconHelper.GetRegularSize20(category.Icon)">
 
                             @foreach(MenuItem menuItem in category.MenuItems)
                             {
-                                <FluentNavLink Href=@($@"{menuItem.NavigatePage}\{menuItem.PageCode}\{true}") @onclick:stopPropagation="true" Icon="@(new Icons.Regular.Size20.LeafOne())">@menuItem.Name</FluentNavLink>
+                                <FluentNavLink Href=@($@"{menuItem.NavigatePage}\{menuItem.PageCode}\{true}") @onclick:stopPropagation="true" Icon="@IconHelper.GetRegularSize20(menuItem.Icon)">@menuItem.Name</FluentNavLink>
                             }
 
                         </FluentNavGroup>
