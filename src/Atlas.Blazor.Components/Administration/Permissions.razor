@@ -1,5 +1,67 @@
 ﻿@page "/Permissions"
 
+<FluentLabel Color="Color.Accent" Typo="Typography.PageTitle">Permissions</FluentLabel>
+
+<FluentDataGrid Items="@_permissions" ResizableColumns=true Pagination="@_pagination" GridTemplateColumns="0.2fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr" Style="height: 405px;overflow:auto;">
+    <PropertyColumn Property="@(p => p.PermissionId)" Sortable="true" Align="Align.Center" />
+    <PropertyColumn Property="@(p => p.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_nameFilter)" Tooltip="true" Title="Name">
+        <ColumnOptions>
+            <div class="search-box">
+                <FluentSearch type="filter" Autofocus=true @bind-Value=_nameFilter @oninput="HandleNameFilter" @bind-Value:after="HandleClear" Placeholder="Permission name..." />
+            </div>
+        </ColumnOptions>
+    </PropertyColumn>
+</FluentDataGrid>
+
+<FluentPaginator State="@_pagination" />
+
 @code {
 
+    [Inject]
+    public IRequests? Requests { get; set; }
+
+    bool _clearItems = false;
+    string _nameFilter = string.Empty;
+    PaginationState _pagination = new PaginationState { ItemsPerPage = 10 };
+    IQueryable<Permission> _permissions = Enumerable.Empty<Permission>().AsQueryable();
+    IQueryable<Permission>? _filteredItems => _permissions?.Where(p => !string.IsNullOrWhiteSpace(p.Name) && p.Name.Contains(_nameFilter, StringComparison.CurrentCultureIgnoreCase));
+
+    protected override async Task OnInitializedAsync()
+    {
+        ArgumentNullException.ThrowIfNull(Requests);
+
+        IResponse<IEnumerable<Permission>> response = await Requests.GetListAsync<Permission>(Atlas.Core.Constants.AtlasAPIEndpoints.GET_PERMISSIONS)
+            .ConfigureAwait(false);
+
+        if (!response.IsSuccess)
+        {
+            if (!string.IsNullOrWhiteSpace(response.Message))
+            {
+                //RaiseAlert(response.Message);
+            }
+        }
+        else
+        {
+            if (response.Result != null)
+            {
+                _permissions = response.Result.AsQueryable();
+            }
+        }
+    }
+
+    private void HandleNameFilter(ChangeEventArgs args)
+    {
+        if (args.Value is string value)
+        {
+            _nameFilter = value;
+        }
+    }
+
+    private void HandleClear()
+    {
+        if (string.IsNullOrWhiteSpace(_nameFilter))
+        {
+            _nameFilter = string.Empty;
+        }
+    }
 }
