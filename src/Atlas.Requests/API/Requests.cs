@@ -6,14 +6,14 @@ using System.Net.Http.Json;
 
 namespace Atlas.Requests.API
 {
-    public class GenericRequests : RequestBase, IGenericRequests
+    public class Requests : RequestBase, IRequests
     {
-        public GenericRequests(HttpClient httpClient)
+        public Requests(HttpClient httpClient)
             : base(httpClient)
         {
         }
 
-        public GenericRequests(HttpClient httpClient, TokenProvider tokenProvider)
+        public Requests(HttpClient httpClient, TokenProvider tokenProvider)
             : base(httpClient, tokenProvider)
         {
         }
