@@ -1,5 +1,6 @@
 using Atlas.Blazor.WebAssembly;
 using Atlas.Blazor.WebAssembly.Authentication;
+using Atlas.Core.Authentication;
 using Atlas.Core.Constants;
 using Atlas.Requests.API;
 using Atlas.Requests.Interfaces;
@@ -59,6 +60,13 @@ builder.Services.AddTransient<IUserRequests, UserRequests>(sp =>
     var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
     var httpClient = httpClientFactory.CreateClient(AtlasConstants.ATLAS_API);
     return new UserRequests(httpClient);
+});
+
+builder.Services.AddTransient<IRequests, Requests>(sp =>
+{
+    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    var httpClient = httpClientFactory.CreateClient(AtlasConstants.ATLAS_API);
+    return new Requests(httpClient);
 });
 
 await builder.Build().RunAsync();
