@@ -13,7 +13,7 @@
 
                             @foreach(MenuItem menuItem in category.MenuItems)
                             {
-                                <FluentNavLink Href=@($@"{menuItem.NavigatePage}\{menuItem.PageCode}\{true}") @onclick:stopPropagation="true" Icon="@IconHelper.GetRegularSize20(menuItem.Icon)">@menuItem.Name</FluentNavLink>
+                                <FluentNavLink Href=@($@"{menuItem.NavigatePage}") @onclick:stopPropagation="true" Icon="@IconHelper.GetRegularSize20(menuItem.Icon)">@menuItem.Name</FluentNavLink>
                             }
 
                         </FluentNavGroup>
@@ -59,29 +59,5 @@
         }
 
         System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync END");
-    }
-
-    protected async override Task OnParametersSetAsync()
-    {
-        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnParametersSetAsync START");
-
-        // if (AuthenticationStateProvider == null)
-        // {
-        //     throw new ArgumentNullException(nameof(AuthenticationStateProvider));    
-        // }
-
-        // if (UserRequests == null)
-        // {
-        //     throw new ArgumentNullException(nameof(UserRequests));
-        // }
-
-        // bool isAuthenticatedAtlasUser = await AuthenticationStateProvider.IsAuthenticatedAtlasUser().ConfigureAwait(false);
-
-        // if (isAuthenticatedAtlasUser)
-        // {
-        //     _modules = await UserRequests.GetClaimModulesAsync().ConfigureAwait(false);
-        // }
-
-        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnParametersSetAsync END");
     }
 }
