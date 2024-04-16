@@ -50,6 +50,14 @@ builder.Services.AddTransient<IUserRequests, UserRequests>(sp =>
     return new UserRequests(httpClient, tokenProvider);
 });
 
+builder.Services.AddTransient<IRequests, Requests>(sp =>
+{
+    var tokenProvider = sp.GetRequiredService<TokenProvider>();
+    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    var httpClient = httpClientFactory.CreateClient(AtlasConstants.ATLAS_API);
+    return new Requests(httpClient, tokenProvider);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
