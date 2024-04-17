@@ -30,53 +30,6 @@
 <FluentTooltipProvider />
 
 @code {
-
     private DesignThemeModes _mode = DesignThemeModes.System;
     private OfficeColor? _officeColor = OfficeColor.Skype;
-
-    // protected async override Task OnInitializedAsync()
-    // {
-    //     System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync START");
-
-    //     if (UserRequests == null)
-    //     {
-    //         throw new NullReferenceException(nameof(UserRequests));
-    //     }
-
-    //     if (AuthenticationStateProvider == null)
-    //     {
-    //         throw new ArgumentNullException(nameof(AuthenticationStateProvider));
-    //     }
-
-    //     await base.OnInitializedAsync();
-
-    //     bool isAuthenticatedAtlasUser = await AuthenticationStateProvider.IsAuthenticatedAtlasUser().ConfigureAwait(false);
-
-    //     if (isAuthenticatedAtlasUser)
-    //     {
-    //         string? theme = await UserRequests.GetThemeAsync().ConfigureAwait(false);
-
-    //         if (string.IsNullOrEmpty(theme))
-    //         {
-    //             _mode = DesignThemeModes.System;
-    //         }
-    //         else
-    //         {
-    //             switch(theme)
-    //             {
-    //                 case AtlasConstants.THEME_DARK:
-    //                     _mode = DesignThemeModes.Dark;
-    //                     break;
-    //                 case AtlasConstants.THEME_LIGHT:
-    //                     _mode = DesignThemeModes.Light;
-    //                     break;
-    //                 default:
-    //                     _mode = DesignThemeModes.System;
-    //                     break;
-    //             }
-    //         }
-    //     }
-
-    //     System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync END");
-    // }
 }
