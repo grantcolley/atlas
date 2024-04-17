@@ -16,6 +16,9 @@
 <FluentPaginator State="@_pagination" />
 
 @code {
+    
+    [Inject]
+    public NavigationManager? NavigationManager { get; set; }
 
     [Inject]
     public IRequests? Requests { get; set; }
@@ -37,7 +40,14 @@
         {
             if (!string.IsNullOrWhiteSpace(response.Message))
             {
-                //RaiseAlert(response.Message);
+                var alert = new Models.Alert
+                    {
+                        AlertType = Alerts.ERROR,
+                        Title = "Error",
+                        Message = response.Message
+                    };
+
+                NavigationManager?.NavigateTo(alert.Page);
             }
         }
         else
