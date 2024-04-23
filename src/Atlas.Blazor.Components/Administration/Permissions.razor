@@ -31,6 +31,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized START");
+
         ArgumentNullException.ThrowIfNull(Requests);
 
         IResponse<IEnumerable<Permission>> response = await Requests.GetListAsync<Permission>(Atlas.Core.Constants.AtlasAPIEndpoints.GET_PERMISSIONS)
@@ -57,6 +59,8 @@
                 _permissions = response.Result.AsQueryable();
             }
         }
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized END");
     }
 
     private void HandleNameFilter(ChangeEventArgs args)
