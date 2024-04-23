@@ -9,7 +9,7 @@
 @code {
     [Inject]
     public IAuthenticationService? AuthenticationService { get; set; }
-
+    
     [Inject]
     public TokenProvider? TokenProvider { get; set; }
 
@@ -18,12 +18,25 @@
 
     protected override async Task OnInitializedAsync()
     {
-        ArgumentNullException.ThrowIfNull(HttpContext);
         ArgumentNullException.ThrowIfNull(TokenProvider);
         ArgumentNullException.ThrowIfNull(AuthenticationService);
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync START");
+
+        System.Diagnostics.Debug.WriteLine($"## {GetType().Name} - TokenProvider.AccessToken 1 {TokenProvider.AccessToken?.Substring(0, 10)}...");
+
+        if (HttpContext == null)
+        {
+            System.Diagnostics.Debug.WriteLine($"## {GetType().Name} - HttpContext == null");
+            return;
+        }
 
         TokenProvider.AccessToken = await HttpContext.GetTokenAsync("access_token").ConfigureAwait(false);
         TokenProvider.RefreshToken = await HttpContext.GetTokenAsync("refresh_token").ConfigureAwait(false);
         TokenProvider.IdToken = await HttpContext.GetTokenAsync("id_token").ConfigureAwait(false);
+
+        System.Diagnostics.Debug.WriteLine($"## {GetType().Name} - TokenProvider.AccessToken 2 {TokenProvider.AccessToken?.Substring(0, 10)}...");
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync END");
     }
 }
