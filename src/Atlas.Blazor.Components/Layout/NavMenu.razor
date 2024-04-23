@@ -1,4 +1,6 @@
-﻿@if (_modules != null)
+﻿@implements IDisposable
+
+@if (_modules != null)
 {
     <nav>
         <FluentNavMenu Width="250" Collapsible="true" Title="Atlas navigation menu">
@@ -27,17 +29,25 @@
 }
 
 @code {
+    [CascadingParameter]
+    internal Task<AuthenticationState>? AuthenticationState { get; set; }
+
+    [Inject]
+    internal PersistentComponentState? ApplicationState { get; set; }
+
     [Inject]
     internal IUserRequests? UserRequests { get; set; }
 
     private IEnumerable<Module>? _modules = new List<Module>();
 
-    [CascadingParameter]
-    private Task<AuthenticationState>? AuthenticationState { get; set; }
+    private PersistingComponentStateSubscription persistingSubscription;
+
+    private string? identityName;
 
     protected override async Task OnInitializedAsync()
     {
         ArgumentNullException.ThrowIfNull(UserRequests);
+        ArgumentNullException.ThrowIfNull(ApplicationState);
 
         System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync START");
 
@@ -51,13 +61,44 @@
             {
                 if (authenticationState.User.Identity.IsAuthenticated)
                 {
-                    System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync IsAuthenticated");
+                    System.Diagnostics.Debug.WriteLine($"## {GetType().Name} - OnInitializedAsync IsAuthenticated");
 
-                    _modules = await UserRequests.GetClaimModulesAsync().ConfigureAwait(false);
+                    persistingSubscription = ApplicationState.RegisterOnPersisting(PersistData);
+
+                    if (!ApplicationState.TryTakeFromJson<IEnumerable<Module>?>($"{GetType().Name}", out var restored))
+                    {
+                        System.Diagnostics.Debug.WriteLine($"## {GetType().Name} - OnInitializedAsync _modules = UserRequests.GetClaimModulesAsync");
+                        _modules = await UserRequests.GetClaimModulesAsync().ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine($"## {GetType().Name} - OnInitializedAsync _modules restored");
+                        _modules = restored!;
+                    }
                 }
             }
         }
 
         System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync END");
+    }
+
+    private Task PersistData()
+    {
+        if (ApplicationState == null) throw new NullReferenceException(nameof(ApplicationState));
+
+        if (_modules != null 
+            && _modules.Any())
+        {
+            System.Diagnostics.Debug.WriteLine($"## {GetType().Name} - PersistData _modules");
+            ApplicationState.PersistAsJson($"{GetType().Name}", _modules);
+        }
+
+        return Task.CompletedTask;
+    }
+
+    void IDisposable.Dispose()
+    {
+        persistingSubscription.Dispose();
+        System.Diagnostics.Debug.WriteLine($"## {GetType().Name} - Dispose");
     }
 }
