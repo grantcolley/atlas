@@ -47,6 +47,9 @@ builder.Services.AddTransient<IUserRequests, UserRequests>(sp =>
     var tokenProvider = sp.GetRequiredService<TokenProvider>();
     var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
     var httpClient = httpClientFactory.CreateClient(AtlasConstants.ATLAS_API);
+
+    System.Diagnostics.Debug.WriteLine($"## AddTransient<IUserRequests, UserRequests> tokenProvider.AccessToken {tokenProvider.AccessToken}");
+
     return new UserRequests(httpClient, tokenProvider);
 });
 
@@ -55,6 +58,9 @@ builder.Services.AddTransient<IRequests, Requests>(sp =>
     var tokenProvider = sp.GetRequiredService<TokenProvider>();
     var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
     var httpClient = httpClientFactory.CreateClient(AtlasConstants.ATLAS_API);
+
+    System.Diagnostics.Debug.WriteLine($"## AddTransient<IRequests, Requests> tokenProvider.AccessToken {tokenProvider.AccessToken?.Substring(0, 10)}");
+
     return new Requests(httpClient, tokenProvider);
 });
 
