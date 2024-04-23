@@ -5,6 +5,7 @@
 <FluentLayout>
     <FluentToolbar id="toolbar-fluent-components-two" style="width:100%">
         <FluentIcon Value="@(new Icons.Filled.Size20.Globe())" />
+        <FluentLabel Color="Color.Accent" Typo="Typography.H5">Atlas</FluentLabel>
         <FluentSpacer />
         <LoginDisplay />
         <AuthorizeView>
@@ -32,4 +33,13 @@
 @code {
     private DesignThemeModes _mode = DesignThemeModes.System;
     private OfficeColor? _officeColor = OfficeColor.Skype;
+
+    protected override Task OnInitializedAsync()
+    {
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - START");
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - END");
+
+        return base.OnInitializedAsync();
+    }
 }
