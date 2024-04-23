@@ -40,6 +40,9 @@ The Blazor WebAssembly Authentication library (`Authentication.js`) only support
 
 ## Server Side Authentication
 
+[Calling a Protected API from a Blazor Web App](https://auth0.com/blog/call-protected-api-from-blazor-web-app/)
+[Backend for Frontend (BFF)](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps#name-backend-for-frontend-bff)
+[Microsoft Architecture Patterns - Backends for Frontends](https://learn.microsoft.com/en-us/azure/architecture/patterns/backends-for-frontends)
 
 # Notes
 ### FluentDesignTheme Dark/Light
