@@ -13,6 +13,7 @@
 * [Hosting Models](#hosting-models)
   * [Blazor WebAssembly](#blazor-webassembly)
   * [Blazor Server](#blazor-server)
+* [Calling an External API](#calling-an-external-api) 
 * [Authentication](#authentication)
   * [Blazor WebAssembly Standalone Authentication](#webassembly-standalone-authentication)
   * [Blazor Server Side Authentication](#server-side-authentication)
@@ -25,6 +26,9 @@
 
 ## Blazor Server
 [Blazor Server](https://learn.microsoft.com/en-us/aspnet/core/blazor/hosting-models?view=aspnetcore-8.0#blazor-server)
+
+# Calling an External API
+[Scenarios for calling external API's]https://learn.microsoft.com/en-us/aspnet/core/blazor/call-web-api?view=aspnetcore-8.0#server-side-scenarios-for-calling-external-web-apis
 
 # Authentication
 ## WebAssembly Standalone Authentication
