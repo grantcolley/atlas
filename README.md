@@ -30,6 +30,8 @@
 # Calling an External API
 [Scenarios for calling external API's](https://learn.microsoft.com/en-us/aspnet/core/blazor/call-web-api?view=aspnetcore-8.0#server-side-scenarios-for-calling-external-web-apis)
 
+[pass-tokens-to-a-server-side-blazor-app](https://learn.microsoft.com/en-us/aspnet/core/blazor/security/server/additional-scenarios#pass-tokens-to-a-server-side-blazor-app)
+
 # Authentication
 ## WebAssembly Standalone Authentication
 [Secure an ASP.NET Core Blazor WebAssembly standalone app with the Authentication library](https://learn.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/standalone-with-authentication-library).
