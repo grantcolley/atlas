@@ -9,11 +9,11 @@
             {
                 <FluentNavGroup Expanded="true" Title="@module.Name" Icon="@IconHelper.GetRegularSize20(module.Icon)">
 
-                    @foreach(Category category in module.Categories)
+                    @foreach (Category category in module.Categories)
                     {
                         <FluentNavGroup Expanded="true" Title="@category.Name" Icon="@IconHelper.GetRegularSize20(category.Icon)">
 
-                            @foreach(MenuItem menuItem in category.MenuItems)
+                            @foreach (MenuItem menuItem in category.MenuItems)
                             {
                                 <FluentNavLink Href=@($@"{menuItem.NavigatePage}") @onclick:stopPropagation="true" Icon="@IconHelper.GetRegularSize20(menuItem.Icon)">@menuItem.Name</FluentNavLink>
                             }
@@ -41,8 +41,6 @@
     private IEnumerable<Module>? _modules = new List<Module>();
 
     private PersistingComponentStateSubscription persistingSubscription;
-
-    private string? identityName;
 
     protected override async Task OnInitializedAsync()
     {
@@ -86,7 +84,7 @@
     {
         if (ApplicationState == null) throw new NullReferenceException(nameof(ApplicationState));
 
-        if (_modules != null 
+        if (_modules != null
             && _modules.Any())
         {
             System.Diagnostics.Debug.WriteLine($"## {GetType().Name} - PersistData _modules");

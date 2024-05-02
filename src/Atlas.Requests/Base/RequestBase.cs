@@ -5,31 +5,26 @@ using System.Text.Json;
 
 namespace Atlas.Requests.Base
 {
-    public abstract class RequestBase : IRequestBase
+    public abstract class RequestBase
     {
         protected readonly HttpClient _httpClient;
 
-        protected RequestBase(HttpClient httpClient) : this(httpClient, null)
-        {
-        }
-
-        protected RequestBase(HttpClient httpClient, TokenProvider? tokenProvider)
+        protected RequestBase(HttpClient httpClient) //: this(httpClient, null)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-
-            SetBearerToken(tokenProvider);
         }
 
-        public void SetBearerToken(TokenProvider? tokenProvider)
-        {
-            if (_httpClient != null
-                && tokenProvider != null
-                && !string.IsNullOrWhiteSpace(tokenProvider.AccessToken)
-                && _httpClient.DefaultRequestHeaders.Authorization == null)
-            {
-                _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {tokenProvider.AccessToken}");
-            }
-        }
+        //protected RequestBase(HttpClient httpClient, TokenProvider? tokenProvider)
+        //{
+        //    _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+
+        //    if (tokenProvider != null
+        //        && !string.IsNullOrWhiteSpace(tokenProvider.AccessToken)
+        //        && _httpClient.DefaultRequestHeaders.Authorization == null)
+        //    {
+        //        _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {tokenProvider.AccessToken}");
+        //    }
+        //}
 
         protected static async Task<IResponse<T>> GetResponseAsync<T>(HttpResponseMessage httpResponseMessage)
         {

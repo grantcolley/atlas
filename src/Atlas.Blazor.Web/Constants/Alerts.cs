@@ -1,4 +1,4 @@
-﻿namespace Atlas.Blazor.Components.Constants
+﻿namespace Atlas.Blazor.Web.Constants
 {
     public static class Alerts
     {

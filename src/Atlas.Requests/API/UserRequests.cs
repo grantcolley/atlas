@@ -16,10 +16,10 @@ namespace Atlas.Requests.API
         {
         }
 
-        public UserRequests(HttpClient httpClient, TokenProvider tokenProvider)
-            : base(httpClient, tokenProvider)
-        {
-        }
+        //public UserRequests(HttpClient httpClient, TokenProvider tokenProvider)
+        //    : base(httpClient, tokenProvider)
+        //{
+        //}
 
         public async Task<IEnumerable<Module>?> GetClaimModulesAsync()
         {

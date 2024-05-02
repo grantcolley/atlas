@@ -1,23 +1,24 @@
 using Atlas.Blazor.Web.App.Authentication;
-using Atlas.Blazor.Web.App.Components;
-using Atlas.Blazor.Web.Constants;
+using Atlas.Core.Authentication;
 using Atlas.Core.Constants;
 using Atlas.Requests.API;
 using Atlas.Requests.Interfaces;
 using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components.Components.Tooltip;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container.
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents()
-    .AddInteractiveWebAssemblyComponents();
+    .AddInteractiveServerComponents();
 
 builder.Services.AddFluentUIComponents();
+
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 builder.Services
     .AddAuth0WebAppAuthentication(Auth0Constants.AuthenticationScheme, options =>
@@ -32,38 +33,46 @@ builder.Services
     });
 
 builder.Services.AddCascadingAuthenticationState();
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<TokenHandler>();
-builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
-
+//builder.Services.AddScoped<TokenProvider>();
 builder.Services.AddScoped<ITooltipService, TooltipService>();
 
-builder.Services.AddHttpClient(AtlasWebConstants.ATLAS_API,
-      client => client.BaseAddress = new Uri(builder.Configuration[AtlasWebConstants.ATLAS_API] ?? throw new NullReferenceException(AtlasWebConstants.ATLAS_API)))
-      .AddHttpMessageHandler<TokenHandler>();
+builder.Services.AddHttpClient(AtlasConstants.ATLAS_API, client =>
+{
+    client.BaseAddress = new Uri("https://localhost:44420");
+}).AddHttpMessageHandler<TokenHandler>();
 
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
-  .CreateClient(AtlasWebConstants.ATLAS_API));
+  .CreateClient(AtlasConstants.ATLAS_API));
 
 builder.Services.AddTransient<IUserRequests, UserRequests>(sp =>
 {
     //var tokenProvider = sp.GetRequiredService<TokenProvider>();
     var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
-    var httpClient = httpClientFactory.CreateClient(AtlasWebConstants.ATLAS_API);
+    var httpClient = httpClientFactory.CreateClient(AtlasConstants.ATLAS_API);
 
     //System.Diagnostics.Debug.WriteLine($"## AddTransient<IUserRequests, UserRequests> tokenProvider.AccessToken {tokenProvider.AccessToken}");
 
     return new UserRequests(httpClient);
 });
 
+builder.Services.AddTransient<IRequests, Requests>(sp =>
+{
+    //var tokenProvider = sp.GetRequiredService<TokenProvider>();
+    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    var httpClient = httpClientFactory.CreateClient(AtlasConstants.ATLAS_API);
+
+    //System.Diagnostics.Debug.WriteLine($"## AddTransient<IRequests, Requests> tokenProvider.AccessToken {tokenProvider.AccessToken?.Substring(0, 10)}");
+
+    return new Requests(httpClient);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseWebAssemblyDebugging();
-}
-else
+if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
@@ -94,15 +103,14 @@ app.MapGet("logout", async (HttpContext httpContext, string redirectUri = @"/") 
     await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 });
 
-app.MapGet($"/{AtlasAPIEndpoints.GET_CLAIM_MODULES}", async (HttpClient httpClient) =>
+app.MapGet("/api/externalData", async (HttpClient httpClient) =>
 {
-    return await httpClient.GetFromJsonAsync<int[]>(AtlasAPIEndpoints.GET_CLAIM_MODULES);
+    return await httpClient.GetFromJsonAsync<int[]>("data");
 })
 .RequireAuthorization();
 
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode()
-    .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(Atlas.Blazor.Web.App.Client._Imports).Assembly);
+    .AddAdditionalAssemblies(typeof(Atlas.Blazor.Components._Imports).Assembly)
+    .AddInteractiveServerRenderMode();
 
 app.Run();

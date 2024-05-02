@@ -1,6 +1,6 @@
-﻿using Atlas.Blazor.Components.Constants;
+﻿using Atlas.Blazor.Web.Constants;
 
-namespace Atlas.Blazor.Components.Models
+namespace Atlas.Blazor.Web.Models
 {
     public class Alert
     {

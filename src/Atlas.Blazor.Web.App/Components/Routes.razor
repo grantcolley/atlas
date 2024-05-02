@@ -1,42 +1,7 @@
-﻿<Router AppAssembly="typeof(Program).Assembly"
-        AdditionalAssemblies="new [] { typeof(Atlas.Blazor.Components._Imports).Assembly }">
+﻿<Router AppAssembly="typeof(Program).Assembly" 
+        AdditionalAssemblies="new[] { typeof(Client._Imports).Assembly, typeof(Atlas.Blazor.Web._Imports).Assembly }">
     <Found Context="routeData">
-        <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)" />
+        <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
         <FocusOnNavigate RouteData="routeData" Selector="h1" />
     </Found>
 </Router>
-
-@code {
-    [Inject]
-    public IAuthenticationService? AuthenticationService { get; set; }
-    
-    [Inject]
-    public TokenProvider? TokenProvider { get; set; }
-
-    [CascadingParameter]
-    public HttpContext? HttpContext { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        ArgumentNullException.ThrowIfNull(TokenProvider);
-        ArgumentNullException.ThrowIfNull(AuthenticationService);
-
-        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync START");
-
-        System.Diagnostics.Debug.WriteLine($"## {GetType().Name} - TokenProvider.AccessToken 1 {TokenProvider.AccessToken?.Substring(0, 10)}...");
-
-        if (HttpContext == null)
-        {
-            System.Diagnostics.Debug.WriteLine($"## {GetType().Name} - HttpContext == null");
-            return;
-        }
-
-        TokenProvider.AccessToken = await HttpContext.GetTokenAsync("access_token").ConfigureAwait(false);
-        TokenProvider.RefreshToken = await HttpContext.GetTokenAsync("refresh_token").ConfigureAwait(false);
-        TokenProvider.IdToken = await HttpContext.GetTokenAsync("id_token").ConfigureAwait(false);
-
-        System.Diagnostics.Debug.WriteLine($"## {GetType().Name} - TokenProvider.AccessToken 2 {TokenProvider.AccessToken?.Substring(0, 10)}...");
-
-        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync END");
-    }
-}

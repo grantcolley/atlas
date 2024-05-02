@@ -1,6 +1,6 @@
 ﻿using Microsoft.FluentUI.AspNetCore.Components;
 
-namespace Atlas.Blazor.Components.Utility
+namespace Atlas.Blazor.Web.Utility
 {
     public static class IconHelper
     {

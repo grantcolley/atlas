@@ -13,11 +13,6 @@ namespace Atlas.Requests.API
         {
         }
 
-        public Requests(HttpClient httpClient, TokenProvider tokenProvider)
-            : base(httpClient, tokenProvider)
-        {
-        }
-
         public async Task<IResponse<IEnumerable<T>>> GetListAsync<T>(string endpoint) where T : class, new()
         {
             using var httpResponseMessage = await _httpClient.GetAsync(endpoint).ConfigureAwait(false);
@@ -87,6 +82,5 @@ namespace Atlas.Requests.API
             return await GetResponseAsync<int>(httpResponseMessage)
                 .ConfigureAwait(false);
         }
-
     }
 }

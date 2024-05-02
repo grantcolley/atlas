@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "Atlas.Blazor.Web.App.Client": {
+      "commandName": "Project"
+    }
+  }
+}

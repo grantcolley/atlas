@@ -1,4 +1,4 @@
-﻿using Atlas.Blazor.Components.Constants;
+﻿using Atlas.Blazor.Web.Constants;
 using Atlas.Core.Constants;
 using Atlas.Core.Models;
 using Atlas.Data.Access.Context;
@@ -145,9 +145,9 @@ namespace Atlas.Seed.Data
 
             dbContext.SaveChanges();
 
-            var usersMenuItem = new MenuItem { Name = "Users", Icon = "PeopleLock", NavigatePage = AtlasComponentsConstants.PAGE_USERS, Order = 1, Permission = Auth.ADMIN, Category = authorisationCategory };
-            var rolesMenuItem = new MenuItem { Name = "Roles", Icon = "LockMultiple", NavigatePage = AtlasComponentsConstants.PAGE_ROLES, Order = 2, Permission = Auth.ADMIN, Category = authorisationCategory };
-            var permissionsMenuItem = new MenuItem { Name = "Permissions", Icon = "KeyMultiple", NavigatePage = AtlasComponentsConstants.PAGE_PERMISSIONS, Order = 3, Permission = Auth.ADMIN, Category = authorisationCategory };
+            var usersMenuItem = new MenuItem { Name = "Users", Icon = "PeopleLock", NavigatePage = AtlasWebConstants.PAGE_USERS, Order = 1, Permission = Auth.ADMIN, Category = authorisationCategory };
+            var rolesMenuItem = new MenuItem { Name = "Roles", Icon = "LockMultiple", NavigatePage = AtlasWebConstants.PAGE_ROLES, Order = 2, Permission = Auth.ADMIN, Category = authorisationCategory };
+            var permissionsMenuItem = new MenuItem { Name = "Permissions", Icon = "KeyMultiple", NavigatePage = AtlasWebConstants.PAGE_PERMISSIONS, Order = 3, Permission = Auth.ADMIN, Category = authorisationCategory };
             
             authorisationCategory.MenuItems.Add(usersMenuItem);
             authorisationCategory.MenuItems.Add(rolesMenuItem);

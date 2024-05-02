@@ -16,16 +16,18 @@ namespace Atlas.Requests.API
         private readonly Dictionary<string, IOptionItems> _localOptionItems = new();
 
         public OptionsRequest(HttpClient httpClient)
-            : this(httpClient, null)
-        {
-        }
-
-        public OptionsRequest(HttpClient httpClient, TokenProvider? tokenProvider)
-            : base(httpClient, tokenProvider)
+            : base(httpClient)
         {
             _localOptionItems.Add(Options.PAGE_CODES, new PageCodeOptionItems());
             _localOptionItems.Add(Options.NAVIGATION_PAGES, new NavigationPageOptionItems());
         }
+
+        //public OptionsRequest(HttpClient httpClient, TokenProvider? tokenProvider)
+        //    : base(httpClient, tokenProvider)
+        //{
+        //    _localOptionItems.Add(Options.PAGE_CODES, new PageCodeOptionItems());
+        //    _localOptionItems.Add(Options.NAVIGATION_PAGES, new NavigationPageOptionItems());
+        //}
 
         public async Task<IResponse<IEnumerable<OptionItem>?>> GetOptionItems(IEnumerable<OptionsArg> optionsArgs)
         {

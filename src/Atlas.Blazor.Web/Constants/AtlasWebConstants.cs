@@ -1,8 +1,9 @@
-﻿namespace Atlas.Blazor.Components.Constants
+﻿namespace Atlas.Blazor.Web.Constants
 {
-    public static class AtlasComponentsConstants
+    public static class AtlasWebConstants
     {
-        public const string ATLAS_API = "atlas-api";
+        public const string ATLAS_API = "AtlasAPI";
+
         public const string ATLAS_THEME_STORAGE = "atlas-theme";
         public const string THEME_DARK = "Dark";
         public const string THEME_LIGHT = "Light";

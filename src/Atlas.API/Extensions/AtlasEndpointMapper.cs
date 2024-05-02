@@ -8,7 +8,7 @@ namespace Atlas.API.Extensions
     {
         public static WebApplication? MapAtlasEndpoints(this WebApplication app)
         {
-            app.MapGet($"/{AtlasAPIEndpoints.GET_CLAIM_AUTHORIZATION}", UserEndpoint.GetClaimModules)
+            app.MapGet($"/{AtlasAPIEndpoints.GET_CLAIM_AUTHORIZATION}", UserEndpoint.GetClaimAuthorisation)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.GET_CLAIM_AUTHORIZATION)
                 .WithDescription("Gets the user's authorization")
