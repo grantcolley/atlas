@@ -47,13 +47,16 @@ builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
 
 builder.Services.AddTransient<IUserRequests, UserRequests>(sp =>
 {
-    //var tokenProvider = sp.GetRequiredService<TokenProvider>();
     var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
     var httpClient = httpClientFactory.CreateClient(AtlasWebConstants.ATLAS_API);
-
-    //System.Diagnostics.Debug.WriteLine($"## AddTransient<IUserRequests, UserRequests> tokenProvider.AccessToken {tokenProvider.AccessToken}");
-
     return new UserRequests(httpClient);
+});
+
+builder.Services.AddTransient<IRequests, Requests>(sp =>
+{
+    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    var httpClient = httpClientFactory.CreateClient(AtlasWebConstants.ATLAS_API);
+    return new Requests(httpClient);
 });
 
 var app = builder.Build();
@@ -103,6 +106,8 @@ app.MapGet($"/{AtlasAPIEndpoints.GET_CLAIM_MODULES}", async (HttpClient httpClie
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(Atlas.Blazor.Web.App.Client._Imports).Assembly);
+    .AddAdditionalAssemblies(
+        typeof(Atlas.Blazor.Web.App.Client._Imports).Assembly,
+        typeof(Atlas.Blazor.Web._Imports).Assembly);
 
 app.Run();

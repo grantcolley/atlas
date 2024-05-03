@@ -1,7 +1,46 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+@if (!isAuthenticated)
+{
+    <FluentGrid Spacing="10" Justify="JustifyContent.Center">
+        <FluentGridItem xs="12">
+        </FluentGridItem>
+        <FluentGridItem xs="3">
+            <FluentStack Orientation="Orientation.Horizontal"
+                         VerticalAlignment="VerticalAlignment.Center"
+                         HorizontalAlignment="HorizontalAlignment.Center">
+                <FluentIcon Value="@(new Icons.Filled.Size48.Globe())" />
+            </FluentStack>
+        </FluentGridItem>
+    </FluentGrid>
+}
 
-<h1>Hello, world!</h1>
+@code {
+    [CascadingParameter]
+    internal Task<AuthenticationState>? AuthenticationState { get; set; }
 
-Welcome to your new app.
+    private bool isAuthenticated = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync START");
+
+        if (AuthenticationState != null)
+        {
+            AuthenticationState authenticationState = await AuthenticationState;
+
+            if (authenticationState != null
+                && authenticationState.User != null
+                && authenticationState.User.Identity != null)
+            {
+                if (authenticationState.User.Identity.IsAuthenticated)
+                {
+                    System.Diagnostics.Debug.WriteLine($"## {GetType().Name} - OnInitializedAsync IsAuthenticated");
+                    isAuthenticated = true;
+                }
+            }
+        }
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync END");
+    }
+}

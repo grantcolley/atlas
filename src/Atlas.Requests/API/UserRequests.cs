@@ -16,11 +16,6 @@ namespace Atlas.Requests.API
         {
         }
 
-        //public UserRequests(HttpClient httpClient, TokenProvider tokenProvider)
-        //    : base(httpClient, tokenProvider)
-        //{
-        //}
-
         public async Task<IEnumerable<Module>?> GetClaimModulesAsync()
         {
             return await JsonSerializer.DeserializeAsync<IEnumerable<Module>?>
