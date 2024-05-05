@@ -4,37 +4,29 @@
 
 <PageTitle>Permissions</PageTitle>
 
-<FluentGrid Spacing="3">
+<FluentLabel Color="Color.Accent" Typo="Typography.Header">Permissions</FluentLabel>
 
-    <FluentGridItem xs="12">
-        <FluentLabel Color="Color.Accent" Typo="Typography.Header">Permissions</FluentLabel>
-    </FluentGridItem>
+<br />
 
-    <FluentGridItem xs="12">
+@if(_permissions == null)
+{
+    <FluentProgressRing style="width: 82px; height: 82px;"></FluentProgressRing>
+}
+else
+{
+    <FluentDataGrid TGridItem=Permission Items="@_filteredItems" ResizableColumns=true Pagination="@_pagination" GridTemplateColumns="0.2fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr" Style="height: 405px;overflow:auto;">
+        <PropertyColumn Property="@(p => p.PermissionId)" Sortable="true" Align="Align.Center" />
+        <PropertyColumn Property="@(p => p.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_nameFilter)" Tooltip="true" Title="Name">
+            <ColumnOptions>
+                <div class="search-box">
+                    <FluentSearch type="filter" Autofocus=true @bind-Value=_nameFilter @oninput="HandleNameFilter" @bind-Value:after="HandleClear" Placeholder="Permission name..." />
+                </div>
+            </ColumnOptions>
+        </PropertyColumn>
+    </FluentDataGrid>
 
-        @if(_permissions == null)
-        {
-            <FluentProgressRing style="width: 82px; height: 82px;"></FluentProgressRing>
-        }
-        else
-        {
-            <FluentDataGrid TGridItem=Permission Items="@_filteredItems" ResizableColumns=true Pagination="@_pagination" GridTemplateColumns="0.2fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr" Style="height: 405px;overflow:auto;">
-                <PropertyColumn Property="@(p => p.PermissionId)" Sortable="true" Align="Align.Center" />
-                <PropertyColumn Property="@(p => p.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_nameFilter)" Tooltip="true" Title="Name">
-                    <ColumnOptions>
-                        <div class="search-box">
-                            <FluentSearch type="filter" Autofocus=true @bind-Value=_nameFilter @oninput="HandleNameFilter" @bind-Value:after="HandleClear" Placeholder="Permission name..." />
-                        </div>
-                    </ColumnOptions>
-                </PropertyColumn>
-            </FluentDataGrid>
-
-            <FluentPaginator State="@_pagination" />
-        }
-
-    </FluentGridItem>
-
-</FluentGrid>
+    <FluentPaginator State="@_pagination" />
+}
 
 @code {
 
