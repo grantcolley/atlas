@@ -1,22 +1,43 @@
 ﻿@page "/Permissions"
+@rendermode InteractiveServer
+@attribute [StreamRendering]
 
-<FluentLabel Color="Color.Accent" Typo="Typography.PageTitle">Permissions</FluentLabel>
+<PageTitle>Permissions</PageTitle>
 
-<FluentDataGrid Items="@_permissions" ResizableColumns=true Pagination="@_pagination" GridTemplateColumns="0.2fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr" Style="height: 405px;overflow:auto;">
-    <PropertyColumn Property="@(p => p.PermissionId)" Sortable="true" Align="Align.Center" />
-    <PropertyColumn Property="@(p => p.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_nameFilter)" Tooltip="true" Title="Name">
-        <ColumnOptions>
-            <div class="search-box">
-                <FluentSearch type="filter" Autofocus=true @bind-Value=_nameFilter @oninput="HandleNameFilter" @bind-Value:after="HandleClear" Placeholder="Permission name..." />
-            </div>
-        </ColumnOptions>
-    </PropertyColumn>
-</FluentDataGrid>
+<FluentGrid Spacing="3">
 
-<FluentPaginator State="@_pagination" />
+    <FluentGridItem xs="12">
+        <FluentLabel Color="Color.Accent" Typo="Typography.Header">Permissions</FluentLabel>
+    </FluentGridItem>
+
+    <FluentGridItem xs="12">
+
+        @if(_permissions == null)
+        {
+            <FluentProgressRing style="width: 82px; height: 82px;"></FluentProgressRing>
+        }
+        else
+        {
+            <FluentDataGrid TGridItem=Permission Items="@_filteredItems" ResizableColumns=true Pagination="@_pagination" GridTemplateColumns="0.2fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr" Style="height: 405px;overflow:auto;">
+                <PropertyColumn Property="@(p => p.PermissionId)" Sortable="true" Align="Align.Center" />
+                <PropertyColumn Property="@(p => p.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_nameFilter)" Tooltip="true" Title="Name">
+                    <ColumnOptions>
+                        <div class="search-box">
+                            <FluentSearch type="filter" Autofocus=true @bind-Value=_nameFilter @oninput="HandleNameFilter" @bind-Value:after="HandleClear" Placeholder="Permission name..." />
+                        </div>
+                    </ColumnOptions>
+                </PropertyColumn>
+            </FluentDataGrid>
+
+            <FluentPaginator State="@_pagination" />
+        }
+
+    </FluentGridItem>
+
+</FluentGrid>
 
 @code {
-    
+
     [Inject]
     public NavigationManager? NavigationManager { get; set; }
 
@@ -25,8 +46,8 @@
 
     bool _clearItems = false;
     string _nameFilter = string.Empty;
-    PaginationState _pagination = new PaginationState { ItemsPerPage = 10 };
-    IQueryable<Permission> _permissions = Enumerable.Empty<Permission>().AsQueryable();
+    PaginationState _pagination = new PaginationState { ItemsPerPage = 20 };
+    IQueryable<Permission>? _permissions = null;
     IQueryable<Permission>? _filteredItems => _permissions?.Where(p => !string.IsNullOrWhiteSpace(p.Name) && p.Name.Contains(_nameFilter, StringComparison.CurrentCultureIgnoreCase));
 
     protected override async Task OnInitializedAsync()
