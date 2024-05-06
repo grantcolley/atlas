@@ -4,9 +4,10 @@
 
 <PageTitle>Permissions</PageTitle>
 
-<FluentLabel Color="Color.Accent" Typo="Typography.Header">Permissions</FluentLabel>
-
-<br />
+<FluentCard>
+<FluentHeader>
+    Permissions
+</FluentHeader>
 
 @if(_permissions == null)
 {
@@ -14,6 +15,10 @@
 }
 else
 {
+    <FluentAnchor Id="permission" Href="permission" Target="_self" Appearance="Appearance.Lightweight" IconEnd="@(new Icons.Regular.Size20.DocumentAdd())">
+        Create New
+    </FluentAnchor>
+
     <FluentDataGrid TGridItem=Permission Items="@_filteredItems" ResizableColumns=true Pagination="@_pagination" GridTemplateColumns="0.2fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr" Style="height: 405px;overflow:auto;">
         <PropertyColumn Property="@(p => p.PermissionId)" Sortable="true" Align="Align.Center" />
         <PropertyColumn Property="@(p => p.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_nameFilter)" Tooltip="true" Title="Name">
@@ -30,7 +35,7 @@ else
 
     <FluentPaginator State="@_pagination" />
 }
-
+</FluentCard>
 @code {
 
     [Inject]
