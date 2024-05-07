@@ -5,37 +5,38 @@
 <PageTitle>Permissions</PageTitle>
 
 <FluentCard>
-<FluentHeader>
-    Permissions
-</FluentHeader>
+    <FluentHeader>
+        Permissions
+    </FluentHeader>
 
-@if(_permissions == null)
-{
-    <FluentProgressRing style="width: 82px; height: 82px;"></FluentProgressRing>
-}
-else
-{
-    <FluentAnchor Id="permission" Href="permission" Target="_self" Appearance="Appearance.Lightweight" IconEnd="@(new Icons.Regular.Size20.DocumentAdd())">
-        Create New
-    </FluentAnchor>
+    @if(_permissions == null)
+    {
+        <FluentProgressRing style="width: 82px; height: 82px;"></FluentProgressRing>
+    }
+    else
+    {
+        <FluentAnchor Id="permission" Href="permission" Target="_self" Appearance="Appearance.Lightweight" IconEnd="@(new Icons.Regular.Size20.DocumentAdd())">
+            Create New
+        </FluentAnchor>
 
-    <FluentDataGrid TGridItem=Permission Items="@_filteredItems" ResizableColumns=true Pagination="@_pagination" GridTemplateColumns="0.2fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr" Style="height: 405px;overflow:auto;">
-        <PropertyColumn Property="@(p => p.PermissionId)" Sortable="true" Align="Align.Center" />
-        <PropertyColumn Property="@(p => p.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_nameFilter)" Tooltip="true" Title="Name">
-            <ColumnOptions>
-                <div class="search-box">
-                    <FluentSearch type="filter" Autofocus=true @bind-Value=_nameFilter @oninput="HandleNameFilter" @bind-Value:after="HandleClear" Placeholder="Permission name..." />
-                </div>
-            </ColumnOptions>
-        </PropertyColumn>
-        <TemplateColumn Align="@Align.Center">
-            <FluentButton aria-label="Edit" IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(() => Edit(context))" />
-        </TemplateColumn>
-    </FluentDataGrid>
+        <FluentDataGrid TGridItem=Permission Items="@_filteredItems" ResizableColumns=true Pagination="@_pagination" GridTemplateColumns="0.2fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr" Style="height: 405px;overflow:auto;">
+            <PropertyColumn Property="@(p => p.PermissionId)" Sortable="true" Align="Align.Center" />
+            <PropertyColumn Property="@(p => p.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_nameFilter)" Tooltip="true" Title="Name">
+                <ColumnOptions>
+                    <div class="search-box">
+                        <FluentSearch type="filter" Autofocus=true @bind-Value=_nameFilter @oninput="HandleNameFilter" @bind-Value:after="HandleClear" Placeholder="Permission name..." />
+                    </div>
+                </ColumnOptions>
+            </PropertyColumn>
+            <TemplateColumn Align="@Align.Center">
+                <FluentButton aria-label="Edit" IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(() => Edit(context))" />
+            </TemplateColumn>
+        </FluentDataGrid>
 
-    <FluentPaginator State="@_pagination" />
-}
+        <FluentPaginator State="@_pagination" />
+    }
 </FluentCard>
+
 @code {
 
     [Inject]
