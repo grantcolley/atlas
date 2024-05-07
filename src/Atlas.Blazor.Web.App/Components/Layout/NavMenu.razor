@@ -40,14 +40,12 @@
 
     private IEnumerable<Module>? _modules = new List<Module>();
 
-    private PersistingComponentStateSubscription persistingSubscription;
+    private PersistingComponentStateSubscription _persistingSubscription;
 
     protected override async Task OnInitializedAsync()
     {
         ArgumentNullException.ThrowIfNull(UserRequests);
         ArgumentNullException.ThrowIfNull(ApplicationState);
-
-        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync START");
 
         if (AuthenticationState != null)
         {
@@ -59,25 +57,19 @@
             {
                 if (authenticationState.User.Identity.IsAuthenticated)
                 {
-                    System.Diagnostics.Debug.WriteLine($"## {GetType().Name} - OnInitializedAsync IsAuthenticated");
-
-                    persistingSubscription = ApplicationState.RegisterOnPersisting(PersistData);
+                    _persistingSubscription = ApplicationState.RegisterOnPersisting(PersistData);
 
                     if (!ApplicationState.TryTakeFromJson<IEnumerable<Module>?>($"{GetType().Name}", out var restored))
                     {
-                        System.Diagnostics.Debug.WriteLine($"## {GetType().Name} - OnInitializedAsync _modules = UserRequests.GetClaimModulesAsync");
                         _modules = await UserRequests.GetClaimModulesAsync().ConfigureAwait(false);
                     }
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine($"## {GetType().Name} - OnInitializedAsync _modules restored");
                         _modules = restored!;
                     }
                 }
             }
         }
-
-        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitializedAsync END");
     }
 
     private Task PersistData()
@@ -87,7 +79,6 @@
         if (_modules != null
             && _modules.Any())
         {
-            System.Diagnostics.Debug.WriteLine($"## {GetType().Name} - PersistData _modules");
             ApplicationState.PersistAsJson($"{GetType().Name}", _modules);
         }
 
@@ -96,7 +87,6 @@
 
     void IDisposable.Dispose()
     {
-        persistingSubscription.Dispose();
-        System.Diagnostics.Debug.WriteLine($"## {GetType().Name} - Dispose");
+        _persistingSubscription.Dispose();
     }
 }
