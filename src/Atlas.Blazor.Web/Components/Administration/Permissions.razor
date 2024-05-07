@@ -1,6 +1,7 @@
 ﻿@page "/Permissions"
 @rendermode InteractiveServer
 @attribute [StreamRendering]
+@implements IDisposable
 
 <PageTitle>Permissions</PageTitle>
 
@@ -40,49 +41,59 @@
 @code {
 
     [Inject]
+    internal PersistentComponentState? ApplicationState { get; set; }
+
+    [Inject]
     public NavigationManager? NavigationManager { get; set; }
 
     [Inject]
     public IRequests? Requests { get; set; }
 
+    PersistingComponentStateSubscription _persistingSubscription;
     bool _clearItems = false;
     string _nameFilter = string.Empty;
     PaginationState _pagination = new PaginationState { ItemsPerPage = 20 };
-    IQueryable<Permission>? _permissions = null;
-    IQueryable<Permission>? _filteredItems => _permissions?.Where(p => !string.IsNullOrWhiteSpace(p.Name) && p.Name.Contains(_nameFilter, StringComparison.CurrentCultureIgnoreCase));
+    IEnumerable<Permission>? _permissions = null;
+    IQueryable<Permission>? _filteredItems => _permissions?.AsQueryable().Where(p => !string.IsNullOrWhiteSpace(p.Name) && p.Name.Contains(_nameFilter, StringComparison.CurrentCultureIgnoreCase));
 
     protected override async Task OnInitializedAsync()
     {
-        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized START");
-
         ArgumentNullException.ThrowIfNull(Requests);
+        ArgumentNullException.ThrowIfNull(ApplicationState);
 
-        IResponse<IEnumerable<Permission>> response = await Requests.GetListAsync<Permission>(Atlas.Core.Constants.AtlasAPIEndpoints.GET_PERMISSIONS)
-            .ConfigureAwait(false);
+        _persistingSubscription = ApplicationState.RegisterOnPersisting(PersistData);
 
-        if (!response.IsSuccess)
+        if (ApplicationState.TryTakeFromJson<IEnumerable<Permission>?>($"{GetType().Name}", out var restored))
         {
-            if (!string.IsNullOrWhiteSpace(response.Message))
-            {
-                var alert = new Models.Alert
-                    {
-                        AlertType = Alerts.ERROR,
-                        Title = "Error",
-                        Message = response.Message
-                    };
-
-                NavigationManager?.NavigateTo(alert.Page);
-            }
+            _permissions = restored!;
         }
         else
         {
-            if (response.Result != null)
+            IResponse<IEnumerable<Permission>> response = await Requests.GetListAsync<Permission>(Atlas.Core.Constants.AtlasAPIEndpoints.GET_PERMISSIONS)
+                .ConfigureAwait(false);
+
+            if (!response.IsSuccess)
             {
-                _permissions = response.Result.AsQueryable();
+                if (!string.IsNullOrWhiteSpace(response.Message))
+                {
+                    var alert = new Models.Alert
+                        {
+                            AlertType = Alerts.ERROR,
+                            Title = "Error",
+                            Message = response.Message
+                        };
+
+                    NavigationManager?.NavigateTo(alert.Page);
+                }
+            }
+            else
+            {
+                if (response.Result != null)
+                {
+                    _permissions = response.Result;
+                }
             }
         }
-
-        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized END");
     }
 
     private void Edit(Permission permission)
@@ -104,5 +115,22 @@
         {
             _nameFilter = string.Empty;
         }
+    }
+
+    private Task PersistData()
+    {
+        if (ApplicationState == null) throw new NullReferenceException(nameof(ApplicationState));
+
+        if (_permissions != null)
+        {
+            ApplicationState.PersistAsJson($"{GetType().Name}", _permissions);
+        }
+
+        return Task.CompletedTask;
+    }
+
+    void IDisposable.Dispose()
+    {
+        _persistingSubscription.Dispose();
     }
 }
