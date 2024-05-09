@@ -1,0 +1,104 @@
+﻿@page "/Permission"
+@page "/Permission/{Id:int?}"
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+@implements IDisposable
+
+<PageTitle>Permission</PageTitle>
+
+<FluentCard>
+    <FluentHeader>
+        Permission
+    </FluentHeader>
+
+    @if (_permission == null)
+    {
+        <FluentProgressRing style="width: 82px; height: 82px;"></FluentProgressRing>
+    }
+    else
+    {
+
+    }
+</FluentCard>
+
+@code {
+
+    [Inject]
+    internal PersistentComponentState? ApplicationState { get; set; }
+
+    [Inject]
+    public NavigationManager? NavigationManager { get; set; }
+
+    [Inject]
+    public IRequests? Requests { get; set; }
+
+    [Parameter]
+    public int? Id { get; set; }
+
+    PersistingComponentStateSubscription _persistingSubscription;
+    Atlas.Core.Models.Permission? _permission = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ArgumentNullException.ThrowIfNull(Requests);
+        ArgumentNullException.ThrowIfNull(ApplicationState);
+
+        _persistingSubscription = ApplicationState.RegisterOnPersisting(PersistData);
+
+        if (ApplicationState.TryTakeFromJson<Atlas.Core.Models.Permission?>($"{GetType().Name}", out var restored))
+        {
+            _permission = restored!;
+        }
+        else
+        {
+            if (!Id.HasValue || Id.Value <= 0)
+            {
+                _permission = Activator.CreateInstance<Atlas.Core.Models.Permission>();
+            }
+            else
+            {
+                IResponse<Atlas.Core.Models.Permission> response = await Requests.GetModelAsync<Atlas.Core.Models.Permission>(0, Atlas.Core.Constants.AtlasAPIEndpoints.GET_PERMISSION)
+                    .ConfigureAwait(false);
+
+                if (!response.IsSuccess)
+                {
+                    if (!string.IsNullOrWhiteSpace(response.Message))
+                    {
+                        var alert = new Models.Alert
+                            {
+                                AlertType = Alerts.ERROR,
+                                Title = "Error",
+                                Message = response.Message
+                            };
+
+                        NavigationManager?.NavigateTo(alert.Page);
+                    }
+                }
+                else
+                {
+                    if (response.Result != null)
+                    {
+                        _permission = response.Result;
+                    }
+                }
+            }
+        }
+    }
+
+    private Task PersistData()
+    {
+        if (ApplicationState == null) throw new NullReferenceException(nameof(ApplicationState));
+
+        if (_permission != null)
+        {
+            ApplicationState.PersistAsJson($"{GetType().Name}", _permission);
+        }
+
+        return Task.CompletedTask;
+    }
+
+    void IDisposable.Dispose()
+    {
+        _persistingSubscription.Dispose();
+    }
+}
