@@ -1,7 +1,6 @@
 ﻿@page "/Permission"
 @page "/Permission/{Id:int?}"
 @rendermode InteractiveServer
-@attribute [StreamRendering]
 @implements IDisposable
 
 <PageTitle>Permission</PageTitle>
@@ -43,9 +42,9 @@
         ArgumentNullException.ThrowIfNull(Requests);
         ArgumentNullException.ThrowIfNull(ApplicationState);
 
-        _persistingSubscription = ApplicationState.RegisterOnPersisting(PersistData);
+        _persistingSubscription = ApplicationState.RegisterOnPersisting(PersistPermissionData);
 
-        if (ApplicationState.TryTakeFromJson<Atlas.Core.Models.Permission?>($"{GetType().Name}", out var restored))
+        if (ApplicationState.TryTakeFromJson<Atlas.Core.Models.Permission?>($"{GetType().Name}", out Atlas.Core.Models.Permission? restored))
         {
             _permission = restored!;
         }
@@ -57,7 +56,7 @@
             }
             else
             {
-                IResponse<Atlas.Core.Models.Permission> response = await Requests.GetModelAsync<Atlas.Core.Models.Permission>(0, Atlas.Core.Constants.AtlasAPIEndpoints.GET_PERMISSION)
+                IResponse<Atlas.Core.Models.Permission> response = await Requests.GetModelAsync<Atlas.Core.Models.Permission>(Id.Value, Atlas.Core.Constants.AtlasAPIEndpoints.GET_PERMISSION)
                     .ConfigureAwait(false);
 
                 if (!response.IsSuccess)
@@ -85,7 +84,7 @@
         }
     }
 
-    private Task PersistData()
+    private Task PersistPermissionData()
     {
         if (ApplicationState == null) throw new NullReferenceException(nameof(ApplicationState));
 
