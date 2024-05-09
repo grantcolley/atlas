@@ -57,7 +57,7 @@
             {
                 if (authenticationState.User.Identity.IsAuthenticated)
                 {
-                    _persistingSubscription = ApplicationState.RegisterOnPersisting(PersistData);
+                    _persistingSubscription = ApplicationState.RegisterOnPersisting(PersistNavMenuData);
 
                     if (!ApplicationState.TryTakeFromJson<IEnumerable<Module>?>($"{GetType().Name}", out var restored))
                     {
@@ -72,7 +72,7 @@
         }
     }
 
-    private Task PersistData()
+    private Task PersistNavMenuData()
     {
         if (ApplicationState == null) throw new NullReferenceException(nameof(ApplicationState));
 
