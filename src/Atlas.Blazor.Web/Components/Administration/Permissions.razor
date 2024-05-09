@@ -17,10 +17,10 @@
     else
     {
         <FluentAnchor Id="permission" Href="permission" Target="_self" Appearance="Appearance.Lightweight" IconEnd="@(new Icons.Regular.Size20.DocumentAdd())">
-            Create New
+            Create
         </FluentAnchor>
 
-        <FluentDataGrid TGridItem=Permission Items="@_filteredItems" ResizableColumns=true Pagination="@_pagination" GridTemplateColumns="0.2fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr" Style="height: 405px;overflow:auto;">
+        <FluentDataGrid TGridItem=Atlas.Core.Models.Permission Items="@_filteredItems" ResizableColumns=true Pagination="@_pagination" GridTemplateColumns="0.2fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr" Style="height: 405px;overflow:auto;">
             <PropertyColumn Property="@(p => p.PermissionId)" Sortable="true" Align="Align.Center" />
             <PropertyColumn Property="@(p => p.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_nameFilter)" Tooltip="true" Title="Name">
                 <ColumnOptions>
@@ -53,8 +53,8 @@
     bool _clearItems = false;
     string _nameFilter = string.Empty;
     PaginationState _pagination = new PaginationState { ItemsPerPage = 20 };
-    IEnumerable<Permission>? _permissions = null;
-    IQueryable<Permission>? _filteredItems => _permissions?.AsQueryable().Where(p => !string.IsNullOrWhiteSpace(p.Name) && p.Name.Contains(_nameFilter, StringComparison.CurrentCultureIgnoreCase));
+    IEnumerable<Atlas.Core.Models.Permission>? _permissions = null;
+    IQueryable<Atlas.Core.Models.Permission>? _filteredItems => _permissions?.AsQueryable().Where(p => !string.IsNullOrWhiteSpace(p.Name) && p.Name.Contains(_nameFilter, StringComparison.CurrentCultureIgnoreCase));
 
     protected override async Task OnInitializedAsync()
     {
@@ -63,13 +63,13 @@
 
         _persistingSubscription = ApplicationState.RegisterOnPersisting(PersistData);
 
-        if (ApplicationState.TryTakeFromJson<IEnumerable<Permission>?>($"{GetType().Name}", out var restored))
+        if (ApplicationState.TryTakeFromJson<IEnumerable<Atlas.Core.Models.Permission>?>($"{GetType().Name}", out var restored))
         {
             _permissions = restored!;
         }
         else
         {
-            IResponse<IEnumerable<Permission>> response = await Requests.GetListAsync<Permission>(Atlas.Core.Constants.AtlasAPIEndpoints.GET_PERMISSIONS)
+            IResponse<IEnumerable<Atlas.Core.Models.Permission>> response = await Requests.GetListAsync<Atlas.Core.Models.Permission>(Atlas.Core.Constants.AtlasAPIEndpoints.GET_PERMISSIONS)
                 .ConfigureAwait(false);
 
             if (!response.IsSuccess)
@@ -96,9 +96,9 @@
         }
     }
 
-    private void Edit(Permission permission)
+    private void Edit(Atlas.Core.Models.Permission permission)
     {
-        
+        NavigationManager?.NavigateTo($"{AtlasWebConstants.PAGE_PERMISSION}/{permission.PermissionId}");
     }
 
     private void HandleNameFilter(ChangeEventArgs args)
