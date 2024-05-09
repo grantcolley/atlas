@@ -61,9 +61,9 @@
         ArgumentNullException.ThrowIfNull(Requests);
         ArgumentNullException.ThrowIfNull(ApplicationState);
 
-        _persistingSubscription = ApplicationState.RegisterOnPersisting(PersistData);
+        _persistingSubscription = ApplicationState.RegisterOnPersisting(PersistPermissionsData);
 
-        if (ApplicationState.TryTakeFromJson<IEnumerable<Atlas.Core.Models.Permission>?>($"{GetType().Name}", out var restored))
+        if (ApplicationState.TryTakeFromJson<IEnumerable<Atlas.Core.Models.Permission>?>($"{GetType().Name}", out IEnumerable<Atlas.Core.Models.Permission>? restored))
         {
             _permissions = restored!;
         }
@@ -117,7 +117,7 @@
         }
     }
 
-    private Task PersistData()
+    private Task PersistPermissionsData()
     {
         if (ApplicationState == null) throw new NullReferenceException(nameof(ApplicationState));
 
