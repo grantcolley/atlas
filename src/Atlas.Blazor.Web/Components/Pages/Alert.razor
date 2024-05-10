@@ -45,8 +45,6 @@
 
     protected override void OnInitialized()
     {
-        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - START");
-
         _intent = AlertType switch
         {
             Alerts.INFO => MessageIntent.Info,
@@ -55,7 +53,5 @@
             Alerts.ERROR => MessageIntent.Error,
             _ => MessageIntent.Info,
         };
-
-        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - END");
     }
 }
