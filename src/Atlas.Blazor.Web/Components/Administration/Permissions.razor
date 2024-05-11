@@ -63,12 +63,17 @@
 
         _persistingSubscription = ApplicationState.RegisterOnPersisting(PersistPermissionsData);
 
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - START");
+
         if (ApplicationState.TryTakeFromJson<IEnumerable<Atlas.Core.Models.Permission>?>($"{GetType().Name}", out IEnumerable<Atlas.Core.Models.Permission>? restored))
         {
+            System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - TryTakeFromJson - True");
             _permissions = restored!;
         }
         else
         {
+            System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - TryTakeFromJson - False");
+
             IResponse<IEnumerable<Atlas.Core.Models.Permission>> response = await Requests.GetListAsync<Atlas.Core.Models.Permission>(Atlas.Core.Constants.AtlasAPIEndpoints.GET_PERMISSIONS)
                 .ConfigureAwait(false);
 
@@ -94,11 +99,13 @@
                 }
             }
         }
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - END");
     }
 
     private void Edit(Atlas.Core.Models.Permission permission)
     {
-        NavigationManager?.NavigateTo($"{AtlasWebConstants.PAGE_PERMISSION}/{permission.PermissionId}");
+        NavigationManager?.NavigateTo($"{AtlasWebConstants.PAGE_PERMISSION}/{permission.PermissionId}", true);
     }
 
     private void HandleNameFilter(ChangeEventArgs args)
@@ -124,6 +131,8 @@
         if (_permissions != null)
         {
             ApplicationState.PersistAsJson($"{GetType().Name}", _permissions);
+
+            System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - PersistAsJson");
         }
 
         return Task.CompletedTask;
@@ -132,5 +141,7 @@
     void IDisposable.Dispose()
     {
         _persistingSubscription.Dispose();
+
+        System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - Dispose");
     }
 }

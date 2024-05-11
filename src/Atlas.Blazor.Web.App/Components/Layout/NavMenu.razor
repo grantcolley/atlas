@@ -47,6 +47,8 @@
         ArgumentNullException.ThrowIfNull(UserRequests);
         ArgumentNullException.ThrowIfNull(ApplicationState);
 
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - START");
+
         if (AuthenticationState != null)
         {
             AuthenticationState authenticationState = await AuthenticationState;
@@ -61,15 +63,21 @@
 
                     if (!ApplicationState.TryTakeFromJson<IEnumerable<Module>?>($"{GetType().Name}", out var restored))
                     {
+                        System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - TryTakeFromJson - True");
+
                         _modules = await UserRequests.GetClaimModulesAsync().ConfigureAwait(false);
                     }
                     else
                     {
+                        System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - TryTakeFromJson - False");
+
                         _modules = restored!;
                     }
                 }
             }
         }
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - END");
     }
 
     private Task PersistNavMenuData()
@@ -80,6 +88,8 @@
             && _modules.Any())
         {
             ApplicationState.PersistAsJson($"{GetType().Name}", _modules);
+
+            System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - PersistAsJson");
         }
 
         return Task.CompletedTask;
@@ -88,5 +98,7 @@
     void IDisposable.Dispose()
     {
         _persistingSubscription.Dispose();
+
+        System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - Dispose");
     }
 }

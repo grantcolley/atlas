@@ -44,12 +44,18 @@
 
         _persistingSubscription = ApplicationState.RegisterOnPersisting(PersistPermissionData);
 
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - START");
+
         if (ApplicationState.TryTakeFromJson<Atlas.Core.Models.Permission?>($"{GetType().Name}", out Atlas.Core.Models.Permission? restored))
         {
+            System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - TryTakeFromJson - True");
+
             _permission = restored!;
         }
         else
         {
+            System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - TryTakeFromJson - False");
+
             if (!Id.HasValue || Id.Value <= 0)
             {
                 _permission = Activator.CreateInstance<Atlas.Core.Models.Permission>();
@@ -82,6 +88,8 @@
                 }
             }
         }
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - END");
     }
 
     private Task PersistPermissionData()
@@ -91,6 +99,8 @@
         if (_permission != null)
         {
             ApplicationState.PersistAsJson($"{GetType().Name}", _permission);
+
+            System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - PersistAsJson");
         }
 
         return Task.CompletedTask;
@@ -99,5 +109,7 @@
     void IDisposable.Dispose()
     {
         _persistingSubscription.Dispose();
+
+        System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - Dispose");
     }
 }
