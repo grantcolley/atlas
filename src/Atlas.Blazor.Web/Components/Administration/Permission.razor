@@ -16,8 +16,33 @@
     }
     else
     {
+        <EditForm Model="@_permission" OnValidSubmit="@HandleValidSubmit" FormName="permission">
+            <br />
+            <FluentStack Orientation="Orientation.Vertical">
 
+                @if (_permission.PermissionId > 0)
+                {
+                    <div>
+                        <FluentNumberField Name="PermissionId" @bind-Value="_permission.PermissionId" Label="Permission Id" ReadOnly=true />
+                    </div>
+                }
+                <div>
+                    <FluentTextField Name="Name" @bind-Value="_permission.Name" Label="Name" Required />
+                    <FluentValidationMessage For="@(() => _permission.Name)" />
+                </div>
+                <div>
+                    <FluentTextField Name="Description" @bind-Value="_permission.Description" Label="Description" Required />
+                    <FluentValidationMessage For="@(() => _permission.Description)" />
+                </div>
+            </FluentStack>
+        </EditForm>
     }
+
+    <br />
+
+    <FluentFooter>
+        
+    </FluentFooter>
 </FluentCard>
 
 @code {
@@ -104,6 +129,11 @@
         }
 
         return Task.CompletedTask;
+    }
+
+    private void HandleValidSubmit()
+    {
+        // Process the valid form
     }
 
     void IDisposable.Dispose()
