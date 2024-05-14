@@ -7,7 +7,17 @@
 
 <FluentCard>
     <FluentHeader>
-        Permission
+        @if (_permission != null)
+        {
+            if (_permission?.PermissionId > 0)
+            {
+                @($"Permission: {_permission.PermissionId} {_permission.Name}")
+            }
+            else
+            {
+                @("New Permission")
+            }
+        }
     </FluentHeader>
 
     @if (_permission == null)
@@ -16,8 +26,16 @@
     }
     else
     {
-        <EditForm Model="@_permission" OnValidSubmit="@HandleValidSubmit" FormName="permission">
-            <br />
+        <FluentToolbar>
+            <FluentButton Id="submit" aria-label="Save" Type="ButtonType.Submit" IconEnd="@(new Icons.Regular.Size20.Save())" />
+            <FluentSpacer />
+            <FluentButton Id="delete" aria-label="Delete" Type="ButtonType.Button">
+                <FluentIcon Value="@(new Icons.Regular.Size20.Delete())" Title="Open" Color="Color.Error" OnClick="OnDeleteAsync" />
+            </FluentButton>
+        </FluentToolbar>
+
+        <EditForm Model="@_permission" OnValidSubmit="@OnSubmitAsync" FormName="permission">
+            
             <FluentStack Orientation="Orientation.Vertical">
 
                 @if (_permission.PermissionId > 0)
@@ -131,7 +149,12 @@
         return Task.CompletedTask;
     }
 
-    private void HandleValidSubmit()
+    private async Task OnSubmitAsync()
+    {
+        // Process the valid form
+    }
+
+    private async Task OnDeleteAsync()
     {
         // Process the valid form
     }
