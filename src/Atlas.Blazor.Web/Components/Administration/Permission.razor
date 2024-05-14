@@ -26,16 +26,18 @@
     }
     else
     {
-        <FluentToolbar>
-            <FluentButton Id="submit" aria-label="Save" Type="ButtonType.Submit" IconEnd="@(new Icons.Regular.Size20.Save())" />
-            <FluentSpacer />
-            <FluentButton Id="delete" aria-label="Delete" Type="ButtonType.Button">
-                <FluentIcon Value="@(new Icons.Regular.Size20.Delete())" Title="Open" Color="Color.Error" OnClick="OnDeleteAsync" />
-            </FluentButton>
-        </FluentToolbar>
-
         <EditForm Model="@_permission" OnValidSubmit="@OnSubmitAsync" FormName="permission">
-            
+
+            <FluentValidationSummary />
+
+            <FluentToolbar>
+                <FluentButton Id="submit" aria-label="Save" Type="ButtonType.Submit" IconEnd="@(new Icons.Regular.Size20.Save())" />
+                <FluentSpacer />
+                <FluentButton Id="delete" aria-label="Delete" Type="ButtonType.Button" OnClick="OnDeleteAsync">
+                    <FluentIcon Value="@(new Icons.Regular.Size20.Delete())" Title="Open" Color="Color.Error" />
+                </FluentButton>
+            </FluentToolbar>
+
             <FluentStack Orientation="Orientation.Vertical">
 
                 @if (_permission.PermissionId > 0)
@@ -52,7 +54,9 @@
                     <FluentTextField Name="Description" @bind-Value="_permission.Description" Label="Description" Required />
                     <FluentValidationMessage For="@(() => _permission.Description)" />
                 </div>
+
             </FluentStack>
+
         </EditForm>
     }
 
