@@ -16,9 +16,10 @@
     }
     else
     {
-        <FluentAnchor Id="permission" Href="permission" Target="_self" Appearance="Appearance.Lightweight" IconEnd="@(new Icons.Regular.Size20.DocumentAdd())">
-            Create
-        </FluentAnchor>
+        <FluentToolbar>
+            <FluentButton Id="create-new" aria-label="Create" IconEnd="@(new Icons.Regular.Size20.DocumentAdd())" OnClick="@(() => Create())" />
+            <FluentTooltip Anchor="create-new">Create New</FluentTooltip>
+        </FluentToolbar>
 
         <FluentDataGrid TGridItem=Atlas.Core.Models.Permission Items="@_filteredItems" ResizableColumns=true Pagination="@_pagination" GridTemplateColumns="0.2fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr" Style="height: 405px;overflow:auto;">
             <PropertyColumn Property="@(p => p.PermissionId)" Sortable="true" Align="Align.Center" />
@@ -103,9 +104,14 @@
         System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - END");
     }
 
+    private void Create()
+    {
+        NavigationManager?.NavigateTo($"{AtlasWebConstants.PAGE_PERMISSION}");
+    }
+
     private void Edit(Atlas.Core.Models.Permission permission)
     {
-        NavigationManager?.NavigateTo($"{AtlasWebConstants.PAGE_PERMISSION}/{permission.PermissionId}", true);
+        NavigationManager?.NavigateTo($"{AtlasWebConstants.PAGE_PERMISSION}/{permission.PermissionId}");
     }
 
     private void HandleNameFilter(ChangeEventArgs args)
