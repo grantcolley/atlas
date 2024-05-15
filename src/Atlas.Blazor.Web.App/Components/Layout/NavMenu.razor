@@ -1,0 +1,104 @@
+﻿@implements IDisposable
+
+@if (_modules != null)
+{
+    <nav>
+        <FluentNavMenu Width="250" Collapsible="true" Title="Atlas navigation menu">
+
+            @foreach (Module module in _modules)
+            {
+                <FluentNavGroup Expanded="true" Title="@module.Name" Icon="@IconHelper.GetRegularSize20(module.Icon)">
+
+                    @foreach (Category category in module.Categories)
+                    {
+                        <FluentNavGroup Expanded="true" Title="@category.Name" Icon="@IconHelper.GetRegularSize20(category.Icon)">
+
+                            @foreach (MenuItem menuItem in category.MenuItems)
+                            {
+                                <FluentNavLink Href=@($@"{menuItem.NavigatePage}") @onclick:stopPropagation="true" Icon="@IconHelper.GetRegularSize20(menuItem.Icon)">@menuItem.Name</FluentNavLink>
+                            }
+
+                        </FluentNavGroup>
+                    }
+
+                </FluentNavGroup>
+            }
+
+        </FluentNavMenu>
+    </nav>
+}
+
+@code {
+    [CascadingParameter]
+    internal Task<AuthenticationState>? AuthenticationState { get; set; }
+
+    [Inject]
+    internal PersistentComponentState? ApplicationState { get; set; }
+
+    [Inject]
+    internal IUserRequests? UserRequests { get; set; }
+
+    private IEnumerable<Module>? _modules = new List<Module>();
+
+    private PersistingComponentStateSubscription _persistingSubscription;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ArgumentNullException.ThrowIfNull(UserRequests);
+        ArgumentNullException.ThrowIfNull(ApplicationState);
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - START");
+
+        if (AuthenticationState != null)
+        {
+            AuthenticationState authenticationState = await AuthenticationState;
+
+            if (authenticationState != null
+                && authenticationState.User != null
+                && authenticationState.User.Identity != null)
+            {
+                if (authenticationState.User.Identity.IsAuthenticated)
+                {
+                    _persistingSubscription = ApplicationState.RegisterOnPersisting(PersistNavMenuData);
+
+                    if (!ApplicationState.TryTakeFromJson<IEnumerable<Module>?>($"{GetType().Name}", out var restored))
+                    {
+                        System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - TryTakeFromJson - True");
+
+                        _modules = await UserRequests.GetClaimModulesAsync().ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - TryTakeFromJson - False");
+
+                        _modules = restored!;
+                    }
+                }
+            }
+        }
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - END");
+    }
+
+    private Task PersistNavMenuData()
+    {
+        if (ApplicationState == null) throw new NullReferenceException(nameof(ApplicationState));
+
+        if (_modules != null
+            && _modules.Any())
+        {
+            ApplicationState.PersistAsJson($"{GetType().Name}", _modules);
+
+            System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - PersistAsJson");
+        }
+
+        return Task.CompletedTask;
+    }
+
+    void IDisposable.Dispose()
+    {
+        _persistingSubscription.Dispose();
+
+        System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - Dispose");
+    }
+}

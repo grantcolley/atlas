@@ -1,13 +1,9 @@
 ![Alt text](/readme-images/Atlas.png?raw=true "Atlas") 
 
-<!-- 
-###### .NET 7.0, Blazor WebAssembly, Blazor Server, ASP.NET Core Web API, Auth0, MudBlazor, Entity Framework Core, MS SQL Server, SQLite 
-######
--->
+###### .NET 8.0, Blazor, ASP.NET Core Web API, Auth0, FluentUI, Entity Framework Core, MS SQL Server, SQLite, FluentValidation
 
 \
 [![Build status](https://ci.appveyor.com/api/projects/status/qx6pbauk9bfpopst?svg=true)](https://ci.appveyor.com/project/grantcolley/atlas)
-###### 
 
 ## Table of Contents
 * [Hosting Models](#hosting-models)

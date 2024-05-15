@@ -1,0 +1,153 @@
+﻿@page "/Permissions"
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+@implements IDisposable
+
+<PageTitle>Permissions</PageTitle>
+
+<FluentCard>
+    <FluentHeader>
+        Permissions
+    </FluentHeader>
+
+    @if(_permissions == null)
+    {
+        <FluentProgressRing style="width: 82px; height: 82px;"></FluentProgressRing>
+    }
+    else
+    {
+        <FluentToolbar>
+            <FluentButton Id="create-new" aria-label="Create" IconEnd="@(new Icons.Regular.Size20.DocumentAdd())" OnClick="@(() => Create())" />
+            <FluentTooltip Anchor="create-new">Create New</FluentTooltip>
+        </FluentToolbar>
+
+        <FluentDataGrid TGridItem=Atlas.Core.Models.Permission Items="@_filteredItems" ResizableColumns=true Pagination="@_pagination" GridTemplateColumns="0.2fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr" Style="height: 405px;overflow:auto;">
+            <PropertyColumn Property="@(p => p.PermissionId)" Sortable="true" Align="Align.Center" />
+            <PropertyColumn Property="@(p => p.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_nameFilter)" Tooltip="true" Title="Name">
+                <ColumnOptions>
+                    <div class="search-box">
+                        <FluentSearch type="filter" Autofocus=true @bind-Value=_nameFilter @oninput="HandleNameFilter" @bind-Value:after="HandleClear" Placeholder="Permission name..." />
+                    </div>
+                </ColumnOptions>
+            </PropertyColumn>
+            <TemplateColumn Align="@Align.Center" Title="Edit">
+                <FluentButton aria-label="Edit" IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(() => Edit(context))" />
+            </TemplateColumn>
+        </FluentDataGrid>
+
+        <FluentPaginator State="@_pagination" />
+    }
+</FluentCard>
+
+@code {
+
+    [Inject]
+    internal PersistentComponentState? ApplicationState { get; set; }
+
+    [Inject]
+    public NavigationManager? NavigationManager { get; set; }
+
+    [Inject]
+    public IRequests? Requests { get; set; }
+
+    PersistingComponentStateSubscription _persistingSubscription;
+    bool _clearItems = false;
+    string _nameFilter = string.Empty;
+    PaginationState _pagination = new PaginationState { ItemsPerPage = 20 };
+    IEnumerable<Atlas.Core.Models.Permission>? _permissions = null;
+    IQueryable<Atlas.Core.Models.Permission>? _filteredItems => _permissions?.AsQueryable().Where(p => !string.IsNullOrWhiteSpace(p.Name) && p.Name.Contains(_nameFilter, StringComparison.CurrentCultureIgnoreCase));
+
+    protected override async Task OnInitializedAsync()
+    {
+        ArgumentNullException.ThrowIfNull(Requests);
+        ArgumentNullException.ThrowIfNull(ApplicationState);
+
+        _persistingSubscription = ApplicationState.RegisterOnPersisting(PersistPermissionsData);
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - START");
+
+        if (ApplicationState.TryTakeFromJson<IEnumerable<Atlas.Core.Models.Permission>?>($"{GetType().Name}", out IEnumerable<Atlas.Core.Models.Permission>? restored))
+        {
+            System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - TryTakeFromJson - True");
+            _permissions = restored!;
+        }
+        else
+        {
+            System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - TryTakeFromJson - False");
+
+            IResponse<IEnumerable<Atlas.Core.Models.Permission>> response = await Requests.GetListAsync<Atlas.Core.Models.Permission>(Atlas.Core.Constants.AtlasAPIEndpoints.GET_PERMISSIONS)
+                .ConfigureAwait(false);
+
+            if (!response.IsSuccess)
+            {
+                if (!string.IsNullOrWhiteSpace(response.Message))
+                {
+                    var alert = new Models.Alert
+                        {
+                            AlertType = Alerts.ERROR,
+                            Title = "Error",
+                            Message = response.Message
+                        };
+
+                    NavigationManager?.NavigateTo(alert.Page);
+                }
+            }
+            else
+            {
+                if (response.Result != null)
+                {
+                    _permissions = response.Result;
+                }
+            }
+        }
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - END");
+    }
+
+    private void Create()
+    {
+        NavigationManager?.NavigateTo($"{AtlasWebConstants.PAGE_PERMISSION}");
+    }
+
+    private void Edit(Atlas.Core.Models.Permission permission)
+    {
+        NavigationManager?.NavigateTo($"{AtlasWebConstants.PAGE_PERMISSION}/{permission.PermissionId}");
+    }
+
+    private void HandleNameFilter(ChangeEventArgs args)
+    {
+        if (args.Value is string value)
+        {
+            _nameFilter = value;
+        }
+    }
+
+    private void HandleClear()
+    {
+        if (string.IsNullOrWhiteSpace(_nameFilter))
+        {
+            _nameFilter = string.Empty;
+        }
+    }
+
+    private Task PersistPermissionsData()
+    {
+        if (ApplicationState == null) throw new NullReferenceException(nameof(ApplicationState));
+
+        if (_permissions != null)
+        {
+            ApplicationState.PersistAsJson($"{GetType().Name}", _permissions);
+
+            System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - PersistAsJson");
+        }
+
+        return Task.CompletedTask;
+    }
+
+    void IDisposable.Dispose()
+    {
+        _persistingSubscription.Dispose();
+
+        System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - Dispose");
+    }
+}

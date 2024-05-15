@@ -16,10 +16,6 @@ namespace Atlas.Core.Models
         public Category? Category { get; set; }
 
         [Required]
-        [StringLength(30)]
-        public string? PageCode { get; set; }
-
-        [Required]
         [StringLength(50)]
         public string? Name { get; set; }
 
@@ -50,9 +46,6 @@ namespace Atlas.Core.Models
     {
         public MenuItemValidator()
         {
-            RuleFor(v => v.PageCode)
-                .NotNull().WithMessage("Page Code is required");
-
             RuleFor(v => v.Category)
                 .NotNull().WithMessage("Category is required");
 

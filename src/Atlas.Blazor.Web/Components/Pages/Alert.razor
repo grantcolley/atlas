@@ -1,0 +1,57 @@
+﻿@page "/alert/{AlertType}/{Title}/{Message}"
+
+<FluentCard>
+
+    <FluentStack>
+
+        @{
+            switch (@AlertType)
+            {
+                case Alerts.INFO:
+                    <FluentIcon Value="@(new Icons.Regular.Size20.Info().WithColor(Color.Info))" />
+                    break;
+                case Alerts.SUCCESS:
+                    <FluentIcon Value="@(new Icons.Regular.Size20.Info().WithColor(Color.Success))" />
+                    break;
+                case Alerts.WARNING:
+                    <FluentIcon Value="@(new Icons.Regular.Size20.Warning().WithColor(Color.Warning))" />
+                    break;
+                case Alerts.ERROR:
+                    <FluentIcon Value="@(new Icons.Regular.Size20.ErrorCircle().WithColor(Color.Error))" />
+                    break;
+            }
+        }
+
+        <FluentLabel Typo="Typography.Header">@Title</FluentLabel>
+
+    </FluentStack>
+
+    <FluentLabel Typo="Typography.Body">@Message</FluentLabel>
+
+</FluentCard>
+
+@code{
+
+    [Parameter]
+    public string? AlertType { get; set; }
+
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
+    public string? Message { get; set; }
+
+    protected MessageIntent _intent;
+
+    protected override void OnInitialized()
+    {
+        _intent = AlertType switch
+        {
+            Alerts.INFO => MessageIntent.Info,
+            Alerts.SUCCESS => MessageIntent.Success,
+            Alerts.WARNING => MessageIntent.Warning,
+            Alerts.ERROR => MessageIntent.Error,
+            _ => MessageIntent.Info,
+        };
+    }
+}

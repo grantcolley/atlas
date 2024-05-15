@@ -1,0 +1,172 @@
+﻿@page "/Permission"
+@page "/Permission/{Id:int?}"
+@rendermode InteractiveServer
+@implements IDisposable
+
+<PageTitle>Permission</PageTitle>
+
+<FluentCard>
+    <FluentHeader>
+        @if (_permission != null)
+        {
+            if (_permission?.PermissionId > 0)
+            {
+                @($"Permission: {_permission.PermissionId} {_permission.Name}")
+            }
+            else
+            {
+                @("New Permission")
+            }
+        }
+    </FluentHeader>
+
+    @if (_permission == null)
+    {
+        <FluentProgressRing style="width: 82px; height: 82px;"></FluentProgressRing>
+    }
+    else
+    {
+        <EditForm Model="@_permission" OnValidSubmit="@OnSubmitAsync" FormName="permission">
+
+            <FluentValidationSummary />
+
+            <FluentToolbar>
+                <FluentButton Id="submit" aria-label="Save" Type="ButtonType.Submit" IconEnd="@(new Icons.Regular.Size20.Save())" />
+                <FluentSpacer />
+                <FluentButton Id="delete" aria-label="Delete" Type="ButtonType.Button" OnClick="OnDeleteAsync">
+                    <FluentIcon Value="@(new Icons.Regular.Size20.Delete())" Title="Open" Color="Color.Error" />
+                </FluentButton>
+            </FluentToolbar>
+
+            <FluentStack Orientation="Orientation.Vertical">
+
+                @if (_permission.PermissionId > 0)
+                {
+                    <div>
+                        <FluentNumberField Name="PermissionId" @bind-Value="_permission.PermissionId" Label="Permission Id" ReadOnly=true />
+                    </div>
+                }
+                <div>
+                    <FluentTextField Name="Name" @bind-Value="_permission.Name" Label="Name" Required />
+                    <FluentValidationMessage For="@(() => _permission.Name)" />
+                </div>
+                <div>
+                    <FluentTextField Name="Description" @bind-Value="_permission.Description" Label="Description" Required />
+                    <FluentValidationMessage For="@(() => _permission.Description)" />
+                </div>
+
+            </FluentStack>
+
+        </EditForm>
+    }
+
+    <br />
+
+    <FluentFooter>
+        
+    </FluentFooter>
+</FluentCard>
+
+@code {
+
+    [Inject]
+    internal PersistentComponentState? ApplicationState { get; set; }
+
+    [Inject]
+    public NavigationManager? NavigationManager { get; set; }
+
+    [Inject]
+    public IRequests? Requests { get; set; }
+
+    [Parameter]
+    public int? Id { get; set; }
+
+    PersistingComponentStateSubscription _persistingSubscription;
+    Atlas.Core.Models.Permission? _permission = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ArgumentNullException.ThrowIfNull(Requests);
+        ArgumentNullException.ThrowIfNull(ApplicationState);
+
+        _persistingSubscription = ApplicationState.RegisterOnPersisting(PersistPermissionData);
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - START");
+
+        if (ApplicationState.TryTakeFromJson<Atlas.Core.Models.Permission?>($"{GetType().Name}", out Atlas.Core.Models.Permission? restored))
+        {
+            System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - TryTakeFromJson - True");
+
+            _permission = restored!;
+        }
+        else
+        {
+            System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - TryTakeFromJson - False");
+
+            if (!Id.HasValue || Id.Value <= 0)
+            {
+                _permission = Activator.CreateInstance<Atlas.Core.Models.Permission>();
+            }
+            else
+            {
+                IResponse<Atlas.Core.Models.Permission> response = await Requests.GetModelAsync<Atlas.Core.Models.Permission>(Id.Value, Atlas.Core.Constants.AtlasAPIEndpoints.GET_PERMISSION)
+                    .ConfigureAwait(false);
+
+                if (!response.IsSuccess)
+                {
+                    if (!string.IsNullOrWhiteSpace(response.Message))
+                    {
+                        var alert = new Models.Alert
+                            {
+                                AlertType = Alerts.ERROR,
+                                Title = "Error",
+                                Message = response.Message
+                            };
+
+                        NavigationManager?.NavigateTo(alert.Page);
+                    }
+                }
+                else
+                {
+                    if (response.Result != null)
+                    {
+                        _permission = response.Result;
+                    }
+                }
+            }
+        }
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - END");
+    }
+
+    private Task PersistPermissionData()
+    {
+        if (ApplicationState == null) throw new NullReferenceException(nameof(ApplicationState));
+
+        if (_permission != null)
+        {
+            ApplicationState.PersistAsJson($"{GetType().Name}", _permission);
+
+            System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - PersistAsJson");
+        }
+
+        return Task.CompletedTask;
+    }
+
+    private async Task OnSubmitAsync()
+    {
+        // Process the valid form
+    }
+
+    private async Task OnDeleteAsync()
+    {
+        // Process the valid form
+    }
+
+    void IDisposable.Dispose()
+    {
+        _persistingSubscription.Dispose();
+
+        System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - Dispose");
+    }
+}

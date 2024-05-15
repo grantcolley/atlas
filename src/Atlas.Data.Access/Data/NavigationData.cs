@@ -235,7 +235,6 @@ namespace Atlas.Data.Access.Data
             {
                 MenuItemId = menuItem.MenuItemId,
                 Name = menuItem.Name,
-                PageCode = menuItem.PageCode,
                 Order = menuItem.Order,
                 Icon = menuItem.Icon,
                 NavigatePage = menuItem.NavigatePage,

@@ -1,9 +1,6 @@
-using Atlas.API.Endpoints;
 using Atlas.API.Extensions;
 using Atlas.API.Interfaces;
 using Atlas.API.Services;
-using Atlas.Core.Constants;
-using Atlas.Core.Models;
 using Atlas.Data.Access.Constants;
 using Atlas.Data.Access.Context;
 using Atlas.Data.Access.Data;
@@ -13,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +18,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services
+    .AddSwaggerGen(c =>
+    {
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "Atlas.API", Version = "v1" });
+    });
+
 builder.Services.AddHealthChecks();
 
 builder.Services.Configure<JsonOptions>(options =>
@@ -54,7 +58,6 @@ builder.Services.AddScoped<IClaimService, ClaimService>();
 builder.Services.AddScoped<IOptionsData, OptionsData>();
 builder.Services.AddScoped<INavigationData, NavigationData>();
 builder.Services.AddScoped<IAdministrationData, AdministrationData>();
-builder.Services.AddScoped<IWeatherForecastData, WeatherForecastData>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -67,19 +70,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddAuthorization(o =>
-{
-    o.AddPolicy("atlas-user", p => p.
-        RequireAuthenticatedUser().
-        RequireRole("atlas-user"));
-});
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("atlas-user", policy =>
+    {
+        policy.RequireAuthenticatedUser().RequireRole("atlas-user");
+    });
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("local",
         builder =>
             builder.WithOrigins("https://localhost:44400", "https://localhost:44410")
-                   .AllowAnyHeader());
+            .AllowAnyHeader());
 });
 
 var app = builder.Build();
@@ -99,19 +101,13 @@ else
 
 app.UseHttpsRedirection();
 
+app.UseCors("local");
+
 app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapEndpoints();
-
-app.MapGet("/weatherforecast", WeatherForecastEndpoint.GetWeatherForecast)
-    .WithOpenApi()
-    .WithName("weatherorecast")
-    .WithDescription("Gets the weather forecast")
-    .Produces<IEnumerable<WeatherForecast>>(StatusCodes.Status200OK)
-    .Produces(StatusCodes.Status500InternalServerError)
-    .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
 var useSeedData = bool.Parse(builder.Configuration["SeedData:UseSeedData"] ?? "false");
 

@@ -1,4 +1,4 @@
-﻿using Atlas.Blazor.Constants;
+﻿using Atlas.Blazor.Web.Constants;
 using Atlas.Core.Constants;
 using Atlas.Core.Models;
 using Atlas.Data.Access.Context;
@@ -26,6 +26,8 @@ namespace Atlas.Seed.Data
             AssignUsersRoles();
 
             Navigation();
+
+            //AddWeatherModule();
         }
 
         private static void TruncateTables()
@@ -57,6 +59,7 @@ namespace Atlas.Seed.Data
             permissions.Add(Auth.USER, new Permission { Name = Auth.USER, Description = "Atlas User Permission" });
             permissions.Add(Auth.ADMIN, new Permission { Name = Auth.ADMIN, Description = "Atlas Administrator Permission" });
             permissions.Add(Auth.DEVELOPER, new Permission { Name = Auth.DEVELOPER, Description = "Atlas Developer Permission" });
+            permissions.Add(Auth.WEATHER_USER, new Permission { Name = Auth.WEATHER_USER, Description = "Weather User Permission" });
 
             foreach (var permission in permissions.Values)
             {
@@ -73,6 +76,7 @@ namespace Atlas.Seed.Data
             roles.Add(Auth.USER, new Role { Name = Auth.USER, Description = "Atlas User Role" });
             roles.Add(Auth.ADMIN, new Role { Name = Auth.ADMIN, Description = "Atlas Administrator Role" });
             roles.Add(Auth.DEVELOPER, new Role { Name = Auth.DEVELOPER, Description = "Atlas Developer Role" });
+            roles.Add(Auth.WEATHER_USER, new Role { Name = Auth.WEATHER_USER, Description = "Weather User Role" });
 
             foreach (var role in roles.Values)
             {
@@ -81,12 +85,17 @@ namespace Atlas.Seed.Data
 
             roles[Auth.USER].Permissions.Add(permissions[Auth.USER]);
 
+            roles[Auth.WEATHER_USER].Permissions.Add(permissions[Auth.USER]);
+            roles[Auth.WEATHER_USER].Permissions.Add(permissions[Auth.WEATHER_USER]);
+
             roles[Auth.ADMIN].Permissions.Add(permissions[Auth.USER]);
             roles[Auth.ADMIN].Permissions.Add(permissions[Auth.ADMIN]);
+            roles[Auth.ADMIN].Permissions.Add(permissions[Auth.WEATHER_USER]);
 
             roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.USER]);
             roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.ADMIN]);
             roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.DEVELOPER]);
+            roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.WEATHER_USER]);
 
             dbContext.SaveChanges();
         }
@@ -111,8 +120,8 @@ namespace Atlas.Seed.Data
         {
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-            users["alice"].Roles.Add(roles[Auth.ADMIN]);
-            users["bob"].Roles.Add(roles[Auth.USER]);
+            users["alice"].Roles.AddRange(new[] { roles[Auth.ADMIN], roles[Auth.WEATHER_USER] });
+            users["bob"].Roles.AddRange(new[] { roles[Auth.USER], roles[Auth.WEATHER_USER] });
             users["grant"].Roles.Add(roles[Auth.DEVELOPER]);
 
             dbContext.SaveChanges();
@@ -122,47 +131,60 @@ namespace Atlas.Seed.Data
         {
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-            var administration = new Module { Name = "Administration", Icon = "Engineering", Order = 2, Permission = Auth.ADMIN };
+            var administration = new Module { Name = "Administration", Icon = "TableSettings", Order = 2, Permission = Auth.ADMIN };
 
             dbContext.Modules.Add(administration);
 
             dbContext.SaveChanges();
 
-            var authorisationCategory = new Category { Name = "Authorisation", Icon = "AdminPanelSettings", Order = 1, Permission = Auth.ADMIN, Module = administration };
-            var navigationCategory = new Category { Name = "Navigation", Icon = "Explore", Order = 2, Permission = Auth.ADMIN, Module = administration };
+            var authorisationCategory = new Category { Name = "Authorisation", Icon = "ShieldLock", Order = 1, Permission = Auth.ADMIN, Module = administration };
 
             administration.Categories.Add(authorisationCategory);
-            administration.Categories.Add(navigationCategory);
 
             dbContext.Categories.Add(authorisationCategory);
-            dbContext.Categories.Add(navigationCategory);
 
             dbContext.SaveChanges();
 
-            var usersMenuItem = new MenuItem { Name = "Users", Icon = "SupervisedUserCircle", NavigatePage = "PageRouter", Order = 1, Permission = Auth.ADMIN, Category = authorisationCategory, PageCode = PageCodes.USERS };
-            var rolesMenuItem = new MenuItem { Name = "Roles", Icon = "Lock", NavigatePage = "PageRouter", Order = 2, Permission = Auth.ADMIN, Category = authorisationCategory, PageCode = PageCodes.ROLES };
-            var permissionsMenuItem = new MenuItem { Name = "Permissions", Icon = "Key", NavigatePage = "PageRouter", Order = 3, Permission = Auth.ADMIN, Category = authorisationCategory, PageCode = PageCodes.PERMISSIONS };
-
-            var modulesMenuItem = new MenuItem { Name = "Modules", Icon = "AutoAwesomeMosaic", NavigatePage = "PageRouter", Order = 1, Permission = Auth.ADMIN, Category = navigationCategory, PageCode = PageCodes.MODULES };
-            var categoriesMenuItem = new MenuItem { Name = "Categories", Icon = "AutoAwesomeMotion", NavigatePage = "PageRouter", Order = 2, Permission = Auth.ADMIN, Category = navigationCategory, PageCode = PageCodes.CATEGORIES };
-            var menuItemsMenuItem = new MenuItem { Name = "MenuItems", Icon = "Article", NavigatePage = "PageRouter", Order = 3, Permission = Auth.ADMIN, Category = navigationCategory, PageCode = PageCodes.MENU_ITEMS };
+            var usersMenuItem = new MenuItem { Name = "Users", Icon = "PeopleLock", NavigatePage = AtlasWebConstants.PAGE_USERS, Order = 1, Permission = Auth.ADMIN, Category = authorisationCategory };
+            var rolesMenuItem = new MenuItem { Name = "Roles", Icon = "LockMultiple", NavigatePage = AtlasWebConstants.PAGE_ROLES, Order = 2, Permission = Auth.ADMIN, Category = authorisationCategory };
+            var permissionsMenuItem = new MenuItem { Name = "Permissions", Icon = "KeyMultiple", NavigatePage = AtlasWebConstants.PAGE_PERMISSIONS, Order = 3, Permission = Auth.ADMIN, Category = authorisationCategory };
             
             authorisationCategory.MenuItems.Add(usersMenuItem);
             authorisationCategory.MenuItems.Add(rolesMenuItem);
             authorisationCategory.MenuItems.Add(permissionsMenuItem);
 
-            navigationCategory.MenuItems.Add(modulesMenuItem);
-            navigationCategory.MenuItems.Add(categoriesMenuItem);
-            navigationCategory.MenuItems.Add(menuItemsMenuItem);
-
             dbContext.MenuItems.Add(usersMenuItem);
             dbContext.MenuItems.Add(rolesMenuItem);
             dbContext.MenuItems.Add(permissionsMenuItem);
-            dbContext.MenuItems.Add(modulesMenuItem);
-            dbContext.MenuItems.Add(categoriesMenuItem);
-            dbContext.MenuItems.Add(menuItemsMenuItem);
 
             dbContext.SaveChanges();
         }
+
+        //private static void AddWeatherModule()
+        //{
+        //    if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
+
+        //    var weather = new Module { Name = "Weather", Icon = "Thunderstorm", Order = 1, Permission = Auth.WEATHER_USER };
+
+        //    dbContext.Modules.Add(weather);
+
+        //    dbContext.SaveChanges();
+
+        //    var forecastCategory = new Category { Name = "Forecast", Icon = "WbCloudy", Order = 1, Permission = Auth.WEATHER_USER, Module = weather };
+
+        //    weather.Categories.Add(forecastCategory);
+
+        //    dbContext.Categories.Add(forecastCategory);
+
+        //    dbContext.SaveChanges();
+
+        //    var weatherForecastMenuItem = new MenuItem { Name = "Weather Display", Icon = "DeviceThermostat", NavigatePage = "PageRouter", Order = 1, Permission = Auth.WEATHER_USER, Category = forecastCategory, PageCode = PageCodes.WEATHER_DISPLAY };
+
+        //    forecastCategory.MenuItems.Add(weatherForecastMenuItem);
+
+        //    dbContext.MenuItems.Add(weatherForecastMenuItem);
+
+        //    dbContext.SaveChanges();
+        //}
     }
 }
