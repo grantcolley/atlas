@@ -7,17 +7,7 @@
 
 <FluentCard>
     <FluentHeader>
-        @if (_permission != null)
-        {
-            if (_permission?.PermissionId > 0)
-            {
-                @($"Permission: {_permission.PermissionId} {_permission.Name}")
-            }
-            else
-            {
-                @("New Permission")
-            }
-        }
+        Permission
     </FluentHeader>
 
     @if (_permission == null)
@@ -28,39 +18,43 @@
     {
         <EditForm Model="@_permission" OnValidSubmit="@OnSubmitAsync" FormName="permission">
 
-            <FluentValidationSummary />
+            <FluentValidationValidator/>
 
             <FluentToolbar>
                 <FluentButton Id="submit" aria-label="Save" Type="ButtonType.Submit" IconEnd="@(new Icons.Regular.Size20.Save())" />
                 <FluentSpacer />
                 <FluentButton Id="delete" aria-label="Delete" Type="ButtonType.Button" OnClick="OnDeleteAsync">
-                    <FluentIcon Value="@(new Icons.Regular.Size20.Delete())" Title="Open" Color="Color.Error" />
+                    <FluentIcon Value="@(new Icons.Regular.Size20.Delete())" Title="Open" Color="Color.Error"/>
                 </FluentButton>
             </FluentToolbar>
 
-            <FluentStack Orientation="Orientation.Vertical">
-
-                @if (_permission.PermissionId > 0)
-                {
-                    <div>
-                        <FluentNumberField Name="PermissionId" @bind-Value="_permission.PermissionId" Label="Permission Id" ReadOnly=true />
-                    </div>
-                }
-                <div>
-                    <FluentTextField Name="Name" @bind-Value="_permission.Name" Label="Name" Required />
-                    <FluentValidationMessage For="@(() => _permission.Name)" />
-                </div>
-                <div>
-                    <FluentTextField Name="Description" @bind-Value="_permission.Description" Label="Description" Required />
-                    <FluentValidationMessage For="@(() => _permission.Description)" />
-                </div>
-
-            </FluentStack>
+            <FluentAccordion>
+                <FluentAccordionItem Expanded=true>
+                    <HeadingTemplate>
+                        @if (_permission.PermissionId.Equals(0))
+                        {
+                            <FluentLabel Typo="Typography.Body">New Permission</FluentLabel>
+                        }
+                        else
+                        {
+                            <FluentLabel Typo="Typography.Body">@($"Permission Id {_permission.PermissionId}")</FluentLabel>
+                        }
+                    </HeadingTemplate>
+                    <ChildContent>
+                        <div>
+                            <FluentTextField Name="Name" @bind-Value="_permission.Name" Label="Name" />
+                            <FluentValidationMessage For="@(() => _permission.Name)" />
+                        </div>
+                        <div>
+                            <FluentTextField Name="Description" @bind-Value="_permission.Description" Label="Description" />
+                            <FluentValidationMessage For="@(() => _permission.Description)" />
+                        </div>
+                    </ChildContent>
+                </FluentAccordionItem>
+            </FluentAccordion>
 
         </EditForm>
     }
-
-    <br />
 
     <FluentFooter>
         
