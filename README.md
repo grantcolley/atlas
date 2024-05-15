@@ -1,6 +1,6 @@
 ![Alt text](/readme-images/Atlas.png?raw=true "Atlas") 
 
-###### .NET 8.0, Blazor, ASP.NET Core Web API, Auth0, FluentUI, FluentValidation, Entity Framework Core, MS SQL Server, SQLite, FluentValidation
+###### .NET 8.0, Blazor, ASP.NET Core Web API, Auth0, FluentUI, FluentValidation, Entity Framework Core, MS SQL Server, SQLite
 
 \
 [![Build status](https://ci.appveyor.com/api/projects/status/qx6pbauk9bfpopst?svg=true)](https://ci.appveyor.com/project/grantcolley/atlas)
