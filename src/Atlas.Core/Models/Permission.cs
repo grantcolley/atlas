@@ -71,12 +71,12 @@ namespace Atlas.Core.Models
         public PermissionValidator()
         {
             RuleFor(v => v.Name)
-                .NotNull().WithMessage("Name is required")
-                .Length(1, 50).WithMessage("Name cannot exceed 50 characters");
+                .NotEmpty().WithMessage("Name is required")
+                .MaximumLength(50).WithMessage("Name cannot exceed 50 characters");
 
             RuleFor(v => v.Description)
-                .NotNull().WithMessage("Description is required")
-                .Length(1, 150).WithMessage("Description cannot exceed 150 characters");
+                .NotEmpty().WithMessage("Description is required")
+                .MaximumLength(50).WithMessage("Description cannot exceed 150 characters");
         }
     }
 }
