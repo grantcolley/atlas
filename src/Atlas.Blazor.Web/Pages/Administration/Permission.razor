@@ -16,7 +16,7 @@
     }
     else
     {
-        <EditForm Model="@_permission" OnValidSubmit="@OnSubmitAsync" FormName="permission">
+        <EditForm FormName="permission" EditContext="_currentEditContext">
 
             <FluentValidationValidator/>
 
@@ -26,6 +26,8 @@
                 <FluentButton Id="delete" aria-label="Delete" Type="ButtonType.Button" OnClick="OnDeleteAsync">
                     <FluentIcon Value="@(new Icons.Regular.Size20.Delete())" Title="Open" Color="Color.Error"/>
                 </FluentButton>
+                <FluentSpacer />
+                <ValidationBadge Title="Permission" Messages="_messages"/>
             </FluentToolbar>
 
             <FluentAccordion>
@@ -75,8 +77,10 @@
     [Parameter]
     public int? Id { get; set; }
 
-    PersistingComponentStateSubscription _persistingSubscription;
-    Atlas.Core.Models.Permission? _permission = null;
+    private EditContext? _currentEditContext;
+    private PersistingComponentStateSubscription _persistingSubscription;
+    private List<string> _messages = new();
+    private Atlas.Core.Models.Permission? _permission = null;
 
     protected override async Task OnInitializedAsync()
     {
@@ -122,13 +126,13 @@
                 }
                 else
                 {
-                    if (response.Result != null)
-                    {
-                        _permission = response.Result;
-                    }
+                    _permission = response.Result;
                 }
             }
         }
+
+        _currentEditContext = new EditContext(_permission ?? throw new NullReferenceException(nameof(_permission)));
+        _currentEditContext.OnValidationStateChanged += CurrentEditContextOnValidationStateChanged;
 
         System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - END");
     }
@@ -157,9 +161,28 @@
         // Process the valid form
     }
 
+    private void CurrentEditContextOnValidationStateChanged(object? sender, ValidationStateChangedEventArgs e)
+    {
+        int messagesCount = _messages.Count;
+
+        _messages.Clear();
+
+        if(_currentEditContext != null)
+        {
+            _messages.AddRange(_currentEditContext.GetValidationMessages());
+        }
+
+        if (messagesCount != _messages.Count)
+        {
+            StateHasChanged();
+        }
+    }
+
     void IDisposable.Dispose()
     {
         _persistingSubscription.Dispose();
+
+        if (_currentEditContext != null) _currentEditContext.OnValidationStateChanged -= CurrentEditContextOnValidationStateChanged;
 
         System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - Dispose");
     }
