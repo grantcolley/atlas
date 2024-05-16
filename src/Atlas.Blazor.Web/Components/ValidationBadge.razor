@@ -1,0 +1,28 @@
+﻿@if (Messages != null && Messages.Count() > 0)
+{
+    <FluentCounterBadge Count="@Messages.Count()" Appearance="Appearance.Lightweight" BackgroundColor="@Color.Lightweight" Color="Color.Error">
+        <FluentButton>
+            <FluentIcon Value="@(new Icons.Regular.Size24.ErrorCircle())" Color="@Color.Error" />
+        </FluentButton>
+    </FluentCounterBadge>
+}
+
+@code {
+    // [Inject]
+    // protected IShowDialogService ShowDialogService { get; set; }
+
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
+    public List<string>? Messages { get; set; }
+
+    private async Task ClickAsync()
+    {
+        // var title = string.IsNullOrWhiteSpace(Title) ? "Validation Errors" : $"{Title} Validation Errors";
+        // var message = string.Join("\n", Messages);
+        // await ShowDialogService.ShowAsync(
+        //     title, message, "Ok", false, Color.Error, true)
+        //     .ConfigureAwait(false);
+    }
+}
