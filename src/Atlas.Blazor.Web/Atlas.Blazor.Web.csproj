@@ -23,4 +23,9 @@
     <ProjectReference Include="..\Atlas.Requests\Atlas.Requests.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>
