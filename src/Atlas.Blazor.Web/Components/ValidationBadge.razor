@@ -1,28 +1,35 @@
 ﻿@if (Messages != null && Messages.Count() > 0)
 {
     <FluentCounterBadge Count="@Messages.Count()" Appearance="Appearance.Lightweight" BackgroundColor="@Color.Lightweight" Color="Color.Error">
-        <FluentButton>
+        <FluentButton OnClick="@(() => ShowDialog())">
             <FluentIcon Value="@(new Icons.Regular.Size24.ErrorCircle())" Color="@Color.Error" />
         </FluentButton>
     </FluentCounterBadge>
 }
 
 @code {
-    // [Inject]
-    // protected IShowDialogService ShowDialogService { get; set; }
-
-    [Parameter]
-    public string? Title { get; set; }
+    [Inject]
+    public IAtlasDialogService? AtlasDialogService { get; set; }
 
     [Parameter]
     public List<string>? Messages { get; set; }
 
-    private async Task ClickAsync()
+    [Parameter]
+    public string? Title { get; set; }
+
+    private async Task ShowDialog()
     {
-        // var title = string.IsNullOrWhiteSpace(Title) ? "Validation Errors" : $"{Title} Validation Errors";
-        // var message = string.Join("\n", Messages);
-        // await ShowDialogService.ShowAsync(
-        //     title, message, "Ok", false, Color.Error, true)
-        //     .ConfigureAwait(false);
+        ArgumentNullException.ThrowIfNull(AtlasDialogService);
+        ArgumentNullException.ThrowIfNull(Messages);
+        ArgumentNullException.ThrowIfNull(Title);
+
+        DialogContent dialogContent = new DialogContent
+            {
+                Title = string.IsNullOrWhiteSpace(Title) ? "Validation Errors" : $"{Title} Validation Errors",
+                Messages = Messages
+            };
+
+        _ = await AtlasDialogService.ShowDialogAsync(dialogContent)
+            .ConfigureAwait(false);
     }
 }
