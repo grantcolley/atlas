@@ -1,6 +1,8 @@
 using Atlas.Blazor.Web.App.Authentication;
 using Atlas.Blazor.Web.App.Components;
 using Atlas.Blazor.Web.Constants;
+using Atlas.Blazor.Web.Interfaces;
+using Atlas.Blazor.Web.Services;
 using Atlas.Core.Constants;
 using Atlas.Requests.API;
 using Atlas.Requests.Interfaces;
@@ -37,6 +39,8 @@ builder.Services.AddScoped<TokenHandler>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
 
 builder.Services.AddScoped<ITooltipService, TooltipService>();
+builder.Services.AddScoped<IDialogService, DialogService>();
+builder.Services.AddScoped<IAtlasDialogService, AtlasDialogService>();
 
 builder.Services.AddHttpClient(AtlasWebConstants.ATLAS_API,
       client => client.BaseAddress = new Uri(builder.Configuration[AtlasWebConstants.ATLAS_API] ?? throw new NullReferenceException(AtlasWebConstants.ATLAS_API)))
