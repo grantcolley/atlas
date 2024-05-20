@@ -1,0 +1,45 @@
+﻿@implements IDialogContentComponent<DialogContent>
+
+<FluentDialogHeader ShowDismiss="true">
+    <FluentStack VerticalAlignment="VerticalAlignment.Center">
+        <FluentIcon Value="@(new Icons.Regular.Size24.Globe())" />
+        <FluentLabel Typo="Typography.PaneHeader">
+            @Dialog.Instance.Parameters.Title
+        </FluentLabel>
+    </FluentStack>
+</FluentDialogHeader>
+
+<FluentDialogBody>
+    @foreach (string message in @Content.Messages)
+    {
+        @message
+        <br/>
+    }
+</FluentDialogBody>
+
+<FluentDialogFooter>
+    <FluentButton Appearance="Appearance.Accent" OnClick="@PrimaryClickAsync">@Content.PrimaryButtonText</FluentButton>
+
+    @if(Content.HasSecondaryButton)
+    {
+        <FluentButton Appearance="Appearance.Neutral" OnClick="@SecondaryClickAsync">@Content.SecondaryActionText</FluentButton>
+    }
+</FluentDialogFooter>
+
+@code {
+    [Parameter]
+    public DialogContent Content { get; set; } = default!;
+
+    [CascadingParameter]
+    public FluentDialog? Dialog { get; set; } = default!;
+
+    private async Task PrimaryClickAsync()
+    {
+        await Dialog!.CloseAsync(Content);
+    }
+
+    private async Task SecondaryClickAsync()
+    {
+        await Dialog.CancelAsync();
+    }
+}
