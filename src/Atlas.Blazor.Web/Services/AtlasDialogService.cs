@@ -14,6 +14,13 @@ namespace Atlas.Blazor.Web.Services
             _dialogService = dialogService;
         }
 
+        public Task<DialogContent?> ShowDialogAsync(string title, string message)
+        {
+            DialogContent content = new() { Title = title };
+            content.Messages.Add(message);
+            return ShowDialogAsync(content);
+        }
+
         public Task<DialogContent?> ShowDialogAsync(string title, List<string> messages)
         {
             DialogContent content = new()
