@@ -5,34 +5,35 @@ using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace Atlas.Blazor.Web.Services
 {
-    public class AtlasDialogService : IAtlasDialogService
+    public class AtlasDialogService(IDialogService dialogService) : IAtlasDialogService
     {
-        private readonly IDialogService _dialogService;
+        private readonly IDialogService _dialogService = dialogService;
 
-        public AtlasDialogService(IDialogService dialogService) 
+        public Task<AtlasDialogContent?> ShowDialogAsync(string title, string message)
         {
-            _dialogService = dialogService;
+            return ShowDialogAsync(title, new List<string> { message }, AtlasDialogType.Ok);
         }
 
-        public Task<DialogContent?> ShowDialogAsync(string title, string message)
+        public Task<AtlasDialogContent?> ShowDialogAsync(string title, string message, AtlasDialogType dialogType)
         {
-            DialogContent content = new() { Title = title };
-            content.Messages.Add(message);
-            return ShowDialogAsync(content);
+            return ShowDialogAsync(title, new List<string> { message }, dialogType);
         }
 
-        public Task<DialogContent?> ShowDialogAsync(string title, List<string> messages)
+        public Task<AtlasDialogContent?> ShowDialogAsync(string title, List<string> messages, AtlasDialogType dialogType)
         {
-            DialogContent content = new()
+            AtlasDialogContent content = new()
             {
                 Title = title,
-                Messages = messages
+                DialogType = dialogType,
+                ShowSecondaryButton = dialogType != AtlasDialogType.Ok
             };
+
+            content.Messages.AddRange(messages);
 
             return ShowDialogAsync(content);
         }
 
-        public async Task<DialogContent?> ShowDialogAsync(DialogContent dialogContent)
+        public async Task<AtlasDialogContent?> ShowDialogAsync(AtlasDialogContent dialogContent)
         {
             ArgumentNullException.ThrowIfNull(dialogContent, nameof(dialogContent));
 
@@ -46,13 +47,14 @@ namespace Atlas.Blazor.Web.Services
             };
 
             IDialogReference dialog = await _dialogService.ShowDialogAsync<AtlasDialog>(dialogContent, parameters);
+
             DialogResult? result = await dialog.Result;
 
-            DialogContent? dialogResult = default;
+            AtlasDialogContent? dialogResult = default;
 
             if (result.Data is not null)
             {
-                dialogResult = result.Data as DialogContent;
+                dialogResult = result.Data as AtlasDialogContent;
             }
 
             return dialogResult;
