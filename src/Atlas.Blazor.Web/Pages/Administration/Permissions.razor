@@ -51,7 +51,6 @@
     public IRequests? Requests { get; set; }
 
     PersistingComponentStateSubscription _persistingSubscription;
-    bool _clearItems = false;
     string _nameFilter = string.Empty;
     PaginationState _pagination = new PaginationState { ItemsPerPage = 20 };
     IEnumerable<Atlas.Core.Models.Permission>? _permissions = null;
