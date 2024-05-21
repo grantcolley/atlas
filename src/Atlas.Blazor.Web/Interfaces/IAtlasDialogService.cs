@@ -4,8 +4,9 @@ namespace Atlas.Blazor.Web.Interfaces
 {
     public interface IAtlasDialogService
     {
-        Task<DialogContent?> ShowDialogAsync(string title, string messages);
-        Task<DialogContent?> ShowDialogAsync(string title, List<string> messages);
-        Task<DialogContent?> ShowDialogAsync(DialogContent dialogContent);
+        Task<AtlasDialogContent?> ShowDialogAsync(string title, string message);
+        Task<AtlasDialogContent?> ShowDialogAsync(string title, string message, AtlasDialogType dialogType);
+        Task<AtlasDialogContent?> ShowDialogAsync(string title, List<string> messages, AtlasDialogType dialogType);
+        Task<AtlasDialogContent?> ShowDialogAsync(AtlasDialogContent dialogContent);
     }
 }
