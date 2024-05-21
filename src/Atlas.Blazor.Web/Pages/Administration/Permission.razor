@@ -115,7 +115,7 @@
 
                 if (!response.IsSuccess)
                 {
-                    RaiseAlert(Alerts.ERROR, "Permission", response.Message);
+                    RaiseAlert(Alerts.ERROR, "Permission Error", response.Message);
                 }
                 else
                 {
@@ -150,7 +150,7 @@
 
         if (_permission == null)
         {
-            RaiseAlert(Alerts.ERROR, "Permission", "Permission is broken");
+            RaiseAlert(Alerts.ERROR, "Permission Error", "Permission is broken");
             return;
         }
 
@@ -185,25 +185,24 @@
 
         if (_permission == null)
         {
-            RaiseAlert(Alerts.ERROR, "Permission", "Permission is broken");
+            RaiseAlert(Alerts.ERROR, "Permission Error", "Permission is broken");
             return;
         }
 
         if (_permission.PermissionId.Equals(0))
         {
             await AtlasDialogService.ShowDialogAsync(
-                "Delete", $"Cannot delete an object with Id equal to 0")
+                "Delete Permission", $"Cannot delete an object with Id equal to 0", AtlasDialogType.YesNo)
                 .ConfigureAwait(false);
             return;
         }
 
-        DialogContent? deleteResult = await AtlasDialogService.ShowDialogAsync(
-            "Delete", $"Do you really want to delete {_permission.Name}?")
+        AtlasDialogContent? deleteResult = await AtlasDialogService.ShowDialogAsync(
+            "Delete Permission", $"Do you really want to delete {_permission.Name}?", AtlasDialogType.YesNo)
             .ConfigureAwait(false);
 
         if (deleteResult == null
-            || deleteResult.Result == null
-            || !(deleteResult.Result is bool && (bool)deleteResult.Result))
+            || (deleteResult.Selected != AtlasDialogSelection.Yes))
         {
             return;
         }
@@ -225,7 +224,7 @@
     {
         if (!response.IsSuccess)
         {
-            RaiseAlert(Alerts.ERROR, "Error", response.Message);
+            RaiseAlert(Alerts.ERROR, "Permission Error", response.Message);
             return default;
         }
         else
