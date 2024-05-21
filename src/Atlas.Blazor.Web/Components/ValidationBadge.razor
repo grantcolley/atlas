@@ -23,7 +23,7 @@
         ArgumentNullException.ThrowIfNull(Messages);
         ArgumentNullException.ThrowIfNull(Title);
 
-        DialogContent dialogContent = new DialogContent
+        AtlasDialogContent dialogContent = new AtlasDialogContent
             {
                 Title = string.IsNullOrWhiteSpace(Title) ? "Validation Errors" : $"{Title} Validation Errors",
                 Messages = Messages
