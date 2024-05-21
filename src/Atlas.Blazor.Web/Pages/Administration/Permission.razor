@@ -16,14 +16,14 @@
     }
     else
     {
-        <EditForm FormName="permission" EditContext="_currentEditContext">
+        <EditForm FormName="permission" EditContext="_currentEditContext" OnValidSubmit="OnSubmitAsync">
 
             <FluentValidationValidator/>
 
             <FluentToolbar>
-                <FluentButton Id="submit" aria-label="Save" Type="ButtonType.Submit" IconEnd="@(new Icons.Regular.Size20.Save())" />
+                <FluentButton Id="submit" aria-label="Save" Type="ButtonType.Submit" IconEnd="@(new Icons.Regular.Size20.Save())" Disabled="@_isProcessing"/>
                 <FluentSpacer />
-                <FluentButton Id="delete" aria-label="Delete" Type="ButtonType.Button" OnClick="OnDeleteAsync">
+                <FluentButton Id="delete" aria-label="Delete" Type="ButtonType.Button" OnClick="OnDeleteAsync" Disabled="@_isProcessing">
                     <FluentIcon Value="@(new Icons.Regular.Size20.Delete())" Title="Open" Color="Color.Error"/>
                 </FluentButton>
                 <FluentSpacer />
@@ -64,7 +64,6 @@
 </FluentCard>
 
 @code {
-
     [Inject]
     internal PersistentComponentState? ApplicationState { get; set; }
 
@@ -72,11 +71,15 @@
     public NavigationManager? NavigationManager { get; set; }
 
     [Inject]
+    public IAtlasDialogService? AtlasDialogService { get; set; }
+
+    [Inject]
     public IRequests? Requests { get; set; }
 
     [Parameter]
     public int? Id { get; set; }
 
+    private bool _isProcessing = false;
     private EditContext? _currentEditContext;
     private PersistingComponentStateSubscription _persistingSubscription;
     private List<string> _messages = new();
@@ -112,17 +115,7 @@
 
                 if (!response.IsSuccess)
                 {
-                    if (!string.IsNullOrWhiteSpace(response.Message))
-                    {
-                        var alert = new Models.Alert
-                            {
-                                AlertType = Alerts.ERROR,
-                                Title = "Error",
-                                Message = response.Message
-                            };
-
-                        NavigationManager?.NavigateTo(alert.Page);
-                    }
+                    RaiseAlert(Alerts.ERROR, "Permission", response.Message);
                 }
                 else
                 {
@@ -153,12 +146,106 @@
 
     private async Task OnSubmitAsync()
     {
-        // Process the valid form
+        if (Requests == null) throw new NullReferenceException(nameof(Requests));
+
+        if (_permission == null)
+        {
+            RaiseAlert(Alerts.ERROR, "Permission", "Permission is broken");
+            return;
+        }
+
+        _isProcessing = true;
+
+        if (_currentEditContext != null
+            && _currentEditContext.Validate())
+        {
+            IResponse<Atlas.Core.Models.Permission> response;
+
+            if (_permission.PermissionId.Equals(0))
+            {
+                response = await Requests.CreateModelAsync<Atlas.Core.Models.Permission>(_permission, Atlas.Core.Constants.AtlasAPIEndpoints.CREATE_PERMISSION)
+                    .ConfigureAwait(false);
+            }
+            else
+            {
+                response = await Requests.UpdateModelAsync<Atlas.Core.Models.Permission>(_permission, Atlas.Core.Constants.AtlasAPIEndpoints.UPDATE_PERMISSION)
+                    .ConfigureAwait(false);
+            }
+
+            _ = GetResponse(response);
+        }
+
+        _isProcessing = false;
     }
 
     private async Task OnDeleteAsync()
     {
-        // Process the valid form
+        if (AtlasDialogService == null) throw new NullReferenceException(nameof(AtlasDialogService));
+        if (Requests == null) throw new NullReferenceException(nameof(Requests));
+
+        if (_permission == null)
+        {
+            RaiseAlert(Alerts.ERROR, "Permission", "Permission is broken");
+            return;
+        }
+
+        if (_permission.PermissionId.Equals(0))
+        {
+            await AtlasDialogService.ShowDialogAsync(
+                "Delete", $"Cannot delete an object with Id equal to 0")
+                .ConfigureAwait(false);
+            return;
+        }
+
+        DialogContent? deleteResult = await AtlasDialogService.ShowDialogAsync(
+            "Delete", $"Do you really want to delete {_permission.Name}?")
+            .ConfigureAwait(false);
+
+        if (deleteResult == null
+            || deleteResult.Result == null
+            || !(deleteResult.Result is bool && (bool)deleteResult.Result))
+        {
+            return;
+        }
+
+        _isProcessing = true;
+
+        IResponse<int> response = await Requests
+            .DeleteModelAsync(_permission.PermissionId, Atlas.Core.Constants.AtlasAPIEndpoints.DELETE_PERMISSION)
+            .ConfigureAwait(false);
+
+        _ = GetResponse(response);
+
+        RaiseAlert(Alerts.SUCCESS, "Permission Deleted", $"{_permission.Name} has been deleted.");
+
+        _isProcessing = false;
+    }
+
+    protected T? GetResponse<T>(IResponse<T> response)
+    {
+        if (!response.IsSuccess)
+        {
+            RaiseAlert(Alerts.ERROR, "Error", response.Message);
+            return default;
+        }
+        else
+        {
+            return response.Result;
+        }
+    }
+
+    protected void RaiseAlert(string? alertType, string? title, string? message)
+    {
+        if (NavigationManager == null) throw new NullReferenceException(nameof(NavigationManager));
+
+        Alert alert = new Alert
+        {
+            AlertType = alertType,
+            Title = title,
+            Message = message
+        };
+
+        NavigationManager.NavigateTo(alert.Page);
     }
 
     private void CurrentEditContextOnValidationStateChanged(object? sender, ValidationStateChangedEventArgs e)
