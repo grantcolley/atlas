@@ -1,4 +1,6 @@
-﻿@implements IDisposable
+﻿@rendermode InteractiveServer
+@attribute [StreamRendering]
+@implements IDisposable
 
 @if (_modules != null)
 {
@@ -44,10 +46,10 @@
 
     protected override async Task OnInitializedAsync()
     {
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - START");
+
         ArgumentNullException.ThrowIfNull(UserRequests);
         ArgumentNullException.ThrowIfNull(ApplicationState);
-
-        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - START");
 
         if (AuthenticationState != null)
         {
@@ -61,17 +63,17 @@
                 {
                     _persistingSubscription = ApplicationState.RegisterOnPersisting(PersistNavMenuData);
 
-                    if (!ApplicationState.TryTakeFromJson<IEnumerable<Module>?>($"{GetType().Name}", out var restored))
+                    if (ApplicationState.TryTakeFromJson<IEnumerable<Module>?>($"{GetType().Name}", out var restored))
                     {
                         System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - TryTakeFromJson - True");
 
-                        _modules = await UserRequests.GetClaimModulesAsync().ConfigureAwait(false);
+                        _modules = restored!;
                     }
                     else
                     {
                         System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - TryTakeFromJson - False");
 
-                        _modules = restored!;
+                        _modules = await UserRequests.GetClaimModulesAsync().ConfigureAwait(false);
                     }
                 }
             }
