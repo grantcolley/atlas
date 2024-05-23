@@ -53,7 +53,7 @@
     PersistingComponentStateSubscription _persistingSubscription;
     string _nameFilter = string.Empty;
     PaginationState _pagination = new PaginationState { ItemsPerPage = 20 };
-    IEnumerable<Atlas.Core.Models.Permission>? _permissions = null;
+    IEnumerable<Atlas.Core.Models.Permission>? _permissions = new List<Atlas.Core.Models.Permission>();
     IQueryable<Atlas.Core.Models.Permission>? _filteredItems => _permissions?.AsQueryable().Where(p => !string.IsNullOrWhiteSpace(p.Name) && p.Name.Contains(_nameFilter, StringComparison.CurrentCultureIgnoreCase));
 
     protected override async Task OnInitializedAsync()
@@ -65,7 +65,7 @@
 
         System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - START");
 
-        if (ApplicationState.TryTakeFromJson<IEnumerable<Atlas.Core.Models.Permission>?>($"{GetType().Name}", out IEnumerable<Atlas.Core.Models.Permission>? restored))
+        if (ApplicationState.TryTakeFromJson<IEnumerable<Atlas.Core.Models.Permission>?>($"{GetType().Name}", out var restored))
         {
             System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - TryTakeFromJson - True");
             _permissions = restored!;
