@@ -50,11 +50,11 @@
     [Inject]
     public IRequests? Requests { get; set; }
 
-    PersistingComponentStateSubscription _persistingSubscription;
-    string _nameFilter = string.Empty;
-    PaginationState _pagination = new PaginationState { ItemsPerPage = 20 };
-    IEnumerable<Atlas.Core.Models.Permission>? _permissions = new List<Atlas.Core.Models.Permission>();
-    IQueryable<Atlas.Core.Models.Permission>? _filteredItems => _permissions?.AsQueryable().Where(p => !string.IsNullOrWhiteSpace(p.Name) && p.Name.Contains(_nameFilter, StringComparison.CurrentCultureIgnoreCase));
+    private PersistingComponentStateSubscription _persistingSubscription;
+    private string _nameFilter = string.Empty;
+    private PaginationState _pagination = new PaginationState { ItemsPerPage = 20 };
+    private IEnumerable<Atlas.Core.Models.Permission>? _permissions = new List<Atlas.Core.Models.Permission>();
+    private IQueryable<Atlas.Core.Models.Permission>? _filteredItems => _permissions?.AsQueryable().Where(p => !string.IsNullOrWhiteSpace(p.Name) && p.Name.Contains(_nameFilter, StringComparison.CurrentCultureIgnoreCase));
 
     protected override async Task OnInitializedAsync()
     {
