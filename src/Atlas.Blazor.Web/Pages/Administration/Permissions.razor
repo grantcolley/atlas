@@ -1,5 +1,5 @@
 ﻿@page "/Permissions"
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 @attribute [StreamRendering]
 @implements IDisposable
 
@@ -73,6 +73,8 @@
         else
         {
             System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - TryTakeFromJson - False");
+
+            await Task.Delay(1000);
 
             IResponse<IEnumerable<Atlas.Core.Models.Permission>> response = await Requests.GetListAsync<Atlas.Core.Models.Permission>(Atlas.Core.Constants.AtlasAPIEndpoints.GET_PERMISSIONS)
                 .ConfigureAwait(false);
