@@ -1,6 +1,7 @@
 ﻿@page "/Permission"
 @page "/Permission/{Id:int?}"
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@attribute [StreamRendering]
 @implements IDisposable
 
 <PageTitle>Permission</PageTitle>
@@ -59,14 +60,11 @@
     }
 
     <FluentFooter>
-        
+
     </FluentFooter>
 </FluentCard>
 
 @code {
-    [Inject]
-    internal PersistentComponentState? ApplicationState { get; set; }
-
     [Inject]
     public NavigationManager? NavigationManager { get; set; }
 
@@ -81,67 +79,34 @@
 
     private bool _isProcessing = false;
     private EditContext? _currentEditContext;
-    private PersistingComponentStateSubscription _persistingSubscription;
     private List<string> _messages = new();
     private Atlas.Core.Models.Permission? _permission = null;
 
     protected override async Task OnInitializedAsync()
     {
         ArgumentNullException.ThrowIfNull(Requests);
-        ArgumentNullException.ThrowIfNull(ApplicationState);
 
-        _persistingSubscription = ApplicationState.RegisterOnPersisting(PersistPermissionData);
-
-        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - START");
-
-        if (ApplicationState.TryTakeFromJson<Atlas.Core.Models.Permission?>($"{GetType().Name}", out Atlas.Core.Models.Permission? restored))
+        if (!Id.HasValue || Id.Value <= 0)
         {
-            System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - TryTakeFromJson - True");
-
-            _permission = restored!;
+            _permission = Activator.CreateInstance<Atlas.Core.Models.Permission>();
         }
         else
         {
-            System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - TryTakeFromJson - False");
+            IResponse<Atlas.Core.Models.Permission> response = await Requests.GetModelAsync<Atlas.Core.Models.Permission>(Id.Value, Atlas.Core.Constants.AtlasAPIEndpoints.GET_PERMISSION)
+                .ConfigureAwait(false);
 
-            if (!Id.HasValue || Id.Value <= 0)
+            if (!response.IsSuccess)
             {
-                _permission = Activator.CreateInstance<Atlas.Core.Models.Permission>();
+                RaiseAlert(Alerts.ERROR, "Permission Error", response.Message);
             }
             else
             {
-                IResponse<Atlas.Core.Models.Permission> response = await Requests.GetModelAsync<Atlas.Core.Models.Permission>(Id.Value, Atlas.Core.Constants.AtlasAPIEndpoints.GET_PERMISSION)
-                    .ConfigureAwait(false);
-
-                if (!response.IsSuccess)
-                {
-                    RaiseAlert(Alerts.ERROR, "Permission Error", response.Message);
-                }
-                else
-                {
-                    _permission = response.Result;
-                }
+                _permission = response.Result;
             }
         }
 
         _currentEditContext = new EditContext(_permission ?? throw new NullReferenceException(nameof(_permission)));
         _currentEditContext.OnValidationStateChanged += CurrentEditContextOnValidationStateChanged;
-
-        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - END");
-    }
-
-    private Task PersistPermissionData()
-    {
-        if (ApplicationState == null) throw new NullReferenceException(nameof(ApplicationState));
-
-        if (_permission != null)
-        {
-            ApplicationState.PersistAsJson($"{GetType().Name}", _permission);
-
-            System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - PersistAsJson");
-        }
-
-        return Task.CompletedTask;
     }
 
     private async Task OnSubmitAsync()
@@ -266,10 +231,6 @@
 
     void IDisposable.Dispose()
     {
-        _persistingSubscription.Dispose();
-
         if (_currentEditContext != null) _currentEditContext.OnValidationStateChanged -= CurrentEditContextOnValidationStateChanged;
-
-        System.Diagnostics.Debug.WriteLine($"### {GetType().Name} - Dispose");
     }
 }
