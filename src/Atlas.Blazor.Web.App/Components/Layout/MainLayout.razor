@@ -34,15 +34,4 @@
 @code {
     private DesignThemeModes _mode = DesignThemeModes.System;
     private OfficeColor? _officeColor = OfficeColor.Skype;
-
-    protected override async Task OnInitializedAsync()
-    {
-        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - START");
-
-        await base.OnInitializedAsync();
-
-        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - END");
-
-        return;
-    }
 }
