@@ -1,0 +1,117 @@
+﻿@typeparam TModel where TModel : class, new()
+@attribute [StreamRendering]
+
+<PageTitle>@Title</PageTitle>
+
+<FluentCard>
+    <FluentHeader>
+        @Title
+    </FluentHeader>
+
+    @if(_items == null)
+    {
+        <FluentProgressRing style="width: 82px; height: 82px;"></FluentProgressRing>
+    }
+    else
+    {
+        <FluentToolbar>
+            <FluentButton Id="create-new" aria-label="Create" IconEnd="@(new Icons.Regular.Size20.DocumentAdd())" OnClick="@(() => Create())" />
+            <FluentTooltip Anchor="create-new">Create New</FluentTooltip>
+        </FluentToolbar>
+
+        <FluentDataGrid TGridItem=TModel Items="@_filteredItems" ResizableColumns=true Pagination="@_pagination" GridTemplateColumns="0.2fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr" Style="height: 405px;overflow:auto;">
+
+            <TemplateColumn Align="@Align.Center" Title="Edit">
+                <FluentButton aria-label="Edit" IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(() => Edit(context))" />
+            </TemplateColumn>
+        </FluentDataGrid>
+
+        <FluentPaginator State="@_pagination" />
+    }
+
+    <FluentFooter>
+    </FluentFooter>
+</FluentCard>
+
+@code {
+    [Inject]
+    public NavigationManager? NavigationManager { get; set; }
+
+    [Inject]
+    public IRequests? Requests { get; set; }
+
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
+    public string? APIEndpoint { get; set; }
+
+    [Parameter]
+    public string? NavigateTo { get; set; }
+
+    private string _nameFilter = string.Empty;
+    private PaginationState _pagination = new PaginationState { ItemsPerPage = 20 };
+    private IEnumerable<TModel>? _items = new List<TModel>();
+    private IQueryable<TModel>? _filteredItems => _items?.AsQueryable(); //.Where(i => !string.IsNullOrWhiteSpace(i.Name) && i.Name.Contains(_nameFilter, StringComparison.CurrentCultureIgnoreCase));
+
+    protected override async Task OnInitializedAsync()
+    {
+        ArgumentNullException.ThrowIfNull(Requests);
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(APIEndpoint);
+
+        IResponse<IEnumerable<TModel>> response = await Requests.GetListAsync<TModel>(APIEndpoint)
+            .ConfigureAwait(false);
+
+        if (!response.IsSuccess)
+        {
+            if (!string.IsNullOrWhiteSpace(response.Message))
+            {
+                var alert = new Models.Alert
+                    {
+                        AlertType = Alerts.ERROR,
+                        Title = "Error",
+                        Message = response.Message
+                    };
+
+                NavigationManager?.NavigateTo(alert.Page);
+            }
+        }
+        else
+        {
+            if (response.Result != null)
+            {
+                _items = response.Result;
+            }
+        }
+    }
+
+    private void Create()
+    {
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(NavigateTo);
+
+        NavigationManager?.NavigateTo($"{NavigateTo}");
+    }
+
+    private void Edit(TModel model)
+    {
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(NavigateTo);
+
+        // NavigationManager?.NavigateTo($"{NavigateTo}/{model.PermissionId}");
+    }
+
+    private void HandleNameFilter(ChangeEventArgs args)
+    {
+        if (args.Value is string value)
+        {
+            _nameFilter = value;
+        }
+    }
+
+    private void HandleClear()
+    {
+        if (string.IsNullOrWhiteSpace(_nameFilter))
+        {
+            _nameFilter = string.Empty;
+        }
+    }
+}
