@@ -8,7 +8,7 @@ namespace Atlas.Core.Dynamic
 {
     public class TypeAttributeHelper
     {
-        public static IEnumerable<AtlasType> GetHeadwayTypesByAttribute(Type attributeType)
+        public static IEnumerable<AtlasType> GetAtlasTypesByAttribute(Type attributeType)
         {
             var dynamicTypes = new List<AtlasType>();
 
