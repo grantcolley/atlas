@@ -12,7 +12,7 @@ namespace Atlas.Core.Options
     {
         public Task<IEnumerable<OptionItem>> GetOptionItemsAsync(IEnumerable<OptionsArg> args)
         {
-            var containers = TypeAttributeHelper.GetHeadwayTypesByAttribute(typeof(NavigationPageAttribute));
+            var containers = TypeAttributeHelper.GetAtlasTypesByAttribute(typeof(NavigationPageAttribute));
 
             List<OptionItem> optionItems = new();
 
