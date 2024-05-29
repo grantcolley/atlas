@@ -3,7 +3,7 @@
 @inherits GenericGridContainer<Atlas.Core.Models.Permission>
 
 @{
-    // Display the base GenericGridContainer<TModel> 
+    // Display the base GenericGridContainer<T> 
     // that we are inheriting from.
     base.BuildRenderTree(__builder);
 }
@@ -14,8 +14,11 @@
         System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - START");
 
         Title = "Permissions";
-        APIEndpoint = AtlasAPIEndpoints.GET_PERMISSIONS;
         NavigateTo = AtlasWebConstants.PAGE_PERMISSION;
+        APIEndpoint = AtlasAPIEndpoints.GET_PERMISSIONS;
+        ItemsPerPage = 3;
+        FilterFieldName = "Name";
+        IdentityFieldName = "PermissionId";
 
         await base.OnInitializedAsync();
 
