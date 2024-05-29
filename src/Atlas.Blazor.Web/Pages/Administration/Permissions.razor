@@ -58,7 +58,7 @@
     {
         ArgumentNullException.ThrowIfNull(Requests);
 
-        IResponse<IEnumerable<Atlas.Core.Models.Permission>> response = await Requests.GetListAsync<Atlas.Core.Models.Permission>(Atlas.Core.Constants.AtlasAPIEndpoints.GET_PERMISSIONS)
+        IResponse<IEnumerable<Atlas.Core.Models.Permission>> response = await Requests.GetListAsync<Atlas.Core.Models.Permission>(AtlasAPIEndpoints.GET_PERMISSIONS)
             .ConfigureAwait(false);
 
         if (!response.IsSuccess)
