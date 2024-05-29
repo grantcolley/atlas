@@ -1,5 +1,5 @@
 ﻿@attribute [StreamRendering]
-@typeparam TModel where TModel : class, new()
+@typeparam T where T : class, new()
 
 <PageTitle>@Title</PageTitle>
 
@@ -36,13 +36,16 @@
     public IRequests? Requests { get; set; }
 
     protected string? Title { get; set; }
-    protected string? APIEndpoint { get; set; }
     protected string? NavigateTo { get; set; }
+    protected string? APIEndpoint { get; set; }
+    protected int ItemsPerPage { get; set; } = 20;
+    protected string? FilterFieldName { get; set; }
+    protected string? IdentityFieldName { get; set; }
 
     protected string _nameFilter = string.Empty;
-    protected PaginationState _pagination = new PaginationState { ItemsPerPage = 20 };
-    protected IEnumerable<TModel>? _items = new List<TModel>();
-    protected IQueryable<TModel>? _filteredItems => _items?.AsQueryable(); //.Where(i => !string.IsNullOrWhiteSpace(i.Name) && i.Name.Contains(_nameFilter, StringComparison.CurrentCultureIgnoreCase));
+    protected PaginationState _pagination = new PaginationState();
+    protected IEnumerable<T>? _items = new List<T>();
+    protected IQueryable<T>? _filteredItems => _items?.AsQueryable(); //.Where(i => !string.IsNullOrWhiteSpace(i.Name) && i.Name.Contains(_nameFilter, StringComparison.CurrentCultureIgnoreCase));
 
     public virtual RenderFragment RenderGrid()
     {
@@ -54,9 +57,15 @@
         System.Diagnostics.Debug.WriteLine($"{GetType().Name} - base.OnInitialized - START");
 
         ArgumentNullException.ThrowIfNull(Requests);
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(Title);
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(NavigateTo);
         ArgumentNullException.ThrowIfNullOrWhiteSpace(APIEndpoint);
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(FilterFieldName);
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(IdentityFieldName);
 
-        IResponse<IEnumerable<TModel>> response = await Requests.GetListAsync<TModel>(APIEndpoint)
+        _pagination.ItemsPerPage = ItemsPerPage;
+
+        IResponse<IEnumerable<T>> response = await Requests.GetListAsync<T>(APIEndpoint)
             .ConfigureAwait(false);
 
         if (!response.IsSuccess)
@@ -91,7 +100,7 @@
         NavigationManager?.NavigateTo($"{NavigateTo}");
     }
 
-    protected void Edit(TModel model)
+    protected void Edit(T model)
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(NavigateTo);
 
