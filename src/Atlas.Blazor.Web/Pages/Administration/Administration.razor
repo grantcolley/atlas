@@ -1,3 +1,46 @@
 ﻿@page "/Administration"
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@inherits GenericGridContainer<Atlas.Core.Models.Permission>
 
-<GenericGrid TModel=Permission Title="Permissions" APIEndpoint="@AtlasAPIEndpoints.GET_PERMISSIONS" NavigateTo="@AtlasWebConstants.PAGE_PERMISSION" />
+@{
+    // Display the base GenericGridContainer<TModel> 
+    // that we are inheriting from.
+    base.BuildRenderTree(__builder);
+}
+
+@code{
+    protected override async Task OnInitializedAsync()
+    {
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - START");
+
+        Title = "Permissions";
+        APIEndpoint = AtlasAPIEndpoints.GET_PERMISSIONS;
+        NavigateTo = AtlasWebConstants.PAGE_PERMISSION;
+
+        await base.OnInitializedAsync();
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - OnInitialized - END");
+    }
+
+    public override RenderFragment RenderGrid() => __builder =>
+    {
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - RenderGrid - START");
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - RenderGrid - _filteredItems {_filteredItems?.Any()}");
+
+        <FluentDataGrid TGridItem=Atlas.Core.Models.Permission Items="@_filteredItems" ResizableColumns=true Pagination="@_pagination" GridTemplateColumns="0.2fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr" Style="height: 405px;overflow:auto;">
+            <PropertyColumn Property="@(p => p.PermissionId)" Sortable="true" Align="Align.Center" Title="Permission Id"/>
+            <PropertyColumn Property="@(p => p.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_nameFilter)" Tooltip="true" Title="Name">
+                <ColumnOptions>
+                    <div class="search-box">
+                        <FluentSearch type="filter" Autofocus=true @bind-Value=_nameFilter @oninput="HandleNameFilter" @bind-Value:after="HandleClear" Placeholder="Permission name..." />
+                    </div>
+                </ColumnOptions>
+            </PropertyColumn>
+            <TemplateColumn Align="@Align.Center" Title="Edit">
+                <FluentButton aria-label="Edit" IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(() => Edit(context))" />
+            </TemplateColumn>
+        </FluentDataGrid>
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - RenderGrid - END");
+    };
+}
