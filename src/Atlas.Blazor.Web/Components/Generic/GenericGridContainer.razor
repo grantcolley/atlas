@@ -1,0 +1,126 @@
+﻿@attribute [StreamRendering]
+@typeparam T where T : class, new()
+
+<PageTitle>@_title</PageTitle>
+
+<FluentCard>
+    <FluentHeader>
+        @_title
+    </FluentHeader>
+
+    @if (FilteredItems == null)
+    {
+        <FluentProgressRing style="width: 82px; height: 82px;"></FluentProgressRing>
+    }
+    else
+    {
+        <FluentToolbar>
+            <FluentButton Id="create-new" aria-label="Create" IconEnd="@(new Icons.Regular.Size20.DocumentAdd())" OnClick="@(() => Create())" />
+            <FluentTooltip Anchor="create-new">Create New</FluentTooltip>
+        </FluentToolbar>
+        
+        @RenderGridBase();
+
+        <FluentPaginator State="@Pagination" />
+    }
+
+    <FluentFooter>
+    </FluentFooter>
+</FluentCard>
+
+@code {
+    [Inject]
+    public NavigationManager? NavigationManager { get; set; }
+
+    [Inject]
+    public IRequests? Requests { get; set; }
+
+    protected string? _title { get; set; }
+    protected string? _navigateTo { get; set; }
+    protected string? _apiEndpoint { get; set; }
+    protected int _itemsPerPage { get; set; } = 20;
+    protected string? _filterFieldName { get; set; }
+    protected string? _identityFieldName { get; set; }
+
+    protected IEnumerable<T>? _items = new List<T>();
+
+    public string Filter = string.Empty;
+    public PaginationState Pagination = new PaginationState();
+    public IQueryable<T>? FilteredItems => _items?.AsQueryable(); //.Where(i => !string.IsNullOrWhiteSpace(i.Name) && i.Name.Contains(_nameFilter, StringComparison.CurrentCultureIgnoreCase));
+
+    public virtual RenderFragment RenderGridBase()
+    {
+        throw new NotImplementedException($"{GetType().Name}.RenderGridBase");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - base.OnInitialized - START");
+
+        ArgumentNullException.ThrowIfNull(Requests);
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(_title);
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(_navigateTo);
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(_apiEndpoint);
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(_filterFieldName);
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(_identityFieldName);
+
+        Pagination.ItemsPerPage = _itemsPerPage;
+
+        IResponse<IEnumerable<T>> response = await Requests.GetListAsync<T>(_apiEndpoint)
+            .ConfigureAwait(false);
+
+        if (!response.IsSuccess)
+        {
+            if (!string.IsNullOrWhiteSpace(response.Message))
+            {
+                var alert = new Models.Alert
+                    {
+                        AlertType = Alerts.ERROR,
+                        Title = "Error",
+                        Message = response.Message
+                    };
+
+                NavigationManager?.NavigateTo(alert.Page);
+            }
+        }
+        else
+        {
+            if (response.Result != null)
+            {
+                _items = response.Result;
+            }
+        }
+
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - base.OnInitialized - END");
+    }
+
+    protected void Create()
+    {
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(_navigateTo);
+
+        NavigationManager?.NavigateTo($"{_navigateTo}");
+    }
+
+    protected void Edit(T model)
+    {
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(_navigateTo);
+
+        // NavigationManager?.NavigateTo($"{NavigateTo}/{model.PermissionId}");
+    }
+
+    protected void HandleNameFilter(ChangeEventArgs args)
+    {
+        if (args.Value is string value)
+        {
+            Filter = value;
+        }
+    }
+
+    protected void HandleClear()
+    {
+        if (string.IsNullOrWhiteSpace(Filter))
+        {
+            Filter = string.Empty;
+        }
+    }
+}
