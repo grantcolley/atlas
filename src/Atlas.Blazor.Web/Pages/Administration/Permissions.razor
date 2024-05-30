@@ -1,31 +1,32 @@
 ﻿@page "/Permissions"
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
-@attribute [StreamRendering]
+@inherits GridContainerBase<Atlas.Core.Models.Permission>
 
-<PageTitle>Permissions</PageTitle>
+@{
+    // Display the markup for the underlying base 
+    // GenericGridContainer<T> we are inheriting.
+    base.BuildRenderTree(__builder);
+}
 
-<FluentCard>
-    <FluentHeader>
-        Permissions
-    </FluentHeader>
+@code{
+    public override string? Title { get; set; } = "Permissions";
+    public override string? NavigateTo { get; set; } = AtlasWebConstants.PAGE_PERMISSION;
+    public override string? APIEndpoint { get; set; } = AtlasAPIEndpoints.GET_PERMISSIONS;
+    public override int ItemsPerPage { get; set; } = 3;
+    public override string? FilterFieldName { get; set; } = "Name";
+    public override string? IdentityFieldName { get; set; } = "PermissionId";
 
-    @if(_permissions == null)
+    public override RenderFragment RenderGrid() => __builder =>
     {
-        <FluentProgressRing style="width: 82px; height: 82px;"></FluentProgressRing>
-    }
-    else
-    {
-        <FluentToolbar>
-            <FluentButton Id="create-new" aria-label="Create" IconEnd="@(new Icons.Regular.Size20.DocumentAdd())" OnClick="@(() => Create())" />
-            <FluentTooltip Anchor="create-new">Create New</FluentTooltip>
-        </FluentToolbar>
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - RenderGrid - START");
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - RenderGrid - _filteredItems {FilteredItems?.Any()}");
 
-        <FluentDataGrid TGridItem=Atlas.Core.Models.Permission Items="@_filteredItems" ResizableColumns=true Pagination="@_pagination" GridTemplateColumns="0.2fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr" Style="height: 405px;overflow:auto;">
-            <PropertyColumn Property="@(p => p.PermissionId)" Sortable="true" Align="Align.Center" />
-            <PropertyColumn Property="@(p => p.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_nameFilter)" Tooltip="true" Title="Name">
+        <FluentDataGrid TGridItem=Atlas.Core.Models.Permission Items="@FilteredItems" ResizableColumns=true Pagination="@Pagination" GridTemplateColumns="0.2fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr" Style="height: 405px;overflow:auto;">
+            <PropertyColumn Property="@(p => p.PermissionId)" Sortable="true" Align="Align.Center" Title="Permission Id"/>
+            <PropertyColumn Property="@(p => p.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(Filter)" Tooltip="true" Title="Name">
                 <ColumnOptions>
                     <div class="search-box">
-                        <FluentSearch type="filter" Autofocus=true @bind-Value=_nameFilter @oninput="HandleNameFilter" @bind-Value:after="HandleClear" Placeholder="Permission name..." />
+                        <FluentSearch type="filter" Autofocus=true @bind-Value=Filter @oninput="HandleNameFilter" @bind-Value:after="HandleClear" Placeholder="Permission name..." />
                     </div>
                 </ColumnOptions>
             </PropertyColumn>
@@ -34,79 +35,6 @@
             </TemplateColumn>
         </FluentDataGrid>
 
-        <FluentPaginator State="@_pagination" />
-    }
-
-    <FluentFooter>
-
-    </FluentFooter>
-</FluentCard>
-
-@code {
-    [Inject]
-    public NavigationManager? NavigationManager { get; set; }
-
-    [Inject]
-    public IRequests? Requests { get; set; }
-
-    private string _nameFilter = string.Empty;
-    private PaginationState _pagination = new PaginationState { ItemsPerPage = 20 };
-    private IEnumerable<Atlas.Core.Models.Permission>? _permissions = new List<Atlas.Core.Models.Permission>();
-    private IQueryable<Atlas.Core.Models.Permission>? _filteredItems => _permissions?.AsQueryable().Where(p => !string.IsNullOrWhiteSpace(p.Name) && p.Name.Contains(_nameFilter, StringComparison.CurrentCultureIgnoreCase));
-
-    protected override async Task OnInitializedAsync()
-    {
-        ArgumentNullException.ThrowIfNull(Requests);
-
-        IResponse<IEnumerable<Atlas.Core.Models.Permission>> response = await Requests.GetListAsync<Atlas.Core.Models.Permission>(AtlasAPIEndpoints.GET_PERMISSIONS)
-            .ConfigureAwait(false);
-
-        if (!response.IsSuccess)
-        {
-            if (!string.IsNullOrWhiteSpace(response.Message))
-            {
-                var alert = new Models.Alert
-                    {
-                        AlertType = Alerts.ERROR,
-                        Title = "Error",
-                        Message = response.Message
-                    };
-
-                NavigationManager?.NavigateTo(alert.Page);
-            }
-        }
-        else
-        {
-            if (response.Result != null)
-            {
-                _permissions = response.Result;
-            }
-        }
-    }
-
-    private void Create()
-    {
-        NavigationManager?.NavigateTo($"{AtlasWebConstants.PAGE_PERMISSION}");
-    }
-
-    private void Edit(Atlas.Core.Models.Permission permission)
-    {
-        NavigationManager?.NavigateTo($"{AtlasWebConstants.PAGE_PERMISSION}/{permission.PermissionId}");
-    }
-
-    private void HandleNameFilter(ChangeEventArgs args)
-    {
-        if (args.Value is string value)
-        {
-            _nameFilter = value;
-        }
-    }
-
-    private void HandleClear()
-    {
-        if (string.IsNullOrWhiteSpace(_nameFilter))
-        {
-            _nameFilter = string.Empty;
-        }
-    }
+        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - RenderGrid - END");
+    };
 }
