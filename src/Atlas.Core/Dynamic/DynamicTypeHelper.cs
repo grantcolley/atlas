@@ -12,7 +12,7 @@ namespace Atlas.Core.Dynamic
     /// </summary>
     public static class DynamicTypeHelper
     {
-        private static readonly IDictionary<Type, object> _cache = new Dictionary<Type, object>();
+        private static readonly Dictionary<Type, object> _cache = new Dictionary<Type, object>();
 
         private static int _counter;
 
