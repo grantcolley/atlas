@@ -35,6 +35,8 @@
     [Inject]
     public IRequests? Requests { get; set; }
 
+    private DynamicType<T> dynamicType = DynamicTypeHelper.Get<T>();
+
     protected string? _title { get; set; }
     protected string? _navigateTo { get; set; }
     protected string? _apiEndpoint { get; set; }
@@ -46,7 +48,18 @@
 
     public string Filter = string.Empty;
     public PaginationState Pagination = new PaginationState();
-    public IQueryable<T>? FilteredItems => _items?.AsQueryable(); //.Where(i => !string.IsNullOrWhiteSpace(i.Name) && i.Name.Contains(_nameFilter, StringComparison.CurrentCultureIgnoreCase));
+
+    public IQueryable<T>? FilteredItems
+    {
+        get
+        {
+            if (string.IsNullOrWhiteSpace(_filterFieldName)) throw new NullReferenceException(nameof(_filterFieldName));
+            if (string.IsNullOrWhiteSpace(Filter)) return _items?.AsQueryable();
+
+            return _items?.AsQueryable().Where(i => !string.IsNullOrWhiteSpace(dynamicType.GetValue(i, _filterFieldName) as string)
+            && dynamicType.GetValue(i, _filterFieldName).ToString().Contains(Filter, StringComparison.CurrentCultureIgnoreCase));
+        }
+    }
 
     public virtual RenderFragment RenderGridBase()
     {
@@ -104,8 +117,14 @@
     protected void Edit(T model)
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(_navigateTo);
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(_identityFieldName);
 
-        // NavigationManager?.NavigateTo($"{NavigateTo}/{model.PermissionId}");
+        object? objId = dynamicType.GetValue(model, _identityFieldName);
+
+        if(objId is int id)
+        {
+            NavigationManager?.NavigateTo($"{_navigateTo}/{id}");
+        }
     }
 
     protected void HandleNameFilter(ChangeEventArgs args)
