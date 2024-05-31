@@ -36,7 +36,7 @@ namespace Atlas.Data.Access.Context
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<User>()
-                .HasIndex(u => u.UserName)
+                .HasIndex(u => u.Name)
                 .IsUnique();
 
             builder.Entity<User>()
