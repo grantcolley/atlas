@@ -18,9 +18,6 @@
 
     public override RenderFragment RenderGrid() => __builder =>
     {
-        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - RenderGrid - START");
-        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - RenderGrid - _filteredItems {FilteredItems?.Any()}");
-
         <FluentDataGrid TGridItem=Atlas.Core.Models.Permission Items="@FilteredItems" ResizableColumns=true Pagination="@Pagination" GridTemplateColumns="0.2fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr" Style="height: 405px;overflow:auto;">
             <PropertyColumn Property="@(p => p.PermissionId)" Sortable="true" Align="Align.Center" Title="Permission Id"/>
             <PropertyColumn Property="@(p => p.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(Filter)" Tooltip="true" Title="Name">
@@ -34,7 +31,5 @@
                 <FluentButton aria-label="Edit" IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(() => Edit(context))" />
             </TemplateColumn>
         </FluentDataGrid>
-
-        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - RenderGrid - END");
     };
 }
