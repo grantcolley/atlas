@@ -7,6 +7,8 @@
     <nav>
         <FluentNavMenu Width="250" Collapsible="true" Title="Atlas navigation menu">
 
+            <FluentNavLink Icon="@(new Icons.Regular.Size20.Home())" Href="/" Match="NavLinkMatch.All">Home</FluentNavLink>
+
             @foreach (Module module in _modules)
             {
                 <FluentNavGroup Expanded="true" Title="@module.Name" Icon="@IconHelper.GetRegularSize20(module.Icon)">
