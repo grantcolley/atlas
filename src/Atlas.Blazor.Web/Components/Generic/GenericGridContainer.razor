@@ -3,30 +3,37 @@
 
 <PageTitle>@_title</PageTitle>
 
-<FluentCard>
-    <FluentHeader>
-        @_title
-    </FluentHeader>
+@if (_alert == null)
+{
+    <FluentCard>
+        <FluentHeader>
+            @_title
+        </FluentHeader>
 
-    @if (FilteredItems == null)
-    {
-        <FluentProgressRing style="width: 82px; height: 82px;"></FluentProgressRing>
-    }
-    else
-    {
-        <FluentToolbar>
-            <FluentButton Id="create-new" aria-label="Create" IconEnd="@(new Icons.Regular.Size20.DocumentAdd())" OnClick="@(() => Create())" />
-            <FluentTooltip Anchor="create-new">Create New</FluentTooltip>
-        </FluentToolbar>
+        @if (FilteredItems == null)
+        {
+            <FluentProgressRing style="width: 82px; height: 82px;"></FluentProgressRing>
+        }
+        else
+        {
+            <FluentToolbar>
+                <FluentButton Id="create-new" aria-label="Create" IconEnd="@(new Icons.Regular.Size20.DocumentAdd())" OnClick="@(() => Create())" />
+                <FluentTooltip Anchor="create-new">Create New</FluentTooltip>
+            </FluentToolbar>
         
-        @RenderGridBase();
+            @RenderGridBase();
 
-        <FluentPaginator State="@Pagination" />
-    }
+            <FluentPaginator State="@Pagination" />
+        }
 
-    <FluentFooter>
-    </FluentFooter>
-</FluentCard>
+        <FluentFooter>
+        </FluentFooter>
+    </FluentCard>
+}
+else
+{
+    <Atlas.Blazor.Web.Pages.Alert AlertType="@_alert.AlertType" Title="@_title" Message="@_alert.Message" />
+}
 
 @code {
     [Inject]
@@ -35,7 +42,8 @@
     [Inject]
     public IRequests? Requests { get; set; }
 
-    private DynamicType<T> dynamicType = DynamicTypeHelper.Get<T>();
+    private DynamicType<T> _dynamicType = DynamicTypeHelper.Get<T>();
+    private Alert? _alert;
 
     protected string? _title { get; set; }
     protected string? _navigateTo { get; set; }
@@ -56,20 +64,18 @@
             if (string.IsNullOrWhiteSpace(_filterFieldName)) throw new NullReferenceException(nameof(_filterFieldName));
             if (string.IsNullOrWhiteSpace(Filter)) return _items?.AsQueryable();
 
-            return _items?.AsQueryable().Where(i => !string.IsNullOrWhiteSpace(dynamicType.GetValue(i, _filterFieldName) as string)
-            && dynamicType.GetValue(i, _filterFieldName).ToString().Contains(Filter, StringComparison.CurrentCultureIgnoreCase));
+            return _items?.AsQueryable().Where(i => !string.IsNullOrWhiteSpace(_dynamicType.GetValue(i, _filterFieldName) as string)
+            && _dynamicType.GetValue(i, _filterFieldName).ToString().Contains(Filter, StringComparison.CurrentCultureIgnoreCase));
         }
     }
 
     public virtual RenderFragment RenderGridBase()
     {
-        throw new NotImplementedException($"{GetType().Name}.RenderGridBase");
+        throw new NotImplementedException($"{GetType().Name}.RenderGridBase must be overriden.");
     }
 
     protected override async Task OnInitializedAsync()
     {
-        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - base.OnInitialized - START");
-
         ArgumentNullException.ThrowIfNull(Requests);
         ArgumentNullException.ThrowIfNullOrWhiteSpace(_title);
         ArgumentNullException.ThrowIfNullOrWhiteSpace(_navigateTo);
@@ -86,14 +92,12 @@
         {
             if (!string.IsNullOrWhiteSpace(response.Message))
             {
-                var alert = new Models.Alert
+                _alert = new Models.Alert
                     {
                         AlertType = Alerts.ERROR,
-                        Title = "Error",
+                        Title = $"Error {_title}",
                         Message = response.Message
                     };
-
-                NavigationManager?.NavigateTo(alert.Page);
             }
         }
         else
@@ -103,8 +107,6 @@
                 _items = response.Result;
             }
         }
-
-        System.Diagnostics.Debug.WriteLine($"{GetType().Name} - base.OnInitialized - END");
     }
 
     protected void Create()
@@ -119,7 +121,7 @@
         ArgumentNullException.ThrowIfNullOrWhiteSpace(_navigateTo);
         ArgumentNullException.ThrowIfNullOrWhiteSpace(_identityFieldName);
 
-        object? objId = dynamicType.GetValue(model, _identityFieldName);
+        object? objId = _dynamicType.GetValue(model, _identityFieldName);
 
         if(objId is int id)
         {
