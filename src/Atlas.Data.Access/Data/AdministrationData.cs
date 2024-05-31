@@ -56,7 +56,7 @@ namespace Atlas.Data.Access.Data
         {
             var user = new User
             {
-                UserName = addUser.UserName,
+                Name = addUser.Name,
                 Email = addUser.Email,
                 Theme = addUser.Theme
             };
