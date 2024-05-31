@@ -24,7 +24,7 @@ namespace Atlas.Core.Models
 
         [Required]
         [StringLength(50)]
-        public string? UserName { get; set; }
+        public string? Name { get; set; }
 
         [Required]
         [EmailAddress]
@@ -96,9 +96,9 @@ namespace Atlas.Core.Models
     {
         public UserValidator()
         {
-            RuleFor(v => v.UserName)
-                .NotNull().WithMessage("User Name is required")
-                .Length(1, 50).WithMessage("User Name cannot exceed 50 characters");
+            RuleFor(v => v.Name)
+                .NotNull().WithMessage("Name is required")
+                .Length(1, 50).WithMessage("Name cannot exceed 50 characters");
 
             RuleFor(v => v.Email)
                 .NotNull().WithMessage("Email is required")
