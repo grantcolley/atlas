@@ -22,11 +22,14 @@
             <FluentValidationValidator/>
 
             <FluentToolbar>
-                <FluentButton Id="submit" aria-label="Save" Type="ButtonType.Submit" IconEnd="@(new Icons.Regular.Size20.Save())" Disabled="@_isProcessing"/>
-                <FluentSpacer />
-                <FluentButton Id="delete" aria-label="Delete" Type="ButtonType.Button" OnClick="OnDeleteAsync" Disabled="@_isProcessing">
-                    <FluentIcon Value="@(new Icons.Regular.Size20.Delete())" Title="Open" Color="Color.Error"/>
-                </FluentButton>
+                <FluentButton Id="submit" aria-label="Save" Type="ButtonType.Submit" IconEnd="@(new Icons.Regular.Size20.Save())" Disabled="@_isProcessing" />
+                @if (_permission.PermissionId > 0)
+                {
+                    <FluentSpacer />
+                    <FluentButton Id="delete" aria-label="Delete" Type="ButtonType.Button" OnClick="OnDeleteAsync" Disabled="@_isProcessing">
+                        <FluentIcon Value="@(new Icons.Regular.Size20.Delete())" Title="Open" Color="Color.Error" />
+                    </FluentButton>
+                }
                 <FluentSpacer />
                 <ValidationBadge Title="Permission" Messages="_messages"/>
             </FluentToolbar>
@@ -77,6 +80,7 @@
     [Parameter]
     public int? Id { get; set; }
 
+    private Alert? _alert;
     private bool _isProcessing = false;
     private EditContext? _currentEditContext;
     private List<string> _messages = new();
@@ -98,6 +102,7 @@
             if (!response.IsSuccess)
             {
                 RaiseAlert(Alerts.ERROR, "Permission Error", response.Message);
+                return;
             }
             else
             {
@@ -157,13 +162,15 @@
         if (_permission.PermissionId.Equals(0))
         {
             await AtlasDialogService.ShowDialogAsync(
-                "Delete Permission", $"Cannot delete an object with Id equal to 0", AtlasDialogType.YesNo)
+                "Delete Permission", $"Cannot delete an object with Id equal to 0", AtlasDialogType.Ok)
                 .ConfigureAwait(false);
             return;
         }
 
+        string modelName = string.IsNullOrWhiteSpace(_permission.Name) ? $"PermissionId {_permission.PermissionId}" : _permission.Name;
+
         AtlasDialogContent? deleteResult = await AtlasDialogService.ShowDialogAsync(
-            "Delete Permission", $"Do you really want to delete {_permission.Name}?", AtlasDialogType.YesNo)
+            "Delete Permission", $"Do you really want to delete {modelName}?", AtlasDialogType.YesNo)
             .ConfigureAwait(false);
 
         if (deleteResult == null
@@ -178,9 +185,12 @@
             .DeleteModelAsync(_permission.PermissionId, Atlas.Core.Constants.AtlasAPIEndpoints.DELETE_PERMISSION)
             .ConfigureAwait(false);
 
-        _ = GetResponse(response);
+        int result = GetResponse(response);
 
-        RaiseAlert(Alerts.SUCCESS, "Permission Deleted", $"{_permission.Name} has been deleted.");
+        if(result != default(int))
+        {
+            RaiseAlert(Alerts.SUCCESS, "Permission Deleted", $"{_permission.Name} has been deleted.");
+        }
 
         _isProcessing = false;
     }
@@ -200,16 +210,12 @@
 
     protected void RaiseAlert(string? alertType, string? title, string? message)
     {
-        if (NavigationManager == null) throw new NullReferenceException(nameof(NavigationManager));
-
-        Alert alert = new Alert
+        _alert = new Alert
         {
             AlertType = alertType,
             Title = title,
             Message = message
         };
-
-        NavigationManager.NavigateTo(alert.Page);
     }
 
     private void CurrentEditContextOnValidationStateChanged(object? sender, ValidationStateChangedEventArgs e)
