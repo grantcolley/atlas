@@ -15,8 +15,6 @@ namespace Atlas.Blazor.Web.Components.Generic
 
         protected override async Task OnInitializedAsync()
         {
-            System.Diagnostics.Debug.WriteLine($"{GetType().Name} abstract - OnInitialized - START");
-
             ArgumentException.ThrowIfNullOrWhiteSpace(Title);
             ArgumentException.ThrowIfNullOrWhiteSpace(NavigateTo);
             ArgumentException.ThrowIfNullOrWhiteSpace(APIEndpoint);
@@ -31,8 +29,6 @@ namespace Atlas.Blazor.Web.Components.Generic
             _identityFieldName = IdentityFieldName;
 
             await base.OnInitializedAsync();
-
-            System.Diagnostics.Debug.WriteLine($"{GetType().Name} abstract - OnInitialized - END");
         }
 
         public override RenderFragment RenderGridBase()
