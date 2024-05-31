@@ -1,0 +1,35 @@
+﻿@page "/Users"
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@inherits GridContainerBase<Atlas.Core.Models.User>
+
+@{
+    // Display the markup for the underlying base 
+    // GenericGridContainer<T> we are inheriting.
+    base.BuildRenderTree(__builder);
+}
+
+@code{
+    public override string? Title { get; set; } = "Users";
+    public override string? NavigateTo { get; set; } = AtlasWebConstants.PAGE_USER;
+    public override string? APIEndpoint { get; set; } = AtlasAPIEndpoints.GET_USERS;
+    public override int ItemsPerPage { get; set; } = 20;
+    public override string? FilterFieldName { get; set; } = "Name";
+    public override string? IdentityFieldName { get; set; } = "UserId";
+
+    public override RenderFragment RenderGrid() => __builder =>
+    {
+        <FluentDataGrid TGridItem=Atlas.Core.Models.User Items="@FilteredItems" ResizableColumns=true Pagination="@Pagination" GridTemplateColumns="0.2fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr" Style="height: 405px;overflow:auto;">
+            <PropertyColumn Property="@(u => u.UserId)" Sortable="true" Align="Align.Center" Title="User Id"/>
+            <PropertyColumn Property="@(u => u.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(Filter)" Tooltip="true" Title="Name">
+                <ColumnOptions>
+                    <div class="search-box">
+                        <FluentSearch type="filter" Autofocus=true @bind-Value=Filter @oninput="HandleNameFilter" @bind-Value:after="HandleClear" Placeholder="User name..." />
+                    </div>
+                </ColumnOptions>
+            </PropertyColumn>
+            <TemplateColumn Align="@Align.Center" Title="Edit">
+                <FluentButton aria-label="Edit" IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(() => Edit(context))" />
+            </TemplateColumn>
+        </FluentDataGrid>
+    };
+}
