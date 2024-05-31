@@ -73,10 +73,10 @@ namespace Atlas.Seed.Data
         {
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-            roles.Add(Auth.USER, new Role { Name = Auth.USER, Description = "Atlas User Role" });
-            roles.Add(Auth.ADMIN, new Role { Name = Auth.ADMIN, Description = "Atlas Administrator Role" });
-            roles.Add(Auth.DEVELOPER, new Role { Name = Auth.DEVELOPER, Description = "Atlas Developer Role" });
-            roles.Add(Auth.WEATHER_USER, new Role { Name = Auth.WEATHER_USER, Description = "Weather User Role" });
+            roles.Add(Auth.USER, new Role { Name = $"{Auth.USER} Role", Description = $"{Auth.USER} Role" });
+            roles.Add(Auth.ADMIN, new Role { Name = $"{Auth.ADMIN} Role", Description = $"{Auth.ADMIN} Role" });
+            roles.Add(Auth.DEVELOPER, new Role { Name = $"{Auth.DEVELOPER} Role", Description = $"{Auth.DEVELOPER} Role" });
+            roles.Add(Auth.WEATHER_USER, new Role { Name = $"{Auth.WEATHER_USER} Role", Description = $"{Auth.WEATHER_USER} Role" });
 
             foreach (var role in roles.Values)
             {
