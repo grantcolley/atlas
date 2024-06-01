@@ -4,45 +4,51 @@
 
 <PageTitle>@_title</PageTitle>
 
-<FluentCard>
-    <FluentHeader>
-        @_title
-    </FluentHeader>
+@if (_alert == null)
+{
+    <FluentCard>
+        <FluentHeader>
+            @_title
+        </FluentHeader>
 
-    @if (@_model == null)
-    {
-        <CenterContent>
-            <FluentProgressRing style="width: 82px; height: 82px;"></FluentProgressRing>
-        </CenterContent>
-    }
-    else
-    {
-        <EditForm FormName="@_title" EditContext="_currentEditContext" OnValidSubmit="OnSubmitAsync">
+        @if (@_model == null)
+        {
+            <CenterContent>
+                <FluentProgressRing style="width: 82px; height: 82px;"></FluentProgressRing>
+            </CenterContent>
+        }
+        else
+        {
+            <EditForm FormName="@_title" EditContext="_currentEditContext" OnValidSubmit="OnSubmitAsync">
 
-            <FluentValidationValidator />
+                <FluentValidationValidator />
 
-            <FluentToolbar>
-                <FluentButton Id="submit" aria-label="Save" Type="ButtonType.Submit" IconEnd="@(new Icons.Regular.Size20.Save())" Disabled="@_isProcessing" />
-                @if (_id == 0)
-                {
+                <FluentToolbar>
+                    <FluentButton Id="submit" aria-label="Save" Type="ButtonType.Submit" IconEnd="@(new Icons.Regular.Size20.Save())" Disabled="@_isProcessing" />
+                    @if (_id == 0)
+                    {
+                        <FluentSpacer />
+                        <FluentButton Id="delete" aria-label="Delete" Type="ButtonType.Button" OnClick="OnDeleteAsync" Disabled="@_isProcessing">
+                            <FluentIcon Value="@(new Icons.Regular.Size20.Delete())" Title="Open" Color="Color.Error" />
+                        </FluentButton>
+                    }
                     <FluentSpacer />
-                    <FluentButton Id="delete" aria-label="Delete" Type="ButtonType.Button" OnClick="OnDeleteAsync" Disabled="@_isProcessing">
-                        <FluentIcon Value="@(new Icons.Regular.Size20.Delete())" Title="Open" Color="Color.Error" />
-                    </FluentButton>
-                }
-                <FluentSpacer />
-                <ValidationBadge Title="@_title" Messages="_messages" />
-            </FluentToolbar>
+                    <ValidationBadge Title="@_title" Messages="_messages" />
+                </FluentToolbar>
 
-            @RenderModelContent();
+                @RenderModelContent();
 
-        </EditForm>
-    }
+            </EditForm>
+        }
 
-    <FluentFooter>
-    </FluentFooter>
-</FluentCard>
-
+        <FluentFooter>
+        </FluentFooter>
+    </FluentCard>
+}
+else
+{
+    <Atlas.Blazor.Web.Pages.Alert AlertType="@_alert.AlertType" Title="@_title" Message="@_alert.Message" />
+}
 @code {
     [Inject]
     public NavigationManager? NavigationManager { get; set; }
@@ -56,14 +62,6 @@
     [Parameter]
     public int? Id { get; set; }
 
-    protected string? _title { get; set; }
-    protected string? _apiGetEndpoint { get; set; }
-    protected string? _apiCreateEndpoint { get; set; }
-    protected string? _apiUpdateEndpoint { get; set; }
-    protected string? _apiDeleteEndpoint { get; set; }
-    protected string? _identityFieldName { get; set; }
-    protected string? _modelNameField { get; set; }
-
     private int _id = 0;
     private Alert? _alert;
     private T? _model = null;
@@ -72,9 +70,17 @@
     private EditContext? _currentEditContext;
     private DynamicType<T> _dynamicType = DynamicTypeHelper.Get<T>();
 
+    protected string? _title { get; set; }
+    protected string? _apiGetEndpoint { get; set; }
+    protected string? _apiCreateEndpoint { get; set; }
+    protected string? _apiUpdateEndpoint { get; set; }
+    protected string? _apiDeleteEndpoint { get; set; }
+    protected string? _identityFieldName { get; set; }
+    protected string? _modelNameField { get; set; }
+
     public virtual RenderFragment RenderModelContent()
     {
-        throw new NotImplementedException($"{GetType().Name}.RenderGridBase must be overriden.");
+        throw new NotImplementedException($"{GetType().Name}.RenderModelContent must be overriden.");
     }
 
     protected override async Task OnInitializedAsync()
@@ -201,7 +207,7 @@
         _isProcessing = false;
     }
 
-    protected T? GetResponse<T>(IResponse<T> response)
+    private K? GetResponse<K>(IResponse<K> response)
     {
         if (!response.IsSuccess)
         {
@@ -214,7 +220,7 @@
         }
     }
 
-    protected void RaiseAlert(string? alertType, string? title, string? message)
+    private void RaiseAlert(string? alertType, string? title, string? message)
     {
         _alert = new Alert
             {
