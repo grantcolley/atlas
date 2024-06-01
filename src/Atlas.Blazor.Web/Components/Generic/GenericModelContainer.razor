@@ -11,7 +11,7 @@
             @_title
         </FluentHeader>
 
-        @if (@_model == null)
+        @if (@Model == null)
         {
             <CenterContent>
                 <FluentProgressRing style="width: 82px; height: 82px;"></FluentProgressRing>
@@ -36,7 +36,7 @@
                     <ValidationBadge Title="@_title" Messages="_messages" />
                 </FluentToolbar>
 
-                @RenderModel();
+                @RenderModel()
 
             </EditForm>
         }
@@ -64,7 +64,6 @@ else
 
     private int _id = 0;
     private Alert? _alert;
-    private T? _model = null;
     private bool _isProcessing = false;
     private List<string> _messages = new();
     private EditContext? _currentEditContext;
@@ -77,6 +76,8 @@ else
     protected string? _apiDeleteEndpoint { get; set; }
     protected string? _identityFieldName { get; set; }
     protected string? _modelNameField { get; set; }
+
+    public T? Model { get; set; }
 
     public virtual RenderFragment RenderModel()
     {
@@ -96,7 +97,7 @@ else
 
         if (!Id.HasValue || Id.Value <= 0)
         {
-            _model = _dynamicType.CreateInstance();
+            Model = _dynamicType.CreateInstance();
             _id = 0;
         }
         else
@@ -111,13 +112,13 @@ else
             }
             else
             {
-                _model = response.Result ?? throw new NullReferenceException(nameof(_model));
-                int? id = (int?)_dynamicType.GetValue(_model, _identityFieldName);
+                Model = response.Result ?? throw new NullReferenceException(nameof(Model));
+                int? id = (int?)_dynamicType.GetValue(Model, _identityFieldName);
                 int _id = id.HasValue ? id.Value : throw new NullReferenceException(_identityFieldName);
             }
         }
 
-        _currentEditContext = new EditContext(_model ?? throw new NullReferenceException(nameof(_model)));
+        _currentEditContext = new EditContext(Model ?? throw new NullReferenceException(nameof(Model)));
         _currentEditContext.OnValidationStateChanged += CurrentEditContextOnValidationStateChanged;
     }
 
@@ -127,7 +128,7 @@ else
         if (_apiCreateEndpoint == null) throw new NullReferenceException(nameof(_apiCreateEndpoint));
         if (_apiUpdateEndpoint == null) throw new NullReferenceException(nameof(_apiUpdateEndpoint));
 
-        if (_model == null)
+        if (Model == null)
         {
             RaiseAlert(Alerts.ERROR, $"{_title} Error", $"{_title} is broken");
             return;
@@ -142,12 +143,12 @@ else
 
             if (_id.Equals(0))
             {
-                response = await Requests.CreateModelAsync<T>(_model, _apiCreateEndpoint)
+                response = await Requests.CreateModelAsync<T>(Model, _apiCreateEndpoint)
                     .ConfigureAwait(false);
             }
             else
             {
-                response = await Requests.UpdateModelAsync<T>(_model, _apiUpdateEndpoint)
+                response = await Requests.UpdateModelAsync<T>(Model, _apiUpdateEndpoint)
                     .ConfigureAwait(false);
             }
 
@@ -164,7 +165,7 @@ else
         if (AtlasDialogService == null) throw new NullReferenceException(nameof(AtlasDialogService));
         if (_apiDeleteEndpoint == null) throw new NullReferenceException(nameof(_apiDeleteEndpoint));
 
-        if (_model == null)
+        if (Model == null)
         {
             RaiseAlert(Alerts.ERROR, $"{_title} Error", $"{_title} is broken");
             return;
@@ -178,7 +179,7 @@ else
             return;
         }
 
-        object name = _dynamicType.GetValue(_model, _modelNameField) ?? throw new NullReferenceException();
+        object name = _dynamicType.GetValue(Model, _modelNameField) ?? throw new NullReferenceException();
         string modelName = string.IsNullOrWhiteSpace($"{name}") ? $"{_identityFieldName} {_id}" : $"{name}";
 
         AtlasDialogContent? deleteResult = await AtlasDialogService.ShowDialogAsync(
