@@ -36,7 +36,7 @@
                     <ValidationBadge Title="@_title" Messages="_messages" />
                 </FluentToolbar>
 
-                @RenderModelContent();
+                @RenderModel();
 
             </EditForm>
         }
@@ -78,9 +78,9 @@ else
     protected string? _identityFieldName { get; set; }
     protected string? _modelNameField { get; set; }
 
-    public virtual RenderFragment RenderModelContent()
+    public virtual RenderFragment RenderModel()
     {
-        throw new NotImplementedException($"{GetType().Name}.RenderModelContent must be overriden.");
+        throw new NotImplementedException($"{GetType().Name}.RenderModel must be overriden.");
     }
 
     protected override async Task OnInitializedAsync()
