@@ -25,7 +25,7 @@
 
                 <FluentToolbar>
                     <FluentButton Id="submit" aria-label="Save" Type="ButtonType.Submit" IconEnd="@(new Icons.Regular.Size20.Save())" Disabled="@_isProcessing" />
-                    @if (_id == 0)
+                    @if (_id > 0)
                     {
                         <FluentSpacer />
                         <FluentButton Id="delete" aria-label="Delete" Type="ButtonType.Button" OnClick="OnDeleteAsync" Disabled="@_isProcessing">
@@ -114,7 +114,7 @@ else
             {
                 Model = response.Result ?? throw new NullReferenceException(nameof(Model));
                 int? id = (int?)_dynamicType.GetValue(Model, _identityFieldName);
-                int _id = id.HasValue ? id.Value : throw new NullReferenceException(_identityFieldName);
+                _id = id.HasValue ? id.Value : throw new NullReferenceException(_identityFieldName);
             }
         }
 
