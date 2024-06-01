@@ -23,7 +23,7 @@
             <PropertyColumn Property="@(u => u.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(Filter)" Tooltip="true" Title="Name">
                 <ColumnOptions>
                     <div class="search-box">
-                        <FluentSearch type="filter" Autofocus=true @bind-Value=Filter @oninput="HandleNameFilter" @bind-Value:after="HandleClear" Placeholder="User name..." />
+                        <FluentSearch type="filter" Autofocus=true @bind-Value=Filter @oninput="HandleFilter" @bind-Value:after="HandleClear" Placeholder="User name..." />
                     </div>
                 </ColumnOptions>
             </PropertyColumn>
