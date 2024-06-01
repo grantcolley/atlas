@@ -11,7 +11,7 @@ namespace Atlas.Blazor.Web.Components.Generic
         public abstract string? FilterFieldName { get; set; }
         public abstract string? IdentityFieldName { get; set; }
 
-        public abstract RenderFragment RenderGrid();
+        public abstract RenderFragment RenderGridContent();
 
         protected override async Task OnInitializedAsync()
         {
@@ -31,9 +31,9 @@ namespace Atlas.Blazor.Web.Components.Generic
             await base.OnInitializedAsync();
         }
 
-        public override RenderFragment RenderGridBase()
+        public override RenderFragment RenderGrid()
         {
-            return RenderGrid();
+            return RenderGridContent();
         }
     }
 }
