@@ -1,0 +1,242 @@
+﻿@page "/Permission_old"
+@page "/Permission_old/{Id:int?}"
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@attribute [StreamRendering]
+@implements IDisposable
+
+<PageTitle>Permission</PageTitle>
+
+<FluentCard>
+    <FluentHeader>
+        Permission
+    </FluentHeader>
+
+    @if (_permission == null)
+    {
+        <FluentProgressRing style="width: 82px; height: 82px;"></FluentProgressRing>
+    }
+    else
+    {
+        <EditForm FormName="permission" EditContext="_currentEditContext" OnValidSubmit="OnSubmitAsync">
+
+            <FluentValidationValidator/>
+
+            <FluentToolbar>
+                <FluentButton Id="submit" aria-label="Save" Type="ButtonType.Submit" IconEnd="@(new Icons.Regular.Size20.Save())" Disabled="@_isProcessing" />
+                @if (_permission.PermissionId > 0)
+                {
+                    <FluentSpacer />
+                    <FluentButton Id="delete" aria-label="Delete" Type="ButtonType.Button" OnClick="OnDeleteAsync" Disabled="@_isProcessing">
+                        <FluentIcon Value="@(new Icons.Regular.Size20.Delete())" Title="Open" Color="Color.Error" />
+                    </FluentButton>
+                }
+                <FluentSpacer />
+                <ValidationBadge Title="Permission" Messages="_messages"/>
+            </FluentToolbar>
+
+            <FluentAccordion>
+                <FluentAccordionItem Expanded=true>
+                    <HeadingTemplate>
+                        @if (_permission.PermissionId.Equals(0))
+                        {
+                            <FluentLabel Typo="Typography.Body">New Permission</FluentLabel>
+                        }
+                        else
+                        {
+                            <FluentLabel Typo="Typography.Body">@($"Permission Id {_permission.PermissionId}")</FluentLabel>
+                        }
+                    </HeadingTemplate>
+                    <ChildContent>
+                        <div>
+                            <FluentTextField Name="Name" @bind-Value="_permission.Name" Label="Name" />
+                            <FluentValidationMessage For="@(() => _permission.Name)" />
+                        </div>
+                        <div>
+                            <FluentTextField Name="Description" @bind-Value="_permission.Description" Label="Description" />
+                            <FluentValidationMessage For="@(() => _permission.Description)" />
+                        </div>
+                    </ChildContent>
+                </FluentAccordionItem>
+            </FluentAccordion>
+
+        </EditForm>
+    }
+
+    <FluentFooter>
+
+    </FluentFooter>
+</FluentCard>
+
+@code {
+    [Inject]
+    public NavigationManager? NavigationManager { get; set; }
+
+    [Inject]
+    public IAtlasDialogService? AtlasDialogService { get; set; }
+
+    [Inject]
+    public IRequests? Requests { get; set; }
+
+    [Parameter]
+    public int? Id { get; set; }
+
+    private Alert? _alert;
+    private bool _isProcessing = false;
+    private EditContext? _currentEditContext;
+    private List<string> _messages = new();
+    private Atlas.Core.Models.Permission? _permission = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ArgumentNullException.ThrowIfNull(Requests);
+
+        if (!Id.HasValue || Id.Value <= 0)
+        {
+            _permission = Activator.CreateInstance<Atlas.Core.Models.Permission>();
+        }
+        else
+        {
+            IResponse<Atlas.Core.Models.Permission> response = await Requests.GetModelAsync<Atlas.Core.Models.Permission>(Id.Value, Atlas.Core.Constants.AtlasAPIEndpoints.GET_PERMISSION)
+                .ConfigureAwait(false);
+
+            if (!response.IsSuccess)
+            {
+                RaiseAlert(Alerts.ERROR, "Permission Error", response.Message);
+                return;
+            }
+            else
+            {
+                _permission = response.Result;
+            }
+        }
+
+        _currentEditContext = new EditContext(_permission ?? throw new NullReferenceException(nameof(_permission)));
+        _currentEditContext.OnValidationStateChanged += CurrentEditContextOnValidationStateChanged;
+    }
+
+    private async Task OnSubmitAsync()
+    {
+        if (Requests == null) throw new NullReferenceException(nameof(Requests));
+
+        if (_permission == null)
+        {
+            RaiseAlert(Alerts.ERROR, "Permission Error", "Permission is broken");
+            return;
+        }
+
+        _isProcessing = true;
+
+        if (_currentEditContext != null
+            && _currentEditContext.Validate())
+        {
+            IResponse<Atlas.Core.Models.Permission> response;
+
+            if (_permission.PermissionId.Equals(0))
+            {
+                response = await Requests.CreateModelAsync<Atlas.Core.Models.Permission>(_permission, Atlas.Core.Constants.AtlasAPIEndpoints.CREATE_PERMISSION)
+                    .ConfigureAwait(false);
+            }
+            else
+            {
+                response = await Requests.UpdateModelAsync<Atlas.Core.Models.Permission>(_permission, Atlas.Core.Constants.AtlasAPIEndpoints.UPDATE_PERMISSION)
+                    .ConfigureAwait(false);
+            }
+
+            _ = GetResponse(response);
+        }
+
+        _isProcessing = false;
+    }
+
+    private async Task OnDeleteAsync()
+    {
+        if (AtlasDialogService == null) throw new NullReferenceException(nameof(AtlasDialogService));
+        if (Requests == null) throw new NullReferenceException(nameof(Requests));
+
+        if (_permission == null)
+        {
+            RaiseAlert(Alerts.ERROR, "Permission Error", "Permission is broken");
+            return;
+        }
+
+        if (_permission.PermissionId.Equals(0))
+        {
+            await AtlasDialogService.ShowDialogAsync(
+                "Delete Permission", $"Cannot delete an object with Id equal to 0", AtlasDialogType.Ok)
+                .ConfigureAwait(false);
+            return;
+        }
+
+        string modelName = string.IsNullOrWhiteSpace(_permission.Name) ? $"PermissionId {_permission.PermissionId}" : _permission.Name;
+
+        AtlasDialogContent? deleteResult = await AtlasDialogService.ShowDialogAsync(
+            "Delete Permission", $"Do you really want to delete {modelName}?", AtlasDialogType.YesNo)
+            .ConfigureAwait(false);
+
+        if (deleteResult == null
+            || (deleteResult.Selected != AtlasDialogSelection.Yes))
+        {
+            return;
+        }
+
+        _isProcessing = true;
+
+        IResponse<int> response = await Requests
+            .DeleteModelAsync(_permission.PermissionId, Atlas.Core.Constants.AtlasAPIEndpoints.DELETE_PERMISSION)
+            .ConfigureAwait(false);
+
+        int result = GetResponse(response);
+
+        if(result != default(int))
+        {
+            RaiseAlert(Alerts.SUCCESS, "Permission Deleted", $"{_permission.Name} has been deleted.");
+        }
+
+        _isProcessing = false;
+    }
+
+    protected T? GetResponse<T>(IResponse<T> response)
+    {
+        if (!response.IsSuccess)
+        {
+            RaiseAlert(Alerts.ERROR, "Permission Error", response.Message);
+            return default;
+        }
+        else
+        {
+            return response.Result;
+        }
+    }
+
+    protected void RaiseAlert(string? alertType, string? title, string? message)
+    {
+        _alert = new Alert
+        {
+            AlertType = alertType,
+            Title = title,
+            Message = message
+        };
+    }
+
+    private void CurrentEditContextOnValidationStateChanged(object? sender, ValidationStateChangedEventArgs e)
+    {
+        int messagesCount = _messages.Count;
+
+        _messages.Clear();
+
+        if(_currentEditContext != null)
+        {
+            _messages.AddRange(_currentEditContext.GetValidationMessages());
+        }
+
+        if (messagesCount != _messages.Count)
+        {
+            StateHasChanged();
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        if (_currentEditContext != null) _currentEditContext.OnValidationStateChanged -= CurrentEditContextOnValidationStateChanged;
+    }
+}
