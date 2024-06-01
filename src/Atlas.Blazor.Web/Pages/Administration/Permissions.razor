@@ -16,7 +16,7 @@
     public override string? FilterFieldName { get; set; } = "Name";
     public override string? IdentityFieldName { get; set; } = "PermissionId";
 
-    public override RenderFragment RenderGrid() => __builder =>
+    public override RenderFragment RenderGridContent() => __builder =>
     {
         <FluentDataGrid TGridItem=Atlas.Core.Models.Permission Items="@FilteredItems" ResizableColumns=true Pagination="@Pagination" GridTemplateColumns="0.2fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr" Style="height: 405px;overflow:auto;">
             <PropertyColumn Property="@(p => p.PermissionId)" Sortable="true" Align="Align.Center" Title="Permission Id"/>
