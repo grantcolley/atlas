@@ -45,10 +45,10 @@ else
     public IRequests? Requests { get; set; }
 
     private Alert? _alert;   
+    private bool _isProcessing = false;
     private IEnumerable<T>? _items = new List<T>();
     private DynamicType<T> _dynamicType = DynamicTypeHelper.Get<T>();
 
-    private bool _isProcessing = false;
     protected string? _title { get; set; }
     protected string? _navigateTo { get; set; }
     protected string? _apiEndpoint { get; set; }
@@ -73,7 +73,7 @@ else
 
     public virtual RenderFragment RenderGrid()
     {
-        throw new NotImplementedException($"{GetType().Name}.RenderGridBase must be overriden.");
+        throw new NotImplementedException($"{GetType().Name}.RenderGrid must be overriden.");
     }
 
     protected override async Task OnInitializedAsync()
@@ -115,13 +115,6 @@ else
         _isProcessing = false;
     }
 
-    protected void Create()
-    {
-        ArgumentNullException.ThrowIfNullOrWhiteSpace(_navigateTo);
-
-        NavigationManager?.NavigateTo($"{_navigateTo}");
-    }
-
     protected void Edit(T model)
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(_navigateTo);
@@ -135,7 +128,7 @@ else
         }
     }
 
-    protected void HandleNameFilter(ChangeEventArgs args)
+    protected void HandleFilter(ChangeEventArgs args)
     {
         if (args.Value is string value)
         {
@@ -149,5 +142,12 @@ else
         {
             Filter = string.Empty;
         }
+    }
+
+    private void Create()
+    {
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(_navigateTo);
+
+        NavigationManager?.NavigateTo($"{_navigateTo}");
     }
 }
