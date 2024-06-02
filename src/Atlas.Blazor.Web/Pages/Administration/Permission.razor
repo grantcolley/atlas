@@ -36,6 +36,9 @@
                 </HeadingTemplate>
                 <ChildContent>
                     <div>
+                        <FluentTextField Name="Name" @bind-Value="Model.Code" Label="Code" ReadOnly="true" />
+                    </div>
+                    <div>
                         <FluentTextField Name="Name" @bind-Value="Model.Name" Label="Name" />
                         <FluentValidationMessage For="@(() => Model.Name)" />
                     </div>
