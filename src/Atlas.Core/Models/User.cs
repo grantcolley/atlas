@@ -86,8 +86,8 @@ namespace Atlas.Core.Models
         public List<string?> GetUserPermissionSet()
         {
             return Permissions
-                    .Select(p => p.Name)
-                    .Union(Roles.SelectMany(r => r.Permissions.Select(rp => rp.Name)))
+                    .Select(p => p.Code)
+                    .Union(Roles.SelectMany(r => r.Permissions.Select(rp => rp.Code)))
                     .ToList();
         }
     }
