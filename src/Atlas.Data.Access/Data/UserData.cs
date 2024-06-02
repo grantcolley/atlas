@@ -36,11 +36,11 @@ namespace Atlas.Data.Access.Data
                 return default;
             }
 
-            List<string?> userPermissions = user.Permissions.Select(p => p.Name).ToList();
+            List<string?> userPermissions = user.Permissions.Select(p => p.Code).ToList();
 
             List<string?> rolePermissions = user.Roles
                 .SelectMany(r => r.Permissions)
-                .Select(p => p.Name)
+                .Select(p => p.Code)
                 .ToList();
 
             userPermissions.AddRange(rolePermissions);
