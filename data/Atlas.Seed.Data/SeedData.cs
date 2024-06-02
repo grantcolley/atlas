@@ -56,10 +56,10 @@ namespace Atlas.Seed.Data
         {
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-            permissions.Add(Auth.USER, new Permission { Name = Auth.USER, Description = "Atlas User Permission" });
-            permissions.Add(Auth.ADMIN, new Permission { Name = Auth.ADMIN, Description = "Atlas Administrator Permission" });
-            permissions.Add(Auth.DEVELOPER, new Permission { Name = Auth.DEVELOPER, Description = "Atlas Developer Permission" });
-            permissions.Add(Auth.WEATHER_USER, new Permission { Name = Auth.WEATHER_USER, Description = "Weather User Permission" });
+            permissions.Add(Auth.USER, new Permission { Code = Auth.USER, Name = Auth.USER, Description = "Atlas User Permission" });
+            permissions.Add(Auth.ADMIN, new Permission { Code = Auth.ADMIN, Name = Auth.ADMIN, Description = "Atlas Administrator Permission" });
+            permissions.Add(Auth.DEVELOPER, new Permission { Code = Auth.DEVELOPER, Name = Auth.DEVELOPER, Description = "Atlas Developer Permission" });
+            permissions.Add(Auth.WEATHER_USER, new Permission { Code = Auth.WEATHER_USER, Name = Auth.WEATHER_USER, Description = "Weather User Permission" });
 
             foreach (var permission in permissions.Values)
             {
