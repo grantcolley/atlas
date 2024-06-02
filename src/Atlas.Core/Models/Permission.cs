@@ -24,6 +24,10 @@ namespace Atlas.Core.Models
         public string? Name { get; set; }
 
         [Required]
+        [StringLength(30)]
+        public string? Code { get; set; }
+
+        [Required]
         [StringLength(150)]
         public string? Description { get; set; }
 
