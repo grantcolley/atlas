@@ -51,6 +51,10 @@ namespace Atlas.Data.Access.Context
                 .HasIndex(p => p.Name)
                 .IsUnique();
 
+            builder.Entity<Permission>()
+                .HasIndex(p => p.Code)
+                .IsUnique();
+
             builder.Entity<Module>()
                 .HasIndex(p => p.Name)
                 .IsUnique();
