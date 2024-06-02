@@ -36,7 +36,7 @@
                 </HeadingTemplate>
                 <ChildContent>
                     <div>
-                        <FluentTextField Name="Name" @bind-Value="Model.Code" Label="Code" ReadOnly="true" />
+                        <FluentTextField Name="Code" @bind-Value="Model.Code" Label="Code" ReadOnly="@(Model.PermissionId > 0)" />
                     </div>
                     <div>
                         <FluentTextField Name="Name" @bind-Value="Model.Name" Label="Name" />
