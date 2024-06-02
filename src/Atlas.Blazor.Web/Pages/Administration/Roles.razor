@@ -18,7 +18,7 @@
 
     public override RenderFragment RenderGridContent() => __builder =>
     {
-        <FluentDataGrid TGridItem=Atlas.Core.Models.Role Items="@FilteredItems" ResizableColumns=true Pagination="@Pagination" GridTemplateColumns="0.2fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr" Style="height: 405px;overflow:auto;">
+        <FluentDataGrid TGridItem=Atlas.Core.Models.Role Items="@FilteredItems" ResizableColumns=true Pagination="@Pagination" GridTemplateColumns="0.2fr 1fr 0.2fr" Style="height: 405px;overflow:auto;">
             <PropertyColumn Property="@(r => r.RoleId)" Sortable="true" Align="Align.Center" Title="Role Id"/>
             <PropertyColumn Property="@(r => r.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(Filter)" Tooltip="true" Title="Name">
                 <ColumnOptions>
