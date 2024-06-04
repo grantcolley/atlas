@@ -1,0 +1,44 @@
+﻿@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
+
+<FluentDesignTheme @bind-Mode="@_mode" @bind-OfficeColor="@_officeColor" StorageName="@AtlasConstants.ATLAS_THEME_STORAGE" />
+
+@if (_mode == DesignThemeModes.Dark)
+{
+    <FluentIcon Id="light" Value="@(new Icons.Regular.Size24.Lightbulb())" OnClick="ChangeToLightMode" />
+
+    <FluentTooltip Anchor="light" Position=TooltipPosition.Start>Light mode</FluentTooltip>
+}
+else
+{
+    <FluentIcon Id="dark" Value="@(new Icons.Regular.Size24.WeatherMoon())" OnClick="ChangeToDarkMode" />
+
+    <FluentTooltip Anchor="dark" Position=TooltipPosition.Start>Dark mode</FluentTooltip>
+}
+
+@code {
+
+    [Inject]
+    public IJSRuntime? JSRuntime { get; set; }
+
+    private DesignThemeModes _mode = DesignThemeModes.System;
+    private OfficeColor? _officeColor = OfficeColor.Default;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (JSRuntime == null) throw new NullReferenceException(nameof(JSRuntime));
+
+        bool isDarkMode = await JSRuntime.InvokeAsync<bool>("themeDetector.isDarkMode");
+
+        _mode = isDarkMode ? DesignThemeModes.Dark : DesignThemeModes.Light;
+    }
+
+    private void ChangeToDarkMode()
+    {
+        _mode = DesignThemeModes.Dark;
+    }
+
+    private void ChangeToLightMode()
+    {
+        _mode = DesignThemeModes.Light;
+    }
+}
