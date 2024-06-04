@@ -12,9 +12,9 @@
     <ProjectReference Include="..\Atlas.Core\Atlas.Core.csproj" />
     <ProjectReference Include="..\Atlas.Requests\Atlas.Requests.csproj" />
     <PackageReference Include="Auth0.AspNetCore.Authentication" Version="1.4.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.4" />
-    <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.7.1" />
-    <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.7.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.6" />
+    <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.7.2" />
+    <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.7.2" />
   </ItemGroup>
 
   <ItemGroup>
