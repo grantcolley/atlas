@@ -1,0 +1,55 @@
+﻿<FluentDataGrid Items="@FilteredItems" ShowHover="true" TGridItem="Atlas.Core.Models.ChecklistItem">
+    <SelectColumn TGridItem="Atlas.Core.Models.ChecklistItem"
+                  SelectMode="DataGridSelectMode.Multiple"
+                  Property="@(e => e.IsChecked)"
+                  OnSelect="@(e => e.Item.IsChecked = e.Selected)"
+                  SelectAll="@(FilteredItems?.All(p => p.IsChecked))"
+                  SelectAllChanged="@(all => FilteredItems?.ToList().ForEach(p => p.IsChecked = (all == true)))" />
+    <PropertyColumn Property="@(i => i.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_filter)" Tooltip="true" Title="@Header">
+        <ColumnOptions>
+            <div class="search-box">
+                <FluentSearch type="filter" Autofocus=true @bind-Value=_filter @oninput="HandleFilter" @bind-Value:after="HandleClear" Placeholder="@FilterPlaceholder" />
+            </div>
+        </ColumnOptions>
+    </PropertyColumn>
+</FluentDataGrid>
+
+@code {
+    [Parameter]
+    public IEnumerable<ChecklistItem>? Source { get; set; }
+
+    [Parameter]
+    public string? Header { get; set; }
+
+    [Parameter]
+    public string? FilterPlaceholder { get; set; }
+
+    private string _filter = string.Empty;
+
+    public IQueryable<ChecklistItem>? FilteredItems
+    {
+        get
+        {
+            if (string.IsNullOrWhiteSpace(_filter)) return Source?.AsQueryable();
+
+            return Source?.AsQueryable().Where(i => !string.IsNullOrWhiteSpace(i.Name)
+            && i.Name.Contains(_filter, StringComparison.CurrentCultureIgnoreCase));
+        }
+    }
+
+    public void HandleFilter(ChangeEventArgs args)
+    {
+        if (args.Value is string value)
+        {
+            _filter = value;
+        }
+    }
+
+    public void HandleClear()
+    {
+        if (string.IsNullOrWhiteSpace(_filter))
+        {
+            _filter = string.Empty;
+        }
+    }
+}
