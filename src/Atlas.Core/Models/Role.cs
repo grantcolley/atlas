@@ -11,9 +11,9 @@ namespace Atlas.Core.Models
     {
         public Role()
         {
-            Users = new List<User>();
-            Permissions = new List<Permission>();
-            PermissionChecklist = new List<ChecklistItem>();
+            Users = [];
+            Permissions = [];
+            PermissionChecklist = [];
         }
 
         public int RoleId { get; set; }
@@ -37,16 +37,15 @@ namespace Atlas.Core.Models
         {
             get
             {
-                if(PermissionChecklist == null)
+                if (PermissionChecklist == null)
                 {
                     return new List<string?>();
                 }
 
-                return PermissionChecklist
+                return [.. PermissionChecklist
                     .Where(p => p.IsChecked)
                     .Select(r => r.Name)
-                    .OrderBy(p => p)
-                    .ToList();
+                    .OrderBy(p => p)];
             }
         }
 
@@ -58,14 +57,13 @@ namespace Atlas.Core.Models
             {
                 if (Users == null)
                 {
-                    return new List<string?>();
+                    return [];
                 }
 
-                return Users
+                return [.. Users
                     .Where(u => u != null)
-                    .Select(u => u.Email)
-                    .OrderBy(e => e)
-                    .ToList();
+                    .Select(u => u.Name)
+                    .OrderBy(e => e)];
             }
         }
     }
