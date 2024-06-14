@@ -11,10 +11,10 @@ namespace Atlas.Core.Models
     {
         public User()
         {
-            Roles = new List<Role>();
-            Permissions = new List<Permission>();
-            PermissionChecklist = new List<ChecklistItem>();
-            RoleChecklist = new List<ChecklistItem>();
+            Roles = [];
+            Permissions = [];
+            PermissionChecklist = [];
+            RoleChecklist = [];
         }
 
         public int UserId { get; set; }
@@ -76,10 +76,9 @@ namespace Atlas.Core.Models
                     .Select(r => r.Name)
                     .ToList();
 
-                return assignedPermissions
+                return [.. assignedPermissions
                     .Union(rolePermissions)
-                    .OrderBy(p => p)
-                    .ToList();
+                    .OrderBy(p => p)];
             }
         }
 
