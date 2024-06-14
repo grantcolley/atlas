@@ -23,6 +23,7 @@
         if (Model == null) throw new NullReferenceException(nameof(Model));
 
         <FluentAccordion>
+
             <FluentAccordionItem Expanded=true>
                 <HeadingTemplate>
                     @if (Model.PermissionId.Equals(0))
@@ -48,6 +49,25 @@
                     </div>
                 </ChildContent>
             </FluentAccordionItem>
+
+            <FluentAccordionItem Expanded=true>
+                <HeadingTemplate>
+                    Role Membership
+                </HeadingTemplate>
+                <ChildContent>
+                    <OrderableList Source="@Model.RoleList" Header="Role" FilterPlaceholder="Role..." />
+                </ChildContent>
+            </FluentAccordionItem>
+
+            <FluentAccordionItem Expanded=true>
+                <HeadingTemplate>
+                    Assigned Users
+                </HeadingTemplate>
+                <ChildContent>
+                    <OrderableList Source="@Model.UserList" Header="User" FilterPlaceholder="User..." />
+                </ChildContent>
+            </FluentAccordionItem>
+
         </FluentAccordion>
     };
 }
