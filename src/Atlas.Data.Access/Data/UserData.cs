@@ -65,7 +65,7 @@ namespace Atlas.Data.Access.Data
 
         public async Task SetThemePreferenceAsync(string theme, CancellationToken cancellationToken)
         {
-            if (theme == null) throw new ArgumentNullException(nameof(theme));
+            ArgumentNullException.ThrowIfNull(theme);
 
             string? email = _applicationDbContext.GetUser();
 
