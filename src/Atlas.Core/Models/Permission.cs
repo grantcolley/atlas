@@ -11,8 +11,8 @@ namespace Atlas.Core.Models
     {
         public Permission()
         {
-            Users = new List<User>();
-            Roles = new List<Role>();
+            Users = [];
+            Roles = [];
         }
 
         public int PermissionId { get; set; }
@@ -42,11 +42,10 @@ namespace Atlas.Core.Models
                     return new List<string?>();
                 }
 
-                return Users
+                return [.. Users
                     .Where(u => u != null)
                     .Select(u => u.Email)
-                    .OrderBy(e => e)
-                    .ToList();
+                    .OrderBy(e => e)];
             }
         }
 
@@ -61,11 +60,10 @@ namespace Atlas.Core.Models
                     return new List<string?>();
                 }
 
-                return Roles
+                return [.. Roles
                     .Where(r => r != null)
                     .Select(r => r.Name)
-                    .OrderBy(r => r)
-                    .ToList();
+                    .OrderBy(r => r)];
             }
         }
     }
