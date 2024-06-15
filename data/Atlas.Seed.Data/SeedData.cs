@@ -37,7 +37,6 @@ namespace Atlas.Seed.Data
             ((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE Audits");
             //((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE Logs");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE RoleUser");
-            ((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE PermissionUser");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE PermissionRole");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("DELETE FROM Users");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("DBCC CHECKIDENT (Users, RESEED, 1)");
@@ -104,9 +103,9 @@ namespace Atlas.Seed.Data
         {
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-            users.Add("alice", new User { Name = "alice", Email = "alice@email.com", Theme = "LightMode" });
-            users.Add("bob", new User { Name = "bob", Email = "bob@email.com", Theme = "LightMode" });
-            users.Add("grant", new User { Name = "grant", Email = "grant@email.com", Theme = "DarkMode" });
+            users.Add("alice", new User { Name = "alice", Email = "alice@email.com" });
+            users.Add("bob", new User { Name = "bob", Email = "bob@email.com" });
+            users.Add("grant", new User { Name = "grant", Email = "grant@email.com" });
 
             foreach (var user in users.Values)
             {
