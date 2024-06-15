@@ -45,6 +45,7 @@ namespace Atlas.Core.Models
                 return [.. PermissionChecklist
                     .Where(p => p.IsChecked)
                     .Select(r => r.Name)
+                    .Distinct()
                     .OrderBy(p => p)];
             }
         }
@@ -63,6 +64,7 @@ namespace Atlas.Core.Models
                 return [.. Users
                     .Where(u => u != null)
                     .Select(u => u.Name)
+                    .Distinct()
                     .OrderBy(e => e)];
             }
         }
