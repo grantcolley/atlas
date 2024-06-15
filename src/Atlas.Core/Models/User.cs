@@ -12,15 +12,11 @@ namespace Atlas.Core.Models
         public User()
         {
             Roles = [];
-            Permissions = [];
-            PermissionChecklist = [];
             RoleChecklist = [];
         }
 
         public int UserId { get; set; }
-        public string? Theme { get; set; }
         public List<Role> Roles { get; set; }
-        public List<Permission> Permissions { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -29,9 +25,6 @@ namespace Atlas.Core.Models
         [Required]
         [EmailAddress]
         public string? Email { get; set; }
-
-        [NotMapped]
-        public List<ChecklistItem> PermissionChecklist { get; set; }
 
         [NotMapped]
         public List<ChecklistItem> RoleChecklist { get; set; }
@@ -50,44 +43,16 @@ namespace Atlas.Core.Models
                 return RoleChecklist
                     .Where(r => r.IsChecked)
                     .Select(r => r.Name)
+                    .Distinct()
                     .ToList();
             }
         }
 
-        [NotMapped]
-        [JsonIgnore]
-        public List<string?> PermissionList
+        public List<string?> GetPermissions()
         {
-            get
-            {
-                if (PermissionChecklist == null
-                    || RoleChecklist == null)
-                {
-                    return new List<string?>();
-                }
-
-                var rolePermissions = RoleChecklist
-                    .Where(r => r.IsChecked)
-                    .SelectMany(r => r.SubItems)
-                    .ToList();
-
-                var assignedPermissions = PermissionChecklist
-                    .Where(p => p.IsChecked)
-                    .Select(r => r.Name)
-                    .ToList();
-
-                return [.. assignedPermissions
-                    .Union(rolePermissions)
-                    .OrderBy(p => p)];
-            }
-        }
-
-        public List<string?> GetUserPermissionSet()
-        {
-            return Permissions
-                    .Select(p => p.Code)
-                    .Union(Roles.SelectMany(r => r.Permissions.Select(rp => rp.Code)))
-                    .ToList();
+            return Roles
+                .SelectMany(r => r.Permissions.Select(p => p.Code))
+                .ToList();
         }
     }
 
