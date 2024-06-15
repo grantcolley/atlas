@@ -22,7 +22,6 @@ namespace Atlas.Data.Access.Base
 
             var user = await _applicationDbContext.Users
                 .AsNoTracking()
-                .Include(u => u.Permissions)
                 .Include(u => u.Roles)
                 .ThenInclude(r => r.Permissions)
                 .FirstOrDefaultAsync(u => u.Email != null && u.Email.Equals(claim), cancellationToken)
@@ -33,9 +32,7 @@ namespace Atlas.Data.Access.Base
             {
                 SetUser(user.Email);
 
-                var permissionSet = user.GetUserPermissionSet();
-
-                return new Authorisation { User = claim, Theme = user.Theme, Permissions = permissionSet };
+                return new Authorisation { User = claim, Permissions = user.GetPermissions() };
             }
 
             return default;
