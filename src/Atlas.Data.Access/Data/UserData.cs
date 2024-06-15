@@ -24,7 +24,6 @@ namespace Atlas.Data.Access.Data
             }
 
             User? user = await _applicationDbContext.Users
-                .Include(u => u.Permissions)
                 .Include(u => u.Roles)
                 .ThenInclude(r => r.Permissions)
                 .AsNoTracking()
@@ -36,16 +35,12 @@ namespace Atlas.Data.Access.Data
                 return default;
             }
 
-            List<string?> userPermissions = user.Permissions.Select(p => p.Code).ToList();
-
             List<string?> rolePermissions = user.Roles
                 .SelectMany(r => r.Permissions)
                 .Select(p => p.Code)
                 .ToList();
 
-            userPermissions.AddRange(rolePermissions);
-
-            List<string?> permissions = userPermissions.Distinct().ToList();
+            List<string?> permissions = rolePermissions.Distinct().ToList();
 
             List<Module> modules = await _applicationDbContext.Modules
                 .AsNoTracking()
@@ -82,8 +77,6 @@ namespace Atlas.Data.Access.Data
             {
                 return;
             }
-
-            user.Theme = theme;
 
             await _applicationDbContext.SaveChangesAsync(cancellationToken);
         }
