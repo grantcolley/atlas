@@ -8,5 +8,6 @@ namespace Atlas.Core.Models
         public string? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public string? ModifiedBy { get; set; }
+        public bool IsReadOnly { get; set; }
     }
 }
