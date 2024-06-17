@@ -145,14 +145,16 @@ else
             {
                 response = await Requests.CreateModelAsync<T>(Model, _apiCreateEndpoint)
                     .ConfigureAwait(false);
+
+                Model = GetResponse(response);
             }
             else
             {
                 response = await Requests.UpdateModelAsync<T>(Model, _apiUpdateEndpoint)
                     .ConfigureAwait(false);
-            }
 
-            _ = GetResponse(response);
+                _ = GetResponse(response);
+            }
         }
 
         _isProcessing = false;
