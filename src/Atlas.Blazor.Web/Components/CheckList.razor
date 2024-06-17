@@ -1,17 +1,22 @@
 ﻿<FluentDataGrid Items="@FilteredItems" ShowHover="true" TGridItem="Atlas.Core.Models.ChecklistItem">
-    <SelectColumn TGridItem="Atlas.Core.Models.ChecklistItem"
-                  SelectMode="DataGridSelectMode.Multiple"
-                  Property="@(e => e.IsChecked)"
-                  OnSelect="@(e => e.Item.IsChecked = e.Selected)"
-                  SelectAll="@(FilteredItems?.All(p => p.IsChecked))"
-                  SelectAllChanged="@(all => FilteredItems?.ToList().ForEach(p => p.IsChecked = (all == true)))" />
-    <PropertyColumn Property="@(i => i.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_filter)" Tooltip="true" Title="@Header">
-        <ColumnOptions>
-            <div class="search-box">
-                <FluentSearch type="filter" Autofocus=true @bind-Value=_filter @oninput="HandleFilter" @bind-Value:after="HandleClear" Placeholder="@FilterPlaceholder" />
-            </div>
-        </ColumnOptions>
-    </PropertyColumn>
+    <ChildContent>
+        <SelectColumn TGridItem="Atlas.Core.Models.ChecklistItem"
+                      SelectMode="DataGridSelectMode.Multiple"
+                      Property="@(e => e.IsChecked)"
+                      OnSelect="@(e => e.Item.IsChecked = e.Selected)"
+                      SelectAll="@(FilteredItems?.All(p => p.IsChecked))"
+                      SelectAllChanged="@(all => FilteredItems?.ToList().ForEach(p => p.IsChecked = (all == true)))" />
+        <PropertyColumn Property="@(i => i.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_filter)" Tooltip="true" Title="@Header">
+            <ColumnOptions>
+                <div class="search-box">
+                    <FluentSearch type="filter" Autofocus=true @bind-Value=_filter @oninput="HandleFilter" @bind-Value:after="HandleClear" Placeholder="@FilterPlaceholder" />
+                </div>
+            </ColumnOptions>
+        </PropertyColumn>
+    </ChildContent>
+    <EmptyContent>
+        @EmptyText
+    </EmptyContent>
 </FluentDataGrid>
 
 @code {
@@ -20,6 +25,9 @@
 
     [Parameter]
     public string? Header { get; set; }
+
+    [Parameter]
+    public string? EmptyText { get; set; }
 
     [Parameter]
     public string? FilterPlaceholder { get; set; }
