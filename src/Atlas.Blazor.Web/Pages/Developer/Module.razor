@@ -1,0 +1,63 @@
+﻿@page "/Module"
+@page "/Module/{Id:int?}"
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@inherits ModelContainerBase<Atlas.Core.Models.Module>
+
+@{
+    // Display the markup for the underlying base
+    // ModelContainerBase<T> we are inheriting.
+    base.BuildRenderTree(__builder);
+}
+
+@code {
+    public override string? Title { get; set; } = "Module";
+    public override string? APIGetEndpoint { get; set; } = AtlasAPIEndpoints.GET_MODULE;
+    public override string? APICreateEndpoint { get; set; } = AtlasAPIEndpoints.CREATE_MODULE;
+    public override string? APIUpdateEndpoint { get; set; } = AtlasAPIEndpoints.UPDATE_MODULE;
+    public override string? APIDeleteEndpoint { get; set; } = AtlasAPIEndpoints.DELETE_MODULE;
+    public override string? ModelNameField { get; set; } = "Name";
+    public override string? IdentityFieldName { get; set; } = "ModuleId";
+
+    public override RenderFragment RenderModelContent() => __builder =>
+    {
+        if (Model == null) throw new NullReferenceException(nameof(Model));
+
+        <FluentAccordion>
+            <FluentAccordionItem Expanded=true>
+                <HeadingTemplate>
+                    @if (Model.ModuleId.Equals(0))
+                    {
+                        <FluentLabel Typo="Typography.Body">New Module</FluentLabel>
+                    }
+                    else
+                    {
+                        <FluentLabel Typo="Typography.Body">@($"Module Id {Model.ModuleId}")</FluentLabel>
+                    }
+                </HeadingTemplate>
+                <ChildContent>
+                    <div>
+                        <FluentTextField Name="Name" @bind-Value="Model.Name" Label="Name" />
+                        <FluentValidationMessage For="@(() => Model.Name)" />
+                    </div>
+                    <div>
+                        <FluentNumberField Name="Order" @bind-Value="Model.Order" Label="Order" />
+                        <FluentValidationMessage For="@(() => Model.Order)" />
+                    </div>
+                </ChildContent>
+            </FluentAccordionItem>
+
+            @if (Model.ModuleId > 0)
+            {
+                <FluentAccordionItem Expanded=true>
+                    <HeadingTemplate>
+                        Categories
+                    </HeadingTemplate>
+                    <ChildContent>
+                        <OrderableList Source="@Model.Categories.Select(c => c.Name)" Header="Categories" FilterPlaceholder="Category..." EmptyText="This module has no categories." />
+                    </ChildContent>
+                </FluentAccordionItem>
+            }
+
+        </FluentAccordion>
+    };
+}
