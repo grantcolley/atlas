@@ -1,11 +1,16 @@
 ﻿<FluentDataGrid Items="@FilteredItems" ShowHover="true" TGridItem="string">
-    <PropertyColumn Property="@(i => i)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_filter)" Tooltip="true" Title="@Header">
-        <ColumnOptions>
-            <div class="search-box">
-                <FluentSearch type="filter" Autofocus=true @bind-Value=_filter @oninput="HandleFilter" @bind-Value:after="HandleClear" Placeholder="@FilterPlaceholder" />
-            </div>
-        </ColumnOptions>
-    </PropertyColumn>
+    <ChildContent>
+        <PropertyColumn Property="@(i => i)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_filter)" Tooltip="true" Title="@Header">
+            <ColumnOptions>
+                <div class="search-box">
+                    <FluentSearch type="filter" Autofocus=true @bind-Value=_filter @oninput="HandleFilter" @bind-Value:after="HandleClear" Placeholder="@FilterPlaceholder" />
+                </div>
+            </ColumnOptions>
+        </PropertyColumn>
+    </ChildContent>
+    <EmptyContent>
+        @EmptyText
+    </EmptyContent>
 </FluentDataGrid>
 
 @code {
@@ -14,6 +19,9 @@
 
     [Parameter]
     public string? Header { get; set; }
+
+    [Parameter]
+    public string? EmptyText { get; set; }
 
     [Parameter]
     public string? FilterPlaceholder { get; set; }
