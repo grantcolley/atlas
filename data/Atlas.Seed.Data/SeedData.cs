@@ -25,7 +25,7 @@ namespace Atlas.Seed.Data
             CreateUsers();
             AssignUsersRoles();
 
-            Navigation();
+            AddNavigation();
 
             //AddWeatherModule();
         }
@@ -126,19 +126,25 @@ namespace Atlas.Seed.Data
             dbContext.SaveChanges();
         }
 
-        private static void Navigation()
+        private static void AddNavigation()
+        {
+            AddAdministration();
+            AddDevelopment();
+        }
+
+        private static void AddAdministration()
         {
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-            var administration = new Module { Name = "Administration", Icon = "TableSettings", Order = 2, Permission = Auth.ADMIN };
+            var administrationModule = new Module { Name = "Administration", Icon = "TableSettings", Order = 2, Permission = Auth.ADMIN };
 
-            dbContext.Modules.Add(administration);
+            dbContext.Modules.Add(administrationModule);
 
             dbContext.SaveChanges();
 
-            var authorisationCategory = new Category { Name = "Authorisation", Icon = "ShieldLock", Order = 1, Permission = Auth.ADMIN, Module = administration };
+            var authorisationCategory = new Category { Name = "Authorisation", Icon = "ShieldLock", Order = 1, Permission = Auth.ADMIN, Module = administrationModule };
 
-            administration.Categories.Add(authorisationCategory);
+            administrationModule.Categories.Add(authorisationCategory);
 
             dbContext.Categories.Add(authorisationCategory);
 
@@ -155,6 +161,39 @@ namespace Atlas.Seed.Data
             dbContext.MenuItems.Add(usersMenuItem);
             dbContext.MenuItems.Add(rolesMenuItem);
             dbContext.MenuItems.Add(permissionsMenuItem);
+
+            dbContext.SaveChanges();
+        }
+
+        private static void AddDevelopment()
+        {
+            if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
+
+            var developmentModule = new Module { Name = "Development", Icon = "DeveloperBoard", Order = 3, Permission = Auth.DEVELOPER };
+
+            dbContext.Modules.Add(developmentModule);
+
+            dbContext.SaveChanges();
+
+            var configurationCategory = new Category { Name = "Configuration", Icon = "PanelLeftText", Order = 1, Permission = Auth.DEVELOPER, Module = developmentModule };
+
+            developmentModule.Categories.Add(configurationCategory);
+
+            dbContext.Categories.Add(configurationCategory);
+
+            dbContext.SaveChanges();
+
+            var moduleMenuItem = new MenuItem { Name = "Modules", Icon = "GroupList", NavigatePage = AtlasWebConstants.PAGE_MODULES, Order = 1, Permission = Auth.DEVELOPER, Category = configurationCategory };
+            var categoriesMenuItem = new MenuItem { Name = "Categories", Icon = "AppsListDetail", NavigatePage = AtlasWebConstants.PAGE_CATEGORIES, Order = 2, Permission = Auth.DEVELOPER, Category = configurationCategory };
+            var menuItemsMenuItem = new MenuItem { Name = "Menu Items", Icon = "AppsList", NavigatePage = AtlasWebConstants.PAGE_MENU_ITEMS, Order = 3, Permission = Auth.DEVELOPER, Category = configurationCategory };
+
+            configurationCategory.MenuItems.Add(moduleMenuItem);
+            configurationCategory.MenuItems.Add(categoriesMenuItem);
+            configurationCategory.MenuItems.Add(menuItemsMenuItem);
+
+            dbContext.MenuItems.Add(moduleMenuItem);
+            dbContext.MenuItems.Add(categoriesMenuItem);
+            dbContext.MenuItems.Add(menuItemsMenuItem);
 
             dbContext.SaveChanges();
         }
