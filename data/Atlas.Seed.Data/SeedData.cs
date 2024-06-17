@@ -169,15 +169,15 @@ namespace Atlas.Seed.Data
         {
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-            var developmentModule = new Module { Name = "Development", Icon = "DeveloperBoard", Order = 3, Permission = Auth.DEVELOPER };
+            var developerModule = new Module { Name = "Developer", Icon = "DeveloperBoard", Order = 3, Permission = Auth.DEVELOPER };
 
-            dbContext.Modules.Add(developmentModule);
+            dbContext.Modules.Add(developerModule);
 
             dbContext.SaveChanges();
 
-            var configurationCategory = new Category { Name = "Configuration", Icon = "PanelLeftText", Order = 1, Permission = Auth.DEVELOPER, Module = developmentModule };
+            var configurationCategory = new Category { Name = "Configuration", Icon = "PanelLeftText", Order = 1, Permission = Auth.DEVELOPER, Module = developerModule };
 
-            developmentModule.Categories.Add(configurationCategory);
+            developerModule.Categories.Add(configurationCategory);
 
             dbContext.Categories.Add(configurationCategory);
 
