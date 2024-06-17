@@ -47,24 +47,26 @@
                 </ChildContent>
             </FluentAccordionItem>
 
-            <FluentAccordionItem Expanded=true>
-                <HeadingTemplate>
-                    Permissions
-                </HeadingTemplate>
-                <ChildContent>
-                    <CheckList Source="@Model.PermissionChecklist" Header="Permission" FilterPlaceholder="Permission..." />
-                    <!--<OrderableList Source="@Model.PermissionList" Header="Permission" FilterPlaceholder="Permission..." /> -->
-                </ChildContent>
-            </FluentAccordionItem>
+            @if (Model.RoleId > 0)
+            {
+                <FluentAccordionItem Expanded=true>
+                    <HeadingTemplate>
+                        Permissions
+                    </HeadingTemplate>
+                    <ChildContent>
+                        <CheckList Source="@Model.PermissionChecklist" Header="Permission" FilterPlaceholder="Permission..." EmptyText="This role has not been granted any permissions." />
+                    </ChildContent>
+                </FluentAccordionItem>
 
-            <FluentAccordionItem Expanded=true>
-                <HeadingTemplate>
-                    Assigned Users
-                </HeadingTemplate>
-                <ChildContent>
-                    <OrderableList Source="@Model.UserList" Header="User" FilterPlaceholder="User..."/>
-                </ChildContent>
-            </FluentAccordionItem>
+                <FluentAccordionItem Expanded=true>
+                    <HeadingTemplate>
+                        Assigned Users
+                    </HeadingTemplate>
+                    <ChildContent>
+                        <OrderableList Source="@Model.UserList" Header="User" FilterPlaceholder="User..." EmptyText="This role has not been assigned any users." />
+                    </ChildContent>
+                </FluentAccordionItem>
+            }
 
         </FluentAccordion>
     };
