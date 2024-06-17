@@ -1,5 +1,5 @@
 ﻿@attribute [StreamRendering]
-@typeparam T where T : class, new()
+@typeparam T where T : ModelBase, new()
 @implements IDisposable
 
 <PageTitle>@_title</PageTitle>
@@ -21,20 +21,23 @@
         {
             <EditForm FormName="@_title" EditContext="_currentEditContext" OnValidSubmit="OnSubmitAsync">
 
-                <FluentValidationValidator />
+                @if (!@Model.IsReadOnly)
+                {
+                    <FluentValidationValidator />
 
-                <FluentToolbar>
-                    <FluentButton Id="submit" aria-label="Save" Type="ButtonType.Submit" IconEnd="@(new Icons.Regular.Size20.Save())" Disabled="@_isProcessing" />
-                    @if (_id > 0)
-                    {
+                    <FluentToolbar>
+                        <FluentButton Id="submit" aria-label="Save" Type="ButtonType.Submit" IconEnd="@(new Icons.Regular.Size20.Save())" Disabled="@_isProcessing" />
+                        @if (_id > 0)
+                        {
+                            <FluentSpacer />
+                            <FluentButton Id="delete" aria-label="Delete" Type="ButtonType.Button" OnClick="OnDeleteAsync" Disabled="@_isProcessing">
+                                <FluentIcon Value="@(new Icons.Regular.Size20.Delete())" Title="Open" Color="Color.Error" />
+                            </FluentButton>
+                        }
                         <FluentSpacer />
-                        <FluentButton Id="delete" aria-label="Delete" Type="ButtonType.Button" OnClick="OnDeleteAsync" Disabled="@_isProcessing">
-                            <FluentIcon Value="@(new Icons.Regular.Size20.Delete())" Title="Open" Color="Color.Error" />
-                        </FluentButton>
-                    }
-                    <FluentSpacer />
-                    <ValidationBadge Title="@_title" Messages="_messages" />
-                </FluentToolbar>
+                        <ValidationBadge Title="@_title" Messages="_messages" />
+                    </FluentToolbar>
+                }
 
                 @RenderModel()
 
