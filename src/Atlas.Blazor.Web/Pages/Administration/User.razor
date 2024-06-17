@@ -46,15 +46,17 @@
                 </ChildContent>
             </FluentAccordionItem>
 
-            <FluentAccordionItem Expanded=true>
-                <HeadingTemplate>
-                    Role Membership
-                </HeadingTemplate>
-                <ChildContent>
-                    <CheckList Source="@Model.RoleChecklist" Header="Role" FilterPlaceholder="Role..." />
-                    <!--<OrderableList Source="@Model.RoleList" Header="Role" FilterPlaceholder="Role..." />-->
-                </ChildContent>
-            </FluentAccordionItem>
+            @if (Model.UserId > 0)
+            {
+                <FluentAccordionItem Expanded=true>
+                        <HeadingTemplate>
+                        Role Membership
+                    </HeadingTemplate>
+                    <ChildContent>
+                        <CheckList Source="@Model.RoleChecklist" Header="Role" FilterPlaceholder="Role..." EmptyText="This user is not a member of any roles." />
+                    </ChildContent>
+                </FluentAccordionItem>
+            }
 
         </FluentAccordion>
     };
