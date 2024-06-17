@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Atlas.Core.Models;
+using Microsoft.AspNetCore.Components;
 
 namespace Atlas.Blazor.Web.Components.Generic
 {
-    public abstract class ModelContainerBase<T> : GenericModelContainer<T> where T : class, new()
+    public abstract class ModelContainerBase<T> : GenericModelContainer<T> where T : ModelBase, new()
     {
         public abstract string? Title { get; set; }
         public abstract string? APIGetEndpoint { get; set; }
