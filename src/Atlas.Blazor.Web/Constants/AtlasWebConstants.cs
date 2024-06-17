@@ -15,5 +15,12 @@
         public const string PAGE_ROLES = "Roles";
         public const string PAGE_PERMISSION = "Permission";
         public const string PAGE_PERMISSIONS = "Permissions";
+
+        public const string PAGE_MODULE = "Module";
+        public const string PAGE_MODULES = "Modules";
+        public const string PAGE_CATEGORY = "Category";
+        public const string PAGE_CATEGORIES = "Categories";
+        public const string PAGE_MENU_ITEM = "MenuItem";
+        public const string PAGE_MENU_ITEMS = "MenuItems";
     }
 }
