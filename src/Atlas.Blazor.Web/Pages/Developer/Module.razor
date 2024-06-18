@@ -62,13 +62,13 @@
                     </HeadingTemplate>
                     <ChildContent>
                         <GenericSortableList T="Category"
-                            Source="@Model.Categories.OrderBy(c => c.Order)"
-                            Fields="@(new List<string>{ "Order", "Name" })"
-                            Header="Categories"
-                            FilterFieldName="Name"
-                            FilterPlaceholder="Category..." 
-                            EmptyText="This module has no categories."
-                            GridTemplateColumns="0.1fr 1fr" />
+                                             Source="@Model.Categories.OrderBy(c => c.Order)"
+                                             Fields="@(new List<string>{ "Order", "Name" })"
+                                             Header="Categories"
+                                             FilterFieldName="Name"
+                                             FilterPlaceholder="Category..." 
+                                             EmptyText="This module has no categories."
+                                             GridTemplateColumns="0.1fr 1fr" />
                     </ChildContent>
                 </FluentAccordionItem>
             }
