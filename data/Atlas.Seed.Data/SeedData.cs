@@ -178,13 +178,7 @@ namespace Atlas.Seed.Data
             ArgumentNullException.ThrowIfNull(administrationModule);
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-            //var developerModule = new Module { Name = "Developer", Icon = "DeveloperBoard", Order = 3, Permission = Auth.DEVELOPER };
-
-            //dbContext.Modules.Add(developerModule);
-
-            //dbContext.SaveChanges();
-
-            var configurationCategory = new Category { Name = "Configuration", Icon = "DeveloperBoard", Order = 1, Permission = Auth.DEVELOPER, Module = administrationModule };
+            var configurationCategory = new Category { Name = "Applications", Icon = "Apps", Order = 2, Permission = Auth.DEVELOPER, Module = administrationModule };
 
             administrationModule.Categories.Add(configurationCategory);
 
@@ -193,8 +187,8 @@ namespace Atlas.Seed.Data
             dbContext.SaveChanges();
 
             var moduleMenuItem = new MenuItem { Name = "Modules", Icon = "PanelLeftText", NavigatePage = AtlasWebConstants.PAGE_MODULES, Order = 1, Permission = Auth.DEVELOPER, Category = configurationCategory };
-            var categoriesMenuItem = new MenuItem { Name = "Categories", Icon = "GroupList", NavigatePage = AtlasWebConstants.PAGE_CATEGORIES, Order = 2, Permission = Auth.DEVELOPER, Category = configurationCategory };
-            var menuItemsMenuItem = new MenuItem { Name = "Menu Items", Icon = "AppsList", NavigatePage = AtlasWebConstants.PAGE_MENU_ITEMS, Order = 3, Permission = Auth.DEVELOPER, Category = configurationCategory };
+            var categoriesMenuItem = new MenuItem { Name = "Categories", Icon = "AppsListDetail", NavigatePage = AtlasWebConstants.PAGE_CATEGORIES, Order = 2, Permission = Auth.DEVELOPER, Category = configurationCategory };
+            var menuItemsMenuItem = new MenuItem { Name = "Pages", Icon = "DocumentOnePage", NavigatePage = AtlasWebConstants.PAGE_MENU_ITEMS, Order = 3, Permission = Auth.DEVELOPER, Category = configurationCategory };
 
             configurationCategory.MenuItems.Add(moduleMenuItem);
             configurationCategory.MenuItems.Add(categoriesMenuItem);
