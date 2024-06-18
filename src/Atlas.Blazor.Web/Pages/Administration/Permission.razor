@@ -57,7 +57,14 @@
                         Role Membership
                     </HeadingTemplate>
                     <ChildContent>
-                        <OrderableList Source="@Model.RoleList" Header="Role" FilterPlaceholder="Role..." EmptyText="This permission is not a member of any roles." />
+                        <GenericSortableList T="Atlas.Core.Models.Role"
+                                             Source="@Model.Roles.OrderBy(r => r.Name)"
+                                             Fields="@(new List<string>{ "Name", "Description" })"
+                                             Header="Roles"
+                                             FilterFieldName="Name"
+                                             FilterPlaceholder="Role..."
+                                             EmptyText="This permission is not a member of any roles."
+                                             GridTemplateColumns="0.5fr 1fr" />
                     </ChildContent>
                 </FluentAccordionItem>
             }
