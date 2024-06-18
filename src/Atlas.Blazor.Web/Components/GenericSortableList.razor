@@ -1,0 +1,83 @@
+﻿@typeparam T where T : ModelBase, new()
+
+@if(Fields != null)
+{
+    <FluentDataGrid Items="@FilteredItems" ShowHover="true" TGridItem="T" GridTemplateColumns="@GridTemplateColumns">
+        <ChildContent>
+            @foreach(string field in Fields)
+            {
+                if(field == FilterFieldName)
+                {
+                    <PropertyColumn Property="@(i => _dynamicType.GetValue(i, field))" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_filter)" Tooltip="true" Title="@field">
+                        <ColumnOptions>
+                            <div class="search-box">
+                                <FluentSearch type="filter" Autofocus=true @bind-Value=_filter @oninput="HandleFilter" @bind-Value:after="HandleClear" Placeholder="@FilterPlaceholder" />
+                            </div>
+                        </ColumnOptions>
+                    </PropertyColumn>
+                }
+                else
+                {
+                    <PropertyColumn Property="@(i => _dynamicType.GetValue(i, field))" Sortable="true" Tooltip="true" Title="@field" />
+                }
+            }
+        </ChildContent>
+        <EmptyContent>
+            @EmptyText
+        </EmptyContent>
+    </FluentDataGrid>
+}
+
+@code {
+    [Parameter]
+    public IEnumerable<T>? Source { get; set; }
+
+    [Parameter]
+    public string? Header { get; set; }
+
+    [Parameter]
+    public string? EmptyText { get; set; }
+
+    [Parameter]
+    public IEnumerable<string>? Fields { get; set; }
+
+    [Parameter]
+    public string? FilterFieldName { get; set; }
+
+    [Parameter]
+    public string? FilterPlaceholder { get; set; }
+
+    [Parameter]
+    public string? GridTemplateColumns { get; set; }
+
+    private string _filter = string.Empty;
+    private DynamicType<T> _dynamicType = DynamicTypeHelper.Get<T>();
+
+    public IQueryable<T>? FilteredItems
+    {
+        get
+        {
+            if (string.IsNullOrWhiteSpace(FilterFieldName)) throw new NullReferenceException(nameof(FilterFieldName));
+            if (string.IsNullOrWhiteSpace(_filter)) return Source?.AsQueryable();
+
+            return Source?.AsQueryable().Where(i => !string.IsNullOrWhiteSpace(_dynamicType.GetValue(i, FilterFieldName) as string)
+            && _dynamicType.GetValue(i, FilterFieldName).ToString().Contains(_filter, StringComparison.CurrentCultureIgnoreCase));
+        }
+    }
+
+    public void HandleFilter(ChangeEventArgs args)
+    {
+        if (args.Value is string value)
+        {
+            _filter = value;
+        }
+    }
+
+    public void HandleClear()
+    {
+        if (string.IsNullOrWhiteSpace(_filter))
+        {
+            _filter = string.Empty;
+        }
+    }
+}
