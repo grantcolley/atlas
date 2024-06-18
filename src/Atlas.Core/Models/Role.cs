@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text.Json.Serialization;
 
 namespace Atlas.Core.Models
 {
@@ -30,44 +28,6 @@ namespace Atlas.Core.Models
 
         [NotMapped]
         public List<ChecklistItem> PermissionChecklist { get; set; }
-
-        [NotMapped]
-        [JsonIgnore]
-        public List<string?> PermissionList
-        {
-            get
-            {
-                if (PermissionChecklist == null)
-                {
-                    return new List<string?>();
-                }
-
-                return [.. PermissionChecklist
-                    .Where(p => p.IsChecked)
-                    .Select(r => r.Name)
-                    .Distinct()
-                    .OrderBy(p => p)];
-            }
-        }
-
-        [NotMapped]
-        [JsonIgnore]
-        public List<string?> UserList
-        {
-            get
-            {
-                if (Users == null)
-                {
-                    return [];
-                }
-
-                return [.. Users
-                    .Where(u => u != null)
-                    .Select(u => u.Name)
-                    .Distinct()
-                    .OrderBy(e => e)];
-            }
-        }
     }
 
     public class RoleValidator : AbstractValidator<Role>
