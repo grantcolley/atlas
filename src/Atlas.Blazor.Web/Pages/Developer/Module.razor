@@ -43,6 +43,14 @@
                         <FluentNumberField Name="Order" @bind-Value="Model.Order" Label="Order" />
                         <FluentValidationMessage For="@(() => Model.Order)" />
                     </div>
+                    <div>
+                        <FluentTextField Name="Name" @bind-Value="Model.Permission" Label="Permission" />
+                        <FluentValidationMessage For="@(() => Model.Permission)" />
+                    </div>
+                    <div>
+                        <FluentTextField Name="Name" @bind-Value="Model.Icon" Label="Icon" />
+                        <FluentValidationMessage For="@(() => Model.Icon)" />
+                    </div>
                 </ChildContent>
             </FluentAccordionItem>
 
@@ -53,7 +61,14 @@
                         Categories
                     </HeadingTemplate>
                     <ChildContent>
-                        <OrderableList Source="@Model.Categories.Select(c => c.Name)" Header="Categories" FilterPlaceholder="Category..." EmptyText="This module has no categories." />
+                        <GenericSortableList T="Category"
+                            Source="@Model.Categories.OrderBy(c => c.Order)"
+                            Fields="@(new List<string>{ "Order", "Name" })"
+                            Header="Categories"
+                            FilterFieldName="Name"
+                            FilterPlaceholder="Category..." 
+                            EmptyText="This module has no categories."
+                            GridTemplateColumns="0.1fr 1fr" />
                     </ChildContent>
                 </FluentAccordionItem>
             }
