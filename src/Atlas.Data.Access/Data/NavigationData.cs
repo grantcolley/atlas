@@ -26,6 +26,7 @@ namespace Atlas.Data.Access.Data
         public async Task<Module?> GetModuleAsync(int id, CancellationToken cancellationToken)
         {
             return await _applicationDbContext.Modules
+                .Include(m => m.Categories)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ModuleId.Equals(id), cancellationToken)
                 .ConfigureAwait(false);
