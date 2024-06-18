@@ -129,7 +129,6 @@ namespace Atlas.Seed.Data
         private static void AddNavigation()
         {
             AddAdministration();
-            AddDevelopment();
         }
 
         private static void AddAdministration()
@@ -142,6 +141,15 @@ namespace Atlas.Seed.Data
 
             dbContext.SaveChanges();
 
+            AddAuthorisationCategory(administrationModule);
+            AddDevelopmentCategory(administrationModule);
+        }
+
+        private static void AddAuthorisationCategory(Module administrationModule)
+        {
+            ArgumentNullException.ThrowIfNull(administrationModule);
+            if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
+
             var authorisationCategory = new Category { Name = "Authorisation", Icon = "ShieldLock", Order = 1, Permission = Auth.ADMIN, Module = administrationModule };
 
             administrationModule.Categories.Add(authorisationCategory);
@@ -153,7 +161,7 @@ namespace Atlas.Seed.Data
             var usersMenuItem = new MenuItem { Name = "Users", Icon = "PeopleLock", NavigatePage = AtlasWebConstants.PAGE_USERS, Order = 1, Permission = Auth.ADMIN, Category = authorisationCategory };
             var rolesMenuItem = new MenuItem { Name = "Roles", Icon = "LockMultiple", NavigatePage = AtlasWebConstants.PAGE_ROLES, Order = 2, Permission = Auth.ADMIN, Category = authorisationCategory };
             var permissionsMenuItem = new MenuItem { Name = "Permissions", Icon = "KeyMultiple", NavigatePage = AtlasWebConstants.PAGE_PERMISSIONS, Order = 3, Permission = Auth.ADMIN, Category = authorisationCategory };
-            
+
             authorisationCategory.MenuItems.Add(usersMenuItem);
             authorisationCategory.MenuItems.Add(rolesMenuItem);
             authorisationCategory.MenuItems.Add(permissionsMenuItem);
@@ -165,26 +173,27 @@ namespace Atlas.Seed.Data
             dbContext.SaveChanges();
         }
 
-        private static void AddDevelopment()
+        private static void AddDevelopmentCategory(Module administrationModule)
         {
+            ArgumentNullException.ThrowIfNull(administrationModule);
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-            var developerModule = new Module { Name = "Developer", Icon = "DeveloperBoard", Order = 3, Permission = Auth.DEVELOPER };
+            //var developerModule = new Module { Name = "Developer", Icon = "DeveloperBoard", Order = 3, Permission = Auth.DEVELOPER };
 
-            dbContext.Modules.Add(developerModule);
+            //dbContext.Modules.Add(developerModule);
 
-            dbContext.SaveChanges();
+            //dbContext.SaveChanges();
 
-            var configurationCategory = new Category { Name = "Configuration", Icon = "PanelLeftText", Order = 1, Permission = Auth.DEVELOPER, Module = developerModule };
+            var configurationCategory = new Category { Name = "Configuration", Icon = "DeveloperBoard", Order = 1, Permission = Auth.DEVELOPER, Module = administrationModule };
 
-            developerModule.Categories.Add(configurationCategory);
+            administrationModule.Categories.Add(configurationCategory);
 
             dbContext.Categories.Add(configurationCategory);
 
             dbContext.SaveChanges();
 
-            var moduleMenuItem = new MenuItem { Name = "Modules", Icon = "GroupList", NavigatePage = AtlasWebConstants.PAGE_MODULES, Order = 1, Permission = Auth.DEVELOPER, Category = configurationCategory };
-            var categoriesMenuItem = new MenuItem { Name = "Categories", Icon = "AppsListDetail", NavigatePage = AtlasWebConstants.PAGE_CATEGORIES, Order = 2, Permission = Auth.DEVELOPER, Category = configurationCategory };
+            var moduleMenuItem = new MenuItem { Name = "Modules", Icon = "PanelLeftText", NavigatePage = AtlasWebConstants.PAGE_MODULES, Order = 1, Permission = Auth.DEVELOPER, Category = configurationCategory };
+            var categoriesMenuItem = new MenuItem { Name = "Categories", Icon = "GroupList", NavigatePage = AtlasWebConstants.PAGE_CATEGORIES, Order = 2, Permission = Auth.DEVELOPER, Category = configurationCategory };
             var menuItemsMenuItem = new MenuItem { Name = "Menu Items", Icon = "AppsList", NavigatePage = AtlasWebConstants.PAGE_MENU_ITEMS, Order = 3, Permission = Auth.DEVELOPER, Category = configurationCategory };
 
             configurationCategory.MenuItems.Add(moduleMenuItem);
