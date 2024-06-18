@@ -277,7 +277,7 @@ namespace Atlas.API.Endpoints
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
-        internal static async Task<IResult> GetMenuItems(INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> GetPages(INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
         {
             try
             {
@@ -290,21 +290,21 @@ namespace Atlas.API.Endpoints
                     return Results.Unauthorized();
                 }
 
-                IEnumerable<MenuItem>? menuItems = await navigationData.GetMenuItemsAsync(cancellationToken)
+                IEnumerable<Page>? pages = await navigationData.GetPagesAsync(cancellationToken)
                     .ConfigureAwait(false);
 
-                return Results.Ok(menuItems);
+                return Results.Ok(pages);
             }
             catch (Exception)
             {
-                // Exceptions thrown from navigationData.GetMenuItemsAsync()
+                // Exceptions thrown from navigationData.GetPagesAsync()
                 // have already been logged so simply return Status500InternalServerError.
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> GetMenuItem(int id, INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> GetPage(int id, INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
         {
             try
             {
@@ -317,21 +317,21 @@ namespace Atlas.API.Endpoints
                     return Results.Unauthorized();
                 }
 
-                MenuItem? menuItem = await navigationData.GetMenuItemAsync(id, cancellationToken)
+                Page? page = await navigationData.GetPageAsync(id, cancellationToken)
                     .ConfigureAwait(false);
 
-                return Results.Ok(menuItem);
+                return Results.Ok(page);
             }
             catch (Exception)
             {
-                // Exceptions thrown from navigationData.GetMenuItemAsync()
+                // Exceptions thrown from navigationData.GetPageAsync()
                 // have already been logged so simply return Status500InternalServerError.
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> CreateMenuItem([FromBody] MenuItem menuItem, INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> CreatePage([FromBody] Page page, INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
         {
             try
             {
@@ -344,21 +344,21 @@ namespace Atlas.API.Endpoints
                     return Results.Unauthorized();
                 }
 
-                MenuItem? newMenuItem = await navigationData.CreateMenuItemAsync(menuItem, cancellationToken)
+                Page? newPage = await navigationData.CreatePageAsync(page, cancellationToken)
                     .ConfigureAwait(false);
 
-                return Results.Ok(newMenuItem);
+                return Results.Ok(newPage);
             }
             catch (Exception)
             {
-                // Exceptions thrown from navigationData.CreateMenuItemAsync()
+                // Exceptions thrown from navigationData.CreatePageAsync()
                 // have already been logged so simply return Status500InternalServerError.
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> UpdateMenuItem([FromBody] MenuItem menuItem, INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> UpdatePage([FromBody] Page page, INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
         {
             try
             {
@@ -371,21 +371,21 @@ namespace Atlas.API.Endpoints
                     return Results.Unauthorized();
                 }
 
-                MenuItem? updatedMenuItem = await navigationData.UpdateMenuItemAsync(menuItem, cancellationToken)
+                Page? updatedPage = await navigationData.UpdatePageAsync(page, cancellationToken)
                     .ConfigureAwait(false);
 
-                return Results.Ok(updatedMenuItem);
+                return Results.Ok(updatedPage);
             }
             catch (Exception)
             {
-                // Exceptions thrown from navigationData.UpdateMenuItemAsync()
+                // Exceptions thrown from navigationData.UpdatePageAsync()
                 // have already been logged so simply return Status500InternalServerError.
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> DeleteMenuItem(int id, INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> DeletePage(int id, INavigationData navigationData, IClaimService claimService, CancellationToken cancellationToken)
         {
             try
             {
@@ -398,14 +398,14 @@ namespace Atlas.API.Endpoints
                     return Results.Unauthorized();
                 }
 
-                int affectedRows = await navigationData.DeleteMenuItemAsync(id, cancellationToken)
+                int affectedRows = await navigationData.DeletePageAsync(id, cancellationToken)
                     .ConfigureAwait(false);
 
                 return Results.Ok(affectedRows);
             }
             catch (Exception)
             {
-                // Exceptions thrown from navigationData.DeleteMenuItemAsync()
+                // Exceptions thrown from navigationData.DeletePageAsync()
                 // have already been logged so simply return Status500InternalServerError.
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);

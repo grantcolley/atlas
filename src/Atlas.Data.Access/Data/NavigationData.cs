@@ -188,7 +188,7 @@ namespace Atlas.Data.Access.Data
                 .ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<MenuItem>> GetMenuItemsAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<Page>> GetPagesAsync(CancellationToken cancellationToken)
         {
             IEnumerable<Category> categories = await _applicationDbContext.Categories
                 .AsNoTracking()
@@ -198,87 +198,87 @@ namespace Atlas.Data.Access.Data
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            IEnumerable<MenuItem> menuItems = await _applicationDbContext.MenuItems
+            IEnumerable<Page> pages = await _applicationDbContext.Pages
                 .AsNoTracking()
                 .Include(c => c.Category)
                 .OrderBy(mi => mi.Order)
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            var orderedMenuItems = (from c in categories
-                                    join mi in menuItems on c.CategoryId equals mi.Category?.CategoryId
+            var orderedPages = (from c in categories
+                                    join mi in pages on c.CategoryId equals mi.Category?.CategoryId
                                     select mi).ToList();
 
-            return orderedMenuItems;
+            return orderedPages;
         }
 
-        public async Task<MenuItem?> GetMenuItemAsync(int id, CancellationToken cancellationToken)
+        public async Task<Page?> GetPageAsync(int id, CancellationToken cancellationToken)
         {
-            return await _applicationDbContext.MenuItems
+            return await _applicationDbContext.Pages
                 .AsNoTracking()
                 .Include(mi => mi.Category)
-                .FirstOrDefaultAsync(mi => mi.MenuItemId.Equals(id), cancellationToken)
+                .FirstOrDefaultAsync(mi => mi.PageId.Equals(id), cancellationToken)
                 .ConfigureAwait(false);
         }
 
-        public async Task<MenuItem> CreateMenuItemAsync(MenuItem menuItem, CancellationToken cancellationToken)
+        public async Task<Page> CreatePageAsync(Page page, CancellationToken cancellationToken)
         {
-            if (menuItem.Category == null)
+            if (page.Category == null)
             {
-                throw new NullReferenceException($"MenuItemId {menuItem.MenuItemId} doesn't have a category assigned.");
+                throw new NullReferenceException($"PageId {page.PageId} doesn't have a category assigned.");
             }
 
             Category? category = await _applicationDbContext.Categories
-                .FirstOrDefaultAsync(c => c.CategoryId.Equals(menuItem.Category.CategoryId), cancellationToken)
+                .FirstOrDefaultAsync(c => c.CategoryId.Equals(page.Category.CategoryId), cancellationToken)
                 .ConfigureAwait(false);
 
-            MenuItem newMenuItem = new()
+            Page newPage = new()
             {
-                MenuItemId = menuItem.MenuItemId,
-                Name = menuItem.Name,
-                Order = menuItem.Order,
-                Icon = menuItem.Icon,
-                NavigatePage = menuItem.NavigatePage,
-                Permission = menuItem.Permission,
+                PageId = page.PageId,
+                Name = page.Name,
+                Order = page.Order,
+                Icon = page.Icon,
+                NavigatePage = page.NavigatePage,
+                Permission = page.Permission,
                 Category = category
             };
 
-            await _applicationDbContext.MenuItems
-                .AddAsync(newMenuItem, cancellationToken)
+            await _applicationDbContext.Pages
+                .AddAsync(newPage, cancellationToken)
                 .ConfigureAwait(false);
 
             await _applicationDbContext
                 .SaveChangesAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            return newMenuItem;
+            return newPage;
         }
 
-        public async Task<MenuItem> UpdateMenuItemAsync(MenuItem menuItem, CancellationToken cancellationToken)
+        public async Task<Page> UpdatePageAsync(Page page, CancellationToken cancellationToken)
         {
-            if (menuItem.Category == null)
+            if (page.Category == null)
             {
-                throw new NullReferenceException($"MenuItemId {menuItem.MenuItemId} doesn't have a category assigned.");
+                throw new NullReferenceException($"PageId {page.PageId} doesn't have a category assigned.");
             }
 
-            MenuItem? existing = await _applicationDbContext.MenuItems
+            Page? existing = await _applicationDbContext.Pages
                 .Include(mi => mi.Category)
-                .FirstOrDefaultAsync(mi => mi.MenuItemId.Equals(menuItem.MenuItemId), cancellationToken)
+                .FirstOrDefaultAsync(mi => mi.PageId.Equals(page.PageId), cancellationToken)
                 .ConfigureAwait(false)
-                ?? throw new NullReferenceException($"{nameof(menuItem)} MenuItemId {menuItem.MenuItemId} not found.");
+                ?? throw new NullReferenceException($"{nameof(page)} PageId {page.PageId} not found.");
 
             _applicationDbContext
                 .Entry(existing)
-                .CurrentValues.SetValues(menuItem);
+                .CurrentValues.SetValues(page);
 
             if (existing.Category == null)
             {
                 throw new NullReferenceException(nameof(existing.Category));
             }
             
-            if (!menuItem.Category.CategoryId.Equals(existing.Category.CategoryId))
+            if (!page.Category.CategoryId.Equals(existing.Category.CategoryId))
             {
-                existing.Category = menuItem.Category;
+                existing.Category = page.Category;
             }
 
             await _applicationDbContext
@@ -288,14 +288,14 @@ namespace Atlas.Data.Access.Data
             return existing;
         }
 
-        public async Task<int> DeleteMenuItemAsync(int id, CancellationToken cancellationToken)
+        public async Task<int> DeletePageAsync(int id, CancellationToken cancellationToken)
         {
-            MenuItem? menuItem = await _applicationDbContext.MenuItems
-                .FirstOrDefaultAsync(mi => mi.MenuItemId.Equals(id), cancellationToken)
+            Page? page = await _applicationDbContext.Pages
+                .FirstOrDefaultAsync(mi => mi.PageId.Equals(id), cancellationToken)
                 .ConfigureAwait(false)
-                ?? throw new NullReferenceException($"MenuItemId {id} not found.");
+                ?? throw new NullReferenceException($"PageId {id} not found.");
 
-            _applicationDbContext.Remove(menuItem);
+            _applicationDbContext.Remove(page);
 
             return await _applicationDbContext
                 .SaveChangesAsync(cancellationToken)

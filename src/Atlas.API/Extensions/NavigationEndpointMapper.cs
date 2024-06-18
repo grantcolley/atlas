@@ -88,42 +88,42 @@ namespace Atlas.API.Extensions
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapGet($"/{AtlasAPIEndpoints.GET_MENU_ITEMS}", NavigationEndpoints.GetMenuItems)
+            app.MapGet($"/{AtlasAPIEndpoints.GET_PAGES}", NavigationEndpoints.GetPages)
                 .WithOpenApi()
-                .WithName(AtlasAPIEndpoints.GET_MENU_ITEMS)
-                .WithDescription("Gets a list of menu items")
+                .WithName(AtlasAPIEndpoints.GET_PAGES)
+                .WithDescription("Gets a list of pages")
                 .Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapGet($"/{AtlasAPIEndpoints.GET_MENU_ITEM}/{{id:int}}", NavigationEndpoints.GetMenuItem)
+            app.MapGet($"/{AtlasAPIEndpoints.GET_PAGE}/{{id:int}}", NavigationEndpoints.GetPage)
                 .WithOpenApi()
-                .WithName(AtlasAPIEndpoints.GET_MENU_ITEM)
-                .WithDescription("Gets a menu item for the given id. If id is 0 then returns a new instance of a blank menu item for creation.")
+                .WithName(AtlasAPIEndpoints.GET_PAGE)
+                .WithDescription("Gets a page for the given id. If id is 0 then returns a new instance of a blank page for creation.")
                 .Produces<Module>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapPost($"/{AtlasAPIEndpoints.CREATE_MENU_ITEM}", NavigationEndpoints.CreateMenuItem)
+            app.MapPost($"/{AtlasAPIEndpoints.CREATE_PAGE}", NavigationEndpoints.CreatePage)
                 .WithOpenApi()
-                .WithName(AtlasAPIEndpoints.CREATE_MENU_ITEM)
-                .WithDescription("Create a new menu item.")
+                .WithName(AtlasAPIEndpoints.CREATE_PAGE)
+                .WithDescription("Create a new page.")
                 .Produces<Module>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapPut($"/{AtlasAPIEndpoints.UPDATE_MENU_ITEM}", NavigationEndpoints.UpdateMenuItem)
+            app.MapPut($"/{AtlasAPIEndpoints.UPDATE_PAGE}", NavigationEndpoints.UpdatePage)
                 .WithOpenApi()
-                .WithName(AtlasAPIEndpoints.UPDATE_MENU_ITEM)
-                .WithDescription("Updates the menu item.")
+                .WithName(AtlasAPIEndpoints.UPDATE_PAGE)
+                .WithDescription("Updates the page.")
                 .Produces<Module>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapDelete($"/{AtlasAPIEndpoints.DELETE_MENU_ITEM}/{{id:int}}", NavigationEndpoints.DeleteMenuItem)
+            app.MapDelete($"/{AtlasAPIEndpoints.DELETE_PAGE}/{{id:int}}", NavigationEndpoints.DeletePage)
                 .WithOpenApi()
-                .WithName(AtlasAPIEndpoints.DELETE_MENU_ITEM)
-                .WithDescription("Delete's a menu item of the given id.")
+                .WithName(AtlasAPIEndpoints.DELETE_PAGE)
+                .WithDescription("Delete's a page of the given id.")
                 .Produces<Module>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);

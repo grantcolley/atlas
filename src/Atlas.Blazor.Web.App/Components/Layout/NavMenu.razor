@@ -17,9 +17,9 @@
                     {
                         <FluentNavGroup Expanded="true" Title="@category.Name" Icon="@IconHelper.GetRegularSize20(category.Icon)">
 
-                            @foreach (MenuItem menuItem in category.MenuItems)
+                            @foreach (Page page in category.Pages)
                             {
-                                <FluentNavLink Href=@($@"{menuItem.NavigatePage}") @onclick:stopPropagation="true" Icon="@IconHelper.GetRegularSize20(menuItem.Icon)">@menuItem.Name</FluentNavLink>
+                                <FluentNavLink Href=@($@"{page.NavigatePage}") @onclick:stopPropagation="true" Icon="@IconHelper.GetRegularSize20(page.Icon)">@($"{page.Name}")</FluentNavLink>
                             }
 
                         </FluentNavGroup>

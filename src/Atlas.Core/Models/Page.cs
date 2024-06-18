@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace Atlas.Core.Models
 {
-    public class MenuItem : ModelBase, IPermissionable
+    public class Page : ModelBase, IPermissionable
     {
-        public int MenuItemId { get; set; }
+        public int PageId { get; set; }
         public int Order { get; set; }
 
         [Required]
@@ -42,9 +42,9 @@ namespace Atlas.Core.Models
         }
     }
 
-    public class MenuItemValidator : AbstractValidator<MenuItem>
+    public class PageValidator : AbstractValidator<Page>
     {
-        public MenuItemValidator()
+        public PageValidator()
         {
             RuleFor(v => v.Category)
                 .NotNull().WithMessage("Category is required");

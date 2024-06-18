@@ -45,7 +45,7 @@ namespace Atlas.Data.Access.Data
             List<Module> modules = await _applicationDbContext.Modules
                 .AsNoTracking()
                 .Include(m => m.Categories.OrderBy(c => c.Order))
-                .ThenInclude(c => c.MenuItems.OrderBy(mu => mu.Order))
+                .ThenInclude(c => c.Pages.OrderBy(mu => mu.Order))
                 .Where(m => permissions.Contains(m.Permission))
                 .OrderBy(m => m.Order)
                 .ToListAsync(cancellationToken)

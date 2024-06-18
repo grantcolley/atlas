@@ -21,7 +21,7 @@ namespace Atlas.Data.Access.Context
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<Module> Modules { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<MenuItem> MenuItems { get; set; }
+        public DbSet<Page> Pages { get; set; }
 
         public void SetUser(string user)
         {
@@ -63,7 +63,7 @@ namespace Atlas.Data.Access.Context
                 .HasIndex(c => c.Name)
                 .IsUnique();
 
-            builder.Entity<MenuItem>()
+            builder.Entity<Page>()
                 .HasIndex(m => m.Name)
                 .IsUnique();
         }

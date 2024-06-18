@@ -44,7 +44,7 @@ namespace Atlas.Seed.Data
             ((DbContext)dbContext).Database.ExecuteSqlRaw("DBCC CHECKIDENT (Roles, RESEED, 1)");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("DELETE FROM Permissions");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("DBCC CHECKIDENT (Permissions, RESEED, 1)");
-            ((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE MenuItems");
+            ((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE Pages");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("DELETE FROM Categories");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("DBCC CHECKIDENT (Categories, RESEED, 1)");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("DELETE FROM Modules");
@@ -158,17 +158,17 @@ namespace Atlas.Seed.Data
 
             dbContext.SaveChanges();
 
-            var usersMenuItem = new MenuItem { Name = "Users", Icon = "PeopleLock", NavigatePage = AtlasWebConstants.PAGE_USERS, Order = 1, Permission = Auth.ADMIN, Category = authorisationCategory };
-            var rolesMenuItem = new MenuItem { Name = "Roles", Icon = "LockMultiple", NavigatePage = AtlasWebConstants.PAGE_ROLES, Order = 2, Permission = Auth.ADMIN, Category = authorisationCategory };
-            var permissionsMenuItem = new MenuItem { Name = "Permissions", Icon = "KeyMultiple", NavigatePage = AtlasWebConstants.PAGE_PERMISSIONS, Order = 3, Permission = Auth.ADMIN, Category = authorisationCategory };
+            var usersPage = new Page { Name = "Users", Icon = "PeopleLock", NavigatePage = AtlasWebConstants.PAGE_USERS, Order = 1, Permission = Auth.ADMIN, Category = authorisationCategory };
+            var rolesPage = new Page { Name = "Roles", Icon = "LockMultiple", NavigatePage = AtlasWebConstants.PAGE_ROLES, Order = 2, Permission = Auth.ADMIN, Category = authorisationCategory };
+            var permissionsPage = new Page { Name = "Permissions", Icon = "KeyMultiple", NavigatePage = AtlasWebConstants.PAGE_PERMISSIONS, Order = 3, Permission = Auth.ADMIN, Category = authorisationCategory };
 
-            authorisationCategory.MenuItems.Add(usersMenuItem);
-            authorisationCategory.MenuItems.Add(rolesMenuItem);
-            authorisationCategory.MenuItems.Add(permissionsMenuItem);
+            authorisationCategory.Pages.Add(usersPage);
+            authorisationCategory.Pages.Add(rolesPage);
+            authorisationCategory.Pages.Add(permissionsPage);
 
-            dbContext.MenuItems.Add(usersMenuItem);
-            dbContext.MenuItems.Add(rolesMenuItem);
-            dbContext.MenuItems.Add(permissionsMenuItem);
+            dbContext.Pages.Add(usersPage);
+            dbContext.Pages.Add(rolesPage);
+            dbContext.Pages.Add(permissionsPage);
 
             dbContext.SaveChanges();
         }
@@ -186,17 +186,17 @@ namespace Atlas.Seed.Data
 
             dbContext.SaveChanges();
 
-            var moduleMenuItem = new MenuItem { Name = "Modules", Icon = "PanelLeftText", NavigatePage = AtlasWebConstants.PAGE_MODULES, Order = 1, Permission = Auth.DEVELOPER, Category = configurationCategory };
-            var categoriesMenuItem = new MenuItem { Name = "Categories", Icon = "AppsListDetail", NavigatePage = AtlasWebConstants.PAGE_CATEGORIES, Order = 2, Permission = Auth.DEVELOPER, Category = configurationCategory };
-            var menuItemsMenuItem = new MenuItem { Name = "Pages", Icon = "DocumentOnePage", NavigatePage = AtlasWebConstants.PAGE_MENU_ITEMS, Order = 3, Permission = Auth.DEVELOPER, Category = configurationCategory };
+            var modulePage = new Page { Name = "Modules", Icon = "PanelLeftText", NavigatePage = AtlasWebConstants.PAGE_MODULES, Order = 1, Permission = Auth.DEVELOPER, Category = configurationCategory };
+            var categoriesPage = new Page { Name = "Categories", Icon = "AppsListDetail", NavigatePage = AtlasWebConstants.PAGE_CATEGORIES, Order = 2, Permission = Auth.DEVELOPER, Category = configurationCategory };
+            var pagesPage = new Page { Name = "Pages", Icon = "DocumentOnePage", NavigatePage = AtlasWebConstants.PAGE_PAGES, Order = 3, Permission = Auth.DEVELOPER, Category = configurationCategory };
 
-            configurationCategory.MenuItems.Add(moduleMenuItem);
-            configurationCategory.MenuItems.Add(categoriesMenuItem);
-            configurationCategory.MenuItems.Add(menuItemsMenuItem);
+            configurationCategory.Pages.Add(modulePage);
+            configurationCategory.Pages.Add(categoriesPage);
+            configurationCategory.Pages.Add(pagesPage);
 
-            dbContext.MenuItems.Add(moduleMenuItem);
-            dbContext.MenuItems.Add(categoriesMenuItem);
-            dbContext.MenuItems.Add(menuItemsMenuItem);
+            dbContext.Pages.Add(modulePage);
+            dbContext.Pages.Add(categoriesPage);
+            dbContext.Pages.Add(pagesPage);
 
             dbContext.SaveChanges();
         }
@@ -219,11 +219,11 @@ namespace Atlas.Seed.Data
 
         //    dbContext.SaveChanges();
 
-        //    var weatherForecastMenuItem = new MenuItem { Name = "Weather Display", Icon = "DeviceThermostat", NavigatePage = "PageRouter", Order = 1, Permission = Auth.WEATHER_USER, Category = forecastCategory, PageCode = PageCodes.WEATHER_DISPLAY };
+        //    var weatherForecastPage = new Page { Name = "Weather Display", Icon = "DeviceThermostat", NavigatePage = "PageRouter", Order = 1, Permission = Auth.WEATHER_USER, Category = forecastCategory, PageCode = PageCodes.WEATHER_DISPLAY };
 
-        //    forecastCategory.MenuItems.Add(weatherForecastMenuItem);
+        //    forecastCategory.Pages.Add(weatherForecastPage);
 
-        //    dbContext.MenuItems.Add(weatherForecastMenuItem);
+        //    dbContext.Pages.Add(weatherForecastPage);
 
         //    dbContext.SaveChanges();
         //}

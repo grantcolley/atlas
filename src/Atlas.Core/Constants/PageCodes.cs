@@ -6,8 +6,8 @@
         public const string MODULES = "Modules";
         public const string CATEGORY = "Category";
         public const string CATEGORIES = "Categories";
-        public const string MENU_ITEM = "MenuItem";
-        public const string MENU_ITEMS = "MenuItems";
+        public const string PAGE = "Page";
+        public const string PAGES = "Pages";
         public const string USER = "User";
         public const string USERS = "Users";
         public const string ROLE = "Role";

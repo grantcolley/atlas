@@ -20,7 +20,7 @@
         public const string PAGE_MODULES = "Modules";
         public const string PAGE_CATEGORY = "Category";
         public const string PAGE_CATEGORIES = "Categories";
-        public const string PAGE_MENU_ITEM = "MenuItem";
-        public const string PAGE_MENU_ITEMS = "MenuItems";
+        public const string PAGE_PAGE = "Page";
+        public const string PAGE_PAGES = "Pages";
     }
 }

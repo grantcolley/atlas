@@ -11,12 +11,12 @@ namespace Atlas.Core.Models
     {
         public Category()
         {
-            MenuItems = new List<MenuItem>();
+            Pages = [];
         }
 
         public int CategoryId { get; set; }
         public int Order { get; set; }
-        public List<MenuItem> MenuItems { get; set; }
+        public List<Page> Pages { get; set; }
 
         [Required]
         public Module? Module { get; set; }
@@ -42,18 +42,18 @@ namespace Atlas.Core.Models
 
             if (permissions.Contains(Permission))
             {
-                var count = MenuItems.Count;
+                var count = Pages.Count;
 
                 if (count > 0)
                 {
                     for (int i = count - 1; i >= 0; i--)
                     {
-                        if (MenuItems[i].IsPermitted(permissions))
+                        if (Pages[i].IsPermitted(permissions))
                         {
                             continue;
                         }
 
-                        MenuItems.RemoveAt(i);
+                        Pages.RemoveAt(i);
                     }
                 }
 
@@ -61,7 +61,7 @@ namespace Atlas.Core.Models
             }
             else
             {
-                MenuItems.Clear();
+                Pages.Clear();
                 return false;
             }
         }

@@ -14,10 +14,10 @@ namespace Atlas.Data.Access.Interfaces
         Task<Category> CreateCategoryAsync(Category category, CancellationToken cancellationToken);
         Task<Category> UpdateCategoryAsync(Category category, CancellationToken cancellationToken);
         Task<int> DeleteCategoryAsync(int id, CancellationToken cancellationToken);
-        Task<IEnumerable<MenuItem>> GetMenuItemsAsync(CancellationToken cancellationToken);
-        Task<MenuItem?> GetMenuItemAsync(int id, CancellationToken cancellationToken);
-        Task<MenuItem> CreateMenuItemAsync(MenuItem menuItem, CancellationToken cancellationToken);
-        Task<MenuItem> UpdateMenuItemAsync(MenuItem menuItem, CancellationToken cancellationToken);
-        Task<int> DeleteMenuItemAsync(int id, CancellationToken cancellationToken);
+        Task<IEnumerable<Page>> GetPagesAsync(CancellationToken cancellationToken);
+        Task<Page?> GetPageAsync(int id, CancellationToken cancellationToken);
+        Task<Page> CreatePageAsync(Page page, CancellationToken cancellationToken);
+        Task<Page> UpdatePageAsync(Page page, CancellationToken cancellationToken);
+        Task<int> DeletePageAsync(int id, CancellationToken cancellationToken);
     }
 }

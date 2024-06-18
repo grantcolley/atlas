@@ -18,11 +18,11 @@
         public const string CREATE_CATEGORY = "createcategory";
         public const string UPDATE_CATEGORY = "updatecategory";
         public const string DELETE_CATEGORY = "deletecategory";
-        public const string GET_MENU_ITEM = "getmenuitem";
-        public const string GET_MENU_ITEMS = "getmenuitems";
-        public const string CREATE_MENU_ITEM = "createmenuitem";
-        public const string UPDATE_MENU_ITEM = "updatemenuitem";
-        public const string DELETE_MENU_ITEM = "deletemenuitem";
+        public const string GET_PAGE = "getpage";
+        public const string GET_PAGES = "getpages";
+        public const string CREATE_PAGE = "createpage";
+        public const string UPDATE_PAGE = "updatepage";
+        public const string DELETE_PAGE = "deletepage";
         public const string GET_USER = "getuser";
         public const string GET_USERS = "getusers";
         public const string CREATE_USER = "createuser";
