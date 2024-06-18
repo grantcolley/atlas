@@ -1,9 +1,6 @@
 ﻿using FluentValidation;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text.Json.Serialization;
 
 namespace Atlas.Core.Models
 {
@@ -28,25 +25,6 @@ namespace Atlas.Core.Models
         [Required]
         [StringLength(150)]
         public string? Description { get; set; }
-
-        [NotMapped]
-        [JsonIgnore]
-        public List<string?> RoleList
-        {
-            get
-            {
-                if (Roles == null)
-                {
-                    return new List<string?>();
-                }
-
-                return [.. Roles
-                    .Where(r => r != null)
-                    .Select(r => r.Name)
-                    .Distinct()
-                    .OrderBy(r => r)];
-            }
-        }
     }
 
     public class PermissionValidator : AbstractValidator<Permission>
