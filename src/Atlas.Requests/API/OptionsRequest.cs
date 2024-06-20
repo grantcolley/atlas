@@ -29,6 +29,12 @@ namespace Atlas.Requests.API
         //    _localOptionItems.Add(Options.NAVIGATION_PAGES, new NavigationPageOptionItems());
         //}
 
+        public async Task<IResponse<IEnumerable<OptionItem>?>> GetOptionItems(string optionsCode)
+        {
+            List<OptionsArg> options = new List<OptionsArg> { new OptionsArg { Name = Options.OPTIONS_CODE, Value = optionsCode } };
+            return await GetOptionItems(options).ConfigureAwait(false);
+        }
+
         public async Task<IResponse<IEnumerable<OptionItem>?>> GetOptionItems(IEnumerable<OptionsArg> optionsArgs)
         {
             var optionsCode = optionsArgs.FirstOptionsArgValue(Options.OPTIONS_CODE);
