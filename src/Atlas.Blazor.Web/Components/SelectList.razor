@@ -1,0 +1,57 @@
+﻿@inherits AtlasComponentBase
+
+<FluentSelect TOption="OptionItem"
+              Items="@_source"
+              Label="@Label"
+              Id="people-listbox"
+              OptionValue="@(oi => oi.Id)"
+              OptionText="@(oi => oi.Display)"
+              @bind-Value="@_value" />
+
+@code {
+
+    [Inject]
+    internal IOptionsRequest? OptionsRequest { get; set; }
+
+    [Parameter]
+    public string? OptionsCode { get; set; }
+
+    [Parameter]
+    public string? Label { get; set; }
+
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+    [Parameter]
+    public string? Value
+    {
+        get { return _value; }
+        set
+        {
+            if (_value == value) return;
+            _value = value;
+            ValueChanged.InvokeAsync(value);
+        }
+    }
+
+    private IEnumerable<OptionItem>? _source = [];
+    private string? _value = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ArgumentNullException.ThrowIfNull(OptionsRequest);
+        ArgumentNullException.ThrowIfNull(NavigationManager);
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(OptionsCode);
+        
+        try
+        {
+            IResponse<IEnumerable<OptionItem>?> response = await OptionsRequest.GetOptionItems(OptionsCode).ConfigureAwait(false);
+
+            _source = GetResponse(response);
+        }
+        catch(Exception ex)
+        {
+            NavigateAlertError(ex.Message);
+        }
+    }
+}
