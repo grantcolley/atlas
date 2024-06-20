@@ -66,7 +66,7 @@ namespace Atlas.Data.Access.Data
 
             List<OptionItem> optionItems = new() { new OptionItem() };
 
-            optionItems.AddRange(configs.Select(p => new OptionItem { Id = p.Name, Display = p.Name }).ToList());
+            optionItems.AddRange(configs.Select(p => new OptionItem { Id = p.Code, Display = p.Name }).ToList());
 
             return optionItems;
         }
