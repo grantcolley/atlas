@@ -27,11 +27,11 @@
 </FluentDialogFooter>
 
 @code {
-    [Parameter]
-    public AtlasDialogContent Content { get; set; } = default!;
-
     [CascadingParameter]
     public FluentDialog? Dialog { get; set; } = default!;
+
+    [Parameter]
+    public AtlasDialogContent Content { get; set; } = default!;
 
     private string _primaryButtonText = "Ok";
     private string _secondaryButtonText = "Cancel";
