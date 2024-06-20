@@ -63,6 +63,13 @@ builder.Services.AddTransient<IRequests, Requests>(sp =>
     return new Requests(httpClient);
 });
 
+builder.Services.AddTransient<IOptionsRequest, OptionsRequest>(sp =>
+{
+    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    var httpClient = httpClientFactory.CreateClient(AtlasWebConstants.ATLAS_API);
+    return new OptionsRequest(httpClient);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
