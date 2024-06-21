@@ -64,7 +64,7 @@ namespace Atlas.Data.Access.Data
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            List<OptionItem> optionItems = new() { new OptionItem() };
+            List<OptionItem> optionItems = new() { new OptionItem() { Id = string.Empty, Display = string.Empty } };
 
             optionItems.AddRange(configs.Select(p => new OptionItem { Id = p.Code, Display = p.Name }).ToList());
 
