@@ -3,9 +3,10 @@
 <FluentSelect TOption="OptionItem"
               Items="@_source"
               Label="@Label"
-              Id="people-listbox"
+              Id="selectList"
               OptionValue="@(oi => oi.Id)"
               OptionText="@(oi => oi.Display)"
+              SelectedOption="@_selectedOptionItem"
               @bind-Value="@Value" />
 
 @code {
@@ -20,34 +21,30 @@
     public string? Label { get; set; }
 
     [Parameter]
-    public EventCallback<string> ValueChanged { get; set; }
+    public string? Value { get; set; }
 
     [Parameter]
-    public string? Value
-    {
-        get { return _value; }
-        set
-        {
-            if (_value == value) return;
-            _value = value;
-            ValueChanged.InvokeAsync(value);
-        }
-    }
+    public EventCallback<string?> ValueChanged { get; set; }
 
+    private string? _value;
+    private OptionItem? _selectedOptionItem;
     private IEnumerable<OptionItem>? _source = [];
-    private string? _value = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
         ArgumentNullException.ThrowIfNull(OptionsRequest);
         ArgumentNullException.ThrowIfNull(NavigationManager);
         ArgumentNullException.ThrowIfNullOrWhiteSpace(OptionsCode);
-        
+
         try
         {
+            string? selectedValue = Value;
+
             IResponse<IEnumerable<OptionItem>?> response = await OptionsRequest.GetOptionItems(OptionsCode).ConfigureAwait(false);
 
             _source = GetResponse(response);
+
+            _selectedOptionItem = _source?.FirstOrDefault(o => o.Id == selectedValue);
         }
         catch(Exception ex)
         {
