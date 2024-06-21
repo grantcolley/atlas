@@ -36,15 +36,15 @@
                 </HeadingTemplate>
                 <ChildContent>
                     <div>
-                        <FluentTextField Name="Name" @bind-Value="Model.Name" Label="Name" />
+                        <FluentTextField Name="Name" @bind-Value=Model.Name Label="Name" />
                         <FluentValidationMessage For="@(() => Model.Name)" />
                     </div>
                     <div>
-                        <FluentNumberField Name="Order" @bind-Value="Model.Order" Label="Order" />
+                        <FluentNumberField Name="Order" @bind-Value=Model.Order Label="Order" />
                         <FluentValidationMessage For="@(() => Model.Order)" />
                     </div>
                     <div>
-                        <SelectList OptionsCode="@Options.PERMISSIONS_OPTION_ITEMS" @bind-Value="Model.Permission" Label="Permission" />
+                        <SelectList OptionsCode="@Options.PERMISSIONS_OPTION_ITEMS" @bind-Value=Model.Permission Label="Permission" />
                         <FluentValidationMessage For="@(() => Model.Permission)" />
                     </div>
                     <div>
