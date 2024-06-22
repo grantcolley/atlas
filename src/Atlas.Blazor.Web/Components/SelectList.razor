@@ -12,6 +12,9 @@
 
 @code {
 
+    [CascadingParameter]
+    private EditContext? CascadedEditContext { get; set; }
+
     [Inject]
     internal IOptionsRequest? OptionsRequest { get; set; }
 
@@ -57,5 +60,6 @@
     {
         string? value = args?.Value?.ToString();
         await ValueChanged.InvokeAsync(value);
+        CascadedEditContext?.Validate();
     }
 }
