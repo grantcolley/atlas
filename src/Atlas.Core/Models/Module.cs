@@ -69,15 +69,15 @@ namespace Atlas.Core.Models
         public ModuleValidator()
         {
             RuleFor(v => v.Name)
-                .NotNull().WithMessage("Name is required")
+                .NotEmpty().WithMessage("Name is required")
                 .Length(1, 20).WithMessage("Name cannot exceed 20 characters");
 
             RuleFor(v => v.Icon)
-                .NotNull().WithMessage("Icon is required")
+                .NotEmpty().WithMessage("Icon is required")
                 .Length(1, 30).WithMessage("Icon cannot exceed 30 characters");
 
             RuleFor(v => v.Permission)
-                .NotNull().WithMessage("Permission is required")
+                .NotEmpty().WithMessage("Permission is required")
                 .Length(1, 20).WithMessage("Permission cannot exceed 20 characters");
         }
     }
