@@ -1,6 +1,7 @@
 ﻿@inherits AtlasComponentBase
 
 <FluentSelect TOption="OptionItem"
+              @onchange="OnChange"
               Items="@_source"
               Label="@Label"
               Id="selectList"
@@ -50,5 +51,11 @@
         {
             NavigateAlertError(ex.Message);
         }
+    }
+
+    private async Task OnChange(ChangeEventArgs args)
+    {
+        string? value = args?.Value?.ToString();
+        await ValueChanged.InvokeAsync(value);
     }
 }
