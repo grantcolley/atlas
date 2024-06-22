@@ -50,19 +50,19 @@ namespace Atlas.Core.Models
                 .NotNull().WithMessage("Category is required");
 
             RuleFor(v => v.Name)
-                .NotNull().WithMessage("Name is required")
+                .NotEmpty().WithMessage("Name is required")
                 .Length(1, 20).WithMessage("Name cannot exceed 20 characters");
 
             RuleFor(v => v.Icon)
-                .NotNull().WithMessage("Icon is required")
+                .NotEmpty().WithMessage("Icon is required")
                 .Length(1, 30).WithMessage("Icon cannot exceed 30 characters");
 
             RuleFor(v => v.Permission)
-                .NotNull().WithMessage("Permission is required")
+                .NotEmpty().WithMessage("Permission is required")
                 .Length(1, 20).WithMessage("Permission cannot exceed 20 characters");
 
             RuleFor(v => v.NavigatePage)
-                .NotNull().WithMessage("Navigate Page is required")
+                .NotEmpty().WithMessage("Navigate Page is required")
                 .Length(1, 50).WithMessage("Navigate Page cannot exceed 50 characters");
         }
     }
