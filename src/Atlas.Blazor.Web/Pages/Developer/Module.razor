@@ -48,7 +48,7 @@
                         <FluentValidationMessage For="@(() => Model.Permission)" />
                     </div>
                     <div>
-                        <FluentTextField Name="Name" @bind-Value="Model.Icon" Label="Icon" />
+                        <SelectIconList OptionsCode="@Options.ICON_SIZE20_OPTION_ITEMS" @bind-Value=Model.Icon Label="Icons" />
                         <FluentValidationMessage For="@(() => Model.Icon)" />
                     </div>
                 </ChildContent>
