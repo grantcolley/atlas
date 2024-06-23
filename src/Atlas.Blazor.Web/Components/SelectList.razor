@@ -6,9 +6,17 @@
               Label="@Label"
               Id="selectList"
               OptionValue="@(oi => oi.Id)"
-              OptionText="@(oi => oi.Display)"
               SelectedOption="@_selectedOptionItem"
-              @bind-Value="@Value" />
+              @bind-Value="@Value"
+              Height="300px">
+    <OptionTemplate>
+        @if (ShowIcons && !string.IsNullOrWhiteSpace(context.Icon))
+        {
+            <FluentIcon Value="IconHelper.GetRegularSize20(context.Icon)" Slot="start" />
+        }
+        @context.Display
+    </OptionTemplate>
+</FluentSelect>
 
 @code {
 
@@ -18,11 +26,17 @@
     [Inject]
     internal IOptionsRequest? OptionsRequest { get; set; }
 
+    [Inject]
+    internal IOptionsService? OptionsService { get; set; }
+
     [Parameter]
     public string? OptionsCode { get; set; }
 
     [Parameter]
     public string? Label { get; set; }
+
+    [Parameter]
+    public bool ShowIcons { get; set; }
 
     [Parameter]
     public string? Value { get; set; }
@@ -37,6 +51,7 @@
     protected override async Task OnInitializedAsync()
     {
         ArgumentNullException.ThrowIfNull(OptionsRequest);
+        ArgumentNullException.ThrowIfNull(OptionsService);
         ArgumentNullException.ThrowIfNull(NavigationManager);
         ArgumentNullException.ThrowIfNullOrWhiteSpace(OptionsCode);
 
@@ -44,9 +59,16 @@
         {
             string? selectedValue = Value;
 
-            IResponse<IEnumerable<OptionItem>?> response = await OptionsRequest.GetOptionItems(OptionsCode).ConfigureAwait(false);
+            if (OptionsService.ContainsOptions(OptionsCode))
+            {
+                _source = OptionsService.GetOptionItems(OptionsCode);
+            }
+            else
+            {
+                IResponse<IEnumerable<OptionItem>?> response = await OptionsRequest.GetOptionItems(OptionsCode).ConfigureAwait(false);
 
-            _source = GetResponse(response);
+                _source = GetResponse(response);
+            }
 
             _selectedOptionItem = _source?.FirstOrDefault(o => o.Id == selectedValue);
         }
