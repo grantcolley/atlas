@@ -19,6 +19,11 @@ namespace Atlas.Blazor.Web.Services
             _options.Add(Options.ICON_SIZE20_OPTION_ITEMS, new IconSize20OptionItems());
         }
 
+        public bool ContainsOptions(string optionsCode)
+        {
+            return _options.ContainsKey(optionsCode); 
+        }
+    
         public IEnumerable<OptionItem> GetOptionItems(string optionsCode)
         {
             ArgumentNullException.ThrowIfNullOrWhiteSpace(optionsCode);
