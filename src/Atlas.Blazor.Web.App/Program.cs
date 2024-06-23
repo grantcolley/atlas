@@ -41,6 +41,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAu
 builder.Services.AddScoped<ITooltipService, TooltipService>();
 builder.Services.AddScoped<IDialogService, DialogService>();
 builder.Services.AddScoped<IAtlasDialogService, AtlasDialogService>();
+builder.Services.AddScoped<IOptionsService, OptionsService>();
 
 builder.Services.AddHttpClient(AtlasWebConstants.ATLAS_API,
       client => client.BaseAddress = new Uri(builder.Configuration[AtlasWebConstants.ATLAS_API] ?? throw new NullReferenceException(AtlasWebConstants.ATLAS_API)))
