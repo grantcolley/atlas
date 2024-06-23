@@ -4,17 +4,16 @@ using Atlas.Core.Interfaces;
 using Atlas.Core.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Atlas.Core.Options
 {
     public class NavigationPageOptionItems : IOptionItems
     {
-        public Task<IEnumerable<OptionItem>> GetOptionItemsAsync(IEnumerable<OptionsArg> args)
+        public IEnumerable<OptionItem> GetOptionItems(IEnumerable<OptionsArg> args)
         {
             var containers = TypeAttributeHelper.GetAtlasTypesByAttribute(typeof(NavigationPageAttribute));
 
-            List<OptionItem> optionItems = new();
+            List<OptionItem> optionItems = [];
 
             optionItems.AddRange((from c in containers
                                   orderby c.Name
@@ -24,7 +23,7 @@ namespace Atlas.Core.Options
                                       Display = c.DisplayName
                                   }).ToList());
 
-            return Task.FromResult(optionItems.AsEnumerable());
+            return optionItems.AsEnumerable();
         }
     }
 }
