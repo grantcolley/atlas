@@ -1,0 +1,66 @@
+﻿@inherits AtlasComponentBase
+
+<FluentSelect TOption="OptionItem"
+              @onchange="OnChange"
+              Items="@_source"
+              Label="@Label"
+              Id="selectList"
+              OptionValue="@(oi => oi.Id)"
+              SelectedOption="@_selectedOptionItem"
+              @bind-Value="@Value"
+              Height="300px">
+    <OptionTemplate>
+        <FluentIcon Value="IconHelper.GetRegularSize20(context.Icon)" Slot="start" />
+        @context.Display
+    </OptionTemplate>
+</FluentSelect>
+
+@code {
+
+    [CascadingParameter]
+    private EditContext? CascadedEditContext { get; set; }
+
+    [Inject]
+    internal IOptionsService? OptionsService { get; set; }
+
+    [Parameter]
+    public string? OptionsCode { get; set; }
+
+    [Parameter]
+    public string? Label { get; set; }
+
+    [Parameter]
+    public string? Value { get; set; }
+
+    [Parameter]
+    public EventCallback<string?> ValueChanged { get; set; }
+
+    private string? _value;
+    private OptionItem? _selectedOptionItem;
+    private IEnumerable<OptionItem>? _source = [];
+
+    protected override void OnInitialized()
+    {
+        ArgumentNullException.ThrowIfNull(OptionsService);
+        ArgumentNullException.ThrowIfNull(NavigationManager);
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(OptionsCode);
+
+        try
+        {
+            _source = OptionsService.GetOptionItems(OptionsCode);
+
+            _selectedOptionItem = _source?.FirstOrDefault(o => o.Id == Value);
+        }
+        catch(Exception ex)
+        {
+            NavigateAlertError(ex.Message);
+        }
+    }
+
+    private async Task OnChange(ChangeEventArgs args)
+    {
+        string? value = args?.Value?.ToString();
+        await ValueChanged.InvokeAsync(value);
+        CascadedEditContext?.Validate();
+    }
+}
