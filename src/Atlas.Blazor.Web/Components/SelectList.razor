@@ -26,9 +26,6 @@
     [Inject]
     internal IOptionsRequest? OptionsRequest { get; set; }
 
-    [Inject]
-    internal IOptionsService? OptionsService { get; set; }
-
     [Parameter]
     public string? OptionsCode { get; set; }
 
@@ -51,7 +48,6 @@
     protected override async Task OnInitializedAsync()
     {
         ArgumentNullException.ThrowIfNull(OptionsRequest);
-        ArgumentNullException.ThrowIfNull(OptionsService);
         ArgumentNullException.ThrowIfNull(NavigationManager);
         ArgumentNullException.ThrowIfNullOrWhiteSpace(OptionsCode);
 
@@ -59,20 +55,13 @@
         {
             string? selectedValue = Value;
 
-            if (OptionsService.ContainsOptions(OptionsCode))
-            {
-                _source = OptionsService.GetOptionItems(OptionsCode);
-            }
-            else
-            {
-                IResponse<IEnumerable<OptionItem>?> response = await OptionsRequest.GetOptionItems(OptionsCode).ConfigureAwait(false);
+            IResponse<IEnumerable<OptionItem>?> response = await OptionsRequest.GetOptionItems(OptionsCode).ConfigureAwait(false);
 
-                _source = GetResponse(response);
-            }
+            _source = GetResponse(response);
 
             _selectedOptionItem = _source?.FirstOrDefault(o => o.Id == selectedValue);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             NavigateAlertError(ex.Message);
         }
