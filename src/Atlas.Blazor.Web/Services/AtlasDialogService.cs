@@ -59,5 +59,36 @@ namespace Atlas.Blazor.Web.Services
 
             return dialogResult;
         }
+
+        public async Task<string?> ShowIconsDialogAsync(string? icon)
+        {
+            IconsDialogContent content = new()
+            {
+                Icon = icon
+            };
+
+            DialogParameters parameters = new()
+            {
+                Title = "Fluent Icons",
+                Width = content.Width,
+                Height = content.Height,
+                Modal = true,
+                PreventScroll = false                
+            };
+
+            IDialogReference dialog = await _dialogService.ShowDialogAsync<IconsDialog>(content, parameters);
+
+            DialogResult? result = await dialog.Result;
+
+            string? iconSelected = null;
+
+            if (result.Data is not null)
+            {
+                IconsDialogContent? dialogResult = result.Data as IconsDialogContent;
+                iconSelected = dialogResult?.Icon;
+            }
+
+            return iconSelected;
+        }
     }
 }
