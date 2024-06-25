@@ -48,7 +48,13 @@
                         <FluentValidationMessage For="@(() => Model.Permission)" />
                     </div>
                     <div>
-                        <FluentTextField Name="Name" @bind-Value=Model.Icon Label="Icon" />
+                        <FluentTextField @bind-Value=Model.Icon Label="Icon">
+                            <FluentIcon Value="@(new Icons.Regular.Size16.Search())" Slot="start" OnClick="ShowIconDialogAsync"/>
+                            @if(!string.IsNullOrWhiteSpace(Model.Icon))
+                            {
+                                <FluentIcon Value="@IconHelper.GetRegularSize20(Model.Icon)" Slot="end" />
+                            }
+                        </FluentTextField>
                         <FluentValidationMessage For="@(() => Model.Icon)" />
                     </div>
                 </ChildContent>
@@ -75,4 +81,12 @@
 
         </FluentAccordion>
     };
+
+    private async Task ShowIconDialogAsync(MouseEventArgs e)
+    {
+        ArgumentNullException.ThrowIfNull(Model);
+        ArgumentNullException.ThrowIfNull(AtlasDialogService);
+
+        Model.Icon = await AtlasDialogService.ShowIconsDialogAsync(Model.Icon);
+    }
 }
