@@ -3,7 +3,6 @@
     public class AtlasDialogContent
     {
         public string? Title { get; set; }
-        public bool ShowTitle { get; set; } = true;
         public List<string> Messages { get; set; } = [];
         public AtlasDialogType DialogType { get; set; } = AtlasDialogType.Ok;
         public AtlasDialogSelection Selected { get; set; } = AtlasDialogSelection.None;
