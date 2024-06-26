@@ -24,10 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Components\IconsDialog.razor">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </Content>
-    <Content Update="Components\GenericSortableList.razor">
+    <Content Update="Components\GenericSortableGrid.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
   </ItemGroup>
