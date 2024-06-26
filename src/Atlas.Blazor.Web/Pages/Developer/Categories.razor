@@ -1,0 +1,36 @@
+﻿@page "/Categories"
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@inherits GridContainerBase<Atlas.Core.Models.Category>
+
+@{
+    // Display the markup for the underlying base 
+    // GenericGridContainer<T> we are inheriting.
+    base.BuildRenderTree(__builder);
+}
+
+@code{
+    public override string? Title { get; set; } = "Categories";
+    public override string? NavigateTo { get; set; } = AtlasWebConstants.PAGE_CATEGORY;
+    public override string? APIEndpoint { get; set; } = AtlasAPIEndpoints.GET_CATEGORIES;
+    public override int ItemsPerPage { get; set; } = 20;
+    public override string? FilterFieldName { get; set; } = "Name";
+    public override string? IdentityFieldName { get; set; } = "CategoryId";
+
+    public override RenderFragment RenderGridContent() => __builder =>
+    {
+        <FluentDataGrid TGridItem=Atlas.Core.Models.Category Items="@FilteredItems" ResizableColumns=true Pagination="@Pagination" GridTemplateColumns="0.2fr 1fr 1fr 0.2fr" Style="height: 405px;overflow:auto;">
+            <PropertyColumn Property="@(c => c.CategoryId)" Sortable="true" Align="Align.Center" Title="Category Id"/>
+            <PropertyColumn Property="@(c => c.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(Filter)" Tooltip="true" Title="Name">
+                <ColumnOptions>
+                    <div class="search-box">
+                        <FluentSearch type="filter" Autofocus=true @bind-Value=Filter @oninput="HandleFilter" @bind-Value:after="HandleClear" Placeholder="Category name..." />
+                    </div>
+                </ColumnOptions>
+            </PropertyColumn>
+            <PropertyColumn Property="@(m => m.Order)" Sortable="true" Title="Order" />
+            <TemplateColumn Align="@Align.Center" Title="Edit">
+                <FluentButton aria-label="Edit" IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(() => Edit(context))" />
+            </TemplateColumn>
+        </FluentDataGrid>
+    };
+}

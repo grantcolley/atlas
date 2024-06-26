@@ -1,0 +1,78 @@
+﻿@page "/Category"
+@page "/Category/{Id:int?}"
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@inherits ModelContainerBase<Atlas.Core.Models.Category>
+
+@{
+    // Display the markup for the underlying base
+    // ModelContainerBase<T> we are inheriting.
+    base.BuildRenderTree(__builder);
+}
+
+@code {
+    public override string? Title { get; set; } = "Category";
+    public override string? APIGetEndpoint { get; set; } = AtlasAPIEndpoints.GET_CATEGORY;
+    public override string? APICreateEndpoint { get; set; } = AtlasAPIEndpoints.CREATE_CATEGORY;
+    public override string? APIUpdateEndpoint { get; set; } = AtlasAPIEndpoints.UPDATE_CATEGORY;
+    public override string? APIDeleteEndpoint { get; set; } = AtlasAPIEndpoints.DELETE_CATEGORY;
+    public override string? ModelNameField { get; set; } = "Name";
+    public override string? IdentityFieldName { get; set; } = "CategoryId";
+
+    public override RenderFragment RenderModelContent() => __builder =>
+    {
+        if (Model == null) throw new NullReferenceException(nameof(Model));
+
+        <FluentAccordion>
+            <FluentAccordionItem Expanded=true>
+                <HeadingTemplate>
+                    @if (Model.CategoryId.Equals(0))
+                    {
+                        <FluentLabel Typo="Typography.Body">New Category</FluentLabel>
+                    }
+                    else
+                    {
+                        <FluentLabel Typo="Typography.Body">@($"Category Id {Model.CategoryId}")</FluentLabel>
+                    }
+                </HeadingTemplate>
+                <ChildContent>
+                    <div>
+                        <FluentTextField Name="Name" @bind-Value=Model.Name Label="Name" />
+                        <FluentValidationMessage For="@(() => Model.Name)" />
+                    </div>
+                    <div>
+                        <FluentNumberField Name="Order" @bind-Value=Model.Order Label="Order" />
+                        <FluentValidationMessage For="@(() => Model.Order)" />
+                    </div>
+                    <div>
+                        <SelectList OptionsCode="@Options.PERMISSIONS_OPTION_ITEMS" @bind-Value=Model.Permission Label="Permission" />
+                        <FluentValidationMessage For="@(() => Model.Permission)" />
+                    </div>
+                    <div>
+                        <IconSelectList @bind-Value=Model.Icon Label="Icon" />
+                        <FluentValidationMessage For="@(() => Model.Icon)" />
+                    </div>
+                </ChildContent>
+            </FluentAccordionItem>
+
+            @if (Model.CategoryId > 0)
+            {
+                <FluentAccordionItem Expanded=true>
+                    <HeadingTemplate>
+                        Pages
+                    </HeadingTemplate>
+                    <ChildContent>
+                        <GenericSortableGrid T="Page"
+                                             Source="@Model.Pages.OrderBy(c => c.Order)"
+                                             Fields="@(new List<string>{ "Order", "Name" })"
+                                             Header="Pages"
+                                             FilterFieldName="Name"
+                                             FilterPlaceholder="Page..." 
+                                             EmptyText="This category has no pages."
+                                             GridTemplateColumns="0.1fr 1fr" />
+                    </ChildContent>
+                </FluentAccordionItem>
+            }
+
+        </FluentAccordion>
+    };
+}
