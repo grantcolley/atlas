@@ -57,7 +57,7 @@
                         Role Membership
                     </HeadingTemplate>
                     <ChildContent>
-                        <GenericSortableList T="Atlas.Core.Models.Role"
+                        <GenericSortableGrid T="Atlas.Core.Models.Role"
                                              Source="@Model.Roles.OrderBy(r => r.Name)"
                                              Fields="@(new List<string>{ "Name", "Description" })"
                                              Header="Roles"
