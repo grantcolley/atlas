@@ -63,7 +63,7 @@
                         Assigned Users
                     </HeadingTemplate>
                     <ChildContent>
-                        <GenericSortableList T="Atlas.Core.Models.User"
+                        <GenericSortableGrid T="Atlas.Core.Models.User"
                                              Source="@Model.Users.OrderBy(u => u.Name)"
                                              Fields="@(new List<string>{ "Name", "Email" })"
                                              Header="Users"
