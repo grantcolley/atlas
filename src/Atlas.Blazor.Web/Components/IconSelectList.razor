@@ -1,0 +1,95 @@
+﻿<FluentSearch Id="popoverSearch"
+              @bind-Value="_filter"
+              @bind-Value:after="OnSearch"
+              Label="@Label"
+              Immediate="true"
+              ImmediateDelay="400"
+              Placeholder="Icon name...">
+    <FluentIcon Value="@(new Icons.Regular.Size16.Search())" Slot="start" />
+    @if (!string.IsNullOrWhiteSpace(_initialImage))
+    {
+        <FluentIcon Value="@IconHelper.GetRegularSize20(_initialImage)" Slot="end" />
+    }
+</FluentSearch>
+<FluentPopover Style="width: 300px;" AnchorId="popoverSearch" @bind-Open="_popoverVisible" AutoFocus="false">
+    <Body>
+        <FluentListbox Items="@_filterResults"
+                       OptionValue="@(i => i.Display)"
+                       ValueChanged="OnIconSelected"
+                       Height="300px">
+            <OptionTemplate>
+                <FluentIcon Value="IconHelper.GetRegularSize20(context?.Icon)" Slot="start" />
+                <FluentLabel Typo="Typography.Body">@context?.Display</FluentLabel>
+            </OptionTemplate>
+        </FluentListbox>
+    </Body>
+</FluentPopover>
+
+@code {
+
+    [CascadingParameter]
+    private EditContext? CascadedEditContext { get; set; }
+
+    [Inject]
+    internal IOptionsService? OptionsService { get; set; }
+
+    [Parameter]
+    public string? Label { get; set; }
+
+    [Parameter]
+    public string? Value { get; set; }
+
+    [Parameter]
+    public EventCallback<string?> ValueChanged { get; set; }
+
+    private IEnumerable<OptionItem> _source = [];
+    private List<OptionItem> _filterResults = [];
+    private OptionItem? _selectedOption;
+    private string _filter = string.Empty;
+    private string _initialImage = string.Empty;
+    bool _popoverVisible = false;
+
+    protected override void OnInitialized()
+    {
+        ArgumentNullException.ThrowIfNull(OptionsService);
+
+        _source = OptionsService.GetOptionItems(Options.ICON_SIZE20_OPTION_ITEMS);
+
+        if (!string.IsNullOrWhiteSpace(Value))
+        {
+            _filter = Value;
+            _initialImage = Value;
+        }
+    }
+
+    private void OnSearch()
+    {
+        _initialImage = string.Empty;
+
+        if (!string.IsNullOrWhiteSpace(_filter))
+        {
+            List<OptionItem> results = _source
+                .Where(o => !string.IsNullOrWhiteSpace(o.Display) && o.Display.Contains(_filter, StringComparison.OrdinalIgnoreCase))
+                .Select(o => o)
+                .ToList();
+
+            _filterResults = results.Any() ? results : [];
+        }
+        else
+        {
+            _filterResults = [];
+        }
+
+        _popoverVisible = _filterResults.Any();
+    }
+
+    private async Task OnIconSelected(string? optionItem)
+    {
+        _initialImage = optionItem ?? string.Empty;
+        _filter = optionItem ?? string.Empty;
+        _filterResults.Clear();
+        _popoverVisible = false;
+        await ValueChanged.InvokeAsync(optionItem);
+        CascadedEditContext?.Validate();
+    }
+}
