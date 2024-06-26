@@ -1,4 +1,5 @@
-﻿using Microsoft.FluentUI.AspNetCore.Components;
+﻿using Atlas.Blazor.Web.Constants;
+using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace Atlas.Blazor.Web.Utility
 {
@@ -6,10 +7,21 @@ namespace Atlas.Blazor.Web.Utility
     {
         public static Icon GetRegularSize20(string? name)
         {
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(name, nameof(name));
+            if(string.IsNullOrWhiteSpace(name))
+            {
+                name = AtlasWebConstants.ATLAS_DEFAULIT_ICON;
+            }
 
-            IconInfo iconInfo = new() { Name = name, Size =  IconSize.Size20, Variant = IconVariant.Regular };
-            return Icons.GetInstance(iconInfo);
+            try
+            {
+                IconInfo iconInfo = new() { Name = name, Size = IconSize.Size20, Variant = IconVariant.Regular };
+
+                return Icons.GetInstance(iconInfo);
+            }
+            catch (ArgumentException)
+            {
+                return new Icons.Regular.Size20.Prohibited();
+            }
         }
     }
 }
