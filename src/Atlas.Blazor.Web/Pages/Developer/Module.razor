@@ -61,7 +61,7 @@
                         Categories
                     </HeadingTemplate>
                     <ChildContent>
-                        <GenericSortableGrid T="Category"
+                        <GenericSortableGrid T="Atlas.Core.Models.Category"
                                              Source="@Model.Categories.OrderBy(c => c.Order)"
                                              Fields="@(new List<string>{ "Order", "Name" })"
                                              Header="Categories"
