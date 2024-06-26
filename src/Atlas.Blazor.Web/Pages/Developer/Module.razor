@@ -48,13 +48,7 @@
                         <FluentValidationMessage For="@(() => Model.Permission)" />
                     </div>
                     <div>
-                        <FluentTextField @bind-Value=Model.Icon Label="Icon">
-                            <FluentIcon Value="@(new Icons.Regular.Size16.Search())" Slot="start" OnClick="ShowIconDialogAsync"/>
-                            @if(!string.IsNullOrWhiteSpace(Model.Icon))
-                            {
-                                <FluentIcon Value="@IconHelper.GetRegularSize20(Model.Icon)" Slot="end" />
-                            }
-                        </FluentTextField>
+                        <IconSelectList @bind-Value=Model.Icon Label="Icon" />
                         <FluentValidationMessage For="@(() => Model.Icon)" />
                     </div>
                 </ChildContent>
@@ -67,7 +61,7 @@
                         Categories
                     </HeadingTemplate>
                     <ChildContent>
-                        <GenericSortableList T="Category"
+                        <GenericSortableGrid T="Category"
                                              Source="@Model.Categories.OrderBy(c => c.Order)"
                                              Fields="@(new List<string>{ "Order", "Name" })"
                                              Header="Categories"
@@ -81,12 +75,4 @@
 
         </FluentAccordion>
     };
-
-    private async Task ShowIconDialogAsync(MouseEventArgs e)
-    {
-        ArgumentNullException.ThrowIfNull(Model);
-        ArgumentNullException.ThrowIfNull(AtlasDialogService);
-
-        Model.Icon = await AtlasDialogService.ShowIconsDialogAsync(Model.Icon);
-    }
 }
