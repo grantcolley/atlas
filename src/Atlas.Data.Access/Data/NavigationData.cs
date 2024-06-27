@@ -101,6 +101,7 @@ namespace Atlas.Data.Access.Data
         {
             return await _applicationDbContext.Categories
                 .Include(c => c.Module)
+                .Include(c => c.Pages)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.CategoryId.Equals(id), cancellationToken)
                 .ConfigureAwait(false);
