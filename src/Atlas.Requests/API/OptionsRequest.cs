@@ -8,13 +8,13 @@ namespace Atlas.Requests.API
 {
     public class OptionsRequest(HttpClient httpClient) : RequestBase(httpClient), IOptionsRequest
     {
-        public async Task<IResponse<IEnumerable<OptionItem>?>> GetOptionItems(string optionsCode)
+        public async Task<IResponse<IEnumerable<OptionItem>?>> GetOptionItemsAsync(string optionsCode)
         {
             List<OptionsArg> options = [new() { Name = Options.OPTIONS_CODE, Value = optionsCode }];
-            return await GetOptionItems(options).ConfigureAwait(false);
+            return await GetOptionItemsAsync(options).ConfigureAwait(false);
         }
 
-        public async Task<IResponse<IEnumerable<OptionItem>?>> GetOptionItems(IEnumerable<OptionsArg> optionsArgs)
+        public async Task<IResponse<IEnumerable<OptionItem>?>> GetOptionItemsAsync(IEnumerable<OptionsArg> optionsArgs)
         {
             using var httpResponseMessage = await _httpClient.PostAsJsonAsync(AtlasAPIEndpoints.GET_OPTIONS, optionsArgs)
                 .ConfigureAwait(false);
