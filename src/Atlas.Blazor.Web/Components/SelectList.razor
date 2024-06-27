@@ -55,7 +55,7 @@
         {
             string? selectedValue = Value;
 
-            IResponse<IEnumerable<OptionItem>?> response = await OptionsRequest.GetOptionItems(OptionsCode).ConfigureAwait(false);
+            IResponse<IEnumerable<OptionItem>?> response = await OptionsRequest.GetOptionItemsAsync(OptionsCode).ConfigureAwait(false);
 
             _source = GetResponse(response);
 
