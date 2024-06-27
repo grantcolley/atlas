@@ -27,7 +27,8 @@
                     </div>
                 </ColumnOptions>
             </PropertyColumn>
-            <PropertyColumn Property="@(m => m.Order)" Sortable="true" Title="Order" />
+            <PropertyColumn Property="@(c => c.Module.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(Filter)" Tooltip="true" Title="Module" />
+            <PropertyColumn Property="@(c => c.Order)" Sortable="true" Title="Order" />
             <TemplateColumn Align="@Align.Center" Title="Edit">
                 <FluentButton aria-label="Edit" IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(() => Edit(context))" />
             </TemplateColumn>
