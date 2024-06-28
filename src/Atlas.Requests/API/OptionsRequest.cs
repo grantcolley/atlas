@@ -23,6 +23,12 @@ namespace Atlas.Requests.API
                 .ConfigureAwait(false);
         }
 
+        public async Task<IResponse<IEnumerable<T>>> GetOptionItemsAsync<T>(string optionsCode)
+        {
+            List<OptionsArg> options = [new() { Name = Options.OPTIONS_CODE, Value = optionsCode }];
+            return await GetOptionItemsAsync<T>(options).ConfigureAwait(false);
+        }
+
         public async Task<IResponse<IEnumerable<T>>> GetOptionItemsAsync<T>(IEnumerable<OptionsArg> optionsArgs)
         {
             using var httpResponseMessage = await _httpClient.PostAsJsonAsync(AtlasAPIEndpoints.GET_GENERIC_OPTIONS, optionsArgs)
