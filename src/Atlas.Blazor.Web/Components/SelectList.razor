@@ -46,12 +46,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        ArgumentNullException.ThrowIfNull(OptionsRequest);
-        ArgumentNullException.ThrowIfNull(NavigationManager);
-        ArgumentNullException.ThrowIfNullOrWhiteSpace(OptionsCode);
-
         try
         {
+            ArgumentNullException.ThrowIfNull(OptionsRequest);
+            ArgumentNullException.ThrowIfNull(NavigationManager);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(OptionsCode);
+
             string? selectedValue = Value;
 
             IResponse<IEnumerable<OptionItem>?> response = await OptionsRequest.GetOptionItemsAsync(OptionsCode).ConfigureAwait(false);
