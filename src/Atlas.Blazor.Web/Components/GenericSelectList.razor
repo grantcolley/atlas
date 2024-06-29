@@ -1,0 +1,96 @@
+﻿@inherits AtlasComponentBase
+@typeparam T where T : ModelBase, new()
+
+<FluentSelect TOption="T"
+              @onchange="OnChange"
+              Items="@_source"
+              Label="@Label"
+              Id="selectList"
+              OptionValue="@(i => _dynamicType?.GetValue(i, IdentifierFieldName ?? throw new NullReferenceException(nameof(IdentifierFieldName)))?.ToString())"
+              SelectedOption="@_selectedItem"
+              @bind-Value="@_value"
+              Height="300px">
+    <OptionTemplate>
+        @if (ShowIcons && !string.IsNullOrWhiteSpace(_dynamicType?.GetValue(context, IconFieldName ?? throw new NullReferenceException(nameof(IdentifierFieldName)))?.ToString()))
+        {
+            <FluentIcon Value="IconHelper.GetRegularSize20(_dynamicType?.GetValue(context, IconFieldName ?? throw new NullReferenceException(nameof(IdentifierFieldName)))?.ToString())" Slot="start" />
+        }
+        @_dynamicType?.GetValue(context, DisplayFieldName)?.ToString()
+    </OptionTemplate>
+</FluentSelect>
+
+@code {
+
+    [CascadingParameter]
+    private EditContext? CascadedEditContext { get; set; }
+
+    [Inject]
+    internal IOptionsRequest? OptionsRequest { get; set; }
+
+    [Parameter]
+    public string? OptionsCode { get; set; }
+
+    [Parameter]
+    public string? Label { get; set; }
+
+    [Parameter]
+    public string? IdentifierFieldName { get; set; }
+
+    [Parameter]
+    public string? DisplayFieldName { get; set; }
+
+    [Parameter]
+    public string? IconFieldName { get; set; }
+
+    [Parameter]
+    public bool ShowIcons { get; set; }
+
+    [Parameter]
+    public int? Value { get; set; }
+
+    [Parameter]
+    public EventCallback<int> ValueChanged { get; set; }
+
+    private string? _value;
+    private T? _selectedItem;
+    private IEnumerable<T>? _source = [];
+    private DynamicType<T> _dynamicType = DynamicTypeHelper.Get<T>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            ArgumentNullException.ThrowIfNull(OptionsRequest);
+            ArgumentNullException.ThrowIfNull(NavigationManager);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(OptionsCode);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(IdentifierFieldName);
+
+            int? selectedValue = Value;
+
+            IResponse<IEnumerable<T>> response = await OptionsRequest.GetOptionItemsAsync<T>(OptionsCode).ConfigureAwait(false);
+
+            _source = GetResponse(response);
+
+            if (selectedValue.HasValue)
+            {
+                _selectedItem = _source?.FirstOrDefault(o => (int)(_dynamicType?.GetValue(o, IdentifierFieldName) ?? 0) == selectedValue.Value);
+
+                if (_selectedItem != null)
+                {
+                    _value = _dynamicType?.GetValue(_selectedItem, IdentifierFieldName)?.ToString();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            NavigateAlertError(ex.Message);
+        }
+    }
+
+    private async Task OnChange(ChangeEventArgs args)
+    {
+        int value = args?.Value != null ? (int)args.Value : throw new NullReferenceException(nameof(args));
+        await ValueChanged.InvokeAsync(value);
+        CascadedEditContext?.Validate();
+    }
+}
