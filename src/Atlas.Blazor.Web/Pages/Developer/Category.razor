@@ -48,6 +48,17 @@
                         <FluentValidationMessage For="@(() => Model.Permission)" />
                     </div>
                     <div>
+                        <GenericSelectList T="Atlas.Core.Models.Module"
+                                           @bind-Value=@(Model.Module != null ? Model.Module.ModuleId : 0)
+                                           Label="Module"
+                                           IdentifierFieldName="ModuleId"
+                                           DisplayFieldName="Name"
+                                           IconFieldName="Icon"
+                                           OptionsCode="@Options.MODULES_OPTION_ITEMS"
+                                           ShowIcons="true" />
+                        <FluentValidationMessage For="@(() => Model.Module)" />
+                    </div>
+                    <div>
                         <IconSelectList @bind-Value=Model.Icon Label="Icon" />
                         <FluentValidationMessage For="@(() => Model.Icon)" />
                     </div>
