@@ -46,10 +46,10 @@
     public bool ShowIcons { get; set; }
 
     [Parameter]
-    public int? Value { get; set; }
+    public T? Value { get; set; }
 
     [Parameter]
-    public EventCallback<int> ValueChanged { get; set; }
+    public EventCallback<T> ValueChanged { get; set; }
 
     private string? _value;
     private T? _selectedItem;
@@ -65,15 +65,17 @@
             ArgumentNullException.ThrowIfNullOrWhiteSpace(OptionsCode);
             ArgumentNullException.ThrowIfNullOrWhiteSpace(IdentifierFieldName);
 
-            int? selectedValue = Value;
+            _selectedItem = Value;
 
             IResponse<IEnumerable<T>> response = await OptionsRequest.GetOptionItemsAsync<T>(OptionsCode).ConfigureAwait(false);
 
             _source = GetResponse(response);
 
-            if (selectedValue.HasValue)
+            if (_selectedItem != null)
             {
-                _selectedItem = _source?.FirstOrDefault(o => (int)(_dynamicType?.GetValue(o, IdentifierFieldName) ?? 0) == selectedValue.Value);
+                int id = (int)(_dynamicType?.GetValue(_selectedItem, IdentifierFieldName) ?? 0);
+
+                _selectedItem = _source?.FirstOrDefault(o => (int)(_dynamicType?.GetValue(o, IdentifierFieldName) ?? 0) == id);
 
                 if (_selectedItem != null)
                 {
@@ -89,7 +91,7 @@
 
     private async Task OnChange(ChangeEventArgs args)
     {
-        int value = args?.Value != null ? (int)args.Value : throw new NullReferenceException(nameof(args));
+        T? value = args?.Value != null ? (T)args.Value : throw new NullReferenceException(nameof(args));
         await ValueChanged.InvokeAsync(value);
         CascadedEditContext?.Validate();
     }
