@@ -49,7 +49,7 @@
                     </div>
                     <div>
                         <GenericSelectList T="Atlas.Core.Models.Module"
-                                           @bind-Value=@(Model.Module != null ? Model.Module.ModuleId : 0)
+                                           @bind-Value=@(Model.Module)
                                            Label="Module"
                                            IdentifierFieldName="ModuleId"
                                            DisplayFieldName="Name"
