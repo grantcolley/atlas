@@ -51,8 +51,8 @@ namespace Atlas.API.Extensions
             app.MapPost($"/{AtlasAPIEndpoints.GET_GENERIC_OPTIONS}", OptionsEndpoints.GetGenericOptions)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.GET_GENERIC_OPTIONS)
-                .WithDescription("Gets generic option items for the specified options code")
-                .Produces<IEnumerable<OptionItem>?>(StatusCodes.Status200OK)
+                .WithDescription("Gets generic options for the specified options code")
+                .Produces<string>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
