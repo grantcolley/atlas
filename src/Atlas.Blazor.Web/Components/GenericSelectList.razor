@@ -67,7 +67,7 @@
 
             _selectedItem = Value;
 
-            IResponse<IEnumerable<T>> response = await OptionsRequest.GetOptionItemsAsync<T>(OptionsCode).ConfigureAwait(false);
+            IResponse<IEnumerable<T>?> response = await OptionsRequest.GetGenericOptionsAsync<T>(OptionsCode).ConfigureAwait(false);
 
             _source = GetResponse(response);
 
