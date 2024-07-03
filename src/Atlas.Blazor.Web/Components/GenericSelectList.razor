@@ -5,10 +5,9 @@
               @onchange="OnChange"
               Items="@_source"
               Label="@Label"
-              Id="selectList"
+              Id="genericSelectList"
               OptionValue="@(i => _dynamicType?.GetValue(i, IdentifierFieldName ?? throw new NullReferenceException(nameof(IdentifierFieldName)))?.ToString())"
-              SelectedOption="@_selectedItem"
-              @bind-Value="@_value"
+              @bind-SelectedOption="@_selectedItem"
               Height="300px">
     <OptionTemplate>
         @if (ShowIcons && !string.IsNullOrWhiteSpace(_dynamicType?.GetValue(context, IconFieldName ?? throw new NullReferenceException(nameof(IdentifierFieldName)))?.ToString()))
