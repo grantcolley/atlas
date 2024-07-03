@@ -79,9 +79,10 @@ namespace Atlas.Data.Access.Data
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            if (modules.Any())
+            if (modules.Count > 0)
             {
-                return JsonSerializer.Serialize(modules);
+                List<Module> modulesOptions = [new Module() { ModuleId = -1 }, .. modules];
+                return JsonSerializer.Serialize(modulesOptions);
             }
             else
             {
