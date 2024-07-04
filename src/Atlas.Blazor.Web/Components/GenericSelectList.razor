@@ -1,7 +1,7 @@
 ﻿@inherits AtlasComponentBase
 @typeparam T where T : ModelBase, new()
 
-<FluentSelect TOption="T"
+<FluentSelect 
               @onchange="OnChange"
               Items="@_source"
               Label="@Label"
@@ -64,15 +64,13 @@
             ArgumentNullException.ThrowIfNullOrWhiteSpace(OptionsCode);
             ArgumentNullException.ThrowIfNullOrWhiteSpace(IdentifierFieldName);
 
-            _selectedItem = Value;
-
             IResponse<IEnumerable<T>?> response = await OptionsRequest.GetGenericOptionsAsync<T>(OptionsCode).ConfigureAwait(false);
 
             _source = GetResponse(response);
 
-            if (_selectedItem != null)
+            if (Value != null)
             {
-                int id = (int)(_dynamicType?.GetValue(_selectedItem, IdentifierFieldName) ?? 0);
+                int id = (int)(_dynamicType?.GetValue(Value, IdentifierFieldName) ?? 0);
 
                 _selectedItem = _source?.FirstOrDefault(o => (int)(_dynamicType?.GetValue(o, IdentifierFieldName) ?? 0) == id);
 
