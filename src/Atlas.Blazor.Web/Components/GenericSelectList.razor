@@ -1,13 +1,12 @@
 ﻿@inherits AtlasComponentBase
 @typeparam T where T : ModelBase, new()
 
-<FluentSelect 
-              @onchange="OnChange"
-              Items="@_source"
+<FluentSelect Items="@_source"
               Label="@Label"
+              Height="300px"
               OptionValue="@(i => _dynamicType?.GetValue(i, IdentifierFieldName ?? throw new NullReferenceException(nameof(IdentifierFieldName)))?.ToString())"
               @bind-SelectedOption="@_selectedItem"
-              Height="300px">
+              @onchange="OnChange">
     <OptionTemplate>
         @if (context != null && DisplayFieldName != null)
         {
@@ -34,6 +33,9 @@
 
     [Parameter]
     public string? Label { get; set; }
+
+    [Parameter]
+    public string? FieldName { get; set; }
 
     [Parameter]
     public string? IdentifierFieldName { get; set; }
@@ -85,11 +87,12 @@
 
     private async Task OnChange(ChangeEventArgs args)
     {
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(FieldName);
         ArgumentNullException.ThrowIfNullOrWhiteSpace(IdentifierFieldName);
 
         string? value = args?.Value?.ToString();
         _selectedItem = _source?.FirstOrDefault(o => _dynamicType?.GetValue(o, IdentifierFieldName)?.ToString() == value);
         await ValueChanged.InvokeAsync(_selectedItem);
-        CascadedEditContext?.Validate();
+        CascadedEditContext?.NotifyFieldChanged(CascadedEditContext.Field(FieldName));
     }
 }
