@@ -5,16 +5,19 @@
               @onchange="OnChange"
               Items="@_source"
               Label="@Label"
-              Id="genericSelectList"
               OptionValue="@(i => _dynamicType?.GetValue(i, IdentifierFieldName ?? throw new NullReferenceException(nameof(IdentifierFieldName)))?.ToString())"
               @bind-SelectedOption="@_selectedItem"
               Height="300px">
     <OptionTemplate>
-        @if (ShowIcons && !string.IsNullOrWhiteSpace(_dynamicType?.GetValue(context, IconFieldName ?? throw new NullReferenceException(nameof(IdentifierFieldName)))?.ToString()))
+        @if (context != null && DisplayFieldName != null)
         {
-            <FluentIcon Value="IconHelper.GetRegularSize20(_dynamicType?.GetValue(context, IconFieldName ?? throw new NullReferenceException(nameof(IdentifierFieldName)))?.ToString())" Slot="start" />
+            @if (ShowIcons && !string.IsNullOrWhiteSpace(_dynamicType?.GetValue(context, IconFieldName ?? throw new NullReferenceException(nameof(IdentifierFieldName)))?.ToString()))
+            {
+                <FluentIcon Value="IconHelper.GetRegularSize20(_dynamicType?.GetValue(context, IconFieldName ?? throw new NullReferenceException(nameof(IdentifierFieldName)))?.ToString())" Slot="start" />
+            }
+
+            @_dynamicType?.GetValue(context, DisplayFieldName)?.ToString()
         }
-        @_dynamicType?.GetValue(context, DisplayFieldName)?.ToString()
     </OptionTemplate>
 </FluentSelect>
 
