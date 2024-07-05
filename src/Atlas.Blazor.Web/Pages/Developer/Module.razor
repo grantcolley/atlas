@@ -44,11 +44,11 @@
                         <FluentValidationMessage For="@(() => Model.Order)" />
                     </div>
                     <div>
-                        <SelectList OptionsCode="@Options.PERMISSIONS_OPTION_ITEMS" @bind-Value=Model.Permission Label="Permission" />
+                        <SelectList OptionsCode="@Options.PERMISSIONS_OPTION_ITEMS" @bind-Value=Model.Permission FieldName="Permission" Label="Permission" />
                         <FluentValidationMessage For="@(() => Model.Permission)" />
                     </div>
                     <div>
-                        <IconSelectList @bind-Value=Model.Icon Label="Icon" />
+                        <IconSelectList @bind-Value=Model.Icon FieldName="Permission" Label="Icon" />
                         <FluentValidationMessage For="@(() => Model.Icon)" />
                     </div>
                 </ChildContent>
