@@ -32,6 +32,9 @@
     public string? Label { get; set; }
 
     [Parameter]
+    public string? FieldName { get; set; }
+
+    [Parameter]
     public bool ShowIcons { get; set; }
 
     [Parameter]
@@ -67,8 +70,10 @@
 
     private async Task OnChange(ChangeEventArgs args)
     {
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(FieldName);
+
         string? value = args?.Value?.ToString();
         await ValueChanged.InvokeAsync(value);
-        CascadedEditContext?.Validate();
+        CascadedEditContext?.NotifyFieldChanged(CascadedEditContext.Field(FieldName));
     }
 }
