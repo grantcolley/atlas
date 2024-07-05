@@ -37,6 +37,9 @@
     public string? Label { get; set; }
 
     [Parameter]
+    public string? FieldName { get; set; }
+
+    [Parameter]
     public string? Value { get; set; }
 
     [Parameter]
@@ -84,11 +87,13 @@
 
     private async Task OnIconSelected(string? optionItem)
     {
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(FieldName);
+
         _initialImage = optionItem ?? string.Empty;
         _filter = optionItem ?? string.Empty;
         _filterResults.Clear();
         _popoverVisible = false;
         await ValueChanged.InvokeAsync(optionItem);
-        CascadedEditContext?.Validate();
+        CascadedEditContext?.NotifyFieldChanged(CascadedEditContext.Field(FieldName));
     }
 }
