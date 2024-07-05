@@ -50,7 +50,6 @@
     [Parameter]
     public EventCallback<T> ValueChanged { get; set; }
 
-    private string? _value;
     private T? _selectedItem;
     private IEnumerable<T>? _source = [];
     private DynamicType<T> _dynamicType = DynamicTypeHelper.Get<T>();
@@ -73,11 +72,6 @@
                 int id = (int)(_dynamicType?.GetValue(Value, IdentifierFieldName) ?? 0);
 
                 _selectedItem = _source?.FirstOrDefault(o => (int)(_dynamicType?.GetValue(o, IdentifierFieldName) ?? 0) == id);
-
-                if (_selectedItem != null)
-                {
-                    _value = _dynamicType?.GetValue(_selectedItem, IdentifierFieldName)?.ToString();
-                }
             }
         }
         catch (Exception ex)
@@ -88,8 +82,11 @@
 
     private async Task OnChange(ChangeEventArgs args)
     {
-        T? value = args?.Value != null ? (T)args.Value : throw new NullReferenceException(nameof(args));
-        await ValueChanged.InvokeAsync(value);
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(IdentifierFieldName);
+
+        string? value = args?.Value?.ToString();
+        _selectedItem = _source?.FirstOrDefault(o => _dynamicType?.GetValue(o, IdentifierFieldName)?.ToString() == value);
+        await ValueChanged.InvokeAsync(_selectedItem);
         CascadedEditContext?.Validate();
     }
 }
