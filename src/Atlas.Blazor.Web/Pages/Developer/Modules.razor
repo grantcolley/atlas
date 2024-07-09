@@ -18,7 +18,7 @@
 
     public override RenderFragment RenderGridContent() => __builder =>
     {
-        <FluentDataGrid TGridItem=Atlas.Core.Models.Module Items="@FilteredItems" ResizableColumns=true Pagination="@Pagination" GridTemplateColumns="0.2fr 1fr 1fr 0.2fr" Style="height: 405px;overflow:auto;">
+        <FluentDataGrid TGridItem=Atlas.Core.Models.Module Items="@FilteredItems" ResizableColumns=true Pagination="@Pagination" GridTemplateColumns="0.2fr 1fr 1fr 0.2fr 1fr" Style="height: 405px;overflow:auto;">
             <PropertyColumn Property="@(m => m.ModuleId)" Sortable="true" Align="Align.Center" Title="Module Id"/>
             <PropertyColumn Property="@(m => m.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(Filter)" Tooltip="true" Title="Name">
                 <ColumnOptions>
@@ -28,6 +28,7 @@
                 </ColumnOptions>
             </PropertyColumn>
             <PropertyColumn Property="@(m => m.Order)" Sortable="true" Title="Order" />
+            <PropertyColumn Property="@(m => m.Permission)" Sortable="true" Title="Permission" />
             <TemplateColumn Align="@Align.Center" Title="Edit">
                 <FluentButton aria-label="Edit" IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(() => Edit(context))" />
             </TemplateColumn>
