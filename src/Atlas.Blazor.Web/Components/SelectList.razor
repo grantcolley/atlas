@@ -6,7 +6,6 @@
               Label="@Label"
               OptionValue="@(oi => oi.Id)"
               SelectedOption="@_selectedOptionItem"
-              @bind-Value="@Value"
               Height="300px">
     <OptionTemplate>
         @if (ShowIcons && !string.IsNullOrWhiteSpace(context.Icon))
@@ -54,13 +53,11 @@
             ArgumentNullException.ThrowIfNull(NavigationManager);
             ArgumentNullException.ThrowIfNullOrWhiteSpace(OptionsCode);
 
-            string? selectedValue = Value;
-
             IResponse<IEnumerable<OptionItem>?> response = await OptionsRequest.GetOptionItemsAsync(OptionsCode).ConfigureAwait(false);
 
             _source = GetResponse(response);
 
-            _selectedOptionItem = _source?.FirstOrDefault(o => o.Id == selectedValue);
+            _selectedOptionItem = _source?.FirstOrDefault(o => o.Id == Value);
         }
         catch (Exception ex)
         {
