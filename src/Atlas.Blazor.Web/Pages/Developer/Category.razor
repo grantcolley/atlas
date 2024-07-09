@@ -44,10 +44,6 @@
                         <FluentValidationMessage For="@(() => Model.Order)" />
                     </div>
                     <div>
-                        <SelectList OptionsCode="@Options.PERMISSIONS_OPTION_ITEMS" @bind-Value=Model.Permission FieldName="Permission" Label="Permission" />
-                        <FluentValidationMessage For="@(() => Model.Permission)" />
-                    </div>
-                    <div>
                         <GenericSelectList T="Atlas.Core.Models.Module"
                                            @bind-Value=@(Model.Module)
                                            FieldName="Module"
@@ -58,6 +54,10 @@
                                            OptionsCode="@Options.MODULES_OPTION_ITEMS"
                                            ShowIcons="true" />
                         <FluentValidationMessage For="@(() => Model.Module)" />
+                    </div>
+                    <div>
+                        <SelectList OptionsCode="@Options.PERMISSIONS_OPTION_ITEMS" @bind-Value=Model.Permission FieldName="Permission" Label="Permission" />
+                        <FluentValidationMessage For="@(() => Model.Permission)" />
                     </div>
                     <div>
                         <IconSelectList @bind-Value=Model.Icon FieldName="Icon" Label="Icon" />
