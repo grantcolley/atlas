@@ -73,7 +73,7 @@
                         Pages
                     </HeadingTemplate>
                     <ChildContent>
-                        <GenericSortableGrid T="Page"
+                        <GenericSortableGrid T="Core.Models.Page"
                                              Source="@Model.Pages.OrderBy(c => c.Order)"
                                              Fields="@(new List<string>{ "Order", "Name" })"
                                              Header="Pages"
