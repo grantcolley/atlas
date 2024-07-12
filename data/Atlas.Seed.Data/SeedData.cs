@@ -158,9 +158,9 @@ namespace Atlas.Seed.Data
 
             dbContext.SaveChanges();
 
-            var usersPage = new Page { Name = "Users", Icon = "PeopleLock", NavigatePage = AtlasWebConstants.PAGE_USERS, Order = 1, Permission = Auth.ADMIN, Category = authorisationCategory };
-            var rolesPage = new Page { Name = "Roles", Icon = "LockMultiple", NavigatePage = AtlasWebConstants.PAGE_ROLES, Order = 2, Permission = Auth.ADMIN, Category = authorisationCategory };
-            var permissionsPage = new Page { Name = "Permissions", Icon = "KeyMultiple", NavigatePage = AtlasWebConstants.PAGE_PERMISSIONS, Order = 3, Permission = Auth.ADMIN, Category = authorisationCategory };
+            var usersPage = new Page { Name = "Users", Icon = "PeopleLock", Route = AtlasWebConstants.PAGE_USERS, Order = 1, Permission = Auth.ADMIN, Category = authorisationCategory };
+            var rolesPage = new Page { Name = "Roles", Icon = "LockMultiple", Route = AtlasWebConstants.PAGE_ROLES, Order = 2, Permission = Auth.ADMIN, Category = authorisationCategory };
+            var permissionsPage = new Page { Name = "Permissions", Icon = "KeyMultiple", Route = AtlasWebConstants.PAGE_PERMISSIONS, Order = 3, Permission = Auth.ADMIN, Category = authorisationCategory };
 
             authorisationCategory.Pages.Add(usersPage);
             authorisationCategory.Pages.Add(rolesPage);
@@ -186,9 +186,9 @@ namespace Atlas.Seed.Data
 
             dbContext.SaveChanges();
 
-            var modulePage = new Page { Name = "Modules", Icon = "PanelLeftText", NavigatePage = AtlasWebConstants.PAGE_MODULES, Order = 1, Permission = Auth.DEVELOPER, Category = configurationCategory };
-            var categoriesPage = new Page { Name = "Categories", Icon = "AppsListDetail", NavigatePage = AtlasWebConstants.PAGE_CATEGORIES, Order = 2, Permission = Auth.DEVELOPER, Category = configurationCategory };
-            var pagesPage = new Page { Name = "Pages", Icon = "DocumentOnePage", NavigatePage = AtlasWebConstants.PAGE_PAGES, Order = 3, Permission = Auth.DEVELOPER, Category = configurationCategory };
+            var modulePage = new Page { Name = "Modules", Icon = "PanelLeftText", Route = AtlasWebConstants.PAGE_MODULES, Order = 1, Permission = Auth.DEVELOPER, Category = configurationCategory };
+            var categoriesPage = new Page { Name = "Categories", Icon = "AppsListDetail", Route = AtlasWebConstants.PAGE_CATEGORIES, Order = 2, Permission = Auth.DEVELOPER, Category = configurationCategory };
+            var pagesPage = new Page { Name = "Pages", Icon = "DocumentOnePage", Route = AtlasWebConstants.PAGE_PAGES, Order = 3, Permission = Auth.DEVELOPER, Category = configurationCategory };
 
             configurationCategory.Pages.Add(modulePage);
             configurationCategory.Pages.Add(categoriesPage);
