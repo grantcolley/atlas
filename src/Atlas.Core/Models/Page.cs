@@ -29,7 +29,7 @@ namespace Atlas.Core.Models
 
         [Required]
         [StringLength(50)]
-        public string? NavigatePage { get; set; }
+        public string? Route { get; set; }
 
         public bool IsPermitted(IEnumerable<string?> permissions)
         {
@@ -61,9 +61,9 @@ namespace Atlas.Core.Models
                 .NotEmpty().WithMessage("Permission is required")
                 .Length(1, 20).WithMessage("Permission cannot exceed 20 characters");
 
-            RuleFor(v => v.NavigatePage)
-                .NotEmpty().WithMessage("Navigate Page is required")
-                .Length(1, 50).WithMessage("Navigate Page cannot exceed 50 characters");
+            RuleFor(v => v.Route)
+                .NotEmpty().WithMessage("Route is required")
+                .Length(1, 50).WithMessage("Route cannot exceed 50 characters");
         }
     }
 }
