@@ -9,5 +9,6 @@
         public const string PAGE_CODES = "PageCodes";
         public const string NAVIGATION_PAGES = "NavigationPages";
         public const string ICON_SIZE20_OPTION_ITEMS = "IconsSize20";
+        public const string ROUTES = "Routes";
     }
 }
