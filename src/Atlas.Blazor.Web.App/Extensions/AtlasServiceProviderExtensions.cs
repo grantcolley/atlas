@@ -33,7 +33,7 @@ namespace Atlas.Blazor.Web.App.Extensions
             return serviceProvider;
         }
 
-        public static List<string> GetRoutesToRender(Assembly assembly)
+        private static List<string> GetRoutesToRender(Assembly assembly)
         {
             IEnumerable<Type> components = assembly
                 .ExportedTypes
