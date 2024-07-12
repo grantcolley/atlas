@@ -239,7 +239,7 @@ namespace Atlas.Data.Access.Data
                 Name = page.Name,
                 Order = page.Order,
                 Icon = page.Icon,
-                NavigatePage = page.NavigatePage,
+                Route = page.Route,
                 Permission = page.Permission,
                 Category = category
             };
