@@ -1,0 +1,61 @@
+﻿using Atlas.Blazor.Web.Services;
+using Microsoft.AspNetCore.Components;
+using System.Reflection;
+
+namespace Atlas.Blazor.Web.App.Extensions
+{
+    public static class AtlasServiceProviderExtensions
+    {
+        public static IServiceProvider AddAtlasRoutablePages(this IServiceProvider serviceProvider)
+        {
+            if (serviceProvider.GetRequiredService<Atlas.Blazor.Web.Interfaces.IAtlasRoutesService>() is AtlasRoutesService atlasRoutesService)
+            {
+                List<string> routes = GetRoutesToRender(typeof(Atlas.Blazor.Web._Imports).Assembly);
+
+                atlasRoutesService.AddRoutes(routes.Where(s => !s.Contains("/alert/")).ToList());
+            }
+
+            return serviceProvider;
+        }
+
+        public static IServiceProvider AddAdditionalRoutableAssemblies(this IServiceProvider serviceProvider, params Assembly[] assemblies)
+        {
+            foreach (Assembly assembly in assemblies)
+            {
+                if (serviceProvider.GetRequiredService<Atlas.Blazor.Web.Interfaces.IAtlasRoutesService>() is AtlasRoutesService atlasRoutesService)
+                {
+                    List<string> routes = GetRoutesToRender(assembly);
+
+                    atlasRoutesService.AddRoutes(routes);
+                }
+            }
+
+            return serviceProvider;
+        }
+
+        public static List<string> GetRoutesToRender(Assembly assembly)
+        {
+            IEnumerable<Type> components = assembly
+                .ExportedTypes
+                .Where(t => t.IsSubclassOf(typeof(ComponentBase)));
+
+            List<string> routes = components
+                .Select(component => GetRouteFromComponent(component))
+                .Where(config => config is not null)
+                .ToList();
+
+            return [.. routes.Where(s => !string.IsNullOrWhiteSpace(s))];
+        }
+
+        private static string GetRouteFromComponent(Type component)
+        {
+            var attributes = component.GetCustomAttributes(inherit: true);
+
+            var routeAttribute = attributes.OfType<RouteAttribute>().FirstOrDefault();
+
+            if(routeAttribute == null) return string.Empty;
+
+            return routeAttribute.Template;
+        }
+    }
+}
