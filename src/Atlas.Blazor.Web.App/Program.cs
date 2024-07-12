@@ -1,5 +1,6 @@
 using Atlas.Blazor.Web.App.Authentication;
 using Atlas.Blazor.Web.App.Components;
+using Atlas.Blazor.Web.App.Extensions;
 using Atlas.Blazor.Web.Constants;
 using Atlas.Blazor.Web.Interfaces;
 using Atlas.Blazor.Web.Services;
@@ -38,6 +39,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<TokenHandler>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
 
+builder.Services.AddSingleton<IAtlasRoutesService, AtlasRoutesService>();
 builder.Services.AddScoped<ITooltipService, TooltipService>();
 builder.Services.AddScoped<IDialogService, DialogService>();
 builder.Services.AddScoped<IAtlasDialogService, AtlasDialogService>();
@@ -121,5 +123,7 @@ app.MapRazorComponents<App>()
     .AddAdditionalAssemblies(
         typeof(Atlas.Blazor.Web.App.Client._Imports).Assembly,
         typeof(Atlas.Blazor.Web._Imports).Assembly);
+
+app.Services.AddAtlasRoutablePages();
 
 app.Run();
