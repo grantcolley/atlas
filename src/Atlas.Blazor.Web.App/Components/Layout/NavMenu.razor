@@ -19,7 +19,7 @@
 
                             @foreach (Page page in category.Pages)
                             {
-                                <FluentNavLink Href=@($@"{page.NavigatePage}") @onclick:stopPropagation="true" Icon="@IconHelper.GetRegularSize20(page.Icon)">@($"{page.Name}")</FluentNavLink>
+                                <FluentNavLink Href=@($@"{page.Route}") @onclick:stopPropagation="true" Icon="@IconHelper.GetRegularSize20(page.Icon)">@($"{page.Name}")</FluentNavLink>
                             }
 
                         </FluentNavGroup>
