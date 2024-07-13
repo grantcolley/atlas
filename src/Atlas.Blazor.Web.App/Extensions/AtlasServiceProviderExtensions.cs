@@ -12,7 +12,7 @@ namespace Atlas.Blazor.Web.App.Extensions
             {
                 List<string> routes = GetRoutesToRender(typeof(Atlas.Blazor.Web._Imports).Assembly);
 
-                atlasRoutesService.AddRoutes(routes.Where(s => !s.Contains("/alert/")).ToList());
+                atlasRoutesService.AddRoutes(routes);
             }
 
             return serviceProvider;
@@ -40,7 +40,7 @@ namespace Atlas.Blazor.Web.App.Extensions
                 .Where(t => t.IsSubclassOf(typeof(ComponentBase)));
 
             List<string> routes = components
-                .Select(component => GetRouteFromComponent(component))
+                .Select(c => GetRouteFromComponent(c))
                 .Where(config => config is not null)
                 .ToList();
 
