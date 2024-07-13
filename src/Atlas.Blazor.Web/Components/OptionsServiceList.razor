@@ -1,0 +1,64 @@
+﻿<FluentSelect TOption="OptionItem"
+              @onchange="OnChange"
+              Items="@_source"
+              Label="@Label"
+              OptionValue="@(oi => oi.Id)"
+              SelectedOption="@_selectedOptionItem"
+              Height="300px">
+    <OptionTemplate>
+        @if (ShowIcons && !string.IsNullOrWhiteSpace(context.Icon))
+        {
+            <FluentIcon Value="IconHelper.GetRegularSize20(context.Icon)" Slot="start" />
+        }
+        @context.Display
+    </OptionTemplate>
+</FluentSelect>
+
+@code {
+
+    [CascadingParameter]
+    private EditContext? CascadedEditContext { get; set; }
+
+    [Inject]
+    internal IOptionsService? OptionsService { get; set; }
+
+    [Parameter]
+    public string? OptionsCode { get; set; }
+
+    [Parameter]
+    public string? Label { get; set; }
+
+    [Parameter]
+    public string? FieldName { get; set; }
+
+    [Parameter]
+    public bool ShowIcons { get; set; }
+
+    [Parameter]
+    public string? Value { get; set; }
+
+    [Parameter]
+    public EventCallback<string?> ValueChanged { get; set; }
+
+    private OptionItem? _selectedOptionItem;
+    private IEnumerable<OptionItem> _source = [];
+
+    protected override void OnInitialized()
+    {
+        ArgumentNullException.ThrowIfNull(OptionsService);
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(OptionsCode);
+
+        _source = OptionsService.GetOptionItems(OptionsCode);
+
+        _selectedOptionItem = _source.FirstOrDefault(o => o.Id == Value);
+    }
+
+    private async Task OnChange(ChangeEventArgs args)
+    {
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(FieldName);
+
+        string? value = args?.Value?.ToString();
+        await ValueChanged.InvokeAsync(value);
+        CascadedEditContext?.NotifyFieldChanged(CascadedEditContext.Field(FieldName));
+    }
+}
