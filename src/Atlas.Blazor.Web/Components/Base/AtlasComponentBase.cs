@@ -14,7 +14,7 @@ namespace Atlas.Blazor.Web.Components.Base
             if (!response.IsSuccess
                 && !string.IsNullOrWhiteSpace(response.Message))
             {
-                NavigateAlertError(response.Message);
+                RouteAlert(response.Message);
                 return default;
             }
             else
@@ -23,7 +23,7 @@ namespace Atlas.Blazor.Web.Components.Base
             }
         }
 
-        protected void NavigateAlertError(string message)
+        protected void RouteAlert(string message)
         {
             var alert = new Models.Alert
             {
@@ -32,7 +32,7 @@ namespace Atlas.Blazor.Web.Components.Base
                 Message = message
             };
 
-            NavigationManager?.NavigateTo(alert.Page);
+            NavigationManager?.NavigateTo(alert.Route);
         }
     }
 }
