@@ -1,0 +1,76 @@
+﻿@inherits AtlasComponentBase
+
+<FluentSelect TOption="OptionItem"
+              @onchange="OnChange"
+              Items="@_source"
+              Label="@Label"
+              OptionValue="@(oi => oi.Id)"
+              SelectedOption="@_selectedOptionItem"
+              Height="300px">
+    <OptionTemplate>
+        @if (ShowIcons && !string.IsNullOrWhiteSpace(context.Icon))
+        {
+            <FluentIcon Value="IconHelper.GetRegularSize20(context.Icon)" Slot="start" />
+        }
+        @context.Display
+    </OptionTemplate>
+</FluentSelect>
+
+@code {
+
+    [CascadingParameter]
+    private EditContext? CascadedEditContext { get; set; }
+
+    [Inject]
+    internal IOptionsRequest? OptionsRequest { get; set; }
+
+    [Parameter]
+    public string? OptionsCode { get; set; }
+
+    [Parameter]
+    public string? Label { get; set; }
+
+    [Parameter]
+    public string? FieldName { get; set; }
+
+    [Parameter]
+    public bool ShowIcons { get; set; }
+
+    [Parameter]
+    public string? Value { get; set; }
+
+    [Parameter]
+    public EventCallback<string?> ValueChanged { get; set; }
+
+    private OptionItem? _selectedOptionItem;
+    private IEnumerable<OptionItem>? _source = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            ArgumentNullException.ThrowIfNull(OptionsRequest);
+            ArgumentNullException.ThrowIfNull(NavigationManager);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(OptionsCode);
+
+            IResponse<IEnumerable<OptionItem>?> response = await OptionsRequest.GetOptionItemsAsync(OptionsCode).ConfigureAwait(false);
+
+            _source = GetResponse(response);
+
+            _selectedOptionItem = _source?.FirstOrDefault(o => o.Id == Value);
+        }
+        catch (Exception ex)
+        {
+            RouteAlert(ex.Message);
+        }
+    }
+
+    private async Task OnChange(ChangeEventArgs args)
+    {
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(FieldName);
+
+        string? value = args?.Value?.ToString();
+        await ValueChanged.InvokeAsync(value);
+        CascadedEditContext?.NotifyFieldChanged(CascadedEditContext.Field(FieldName));
+    }
+}
