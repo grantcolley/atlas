@@ -56,7 +56,7 @@
                         <FluentValidationMessage For="@(() => Model.Module)" />
                     </div>
                     <div>
-                        <SelectList OptionsCode="@Options.PERMISSIONS_OPTION_ITEMS" @bind-Value=Model.Permission FieldName="Permission" Label="Permission" />
+                        <OptionsRequestList OptionsCode="@Options.PERMISSIONS_OPTION_ITEMS" @bind-Value=Model.Permission FieldName="Permission" Label="Permission" />
                         <FluentValidationMessage For="@(() => Model.Permission)" />
                     </div>
                     <div>

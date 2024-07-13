@@ -56,7 +56,7 @@
                         <FluentValidationMessage For="@(() => Model.Category)" />
                     </div>
                     <div>
-                        <SelectList OptionsCode="@Options.PERMISSIONS_OPTION_ITEMS" @bind-Value=Model.Permission FieldName="Permission" Label="Permission" />
+                        <OptionsRequestList OptionsCode="@Options.PERMISSIONS_OPTION_ITEMS" @bind-Value=Model.Permission FieldName="Permission" Label="Permission" />
                         <FluentValidationMessage For="@(() => Model.Permission)" />
                     </div>
                     <div>
@@ -64,7 +64,7 @@
                         <FluentValidationMessage For="@(() => Model.Icon)" />
                     </div>
                     <div>
-                        <OptionsList OptionsCode="@Options.ROUTES" @bind-Value=Model.Route FieldName="Route" Label="Route" />
+                        <OptionsServiceList OptionsCode="@Options.ROUTES" @bind-Value=Model.Route FieldName="Route" Label="Route" />
                         <FluentValidationMessage For="@(() => Model.Route)" />
                     </div>
                 </ChildContent>
