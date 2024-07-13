@@ -8,7 +8,7 @@ namespace Atlas.Blazor.Web.Models
         public string? Title { get; set; }
         public string? Message { get; set; }
 
-        public string Page
+        public string Route
         {
             get
             {
