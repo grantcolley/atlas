@@ -64,7 +64,7 @@
                         <FluentValidationMessage For="@(() => Model.Icon)" />
                     </div>
                     <div>
-                        <SelectList OptionsCode="@Options.ROUTES" @bind-Value=Model.Route FieldName="Route" Label="Route" />
+                        <OptionsList OptionsCode="@Options.ROUTES" @bind-Value=Model.Route FieldName="Route" Label="Route" />
                         <FluentValidationMessage For="@(() => Model.Route)" />
                     </div>
                 </ChildContent>
