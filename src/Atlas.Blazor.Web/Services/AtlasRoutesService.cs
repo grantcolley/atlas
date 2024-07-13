@@ -13,12 +13,16 @@ namespace Atlas.Blazor.Web.Services
         {
             ArgumentNullException.ThrowIfNull(routes, nameof(routes));
 
+            IEnumerable<string> duplicates = _routes.Intersect(routes);
+
+            if (duplicates.Any()) throw new Exception($"Route(s) already exist {string.Join(" ", duplicates)}");
+
             _routes.AddRange(routes);
         }
 
         public IEnumerable<string> GetRoutes()
         {
-            return _routes.Order();
+            return _routes;
         }
     }
 }
