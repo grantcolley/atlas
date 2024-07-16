@@ -54,6 +54,9 @@ else
 }
 @code {
     [Inject]
+    public NavigationManager? NavigationManager { get; set; }
+
+    [Inject]
     public IAtlasDialogService? AtlasDialogService { get; set; }
 
     [Inject]
@@ -107,7 +110,7 @@ else
 
             if (!response.IsSuccess)
             {
-                RaiseAlert(Alerts.ERROR, $"{_title} Error", response.Message);
+                ShowAlert(Alerts.ERROR, $"{_title} Error", response.Message);
                 return;
             }
             else
@@ -130,7 +133,7 @@ else
 
         if (Model == null)
         {
-            RaiseAlert(Alerts.ERROR, $"{_title} Error", $"{_title} is broken");
+            ShowAlert(Alerts.ERROR, $"{_title} Error", $"{_title} is broken");
             return;
         }
 
@@ -169,7 +172,7 @@ else
 
         if (Model == null)
         {
-            RaiseAlert(Alerts.ERROR, $"{_title} Error", $"{_title} is broken");
+            ShowAlert(Alerts.ERROR, $"{_title} Error", $"{_title} is broken");
             return;
         }
 
@@ -204,7 +207,7 @@ else
 
         if (result != default(int))
         {
-            RaiseAlert(Alerts.SUCCESS, $"{_title} Deleted", $"{modelName} has been deleted.");
+            ShowAlert(Alerts.SUCCESS, $"{_title} Deleted", $"{modelName} has been deleted.");
         }
 
         _isProcessing = false;
@@ -214,7 +217,7 @@ else
     {
         if (!response.IsSuccess)
         {
-            RaiseAlert(Alerts.ERROR, $"{_title} Error", response.Message);
+            ShowAlert(Alerts.ERROR, $"{_title} Error", response.Message);
             return default;
         }
         else
@@ -223,7 +226,7 @@ else
         }
     }
 
-    private void RaiseAlert(string? alertType, string? title, string? message)
+    private void ShowAlert(string? alertType, string? title, string? message, bool route = false)
     {
         _alert = new Alert
             {
@@ -231,6 +234,11 @@ else
                 Title = title,
                 Message = message
             };
+
+        if (route)
+        {
+            NavigationManager?.NavigateTo(_alert.Route);
+        }
     }
 
     private void CurrentEditContextOnValidationStateChanged(object? sender, ValidationStateChangedEventArgs e)
