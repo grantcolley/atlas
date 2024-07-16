@@ -91,7 +91,16 @@
         ArgumentNullException.ThrowIfNullOrWhiteSpace(IdentifierFieldName);
 
         string? value = args?.Value?.ToString();
-        _selectedItem = _source?.FirstOrDefault(o => _dynamicType?.GetValue(o, IdentifierFieldName)?.ToString() == value);
+
+        if (!string.IsNullOrWhiteSpace(value) && value != "-1")
+        {
+            _selectedItem = _source?.FirstOrDefault(o => _dynamicType?.GetValue(o, IdentifierFieldName)?.ToString() == value);
+        }
+        else
+        {
+            _selectedItem = null;
+        }
+
         await ValueChanged.InvokeAsync(_selectedItem);
         CascadedEditContext?.NotifyFieldChanged(CascadedEditContext.Field(FieldName));
     }
