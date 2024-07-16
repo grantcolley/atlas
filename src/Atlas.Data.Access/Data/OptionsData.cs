@@ -12,8 +12,8 @@ namespace Atlas.Data.Access.Data
 {
     public class OptionsData : AuthorisationData<OptionsData>, IOptionsData
     {
-        private readonly Dictionary<string, Func<IEnumerable<OptionsArg>, CancellationToken, Task<IEnumerable<OptionItem>>>> optionItems = new();
-        private readonly Dictionary<string, Func<IEnumerable<OptionsArg>, CancellationToken, Task<string>>> genericOptionItems = new();
+        private readonly Dictionary<string, Func<IEnumerable<OptionsArg>, CancellationToken, Task<IEnumerable<OptionItem>>>> optionItems = [];
+        private readonly Dictionary<string, Func<IEnumerable<OptionsArg>, CancellationToken, Task<string>>> genericOptionItems = [];
 
         public OptionsData(ApplicationDbContext applicationDbContext, ILogger<OptionsData> logger)
             : base(applicationDbContext, logger)
@@ -30,9 +30,9 @@ namespace Atlas.Data.Access.Data
 
             if(!string.IsNullOrWhiteSpace(optionsCode))
             {
-                if (optionItems.ContainsKey(optionsCode))
+                if (optionItems.TryGetValue(optionsCode, out Func<IEnumerable<OptionsArg>, CancellationToken, Task<IEnumerable<OptionItem>>>? value))
                 {
-                    return await optionItems[optionsCode].Invoke(optionsArgs, cancellationToken)
+                    return await value.Invoke(optionsArgs, cancellationToken)
                         .ConfigureAwait(false);
                 }
             }
@@ -42,13 +42,13 @@ namespace Atlas.Data.Access.Data
 
         public async Task<string> GetGenericOptionsAsync(IEnumerable<OptionsArg> optionsArgs, CancellationToken cancellationToken)
         {
-            var optionsCode = optionsArgs.FirstOptionsArgValue(Options.OPTIONS_CODE);
+            string? optionsCode = optionsArgs.FirstOptionsArgValue(Options.OPTIONS_CODE);
 
             if (!string.IsNullOrWhiteSpace(optionsCode))
             {
-                if (genericOptionItems.ContainsKey(optionsCode))
+                if (genericOptionItems.TryGetValue(optionsCode, out Func<IEnumerable<OptionsArg>, CancellationToken, Task<string>>? value))
                 {
-                    return await genericOptionItems[optionsCode].Invoke(optionsArgs, cancellationToken)
+                    return await value.Invoke(optionsArgs, cancellationToken)
                         .ConfigureAwait(false);
                 }
             }
@@ -58,19 +58,24 @@ namespace Atlas.Data.Access.Data
 
         private async Task<IEnumerable<OptionItem>> GetPermissionsOptionItemsAsync(IEnumerable<OptionsArg> optionsArgs, CancellationToken cancellationToken)
         {
-            var configs = await _applicationDbContext.Permissions
-                .OrderBy(p => p.Name)
+            List<Permission> permissions = await _applicationDbContext.Permissions
                 .AsNoTracking()
+                .OrderBy(p => p.Name)
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            List<OptionItem> optionItems =
-            [
-                new OptionItem { Id = string.Empty, Display = string.Empty },
-                .. configs.Select(p => new OptionItem { Id = p.Code, Display = p.Name }).ToList(),
-            ];
-
-            return optionItems;
+            if (permissions.Count > 0)
+            {
+                return
+                [
+                    new OptionItem { Id = string.Empty, Display = string.Empty },
+                .. permissions.Select(p => new OptionItem { Id = p.Code, Display = p.Name })
+                ];
+            }
+            else
+            {
+                return [];
+            }
         }
 
         private async Task<string> GetModulesAsync(IEnumerable<OptionsArg> optionsArgs, CancellationToken cancellationToken)
@@ -83,13 +88,10 @@ namespace Atlas.Data.Access.Data
 
             if (modules.Count > 0)
             {
-                List<Module> modulesOptions = [new Module { ModuleId = -1 }, .. modules];
-                return JsonSerializer.Serialize(modulesOptions);
+                modules.Insert(0, new Module { ModuleId = -1 });
             }
-            else
-            {
-                return JsonSerializer.Serialize(new List<Module>());
-            }
+
+            return JsonSerializer.Serialize(modules);
         }
 
         private async Task<string> GetCategoriesAsync(IEnumerable<OptionsArg> optionsArgs, CancellationToken cancellationToken)
@@ -102,13 +104,10 @@ namespace Atlas.Data.Access.Data
 
             if (categories.Count > 0)
             {
-                List<Category> categoryOptions = [new Category { CategoryId = -1 }, .. categories];
-                return JsonSerializer.Serialize(categoryOptions);
+                categories.Insert(0, new Category { CategoryId = -1 });
             }
-            else
-            {
-                return JsonSerializer.Serialize(new List<Category>());
-            }
+
+            return JsonSerializer.Serialize(categories);
         }
     }
 }
