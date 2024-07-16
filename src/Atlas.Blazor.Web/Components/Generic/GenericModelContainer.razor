@@ -207,7 +207,7 @@ else
 
         if (result != default(int))
         {
-            ShowAlert(Alerts.SUCCESS, $"{_title} Deleted", $"{modelName} has been deleted.");
+            ShowAlert(Alerts.SUCCESS, $"{_title} Deleted", $"{modelName} has been deleted.", true);
         }
 
         _isProcessing = false;
@@ -226,7 +226,7 @@ else
         }
     }
 
-    private void ShowAlert(string? alertType, string? title, string? message, bool route = false)
+    private void ShowAlert(string? alertType, string? title, string? message, bool routeAlert = false)
     {
         _alert = new Alert
             {
@@ -235,7 +235,7 @@ else
                 Message = message
             };
 
-        if (route)
+        if (routeAlert)
         {
             NavigationManager?.NavigateTo(_alert.Route);
         }
