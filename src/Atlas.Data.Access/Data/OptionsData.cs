@@ -64,9 +64,11 @@ namespace Atlas.Data.Access.Data
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            List<OptionItem> optionItems = new() { new OptionItem() { Id = string.Empty, Display = string.Empty } };
-
-            optionItems.AddRange(configs.Select(p => new OptionItem { Id = p.Code, Display = p.Name }).ToList());
+            List<OptionItem> optionItems =
+            [
+                new OptionItem { Id = string.Empty, Display = string.Empty },
+                .. configs.Select(p => new OptionItem { Id = p.Code, Display = p.Name }).ToList(),
+            ];
 
             return optionItems;
         }
@@ -81,7 +83,7 @@ namespace Atlas.Data.Access.Data
 
             if (modules.Count > 0)
             {
-                List<Module> modulesOptions = [new Module() { ModuleId = -1 }, .. modules];
+                List<Module> modulesOptions = [new Module { ModuleId = -1 }, .. modules];
                 return JsonSerializer.Serialize(modulesOptions);
             }
             else
@@ -98,9 +100,10 @@ namespace Atlas.Data.Access.Data
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            if (categories.Any())
+            if (categories.Count > 0)
             {
-                return JsonSerializer.Serialize(categories);
+                List<Category> categoryOptions = [new Category { CategoryId = -1 }, .. categories];
+                return JsonSerializer.Serialize(categoryOptions);
             }
             else
             {
