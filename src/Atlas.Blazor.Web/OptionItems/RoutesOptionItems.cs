@@ -23,7 +23,7 @@ namespace Atlas.Blazor.Web.OptionItems
                 .Select(s => s.Remove(0, 1))
                 .Order()];
 
-            _routes = [new OptionItem(), .. routes.Select(r => new OptionItem { Id = r, Display = r })];
+            _routes = [new OptionItem { Id = string.Empty, Display = string.Empty }, .. routes.Select(r => new OptionItem { Id = r, Display = r })];
 
             return _routes;
         }
