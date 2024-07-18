@@ -29,8 +29,8 @@
             </PropertyColumn>
             <PropertyColumn Property="@(m => m.Order)" Sortable="true" Title="Order" />
             <PropertyColumn Property="@(m => m.Permission)" Sortable="true" Title="Permission" />
-            <TemplateColumn Align="@Align.Center" Title="Edit">
-                <FluentButton aria-label="Edit" IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(() => Edit(context))" />
+            <TemplateColumn Align="@Align.Center">
+                <FluentButton aria-label="Open" IconEnd="@(new Icons.Regular.Size16.MoreHorizontal())" OnClick="@(() => Edit(context))" />
             </TemplateColumn>
         </FluentDataGrid>
     };
