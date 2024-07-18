@@ -30,8 +30,8 @@
             <PropertyColumn Property="@(c => c.Module.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(Filter)" Tooltip="true" Title="Module" />
             <PropertyColumn Property="@(c => c.Order)" Sortable="true" Title="Order" />
             <PropertyColumn Property="@(c => c.Permission)" Sortable="true" Title="Permission" />
-            <TemplateColumn Align="@Align.Center" Title="Edit">
-                <FluentButton aria-label="Edit" IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(() => Edit(context))" />
+            <TemplateColumn Align="@Align.Center">
+                <FluentButton aria-label="Open" IconEnd="@(new Icons.Regular.Size16.MoreHorizontal())" OnClick="@(() => Edit(context))" />
             </TemplateColumn>
         </FluentDataGrid>
     };
