@@ -23,7 +23,7 @@ else
     private DesignThemeModes _mode = DesignThemeModes.System;
     private OfficeColor? _officeColor = OfficeColor.Default;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (JSRuntime == null) throw new NullReferenceException(nameof(JSRuntime));
 
