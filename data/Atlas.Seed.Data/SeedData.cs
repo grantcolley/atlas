@@ -56,7 +56,8 @@ namespace Atlas.Seed.Data
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
             permissions.Add(Auth.USER, new Permission { Code = Auth.USER, Name = Auth.USER, Description = "Atlas User Permission" });
-            permissions.Add(Auth.ADMIN, new Permission { Code = Auth.ADMIN, Name = Auth.ADMIN, Description = "Atlas Administrator Permission" });
+            permissions.Add(Auth.ADMIN_READ, new Permission { Code = Auth.ADMIN_READ, Name = Auth.ADMIN_READ, Description = "Atlas Administrator Read Permission" });
+            permissions.Add(Auth.ADMIN_WRITE, new Permission { Code = Auth.ADMIN_WRITE, Name = Auth.ADMIN_WRITE, Description = "Atlas Administrator Write Permission" });
             permissions.Add(Auth.DEVELOPER, new Permission { Code = Auth.DEVELOPER, Name = Auth.DEVELOPER, Description = "Atlas Developer Permission" });
             permissions.Add(Auth.WEATHER_USER, new Permission { Code = Auth.WEATHER_USER, Name = Auth.WEATHER_USER, Description = "Weather User Permission" });
 
@@ -73,7 +74,8 @@ namespace Atlas.Seed.Data
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
             roles.Add(Auth.USER, new Role { Name = $"{Auth.USER} Role", Description = $"{Auth.USER} Role" });
-            roles.Add(Auth.ADMIN, new Role { Name = $"{Auth.ADMIN} Role", Description = $"{Auth.ADMIN} Role" });
+            roles.Add(Auth.ADMIN_READ, new Role { Name = $"{Auth.ADMIN_READ} Role", Description = $"{Auth.ADMIN_READ} Role" });
+            roles.Add(Auth.ADMIN_WRITE, new Role { Name = $"{Auth.ADMIN_WRITE} Role", Description = $"{Auth.ADMIN_WRITE} Role" });
             roles.Add(Auth.DEVELOPER, new Role { Name = $"{Auth.DEVELOPER} Role", Description = $"{Auth.DEVELOPER} Role" });
             roles.Add(Auth.WEATHER_USER, new Role { Name = $"{Auth.WEATHER_USER} Role", Description = $"{Auth.WEATHER_USER} Role" });
 
@@ -87,12 +89,18 @@ namespace Atlas.Seed.Data
             roles[Auth.WEATHER_USER].Permissions.Add(permissions[Auth.USER]);
             roles[Auth.WEATHER_USER].Permissions.Add(permissions[Auth.WEATHER_USER]);
 
-            roles[Auth.ADMIN].Permissions.Add(permissions[Auth.USER]);
-            roles[Auth.ADMIN].Permissions.Add(permissions[Auth.ADMIN]);
-            roles[Auth.ADMIN].Permissions.Add(permissions[Auth.WEATHER_USER]);
+            roles[Auth.ADMIN_READ].Permissions.Add(permissions[Auth.USER]);
+            roles[Auth.ADMIN_READ].Permissions.Add(permissions[Auth.ADMIN_READ]);
+            roles[Auth.ADMIN_READ].Permissions.Add(permissions[Auth.WEATHER_USER]);
+
+            roles[Auth.ADMIN_WRITE].Permissions.Add(permissions[Auth.USER]);
+            roles[Auth.ADMIN_WRITE].Permissions.Add(permissions[Auth.ADMIN_READ]);
+            roles[Auth.ADMIN_WRITE].Permissions.Add(permissions[Auth.ADMIN_WRITE]);
+            roles[Auth.ADMIN_WRITE].Permissions.Add(permissions[Auth.WEATHER_USER]);
 
             roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.USER]);
-            roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.ADMIN]);
+            roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.ADMIN_READ]);
+            roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.ADMIN_WRITE]);
             roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.DEVELOPER]);
             roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.WEATHER_USER]);
 
@@ -104,6 +112,7 @@ namespace Atlas.Seed.Data
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
             users.Add("alice", new User { Name = "alice", Email = "alice@email.com" });
+            users.Add("jane", new User { Name = "jane", Email = "jane@email.com" });
             users.Add("bob", new User { Name = "bob", Email = "bob@email.com" });
             users.Add("grant", new User { Name = "grant", Email = "grant@email.com" });
 
@@ -119,7 +128,8 @@ namespace Atlas.Seed.Data
         {
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-            users["alice"].Roles.AddRange(new[] { roles[Auth.ADMIN], roles[Auth.WEATHER_USER] });
+            users["alice"].Roles.AddRange(new[] { roles[Auth.ADMIN_WRITE] });
+            users["jane"].Roles.AddRange(new[] { roles[Auth.ADMIN_READ] });
             users["bob"].Roles.AddRange(new[] { roles[Auth.USER], roles[Auth.WEATHER_USER] });
             users["grant"].Roles.Add(roles[Auth.DEVELOPER]);
 
@@ -135,7 +145,7 @@ namespace Atlas.Seed.Data
         {
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-            var administrationModule = new Module { Name = "Administration", Icon = "TableSettings", Order = 2, Permission = Auth.ADMIN };
+            var administrationModule = new Module { Name = "Administration", Icon = "TableSettings", Order = 2, Permission = Auth.ADMIN_READ };
 
             dbContext.Modules.Add(administrationModule);
 
@@ -150,7 +160,7 @@ namespace Atlas.Seed.Data
             ArgumentNullException.ThrowIfNull(administrationModule);
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-            var authorisationCategory = new Category { Name = "Authorisation", Icon = "ShieldLock", Order = 1, Permission = Auth.ADMIN, Module = administrationModule };
+            var authorisationCategory = new Category { Name = "Authorisation", Icon = "ShieldLock", Order = 1, Permission = Auth.ADMIN_READ, Module = administrationModule };
 
             administrationModule.Categories.Add(authorisationCategory);
 
@@ -158,9 +168,9 @@ namespace Atlas.Seed.Data
 
             dbContext.SaveChanges();
 
-            var usersPage = new Page { Name = "Users", Icon = "PeopleLock", Route = AtlasWebConstants.PAGE_USERS, Order = 1, Permission = Auth.ADMIN, Category = authorisationCategory };
-            var rolesPage = new Page { Name = "Roles", Icon = "LockMultiple", Route = AtlasWebConstants.PAGE_ROLES, Order = 2, Permission = Auth.ADMIN, Category = authorisationCategory };
-            var permissionsPage = new Page { Name = "Permissions", Icon = "KeyMultiple", Route = AtlasWebConstants.PAGE_PERMISSIONS, Order = 3, Permission = Auth.ADMIN, Category = authorisationCategory };
+            var usersPage = new Page { Name = "Users", Icon = "PeopleLock", Route = AtlasWebConstants.PAGE_USERS, Order = 1, Permission = Auth.ADMIN_READ, Category = authorisationCategory };
+            var rolesPage = new Page { Name = "Roles", Icon = "LockMultiple", Route = AtlasWebConstants.PAGE_ROLES, Order = 2, Permission = Auth.ADMIN_READ, Category = authorisationCategory };
+            var permissionsPage = new Page { Name = "Permissions", Icon = "KeyMultiple", Route = AtlasWebConstants.PAGE_PERMISSIONS, Order = 3, Permission = Auth.ADMIN_READ, Category = authorisationCategory };
 
             authorisationCategory.Pages.Add(usersPage);
             authorisationCategory.Pages.Add(rolesPage);

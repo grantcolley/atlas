@@ -16,7 +16,7 @@ namespace Atlas.API.Endpoints
                     .ConfigureAwait(false);
 
                 if (authorisation == null
-                    || !authorisation.HasPermission(Auth.ADMIN))
+                    || !authorisation.HasPermission(Auth.DEVELOPER))
                 {
                     return Results.Unauthorized();
                 }
@@ -43,7 +43,7 @@ namespace Atlas.API.Endpoints
                     .ConfigureAwait(false);
 
                 if (authorisation == null
-                    || !authorisation.HasPermission(Auth.ADMIN))
+                    || !authorisation.HasPermission(Auth.DEVELOPER))
                 {
                     return Results.Unauthorized();
                 }
@@ -70,7 +70,7 @@ namespace Atlas.API.Endpoints
                     .ConfigureAwait(false);
 
                 if (authorisation == null
-                    || !authorisation.HasPermission(Auth.ADMIN))
+                    || !authorisation.HasPermission(Auth.DEVELOPER))
                 {
                     return Results.Unauthorized();
                 }
@@ -97,7 +97,7 @@ namespace Atlas.API.Endpoints
                     .ConfigureAwait(false);
 
                 if (authorisation == null
-                    || !authorisation.HasPermission(Auth.ADMIN))
+                    || !authorisation.HasPermission(Auth.DEVELOPER))
                 {
                     return Results.Unauthorized();
                 }
@@ -124,7 +124,7 @@ namespace Atlas.API.Endpoints
                     .ConfigureAwait(false);
 
                 if (authorisation == null
-                    || !authorisation.HasPermission(Auth.ADMIN))
+                    || !authorisation.HasPermission(Auth.DEVELOPER))
                 {
                     return Results.Unauthorized();
                 }
@@ -151,7 +151,7 @@ namespace Atlas.API.Endpoints
                     .ConfigureAwait(false);
 
                 if (authorisation == null
-                    || !authorisation.HasPermission(Auth.ADMIN))
+                    || !authorisation.HasPermission(Auth.DEVELOPER))
                 {
                     return Results.Unauthorized();
                 }
@@ -178,7 +178,7 @@ namespace Atlas.API.Endpoints
                     .ConfigureAwait(false);
 
                 if (authorisation == null
-                    || !authorisation.HasPermission(Auth.ADMIN))
+                    || !authorisation.HasPermission(Auth.DEVELOPER))
                 {
                     return Results.Unauthorized();
                 }
@@ -205,7 +205,7 @@ namespace Atlas.API.Endpoints
                     .ConfigureAwait(false);
 
                 if (authorisation == null
-                    || !authorisation.HasPermission(Auth.ADMIN))
+                    || !authorisation.HasPermission(Auth.DEVELOPER))
                 {
                     return Results.Unauthorized();
                 }
@@ -232,7 +232,7 @@ namespace Atlas.API.Endpoints
                     .ConfigureAwait(false);
 
                 if (authorisation == null
-                    || !authorisation.HasPermission(Auth.ADMIN))
+                    || !authorisation.HasPermission(Auth.DEVELOPER))
                 {
                     return Results.Unauthorized();
                 }
@@ -259,7 +259,7 @@ namespace Atlas.API.Endpoints
                     .ConfigureAwait(false);
 
                 if (authorisation == null
-                    || !authorisation.HasPermission(Auth.ADMIN))
+                    || !authorisation.HasPermission(Auth.DEVELOPER))
                 {
                     return Results.Unauthorized();
                 }
@@ -285,7 +285,7 @@ namespace Atlas.API.Endpoints
                     .ConfigureAwait(false);
 
                 if (authorisation == null
-                    || !authorisation.HasPermission(Auth.ADMIN))
+                    || !authorisation.HasPermission(Auth.DEVELOPER))
                 {
                     return Results.Unauthorized();
                 }
@@ -312,7 +312,7 @@ namespace Atlas.API.Endpoints
                     .ConfigureAwait(false);
 
                 if (authorisation == null
-                    || !authorisation.HasPermission(Auth.ADMIN))
+                    || !authorisation.HasPermission(Auth.DEVELOPER))
                 {
                     return Results.Unauthorized();
                 }
@@ -339,7 +339,7 @@ namespace Atlas.API.Endpoints
                     .ConfigureAwait(false);
 
                 if (authorisation == null
-                    || !authorisation.HasPermission(Auth.ADMIN))
+                    || !authorisation.HasPermission(Auth.DEVELOPER))
                 {
                     return Results.Unauthorized();
                 }
@@ -366,7 +366,7 @@ namespace Atlas.API.Endpoints
                     .ConfigureAwait(false);
 
                 if (authorisation == null
-                    || !authorisation.HasPermission(Auth.ADMIN))
+                    || !authorisation.HasPermission(Auth.DEVELOPER))
                 {
                     return Results.Unauthorized();
                 }
@@ -393,7 +393,7 @@ namespace Atlas.API.Endpoints
                     .ConfigureAwait(false);
 
                 if (authorisation == null
-                    || !authorisation.HasPermission(Auth.ADMIN))
+                    || !authorisation.HasPermission(Auth.DEVELOPER))
                 {
                     return Results.Unauthorized();
                 }
