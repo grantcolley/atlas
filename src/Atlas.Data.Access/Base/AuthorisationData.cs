@@ -8,6 +8,8 @@ namespace Atlas.Data.Access.Base
 {
     public abstract class AuthorisationData<T> : DataBase<T>, IAuthorisationData
     {
+        public Authorisation? Authorisation { get; private set; }
+
         public AuthorisationData(ApplicationDbContext applicationDbContext, ILogger<T> logger)
             : base(applicationDbContext, logger)
         {
@@ -32,7 +34,9 @@ namespace Atlas.Data.Access.Base
             {
                 SetUser(user.Email);
 
-                return new Authorisation { User = claim, Permissions = user.GetPermissions() };
+                Authorisation = new Authorisation { User = claim, Permissions = user.GetPermissions() };
+
+                return Authorisation;
             }
 
             return default;

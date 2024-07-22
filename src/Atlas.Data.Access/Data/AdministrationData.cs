@@ -1,4 +1,5 @@
-﻿using Atlas.Core.Dynamic;
+﻿using Atlas.Core.Constants;
+using Atlas.Core.Dynamic;
 using Atlas.Core.Models;
 using Atlas.Data.Access.Base;
 using Atlas.Data.Access.Context;
@@ -43,41 +44,53 @@ namespace Atlas.Data.Access.Data
             user.RoleChecklist = await GetRoleChecklistAsync(user.Roles, cancellationToken)
                 .ConfigureAwait(false);
 
+            if(Authorisation == null
+                || !Authorisation.HasPermission(Auth.ADMIN_WRITE))
+            {
+                user.IsReadOnly = true;
+            }
+
             return user;
         }
 
-        public async Task<User> CreateUserAsync(User user, CancellationToken cancellationToken)
+        public async Task<User> CreateUserAsync(User addUser, CancellationToken cancellationToken)
         {
-            ArgumentNullException.ThrowIfNull(nameof(user));
-            if (user.UserId != 0) throw new ArgumentException(nameof(user.UserId), $"Cannot create new user with UserId {user.UserId}");
+            ArgumentNullException.ThrowIfNull(nameof(addUser));
+            if (addUser.UserId != 0) throw new ArgumentException(nameof(addUser.UserId), $"Cannot create new user with UserId {addUser.UserId}");
 
-            User addUser = new User
+            User user = new User
             {
-                Name = user.Name,
-                Email = user.Email
+                Name = addUser.Name,
+                Email = addUser.Email
             };
 
             await _applicationDbContext.Users
-                .AddAsync(addUser, cancellationToken)
+                .AddAsync(user, cancellationToken)
                 .ConfigureAwait(false);
 
             await _applicationDbContext
                 .SaveChangesAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            if (user.Roles.Any())
+            if (addUser.Roles.Any())
             {
-                addUser.Roles.AddRange(user.Roles);
+                user.Roles.AddRange(addUser.Roles);
 
                 await _applicationDbContext
                     .SaveChangesAsync(cancellationToken)
                     .ConfigureAwait(false);
 
-                addUser.RoleChecklist = await GetRoleChecklistAsync(addUser.Roles, cancellationToken)
+                user.RoleChecklist = await GetRoleChecklistAsync(user.Roles, cancellationToken)
                     .ConfigureAwait(false);
             }
 
-            return addUser;
+            if (Authorisation == null
+                || !Authorisation.HasPermission(Auth.ADMIN_WRITE))
+            {
+                user.IsReadOnly = true;
+            }
+
+            return user;
         }
 
         public async Task<User> UpdateUserAsync(User updateUser, CancellationToken cancellationToken)
@@ -117,6 +130,12 @@ namespace Atlas.Data.Access.Data
             user.RoleChecklist = await GetRoleChecklistAsync(user.Roles, cancellationToken)
                 .ConfigureAwait(false);
 
+            if (Authorisation == null
+                || !Authorisation.HasPermission(Auth.ADMIN_WRITE))
+            {
+                user.IsReadOnly = true;
+            }
+
             return user;
         }
 
@@ -143,13 +162,19 @@ namespace Atlas.Data.Access.Data
 
         public async Task<Permission> GetPermissionAsync(int permissionId, CancellationToken cancellationToken)
         {
-            var permissions = await _applicationDbContext.Permissions
+            Permission permission = await _applicationDbContext.Permissions
                 .AsNoTracking()
                 .Include(p => p.Roles)
                 .FirstAsync(p => p.PermissionId.Equals(permissionId), cancellationToken)
                 .ConfigureAwait(false);
 
-            return permissions;
+            if (Authorisation == null
+                || !Authorisation.HasPermission(Auth.ADMIN_WRITE))
+            {
+                permission.IsReadOnly = true;
+            }
+
+            return permission;
         }
 
         public async Task<Permission> CreatePermissionAsync(Permission permission, CancellationToken cancellationToken)
@@ -164,6 +189,12 @@ namespace Atlas.Data.Access.Data
             await _applicationDbContext
                 .SaveChangesAsync(cancellationToken)
                 .ConfigureAwait(false);
+
+            if (Authorisation == null
+                || !Authorisation.HasPermission(Auth.ADMIN_WRITE))
+            {
+                permission.IsReadOnly = true;
+            }
 
             return permission;
         }
@@ -183,6 +214,12 @@ namespace Atlas.Data.Access.Data
             await _applicationDbContext
                 .SaveChangesAsync(cancellationToken)
                 .ConfigureAwait(false);
+
+            if (Authorisation == null
+                || !Authorisation.HasPermission(Auth.ADMIN_WRITE))
+            {
+                permission.IsReadOnly = true;
+            }
 
             return permission;
         }
@@ -230,24 +267,30 @@ namespace Atlas.Data.Access.Data
             role.PermissionChecklist = await GetPermissionChecklistAsync(role.Permissions, cancellationToken)
                 .ConfigureAwait(false);
 
+            if (Authorisation == null
+                || !Authorisation.HasPermission(Auth.ADMIN_WRITE))
+            {
+                role.IsReadOnly = true;
+            }
+
             return role;
         }
 
-        public async Task<Role> CreateRoleAsync(Role role, CancellationToken cancellationToken)
+        public async Task<Role> CreateRoleAsync(Role addRole, CancellationToken cancellationToken)
         {
-            ArgumentNullException.ThrowIfNull(nameof(role));
-            if (role.RoleId != 0) throw new ArgumentException(nameof(role.RoleId), $"Cannot create new role with RoleId {role.RoleId}");
+            ArgumentNullException.ThrowIfNull(nameof(addRole));
+            if (addRole.RoleId != 0) throw new ArgumentException(nameof(addRole.RoleId), $"Cannot create new role with RoleId {addRole.RoleId}");
 
-            var addRole = new Role
+            var role = new Role
             {
-                Name = role.Name,
-                Description = role.Description
+                Name = addRole.Name,
+                Description = addRole.Description
             };
 
-            var permissions = ExtractSelectedPemissions(addRole.PermissionChecklist);
+            var permissions = ExtractSelectedPemissions(role.PermissionChecklist);
 
             await _applicationDbContext.Roles
-                .AddAsync(addRole, cancellationToken)
+                .AddAsync(role, cancellationToken)
                 .ConfigureAwait(false);
 
             await _applicationDbContext
@@ -256,17 +299,23 @@ namespace Atlas.Data.Access.Data
 
             if (permissions.Any())
             {
-                addRole.Permissions.AddRange(permissions);
+                role.Permissions.AddRange(permissions);
 
                 await _applicationDbContext
                     .SaveChangesAsync(cancellationToken)
                     .ConfigureAwait(false);
             }
 
-            addRole.PermissionChecklist = await GetPermissionChecklistAsync(addRole.Permissions, cancellationToken)
+            role.PermissionChecklist = await GetPermissionChecklistAsync(role.Permissions, cancellationToken)
                 .ConfigureAwait(false);
 
-            return addRole;
+            if (Authorisation == null
+                || !Authorisation.HasPermission(Auth.ADMIN_WRITE))
+            {
+                role.IsReadOnly = true;
+            }
+
+            return role;
         }
 
         public async Task<Role> UpdateRoleAsync(Role updateRole, CancellationToken cancellationToken)
@@ -308,6 +357,12 @@ namespace Atlas.Data.Access.Data
 
             role.PermissionChecklist = await GetPermissionChecklistAsync(role.Permissions, cancellationToken)
                 .ConfigureAwait(false);
+
+            if (Authorisation == null
+                || !Authorisation.HasPermission(Auth.ADMIN_WRITE))
+            {
+                role.IsReadOnly = true;
+            }
 
             return role;
         }
