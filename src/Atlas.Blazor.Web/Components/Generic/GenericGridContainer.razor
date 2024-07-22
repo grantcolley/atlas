@@ -42,7 +42,7 @@ else
     public NavigationManager? NavigationManager { get; set; }
 
     [Inject]
-    public IRequests? Requests { get; set; }
+    public IGenericRequests? GenericRequests { get; set; }
 
     private Alert? _alert;   
     private bool _isProcessing = false;
@@ -78,7 +78,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        ArgumentNullException.ThrowIfNull(Requests);
+        ArgumentNullException.ThrowIfNull(GenericRequests);
         ArgumentNullException.ThrowIfNullOrWhiteSpace(_title);
         ArgumentNullException.ThrowIfNullOrWhiteSpace(_navigateTo);
         ArgumentNullException.ThrowIfNullOrWhiteSpace(_apiEndpoint);
@@ -89,7 +89,7 @@ else
 
         _isProcessing = true;
 
-        IResponse<IEnumerable<T>> response = await Requests.GetListAsync<T>(_apiEndpoint)
+        IResponse<IEnumerable<T>> response = await GenericRequests.GetListAsync<T>(_apiEndpoint)
             .ConfigureAwait(false);
 
         if (!response.IsSuccess)

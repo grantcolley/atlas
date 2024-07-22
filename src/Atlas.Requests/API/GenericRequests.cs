@@ -1,14 +1,13 @@
-﻿using Atlas.Core.Authentication;
-using Atlas.Requests.Base;
+﻿using Atlas.Requests.Base;
 using Atlas.Requests.Interfaces;
 using Atlas.Requests.Model;
 using System.Net.Http.Json;
 
 namespace Atlas.Requests.API
 {
-    public class Requests : RequestBase, IRequests
+    public class GenericRequests : RequestBase, IGenericRequests
     {
-        public Requests(HttpClient httpClient)
+        public GenericRequests(HttpClient httpClient)
             : base(httpClient)
         {
         }

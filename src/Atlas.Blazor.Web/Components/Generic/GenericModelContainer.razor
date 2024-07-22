@@ -60,7 +60,7 @@ else
     public IAtlasDialogService? AtlasDialogService { get; set; }
 
     [Inject]
-    public IRequests? Requests { get; set; }
+    public IGenericRequests? GenericRequests { get; set; }
 
     [Parameter]
     public int? Id { get; set; }
@@ -89,7 +89,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        ArgumentNullException.ThrowIfNull(Requests);
+        ArgumentNullException.ThrowIfNull(GenericRequests);
         ArgumentNullException.ThrowIfNullOrWhiteSpace(_title);
         ArgumentNullException.ThrowIfNullOrWhiteSpace(_apiGetEndpoint);
         ArgumentNullException.ThrowIfNullOrWhiteSpace(_apiCreateEndpoint);
@@ -105,7 +105,7 @@ else
         }
         else
         {
-            IResponse<T> response = await Requests.GetModelAsync<T>(Id.Value, _apiGetEndpoint)
+            IResponse<T> response = await GenericRequests.GetModelAsync<T>(Id.Value, _apiGetEndpoint)
                 .ConfigureAwait(false);
 
             if (!response.IsSuccess)
@@ -127,7 +127,7 @@ else
 
     private async Task OnSubmitAsync()
     {
-        if (Requests == null) throw new NullReferenceException(nameof(Requests));
+        if (GenericRequests == null) throw new NullReferenceException(nameof(GenericRequests));
         if (_apiCreateEndpoint == null) throw new NullReferenceException(nameof(_apiCreateEndpoint));
         if (_apiUpdateEndpoint == null) throw new NullReferenceException(nameof(_apiUpdateEndpoint));
 
@@ -146,14 +146,14 @@ else
 
             if (_id.Equals(0))
             {
-                response = await Requests.CreateModelAsync<T>(Model, _apiCreateEndpoint)
+                response = await GenericRequests.CreateModelAsync<T>(Model, _apiCreateEndpoint)
                     .ConfigureAwait(false);
 
                 Model = GetResponse(response);
             }
             else
             {
-                response = await Requests.UpdateModelAsync<T>(Model, _apiUpdateEndpoint)
+                response = await GenericRequests.UpdateModelAsync<T>(Model, _apiUpdateEndpoint)
                     .ConfigureAwait(false);
 
                 _ = GetResponse(response);
@@ -165,7 +165,7 @@ else
 
     private async Task OnDeleteAsync()
     {
-        if (Requests == null) throw new NullReferenceException(nameof(Requests));
+        if (GenericRequests == null) throw new NullReferenceException(nameof(GenericRequests));
         if (_modelNameField == null) throw new NullReferenceException(nameof(_modelNameField));
         if (AtlasDialogService == null) throw new NullReferenceException(nameof(AtlasDialogService));
         if (_apiDeleteEndpoint == null) throw new NullReferenceException(nameof(_apiDeleteEndpoint));
@@ -199,7 +199,7 @@ else
 
         _isProcessing = true;
 
-        IResponse<int> response = await Requests
+        IResponse<int> response = await GenericRequests
             .DeleteModelAsync(_id, _apiDeleteEndpoint)
             .ConfigureAwait(false);
 
