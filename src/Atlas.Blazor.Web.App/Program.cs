@@ -52,11 +52,11 @@ builder.Services.AddHttpClient(AtlasWebConstants.ATLAS_API,
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
   .CreateClient(AtlasWebConstants.ATLAS_API));
 
-builder.Services.AddTransient<IUserRequests, UserRequests>(sp =>
+builder.Services.AddTransient<IClaimRequests, ClaimRequests>(sp =>
 {
     var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
     var httpClient = httpClientFactory.CreateClient(AtlasWebConstants.ATLAS_API);
-    return new UserRequests(httpClient);
+    return new ClaimRequests(httpClient);
 });
 
 builder.Services.AddTransient<IRequests, Requests>(sp =>

@@ -40,7 +40,7 @@
     internal PersistentComponentState? ApplicationState { get; set; }
 
     [Inject]
-    internal IUserRequests? UserRequests { get; set; }
+    internal IClaimRequests? ClaimRequests { get; set; }
 
     private IEnumerable<Module>? _modules = new List<Module>();
 
@@ -48,7 +48,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        ArgumentNullException.ThrowIfNull(UserRequests);
+        ArgumentNullException.ThrowIfNull(ClaimRequests);
         ArgumentNullException.ThrowIfNull(ApplicationState);
 
         if (AuthenticationState != null)
@@ -69,7 +69,7 @@
                     }
                     else
                     {
-                        _modules = await UserRequests.GetClaimModulesAsync().ConfigureAwait(false);
+                        _modules = await ClaimRequests.GetClaimModulesAsync().ConfigureAwait(false);
                     }
                 }
             }
