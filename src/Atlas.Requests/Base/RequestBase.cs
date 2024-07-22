@@ -4,14 +4,9 @@ using System.Text.Json;
 
 namespace Atlas.Requests.Base
 {
-    public abstract class RequestBase
+    public abstract class RequestBase(HttpClient httpClient)
     {
-        protected readonly HttpClient _httpClient;
-
-        protected RequestBase(HttpClient httpClient)
-        {
-            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-        }
+        protected readonly HttpClient _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
 
         protected static async Task<IResponse<T>> GetResponseAsync<T>(HttpResponseMessage httpResponseMessage)
         {
