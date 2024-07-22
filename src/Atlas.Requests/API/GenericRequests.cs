@@ -5,13 +5,8 @@ using System.Net.Http.Json;
 
 namespace Atlas.Requests.API
 {
-    public class GenericRequests : RequestBase, IGenericRequests
+    public class GenericRequests(HttpClient httpClient) : RequestBase(httpClient), IGenericRequests
     {
-        public GenericRequests(HttpClient httpClient)
-            : base(httpClient)
-        {
-        }
-
         public async Task<IResponse<IEnumerable<T>>> GetListAsync<T>(string endpoint) where T : class, new()
         {
             using var httpResponseMessage = await _httpClient.GetAsync(endpoint).ConfigureAwait(false);
