@@ -2,9 +2,8 @@
 
 namespace Atlas.Requests.Interfaces
 {
-    public interface IAuthResult<T> where T : new()
+    public interface IAuthResponse<T> : IResponse<T>
     {
         Authorisation? Authorisation { get; set; }
-        T? Result { get; set; }
     }
 }

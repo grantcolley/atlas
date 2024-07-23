@@ -18,11 +18,14 @@
         }
         else
         {
-            <FluentToolbar>
-                <FluentButton Id="create-new" aria-label="Create" IconEnd="@(new Icons.Regular.Size20.DocumentAdd())" OnClick="@(() => Create())" />
-                <FluentTooltip Anchor="create-new">Create New</FluentTooltip>
-            </FluentToolbar>
-        
+            @if(_canCreateModel)
+            {
+                <FluentToolbar>
+                    <FluentButton Id="create-new" aria-label="Create" IconEnd="@(new Icons.Regular.Size20.DocumentAdd())" OnClick="@(() => Create())" />
+                    <FluentTooltip Anchor="create-new">Create New</FluentTooltip>
+                </FluentToolbar>
+            }
+
             @RenderGrid()
 
             <FluentPaginator State="@Pagination" />
@@ -46,6 +49,7 @@ else
 
     private Alert? _alert;   
     private bool _isProcessing = false;
+    private bool _canCreateModel = false;
     private IEnumerable<T>? _items = new List<T>();
     private DynamicType<T> _dynamicType = DynamicTypeHelper.Get<T>();
 
@@ -55,6 +59,7 @@ else
     protected int _itemsPerPage { get; set; } = 20;
     protected string? _filterFieldName { get; set; }
     protected string? _identityFieldName { get; set; }
+    protected string? _createPermission { get; set; }
 
     public string Filter = string.Empty;
     public PaginationState Pagination = new PaginationState();
@@ -89,7 +94,7 @@ else
 
         _isProcessing = true;
 
-        IResponse<IEnumerable<T>> response = await GenericRequests.GetListAsync<T>(_apiEndpoint)
+        IAuthResponse<IEnumerable<T>> response = await GenericRequests.GetListAsync<T>(_apiEndpoint)
             .ConfigureAwait(false);
 
         if (!response.IsSuccess)
@@ -106,6 +111,12 @@ else
         }
         else
         {
+            if (response.Authorisation != null
+                && !string.IsNullOrWhiteSpace(_createPermission))
+            {
+                _canCreateModel = response.Authorisation.HasPermission(_createPermission);
+            }
+
             if (response.Result != null)
             {
                 _items = response.Result;

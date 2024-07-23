@@ -11,6 +11,7 @@ namespace Atlas.Blazor.Web.Components.Generic
         public abstract int ItemsPerPage { get; set; }
         public abstract string? FilterFieldName { get; set; }
         public abstract string? IdentityFieldName { get; set; }
+        public abstract string? CreatePermission { get; set; }
 
         public abstract RenderFragment RenderGridContent();
 
@@ -28,6 +29,7 @@ namespace Atlas.Blazor.Web.Components.Generic
             _itemsPerPage = ItemsPerPage;
             _filterFieldName = FilterFieldName;
             _identityFieldName = IdentityFieldName;
+            _createPermission = CreatePermission;
 
             await base.OnInitializedAsync();
         }

@@ -24,7 +24,7 @@ namespace Atlas.API.Endpoints
                 IEnumerable<Module>? modules = await navigationData.GetModulesAsync(cancellationToken)
                     .ConfigureAwait(false);
 
-                return Results.Ok(modules);
+                return Results.Ok(new AuthResult<IEnumerable<Module>?> { Authorisation = authorisation, Result = modules });
             }
             catch (Exception)
             {
@@ -159,7 +159,7 @@ namespace Atlas.API.Endpoints
                 IEnumerable<Category>? categories = await navigationData.GetCategoriesAsync(cancellationToken)
                     .ConfigureAwait(false);
 
-                return Results.Ok(categories);
+                return Results.Ok(new AuthResult<IEnumerable<Category>?> { Authorisation = authorisation, Result = categories });
             }
             catch (Exception)
             {
@@ -293,7 +293,7 @@ namespace Atlas.API.Endpoints
                 IEnumerable<Page>? pages = await navigationData.GetPagesAsync(cancellationToken)
                     .ConfigureAwait(false);
 
-                return Results.Ok(pages);
+                return Results.Ok(new AuthResult<IEnumerable<Page>?> { Authorisation = authorisation, Result = pages });
             }
             catch (Exception)
             {

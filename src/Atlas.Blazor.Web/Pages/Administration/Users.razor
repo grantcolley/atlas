@@ -15,6 +15,7 @@
     public override int ItemsPerPage { get; set; } = 20;
     public override string? FilterFieldName { get; set; } = "Name";
     public override string? IdentityFieldName { get; set; } = "UserId";
+    public override string? CreatePermission { get; set; } = Auth.ADMIN_WRITE;
 
     public override RenderFragment RenderGridContent() => __builder =>
     {

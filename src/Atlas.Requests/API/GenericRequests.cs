@@ -1,4 +1,5 @@
-﻿using Atlas.Requests.Base;
+﻿using Atlas.Core.Models;
+using Atlas.Requests.Base;
 using Atlas.Requests.Interfaces;
 using Atlas.Requests.Model;
 using System.Net.Http.Json;
@@ -7,23 +8,22 @@ namespace Atlas.Requests.API
 {
     public class GenericRequests(HttpClient httpClient) : RequestBase(httpClient), IGenericRequests
     {
-        public async Task<IResponse<IEnumerable<T>>> GetListAsync<T>(string endpoint) where T : class, new()
+        public async Task<IAuthResponse<IEnumerable<T>>> GetListAsync<T>(string endpoint) where T : class, new()
         {
             using var httpResponseMessage = await _httpClient.GetAsync(endpoint).ConfigureAwait(false);
 
-            var responseList = await GetResponseAsync<IEnumerable<T>>(httpResponseMessage)
+            var responseList = await GetResponseAsync<AuthResult<List<T>>>(httpResponseMessage)
                 .ConfigureAwait(false);
 
-            Response<IEnumerable<T>> response = new()
+            if (responseList == null) throw new NullReferenceException(nameof(responseList));
+
+            AuthResponse<IEnumerable<T>> response = new()
             {
                 IsSuccess = responseList.IsSuccess,
-                Message = responseList.Message
+                Message = responseList.Message,
+                Authorisation = responseList?.Result?.Authorisation,
+                Result = responseList?.Result?.Result
             };
-
-            if (responseList.IsSuccess)
-            {
-                response.Result = responseList.Result;
-            }
 
             return response;
         }

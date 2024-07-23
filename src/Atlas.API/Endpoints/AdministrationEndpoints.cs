@@ -24,7 +24,7 @@ namespace Atlas.API.Endpoints
                 IEnumerable<User>? users = await administrationData.GetUsersAsync(cancellationToken)
                     .ConfigureAwait(false);
 
-                return Results.Ok(users);
+                return Results.Ok(new AuthResult<IEnumerable<User>?> { Authorisation = authorisation, Result = users });
             }
             catch (Exception)
             {
@@ -159,7 +159,7 @@ namespace Atlas.API.Endpoints
                 IEnumerable<Role>? roles = await administrationData.GetRolesAsync(cancellationToken)
                     .ConfigureAwait(false);
 
-                return Results.Ok(roles);
+                return Results.Ok(new AuthResult<IEnumerable<Role>?> { Authorisation = authorisation, Result = roles });
             }
             catch (Exception)
             {
@@ -294,7 +294,7 @@ namespace Atlas.API.Endpoints
                 IEnumerable<Permission>? permissions = await administrationData.GetPermissionsAsync(cancellationToken)
                     .ConfigureAwait(false);
 
-                return Results.Ok(permissions);
+                return Results.Ok(new AuthResult<IEnumerable<Permission>?> { Authorisation = authorisation, Result = permissions });
             }
             catch (Exception)
             {
