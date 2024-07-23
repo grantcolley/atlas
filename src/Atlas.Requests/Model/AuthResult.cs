@@ -5,8 +5,8 @@ namespace Atlas.Requests.Model
 {
     public class AuthResult<T> : IAuthResult<T> where T : new()
     {
-        public Authorisation Authorisation { get; set; }
+        public Authorisation? Authorisation { get; set; }
 
-        public T Result => throw new NotImplementedException();
+        public T? Result { get; set; }
     }
 }
