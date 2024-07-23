@@ -36,11 +36,11 @@
                 </HeadingTemplate>
                 <ChildContent>
                     <div>
-                        <FluentTextField Name="Name" @bind-Value="Model.Name" Label="Name" />
+                        <FluentTextField Name="Name" @bind-Value="Model.Name" Label="Name" ReadOnly="@(Model.IsReadOnly)" />
                         <FluentValidationMessage For="@(() => Model.Name)" />
                     </div>
                     <div>
-                        <FluentTextField Name="Email" @bind-Value="Model.Email" Label="Email" />
+                        <FluentTextField Name="Email" @bind-Value="Model.Email" Label="Email" ReadOnly="@(Model.IsReadOnly)" />
                         <FluentValidationMessage For="@(() => Model.Email)" />
                     </div>
                 </ChildContent>
@@ -49,7 +49,7 @@
             @if (Model.UserId > 0)
             {
                 <FluentAccordionItem Expanded=true>
-                        <HeadingTemplate>
+                    <HeadingTemplate>
                         Role Membership
                     </HeadingTemplate>
                     <ChildContent>
