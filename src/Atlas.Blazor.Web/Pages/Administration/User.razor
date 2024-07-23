@@ -53,7 +53,7 @@
                         Role Membership
                     </HeadingTemplate>
                     <ChildContent>
-                        <CheckList Source="@Model.RoleChecklist" Header="Role" FilterPlaceholder="Role..." EmptyText="This user is not a member of any roles." />
+                        <CheckList Source="@Model.RoleChecklist" Header="Role" FilterPlaceholder="Role..." EmptyText="This user is not a member of any roles." ReadOnly="@(Model.IsReadOnly)" />
                     </ChildContent>
                 </FluentAccordionItem>
             }
