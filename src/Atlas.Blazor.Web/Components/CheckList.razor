@@ -1,12 +1,19 @@
-﻿<FluentDataGrid Items="@FilteredItems" ShowHover="true" TGridItem="Atlas.Core.Models.ChecklistItem">
+﻿<FluentDataGrid Items="@FilteredItems" ShowHover="true" TGridItem="Atlas.Core.Models.ChecklistItem" GridTemplateColumns="@(ReadOnly ? "0.03fr 1fr" : "")">
     <ChildContent>
-        <SelectColumn TGridItem="Atlas.Core.Models.ChecklistItem"
-                      SelectMode="DataGridSelectMode.Multiple"
-                      Property="@(e => e.IsChecked)"
-                      OnSelect="@(e => e.Item.IsChecked = e.Selected)"
-                      SelectAll="@(FilteredItems?.All(p => p.IsChecked))"
-                      SelectAllChanged="@(all => FilteredItems?.ToList().ForEach(p => p.IsChecked = (all == true)))" />
-        <PropertyColumn Property="@(i => i.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_filter)" Tooltip="true" Title="@Header">
+        @if(ReadOnly)
+        {
+            <PropertyColumn Property="@(e => e.IsChecked ? "\u2713" : "")" Sortable="true" Title="@("\u2713")" />
+        }
+        else
+        {
+            <SelectColumn TGridItem="Atlas.Core.Models.ChecklistItem"
+                          SelectMode="DataGridSelectMode.Multiple"
+                          Property="@(e => e.IsChecked)"
+                          OnSelect="@(e => e.Item.IsChecked = e.Selected)"
+                          SelectAll="@(FilteredItems?.All(p => p.IsChecked))"
+                          SelectAllChanged="@(all => FilteredItems?.ToList().ForEach(p => p.IsChecked = (all == true)))" />
+        }
+        <PropertyColumn Property="@(i => i.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_filter)" Tooltip="true" Title="@Header" >
             <ColumnOptions>
                 <div class="search-box">
                     <FluentSearch type="filter" Autofocus=true @bind-Value=_filter @oninput="HandleFilter" @bind-Value:after="HandleClear" Placeholder="@FilterPlaceholder" />
@@ -31,6 +38,9 @@
 
     [Parameter]
     public string? FilterPlaceholder { get; set; }
+
+    [Parameter]
+    public bool ReadOnly { get; set; }
 
     private string _filter = string.Empty;
 
