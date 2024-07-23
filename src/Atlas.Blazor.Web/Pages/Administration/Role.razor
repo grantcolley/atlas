@@ -54,7 +54,7 @@
                         Permissions
                     </HeadingTemplate>
                     <ChildContent>
-                        <CheckList Source="@Model.PermissionChecklist" Header="Permission" FilterPlaceholder="Permission..." EmptyText="This role has not been granted any permissions." />
+                        <CheckList Source="@Model.PermissionChecklist" Header="Permission" FilterPlaceholder="Permission..." EmptyText="This role has not been granted any permissions." ReadOnly="@(Model.IsReadOnly)" />
                     </ChildContent>
                 </FluentAccordionItem>
 
