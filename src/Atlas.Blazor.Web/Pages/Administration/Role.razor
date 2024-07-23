@@ -37,11 +37,11 @@
                 </HeadingTemplate>
                 <ChildContent>
                     <div>
-                        <FluentTextField Name="Name" @bind-Value="Model.Name" Label="Name" />
+                        <FluentTextField Name="Name" @bind-Value="Model.Name" Label="Name" ReadOnly="@(Model.IsReadOnly)" />
                         <FluentValidationMessage For="@(() => Model.Name)" />
                     </div>
                     <div>
-                        <FluentTextField Name="Description" @bind-Value="Model.Description" Label="Description" />
+                        <FluentTextField Name="Description" @bind-Value="Model.Description" Label="Description" ReadOnly="@(Model.IsReadOnly)" />
                         <FluentValidationMessage For="@(() => Model.Description)" />
                     </div>
                 </ChildContent>
