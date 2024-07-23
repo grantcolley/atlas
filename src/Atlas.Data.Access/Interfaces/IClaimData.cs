@@ -2,9 +2,8 @@
 
 namespace Atlas.Data.Access.Interfaces
 {
-    public interface IUserData : IAuthorisationData
+    public interface IClaimData : IAuthorisationData
     {
-        Task SetThemePreferenceAsync(string theme, CancellationToken cancellationToken);
         Task<IEnumerable<Module>?> GetNavigationClaimsAsync(CancellationToken cancellationToken);
     }
 }

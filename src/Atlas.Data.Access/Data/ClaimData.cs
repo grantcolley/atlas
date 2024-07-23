@@ -7,9 +7,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Atlas.Data.Access.Data
 {
-    public class UserData : AuthorisationData<UserData>, IUserData
+    public class ClaimData : AuthorisationData<ClaimData>, IClaimData
     {
-        public UserData(ApplicationDbContext applicationDbContext, ILogger<UserData> logger)
+        public ClaimData(ApplicationDbContext applicationDbContext, ILogger<ClaimData> logger)
             : base(applicationDbContext, logger)
         {
         }
@@ -56,29 +56,6 @@ namespace Atlas.Data.Access.Data
                 .ToList();
 
             return permittedModules;
-        }
-
-        public async Task SetThemePreferenceAsync(string theme, CancellationToken cancellationToken)
-        {
-            ArgumentNullException.ThrowIfNull(theme);
-
-            string? email = _applicationDbContext.GetUser();
-
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                return;
-            }
-
-            User? user = await _applicationDbContext.Users
-                .FirstOrDefaultAsync(u => u.Email != null && u.Email.Equals(email), cancellationToken)
-                .ConfigureAwait(false);
-
-            if (user == null)
-            {
-                return;
-            }
-
-            await _applicationDbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }
