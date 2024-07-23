@@ -8,7 +8,7 @@ namespace Atlas.API.Extensions
     {
         public static WebApplication? MapAtlasEndpoints(this WebApplication app)
         {
-            app.MapGet($"/{AtlasAPIEndpoints.GET_CLAIM_AUTHORIZATION}", UserEndpoint.GetClaimAuthorisation)
+            app.MapGet($"/{AtlasAPIEndpoints.GET_CLAIM_AUTHORIZATION}", ClaimEndpoint.GetClaimAuthorisation)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.GET_CLAIM_AUTHORIZATION)
                 .WithDescription("Gets the user's authorization")
@@ -16,27 +16,11 @@ namespace Atlas.API.Extensions
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapGet($"/{AtlasAPIEndpoints.GET_CLAIM_MODULES}", UserEndpoint.GetClaimModules)
+            app.MapGet($"/{AtlasAPIEndpoints.GET_CLAIM_MODULES}", ClaimEndpoint.GetClaimModules)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.GET_CLAIM_MODULES)
                 .WithDescription("Gets the user's authorized modules")
                 .Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
-                .Produces(StatusCodes.Status500InternalServerError)
-                .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
-
-            app.MapGet($"/{AtlasAPIEndpoints.GET_THEME}", UserEndpoint.GetTheme)
-                .WithOpenApi()
-                .WithName(AtlasAPIEndpoints.GET_THEME)
-                .WithDescription("Gets the user's theme preference")
-                .Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
-                .Produces(StatusCodes.Status500InternalServerError)
-                .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
-
-            app.MapPost($"/{AtlasAPIEndpoints.SET_THEME}", UserEndpoint.SetTheme)
-                .WithOpenApi()
-                .WithName(AtlasAPIEndpoints.SET_THEME)
-                .WithDescription("Sets the user's theme preference")
-                .Produces(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
