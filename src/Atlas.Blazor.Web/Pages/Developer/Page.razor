@@ -36,11 +36,11 @@
                 </HeadingTemplate>
                 <ChildContent>
                     <div>
-                        <FluentTextField Name="Name" @bind-Value=Model.Name Label="Name" />
+                        <FluentTextField Name="Name" @bind-Value=Model.Name Label="Name" ReadOnly="@(Model.IsReadOnly)" />
                         <FluentValidationMessage For="@(() => Model.Name)" />
                     </div>
                     <div>
-                        <FluentNumberField Name="Order" @bind-Value=Model.Order Label="Order" />
+                        <FluentNumberField Name="Order" @bind-Value=Model.Order Label="Order" ReadOnly="@(Model.IsReadOnly)" />
                         <FluentValidationMessage For="@(() => Model.Order)" />
                     </div>
                     <div>
