@@ -1,25 +1,40 @@
 ﻿@inherits AtlasComponentBase
 @typeparam T where T : ModelBase, new()
 
-<FluentSelect Items="@_source"
-              Label="@Label"
-              Height="300px"
-              Disabled="@ReadOnly"
-              OptionValue="@(i => _dynamicType?.GetValue(i, IdentifierFieldName ?? throw new NullReferenceException(nameof(IdentifierFieldName)))?.ToString())"
-              @bind-SelectedOption="@_selectedItem"
-              @onchange="OnChange">
-    <OptionTemplate>
-        @if (context != null && DisplayFieldName != null)
-        {
-            @if (ShowIcons && !string.IsNullOrWhiteSpace(_dynamicType?.GetValue(context, IconFieldName ?? throw new NullReferenceException(nameof(IdentifierFieldName)))?.ToString()))
+@if (ReadOnly)
+{
+    @if (_selectedItem != null && DisplayFieldName != null)
+    {
+        <FluentTextField Value="@(@_dynamicType?.GetValue(_selectedItem, DisplayFieldName)?.ToString())" Label="@Label" ReadOnly="true">
+            @if (ShowIcons && !string.IsNullOrWhiteSpace(_dynamicType?.GetValue(_selectedItem, IconFieldName ?? throw new NullReferenceException(nameof(IdentifierFieldName)))?.ToString()))
             {
-                <FluentIcon Value="IconHelper.GetRegularSize20(_dynamicType?.GetValue(context, IconFieldName ?? throw new NullReferenceException(nameof(IdentifierFieldName)))?.ToString())" Slot="start" />
+                <FluentIcon Value="IconHelper.GetRegularSize20(_dynamicType?.GetValue(_selectedItem, IconFieldName ?? throw new NullReferenceException(nameof(IdentifierFieldName)))?.ToString())" Slot="start" />
             }
+        </FluentTextField>
+    }
+}
+else
+{
+    <FluentSelect Items="@_source"
+                  Label="@Label"
+                  Height="300px"
+                  Disabled="@ReadOnly"
+                  OptionValue="@(i => _dynamicType?.GetValue(i, IdentifierFieldName ?? throw new NullReferenceException(nameof(IdentifierFieldName)))?.ToString())"
+                  @bind-SelectedOption="@_selectedItem"
+                  @onchange="OnChange">
+        <OptionTemplate>
+            @if (context != null && DisplayFieldName != null)
+            {
+                @if (ShowIcons && !string.IsNullOrWhiteSpace(_dynamicType?.GetValue(context, IconFieldName ?? throw new NullReferenceException(nameof(IdentifierFieldName)))?.ToString()))
+                {
+                    <FluentIcon Value="IconHelper.GetRegularSize20(_dynamicType?.GetValue(context, IconFieldName ?? throw new NullReferenceException(nameof(IdentifierFieldName)))?.ToString())" Slot="start" />
+                }
 
-            @_dynamicType?.GetValue(context, DisplayFieldName)?.ToString()
-        }
-    </OptionTemplate>
-</FluentSelect>
+                @_dynamicType?.GetValue(context, DisplayFieldName)?.ToString()
+            }
+        </OptionTemplate>
+    </FluentSelect>
+}
 
 @code {
 

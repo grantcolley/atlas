@@ -1,21 +1,33 @@
 ﻿@inherits AtlasComponentBase
 
-<FluentSelect TOption="OptionItem"
-              @onchange="OnChange"
-              Disabled="@ReadOnly"
-              Items="@_source"
-              Label="@Label"
-              OptionValue="@(oi => oi.Id)"
-              SelectedOption="@_selectedOptionItem"
-              Height="300px">
-    <OptionTemplate>
-        @if (ShowIcons && !string.IsNullOrWhiteSpace(context.Icon))
+@if (ReadOnly)
+{
+    <FluentTextField Value="@(_selectedOptionItem?.Display)" Label="@Label" ReadOnly="true">
+        @if (ShowIcons && _selectedOptionItem != null && !string.IsNullOrWhiteSpace(_selectedOptionItem.Icon))
         {
-            <FluentIcon Value="IconHelper.GetRegularSize20(context.Icon)" Slot="start" />
+            <FluentIcon Value="IconHelper.GetRegularSize20(_selectedOptionItem.Icon)" Slot="start" />
         }
-        @context.Display
-    </OptionTemplate>
-</FluentSelect>
+    </FluentTextField>
+}
+else
+{
+    <FluentSelect TOption="OptionItem"
+                  @onchange="OnChange"
+                  Disabled="@ReadOnly"
+                  Items="@_source"
+                  Label="@Label"
+                  OptionValue="@(oi => oi.Id)"
+                  SelectedOption="@_selectedOptionItem"
+                  Height="300px">
+        <OptionTemplate>
+            @if (ShowIcons && !string.IsNullOrWhiteSpace(context.Icon))
+            {
+                <FluentIcon Value="IconHelper.GetRegularSize20(context.Icon)" Slot="start" />
+            }
+            @context.Display
+        </OptionTemplate>
+    </FluentSelect>
+}
 
 @code {
 
