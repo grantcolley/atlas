@@ -46,6 +46,7 @@
                     <div>
                         <GenericSelectList T="Atlas.Core.Models.Category"
                                            @bind-Value=@(Model.Category)
+                                           ReadOnly="@(Model.IsReadOnly)"
                                            FieldName="Category"
                                            IdentifierFieldName="CategoryId"
                                            DisplayFieldName="Name"
@@ -56,15 +57,15 @@
                         <FluentValidationMessage For="@(() => Model.Category)" />
                     </div>
                     <div>
-                        <OptionsRequestList OptionsCode="@Options.PERMISSIONS_OPTION_ITEMS" @bind-Value=Model.Permission FieldName="Permission" Label="Permission" />
+                        <OptionsRequestList OptionsCode="@Options.PERMISSIONS_OPTION_ITEMS" @bind-Value=Model.Permission FieldName="Permission" Label="Permission" ReadOnly="@(Model.IsReadOnly)" />
                         <FluentValidationMessage For="@(() => Model.Permission)" />
                     </div>
                     <div>
-                        <IconSelectList @bind-Value=Model.Icon FieldName="Icon" Label="Icon" />
+                        <IconSelectList @bind-Value=Model.Icon FieldName="Icon" Label="Icon" ReadOnly="@(Model.IsReadOnly)" />
                         <FluentValidationMessage For="@(() => Model.Icon)" />
                     </div>
                     <div>
-                        <OptionsServiceList OptionsCode="@Options.ROUTES" @bind-Value=Model.Route FieldName="Route" Label="Route" />
+                        <OptionsServiceList OptionsCode="@Options.ROUTES" @bind-Value=Model.Route FieldName="Route" Label="Route" ReadOnly="@(Model.IsReadOnly)" />
                         <FluentValidationMessage For="@(() => Model.Route)" />
                     </div>
                 </ChildContent>
