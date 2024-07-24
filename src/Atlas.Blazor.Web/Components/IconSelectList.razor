@@ -1,6 +1,7 @@
 ﻿<FluentSearch Id="popoverSearch"
               @bind-Value="_filter"
               @bind-Value:after="OnSearch"
+              Disabled="@ReadOnly"
               Label="@Label"
               Immediate="true"
               ImmediateDelay="400"
@@ -41,6 +42,9 @@
 
     [Parameter]
     public string? Value { get; set; }
+
+    [Parameter]
+    public bool ReadOnly { get; set; }
 
     [Parameter]
     public EventCallback<string?> ValueChanged { get; set; }
