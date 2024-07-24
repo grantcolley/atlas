@@ -1,4 +1,5 @@
-﻿using Atlas.Core.Models;
+﻿using Atlas.Core.Constants;
+using Atlas.Core.Models;
 using Atlas.Data.Access.Base;
 using Atlas.Data.Access.Context;
 using Atlas.Data.Access.Interfaces;
@@ -25,11 +26,19 @@ namespace Atlas.Data.Access.Data
 
         public async Task<Module?> GetModuleAsync(int id, CancellationToken cancellationToken)
         {
-            return await _applicationDbContext.Modules
+            Module module = await _applicationDbContext.Modules
                 .Include(m => m.Categories)
                 .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.ModuleId.Equals(id), cancellationToken)
+                .FirstAsync(m => m.ModuleId.Equals(id), cancellationToken)
                 .ConfigureAwait(false);
+
+            if (Authorisation == null
+                || !Authorisation.HasPermission(Auth.DEVELOPER))
+            {
+                module.IsReadOnly = true;
+            }
+
+            return module;
         }
 
         public async Task<Module> CreateModuleAsync(Module module, CancellationToken cancellationToken)
@@ -51,6 +60,12 @@ namespace Atlas.Data.Access.Data
                 .SaveChangesAsync(cancellationToken)
                 .ConfigureAwait(false);
 
+            if (Authorisation == null
+                || !Authorisation.HasPermission(Auth.DEVELOPER))
+            {
+                newModule.IsReadOnly = true;
+            }
+
             return newModule;
         }
 
@@ -68,6 +83,12 @@ namespace Atlas.Data.Access.Data
             await _applicationDbContext
                 .SaveChangesAsync(cancellationToken)
                 .ConfigureAwait(false);
+
+            if (Authorisation == null
+                || !Authorisation.HasPermission(Auth.DEVELOPER))
+            {
+                existing.IsReadOnly = true;
+            }
 
             return existing;
         }
@@ -99,12 +120,20 @@ namespace Atlas.Data.Access.Data
 
         public async Task<Category?> GetCategoryAsync(int id, CancellationToken cancellationToken)
         {
-            return await _applicationDbContext.Categories
+            Category category = await _applicationDbContext.Categories
                 .Include(c => c.Module)
                 .Include(c => c.Pages)
                 .AsNoTracking()
-                .FirstOrDefaultAsync(c => c.CategoryId.Equals(id), cancellationToken)
+                .FirstAsync(c => c.CategoryId.Equals(id), cancellationToken)
                 .ConfigureAwait(false);
+
+            if (Authorisation == null
+                || !Authorisation.HasPermission(Auth.DEVELOPER))
+            {
+                category.IsReadOnly = true;
+            }
+
+            return category;
         }
 
         public async Task<Category> CreateCategoryAsync(Category category, CancellationToken cancellationToken)
@@ -137,6 +166,12 @@ namespace Atlas.Data.Access.Data
             await _applicationDbContext
                 .SaveChangesAsync(cancellationToken)
                 .ConfigureAwait(false);
+
+            if (Authorisation == null
+                || !Authorisation.HasPermission(Auth.DEVELOPER))
+            {
+                newCategory.IsReadOnly = true;
+            }
 
             return newCategory;
         }
@@ -171,6 +206,12 @@ namespace Atlas.Data.Access.Data
             await _applicationDbContext
                 .SaveChangesAsync(cancellationToken)
                 .ConfigureAwait(false);
+
+            if (Authorisation == null
+                || !Authorisation.HasPermission(Auth.DEVELOPER))
+            {
+                existing.IsReadOnly = true;
+            }
 
             return existing;
         }
@@ -215,11 +256,19 @@ namespace Atlas.Data.Access.Data
 
         public async Task<Page?> GetPageAsync(int id, CancellationToken cancellationToken)
         {
-            return await _applicationDbContext.Pages
+            Page page = await _applicationDbContext.Pages
                 .AsNoTracking()
                 .Include(mi => mi.Category)
-                .FirstOrDefaultAsync(mi => mi.PageId.Equals(id), cancellationToken)
+                .FirstAsync(mi => mi.PageId.Equals(id), cancellationToken)
                 .ConfigureAwait(false);
+
+            if (Authorisation == null
+                || !Authorisation.HasPermission(Auth.DEVELOPER))
+            {
+                page.IsReadOnly = true;
+            }
+
+            return page;
         }
 
         public async Task<Page> CreatePageAsync(Page page, CancellationToken cancellationToken)
@@ -251,6 +300,12 @@ namespace Atlas.Data.Access.Data
             await _applicationDbContext
                 .SaveChangesAsync(cancellationToken)
                 .ConfigureAwait(false);
+
+            if (Authorisation == null
+                || !Authorisation.HasPermission(Auth.DEVELOPER))
+            {
+                newPage.IsReadOnly = true;
+            }
 
             return newPage;
         }
@@ -285,6 +340,12 @@ namespace Atlas.Data.Access.Data
             await _applicationDbContext
                 .SaveChangesAsync(cancellationToken)
                 .ConfigureAwait(false);
+
+            if (Authorisation == null
+                || !Authorisation.HasPermission(Auth.DEVELOPER))
+            {
+                existing.IsReadOnly = true;
+            }
 
             return existing;
         }
