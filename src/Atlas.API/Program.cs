@@ -1,4 +1,4 @@
-using Atlas.API.Extensions;
+ using Atlas.API.Extensions;
 using Atlas.API.Interfaces;
 using Atlas.API.Services;
 using Atlas.Data.Access.Constants;
@@ -113,7 +113,7 @@ var useSeedData = bool.Parse(builder.Configuration["SeedData:UseSeedData"] ?? "f
 
 if (useSeedData)
 {
-    // Seed data for testing purposes only...
+    // Seed data for development testing purposes only...
     using var scope = app.Services.CreateScope();
 
     var services = scope.ServiceProvider;
