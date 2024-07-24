@@ -26,20 +26,11 @@ namespace Atlas.Data.Access.Data
 
         public async Task<User> GetUserAsync(int userId, CancellationToken cancellationToken)
         {
-            User user;
-
-            if (userId.Equals(0))
-            {
-                user = DynamicTypeCreator<User>.Create();
-            }
-            else
-            {
-                user = await _applicationDbContext.Users
+            User user = await _applicationDbContext.Users
                     .Include(u => u.Roles)
                     .AsNoTracking()
                     .FirstAsync(u => u.UserId.Equals(userId), cancellationToken)
                     .ConfigureAwait(false);
-            }
 
             user.RoleChecklist = await GetRoleChecklistAsync(user.Roles, cancellationToken)
                 .ConfigureAwait(false);
@@ -248,21 +239,12 @@ namespace Atlas.Data.Access.Data
 
         public async Task<Role> GetRoleAsync(int roleId, CancellationToken cancellationToken)
         {
-            Role role;
-
-            if (roleId.Equals(0))
-            {
-                role = DynamicTypeCreator<Role>.Create();
-            }
-            else
-            {
-                role = await _applicationDbContext.Roles
-                    .Include(r => r.Users)
-                    .Include(r => r.Permissions)
-                    .AsNoTracking()
-                    .FirstAsync(r => r.RoleId.Equals(roleId), cancellationToken)
-                    .ConfigureAwait(false);
-            }
+            Role role = await _applicationDbContext.Roles
+                .Include(r => r.Users)
+                .Include(r => r.Permissions)
+                .AsNoTracking()
+                .FirstAsync(r => r.RoleId.Equals(roleId), cancellationToken)
+                .ConfigureAwait(false);
 
             role.PermissionChecklist = await GetPermissionChecklistAsync(role.Permissions, cancellationToken)
                 .ConfigureAwait(false);
