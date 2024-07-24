@@ -7,13 +7,7 @@ namespace Atlas.API.Extensions
     {
         public static WebApplication? MapAtlasModulesEndpoints(this WebApplication app)
         {
-            //app.MapGet("/weatherforecast", WeatherForecastEndpoint.GetWeatherForecast)
-            //    .WithOpenApi()
-            //    .WithName("weatherorecast")
-            //    .WithDescription("Gets the weather forecast")
-            //    .Produces<IEnumerable<WeatherForecast>>(StatusCodes.Status200OK)
-            //    .Produces(StatusCodes.Status500InternalServerError)
-            //    .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
+            // TODO: Additional module API's mapped here...
 
             return app;
         }

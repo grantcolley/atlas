@@ -8,15 +8,6 @@ namespace Atlas.Core.Dynamic
 {
     public static class PropertyInfoHelper
     {
-        public static PropertyInfo? GetPropertyInfo(Type type, string propertyName)
-        {
-            if(type == null) throw new ArgumentNullException(nameof(type));
-            if (propertyName == null) throw new ArgumentNullException(nameof(propertyName));
-
-            var propertyInfos = GetPropertyInfos(type);
-            return propertyInfos.FirstOrDefault(p => p.Name.Equals(propertyName));
-        }
-
         public static IEnumerable<PropertyInfo> GetPropertyInfos(Type type)
         {
             List<PropertyInfo> propertyInfoResults = new();

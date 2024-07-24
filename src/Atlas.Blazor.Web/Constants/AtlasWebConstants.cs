@@ -7,9 +7,6 @@
         public const string ATLAS_DEFAULIT_ICON = "Image";
 
         public const string ATLAS_THEME_STORAGE = "atlas-theme";
-        public const string THEME_DARK = "Dark";
-        public const string THEME_LIGHT = "Light";
-        public const string THEME_SYSTEM = "System";
 
         public const string PAGE_USER = "User";
         public const string PAGE_USERS = "Users";

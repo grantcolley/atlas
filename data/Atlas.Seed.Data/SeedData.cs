@@ -59,7 +59,6 @@ namespace Atlas.Seed.Data
             permissions.Add(Auth.ADMIN_READ, new Permission { Code = Auth.ADMIN_READ, Name = Auth.ADMIN_READ, Description = "Atlas Administrator Read Permission" });
             permissions.Add(Auth.ADMIN_WRITE, new Permission { Code = Auth.ADMIN_WRITE, Name = Auth.ADMIN_WRITE, Description = "Atlas Administrator Write Permission" });
             permissions.Add(Auth.DEVELOPER, new Permission { Code = Auth.DEVELOPER, Name = Auth.DEVELOPER, Description = "Atlas Developer Permission" });
-            permissions.Add(Auth.WEATHER_USER, new Permission { Code = Auth.WEATHER_USER, Name = Auth.WEATHER_USER, Description = "Weather User Permission" });
 
             foreach (var permission in permissions.Values)
             {
@@ -77,7 +76,6 @@ namespace Atlas.Seed.Data
             roles.Add(Auth.ADMIN_READ, new Role { Name = $"{Auth.ADMIN_READ} Role", Description = $"{Auth.ADMIN_READ} Role" });
             roles.Add(Auth.ADMIN_WRITE, new Role { Name = $"{Auth.ADMIN_WRITE} Role", Description = $"{Auth.ADMIN_WRITE} Role" });
             roles.Add(Auth.DEVELOPER, new Role { Name = $"{Auth.DEVELOPER} Role", Description = $"{Auth.DEVELOPER} Role" });
-            roles.Add(Auth.WEATHER_USER, new Role { Name = $"{Auth.WEATHER_USER} Role", Description = $"{Auth.WEATHER_USER} Role" });
 
             foreach (var role in roles.Values)
             {
@@ -86,23 +84,17 @@ namespace Atlas.Seed.Data
 
             roles[Auth.USER].Permissions.Add(permissions[Auth.USER]);
 
-            roles[Auth.WEATHER_USER].Permissions.Add(permissions[Auth.USER]);
-            roles[Auth.WEATHER_USER].Permissions.Add(permissions[Auth.WEATHER_USER]);
-
             roles[Auth.ADMIN_READ].Permissions.Add(permissions[Auth.USER]);
             roles[Auth.ADMIN_READ].Permissions.Add(permissions[Auth.ADMIN_READ]);
-            roles[Auth.ADMIN_READ].Permissions.Add(permissions[Auth.WEATHER_USER]);
 
             roles[Auth.ADMIN_WRITE].Permissions.Add(permissions[Auth.USER]);
             roles[Auth.ADMIN_WRITE].Permissions.Add(permissions[Auth.ADMIN_READ]);
             roles[Auth.ADMIN_WRITE].Permissions.Add(permissions[Auth.ADMIN_WRITE]);
-            roles[Auth.ADMIN_WRITE].Permissions.Add(permissions[Auth.WEATHER_USER]);
 
             roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.USER]);
             roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.ADMIN_READ]);
             roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.ADMIN_WRITE]);
             roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.DEVELOPER]);
-            roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.WEATHER_USER]);
 
             dbContext.SaveChanges();
         }
@@ -130,7 +122,7 @@ namespace Atlas.Seed.Data
 
             users["alice"].Roles.AddRange(new[] { roles[Auth.ADMIN_WRITE] });
             users["jane"].Roles.AddRange(new[] { roles[Auth.ADMIN_READ] });
-            users["bob"].Roles.AddRange(new[] { roles[Auth.USER], roles[Auth.WEATHER_USER] });
+            users["bob"].Roles.AddRange(new[] { roles[Auth.USER] });
             users["grant"].Roles.Add(roles[Auth.DEVELOPER]);
 
             dbContext.SaveChanges();

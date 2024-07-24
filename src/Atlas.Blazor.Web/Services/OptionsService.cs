@@ -4,7 +4,6 @@ using Atlas.Core.Constants;
 using Atlas.Core.Extensions;
 using Atlas.Core.Interfaces;
 using Atlas.Core.Models;
-using Atlas.Core.Options;
 
 namespace Atlas.Blazor.Web.Services
 {
@@ -14,8 +13,6 @@ namespace Atlas.Blazor.Web.Services
 
         public OptionsService(IAtlasRoutesService atlasRoutesService)
         {
-            _options.Add(Options.PAGE_CODES, new PageCodeOptionItems());
-            _options.Add(Options.NAVIGATION_PAGES, new NavigationPageOptionItems());
             _options.Add(Options.ICON_SIZE20_OPTION_ITEMS, new IconSize20OptionItems());
             _options.Add(Options.ROUTES, new RoutesOptionItems(atlasRoutesService));
         }
