@@ -2,6 +2,7 @@
 
 <FluentSelect TOption="OptionItem"
               @onchange="OnChange"
+              Disabled="@ReadOnly"
               Items="@_source"
               Label="@Label"
               OptionValue="@(oi => oi.Id)"
@@ -38,6 +39,9 @@
 
     [Parameter]
     public string? Value { get; set; }
+
+    [Parameter]
+    public bool ReadOnly { get; set; }
 
     [Parameter]
     public EventCallback<string?> ValueChanged { get; set; }
