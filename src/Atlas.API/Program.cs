@@ -13,7 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -84,7 +84,7 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader());
 });
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -109,16 +109,16 @@ app.UseAuthorization();
 
 app.MapEndpoints();
 
-var useSeedData = bool.Parse(builder.Configuration["SeedData:UseSeedData"] ?? "false");
+bool useSeedData = bool.Parse(builder.Configuration["SeedData:UseSeedData"] ?? "false");
 
 if (useSeedData)
 {
     // Seed data for development testing purposes only...
-    using var scope = app.Services.CreateScope();
+    using IServiceScope scope = app.Services.CreateScope();
 
-    var services = scope.ServiceProvider;
+    IServiceProvider services = scope.ServiceProvider;
 
-    var applicationDbContext = services.GetRequiredService<ApplicationDbContext>();
+    ApplicationDbContext applicationDbContext = services.GetRequiredService<ApplicationDbContext>();
 
     applicationDbContext.SetUser("Atlas.SeedData");
 
