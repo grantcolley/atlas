@@ -26,7 +26,7 @@ namespace Atlas.Data.Access.Data
 
         public async Task<IEnumerable<OptionItem>> GetOptionsAsync(IEnumerable<OptionsArg> optionsArgs, CancellationToken cancellationToken)
         {
-            var optionsCode = optionsArgs.FirstOptionsArgValue(Options.OPTIONS_CODE);
+            string? optionsCode = optionsArgs.FirstOptionsArgValue(Options.OPTIONS_CODE);
 
             if(!string.IsNullOrWhiteSpace(optionsCode))
             {

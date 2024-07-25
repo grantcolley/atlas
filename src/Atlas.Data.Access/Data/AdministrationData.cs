@@ -9,13 +9,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Atlas.Data.Access.Data
 {
-    public class AdministrationData : AuthorisationData<AdministrationData>, IAdministrationData
+    public class AdministrationData(ApplicationDbContext applicationDbContext, ILogger<AdministrationData> logger) 
+        : AuthorisationData<AdministrationData>(applicationDbContext, logger), IAdministrationData
     {
-        public AdministrationData(ApplicationDbContext applicationDbContext, ILogger<AdministrationData> logger)
-            : base(applicationDbContext, logger)
-        {
-        }
-
         public async Task<IEnumerable<User>> GetUsersAsync(CancellationToken cancellationToken)
         {
             return await _applicationDbContext.Users
@@ -49,7 +45,7 @@ namespace Atlas.Data.Access.Data
             ArgumentNullException.ThrowIfNull(nameof(addUser));
             if (addUser.UserId != 0) throw new ArgumentException(nameof(addUser.UserId), $"Cannot create new user with UserId {addUser.UserId}");
 
-            User user = new User
+            User user = new()
             {
                 Name = addUser.Name,
                 Email = addUser.Email
@@ -63,7 +59,7 @@ namespace Atlas.Data.Access.Data
                 .SaveChangesAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            if (addUser.Roles.Any())
+            if (addUser.Roles.Count > 0)
             {
                 user.Roles.AddRange(addUser.Roles);
 
@@ -279,7 +275,7 @@ namespace Atlas.Data.Access.Data
                 .SaveChangesAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            if (permissions.Any())
+            if (permissions.Count > 0)
             {
                 role.Permissions.AddRange(permissions);
 

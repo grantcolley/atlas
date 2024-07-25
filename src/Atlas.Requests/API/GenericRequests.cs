@@ -10,9 +10,9 @@ namespace Atlas.Requests.API
     {
         public async Task<IAuthResponse<IEnumerable<T>>> GetListAsync<T>(string endpoint) where T : class, new()
         {
-            using var httpResponseMessage = await _httpClient.GetAsync(endpoint).ConfigureAwait(false);
+            using HttpResponseMessage httpResponseMessage = await _httpClient.GetAsync(endpoint).ConfigureAwait(false);
 
-            var responseList = await GetResponseAsync<AuthResult<List<T>>>(httpResponseMessage)
+            IResponse<AuthResult<List<T>>> responseList = await GetResponseAsync<AuthResult<List<T>>>(httpResponseMessage)
                 .ConfigureAwait(false);
 
             if (responseList == null) throw new NullReferenceException(nameof(responseList));
@@ -30,9 +30,9 @@ namespace Atlas.Requests.API
 
         public async Task<IResponse<T>> GetModelAsync<T>(int id, string endpoint) where T : class, new()
         {
-            using var httpResponseMessage = await _httpClient.GetAsync($"{endpoint}/{id}").ConfigureAwait(false);
+            HttpResponseMessage httpResponseMessage = await _httpClient.GetAsync($"{endpoint}/{id}").ConfigureAwait(false);
 
-            var responseModel = await GetResponseAsync<T>(httpResponseMessage)
+            IResponse<T> responseModel = await GetResponseAsync<T>(httpResponseMessage)
                 .ConfigureAwait(false);
 
             Response<T> response = new()
@@ -51,7 +51,7 @@ namespace Atlas.Requests.API
 
         public async Task<IResponse<T>> CreateModelAsync<T>(T model, string endpoint) where T : class, new()
         {
-            using var addResponse = await _httpClient.PostAsJsonAsync(endpoint, model)
+            using HttpResponseMessage addResponse = await _httpClient.PostAsJsonAsync(endpoint, model)
                 .ConfigureAwait(false);
 
             return await GetResponseAsync<T>(addResponse)
@@ -60,7 +60,7 @@ namespace Atlas.Requests.API
 
         public async Task<IResponse<T>> UpdateModelAsync<T>(T model, string endpoint) where T : class, new()
         {
-            using var updateResponse = await _httpClient.PutAsJsonAsync(endpoint, model)
+            using HttpResponseMessage updateResponse = await _httpClient.PutAsJsonAsync(endpoint, model)
                 .ConfigureAwait(false);
 
             return await GetResponseAsync<T>(updateResponse)
@@ -69,8 +69,8 @@ namespace Atlas.Requests.API
 
         public async Task<IResponse<int>> DeleteModelAsync(int id, string endpoint)
         {
-            var apiEndpoint = $@"{endpoint}/{id}";
-            using var httpResponseMessage = await _httpClient.DeleteAsync(apiEndpoint)
+            string apiEndpoint = $@"{endpoint}/{id}";
+            using HttpResponseMessage httpResponseMessage = await _httpClient.DeleteAsync(apiEndpoint)
                 .ConfigureAwait(false);
 
             return await GetResponseAsync<int>(httpResponseMessage)

@@ -16,7 +16,7 @@ namespace Atlas.Requests.API
 
         public async Task<IResponse<IEnumerable<OptionItem>?>> GetOptionItemsAsync(IEnumerable<OptionsArg> optionsArgs)
         {
-            using var httpResponseMessage = await _httpClient.PostAsJsonAsync(AtlasAPIEndpoints.GET_OPTIONS, optionsArgs)
+            using HttpResponseMessage httpResponseMessage = await _httpClient.PostAsJsonAsync(AtlasAPIEndpoints.GET_OPTIONS, optionsArgs)
                 .ConfigureAwait(false);
 
             return await GetResponseAsync<IEnumerable<OptionItem>?>(httpResponseMessage)
@@ -31,7 +31,7 @@ namespace Atlas.Requests.API
 
         public async Task<IResponse<IEnumerable<T>?>> GetGenericOptionsAsync<T>(IEnumerable<OptionsArg> optionsArgs)
         {
-            using var httpResponseMessage = await _httpClient.PostAsJsonAsync(AtlasAPIEndpoints.GET_GENERIC_OPTIONS, optionsArgs)
+            using HttpResponseMessage httpResponseMessage = await _httpClient.PostAsJsonAsync(AtlasAPIEndpoints.GET_GENERIC_OPTIONS, optionsArgs)
                 .ConfigureAwait(false);
 
             return await GetResponseAsync<IEnumerable<T>?>(httpResponseMessage)

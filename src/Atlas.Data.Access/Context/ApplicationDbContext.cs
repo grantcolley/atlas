@@ -6,14 +6,9 @@ using System.Text.Json;
 
 namespace Atlas.Data.Access.Context
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
     {
         private string? _user;
-
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-        }
 
         public DbSet<Audit> Audits { get; set; }
         public DbSet<User> Users { get; set; }
@@ -74,7 +69,7 @@ namespace Atlas.Data.Access.Context
 
             var result = base.SaveChanges(acceptAllChangesOnSuccess);
 
-            if (audits.Any())
+            if (audits.Count > 0)
             {
                 OnAfterSaveChanges(audits);
 
@@ -90,7 +85,7 @@ namespace Atlas.Data.Access.Context
 
             var result = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
 
-            if (audits.Any())
+            if (audits.Count > 0)
             {
                 OnAfterSaveChanges(audits);
 
@@ -176,12 +171,12 @@ namespace Atlas.Data.Access.Context
                 audits.Add(audit);
             }
 
-            foreach (var audit in audits.Where(e => !e.TemporaryProperties.Any()))
+            foreach (var audit in audits.Where(e => e.TemporaryProperties.Count == 0))
             {
                 Audits.Add(SerializeValues(audit));
             }
 
-            return audits.Where(e => e.TemporaryProperties.Any()).ToList();
+            return audits.Where(e => e.TemporaryProperties.Count > 0).ToList();
         }
 
         private void OnAfterSaveChanges(List<Audit> audits)
@@ -204,12 +199,12 @@ namespace Atlas.Data.Access.Context
 
         private static Audit SerializeValues(Audit audit)
         {
-            if (audit.OldValuesDictionary.Any())
+            if (audit.OldValuesDictionary.Count > 0)
             {
                 audit.OldValues = JsonSerializer.Serialize(audit.OldValuesDictionary);
             }
 
-            if (audit.NewValuesDictionary.Any())
+            if (audit.NewValuesDictionary.Count > 0)
             {
                 audit.NewValues = JsonSerializer.Serialize(audit.NewValuesDictionary);
             }

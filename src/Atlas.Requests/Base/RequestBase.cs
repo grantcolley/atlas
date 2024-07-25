@@ -11,7 +11,7 @@ namespace Atlas.Requests.Base
 
         protected static async Task<IResponse<T>> GetResponseAsync<T>(HttpResponseMessage httpResponseMessage)
         {
-            var response = new Response<T>
+            Response<T> response = new Response<T>
             {
                 IsSuccess = httpResponseMessage.IsSuccessStatusCode,
                 Message = httpResponseMessage.ReasonPhrase

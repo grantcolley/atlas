@@ -6,14 +6,10 @@ using Microsoft.Extensions.Logging;
 
 namespace Atlas.Data.Access.Base
 {
-    public abstract class AuthorisationData<T> : DataBase<T>, IAuthorisationData
+    public abstract class AuthorisationData<T>(ApplicationDbContext applicationDbContext, ILogger<T> logger) 
+        : DataBase<T>(applicationDbContext, logger), IAuthorisationData
     {
         public Authorisation? Authorisation { get; private set; }
-
-        public AuthorisationData(ApplicationDbContext applicationDbContext, ILogger<T> logger)
-            : base(applicationDbContext, logger)
-        {
-        }
 
         public async Task<Authorisation?> GetAuthorisationAsync(string? claim, CancellationToken cancellationToken)
         {

@@ -8,13 +8,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Atlas.Data.Access.Data
 {
-    public class NavigationData : AuthorisationData<NavigationData>, INavigationData
+    public class NavigationData(ApplicationDbContext applicationDbContext, ILogger<NavigationData> logger) 
+        : AuthorisationData<NavigationData>(applicationDbContext, logger), INavigationData
     {
-        public NavigationData(ApplicationDbContext applicationDbContext, ILogger<NavigationData> logger)
-            : base(applicationDbContext, logger)
-        {
-        }
-
         public async Task<IEnumerable<Module>> GetModulesAsync(CancellationToken cancellationToken)
         {
             return await _applicationDbContext.Modules

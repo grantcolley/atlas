@@ -7,13 +7,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Atlas.Data.Access.Data
 {
-    public class ClaimData : AuthorisationData<ClaimData>, IClaimData
+    public class ClaimData(ApplicationDbContext applicationDbContext, ILogger<ClaimData> logger) 
+        : AuthorisationData<ClaimData>(applicationDbContext, logger), IClaimData
     {
-        public ClaimData(ApplicationDbContext applicationDbContext, ILogger<ClaimData> logger)
-            : base(applicationDbContext, logger)
-        {
-        }
-
         public async Task<IEnumerable<Module>?> GetNavigationClaimsAsync(CancellationToken cancellationToken)
         {
             string? email = _applicationDbContext.GetUser();

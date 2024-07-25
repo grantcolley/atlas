@@ -16,12 +16,12 @@ namespace Atlas.Data.Access.Model
         public DateTime DateTime { get; set; }
 
         [NotMapped]
-        public List<PropertyEntry> TemporaryProperties { get; } = new List<PropertyEntry>();
+        public List<PropertyEntry> TemporaryProperties { get; } = [];
 
         [NotMapped]
-        public Dictionary<string, object?> OldValuesDictionary { get; } = new Dictionary<string, object?>();
+        public Dictionary<string, object?> OldValuesDictionary { get; } = [];
 
         [NotMapped]
-        public Dictionary<string, object?> NewValuesDictionary { get; } = new Dictionary<string, object?>();
+        public Dictionary<string, object?> NewValuesDictionary { get; } = [];
     }
 }
