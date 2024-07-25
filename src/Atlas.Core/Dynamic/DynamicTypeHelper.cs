@@ -12,7 +12,7 @@ namespace Atlas.Core.Dynamic
     /// </summary>
     public static class DynamicTypeHelper
     {
-        private static readonly Dictionary<Type, object> _cache = new Dictionary<Type, object>();
+        private static readonly Dictionary<Type, object> _cache = [];
 
         private static int _counter;
 
@@ -28,15 +28,15 @@ namespace Atlas.Core.Dynamic
         {
             lock (_cacheLock)
             {
-                var t = typeof(T);
+                Type t = typeof(T);
 
                 if (_cache.TryGetValue(t, out object? result))
                 {
                     return (DynamicType<T>)result;
                 }
 
-                var propertyInfos = PropertyInfoHelper.GetPropertyInfos(t);
-                var typeHelper = CreateTypeHelper<T>(propertyInfos);
+                IEnumerable<PropertyInfo> propertyInfos = PropertyInfoHelper.GetPropertyInfos(t);
+                DynamicType<T> typeHelper = CreateTypeHelper<T>(propertyInfos);
 
                 _cache.Add(t, typeHelper);
                 return typeHelper;
@@ -45,13 +45,13 @@ namespace Atlas.Core.Dynamic
 
         private static DynamicType<T> CreateTypeHelper<T>(IEnumerable<PropertyInfo> propertyInfos) where T : class, new()
         {
-            var capacity = propertyInfos.Count() - 1;
-            var getters = new Dictionary<string, Func<T, object?>>(capacity);
-            var setters = new Dictionary<string, Action<T, object?>>(capacity);
+            int capacity = propertyInfos.Count() - 1;
+            Dictionary<string, Func<T, object?>> getters = new(capacity);
+            Dictionary<string, Action<T, object?>> setters = new(capacity);
 
-            var createInstance = CreateInstance<T>();
+            Func<T> createInstance = CreateInstance<T>();
 
-            foreach (var propertyInfo in propertyInfos)
+            foreach (PropertyInfo propertyInfo in propertyInfos)
             {
                 getters.Add(propertyInfo.Name, GetValue<T>(propertyInfo));
 
@@ -66,9 +66,9 @@ namespace Atlas.Core.Dynamic
 
         private static Func<T> CreateInstance<T>() where T : class, new()
         {
-            var t = typeof(T);
-            var methodName = "CreateInstance_" + typeof(T).Name + "_" + GetNextCounterValue();
-            var dynMethod = new DynamicMethod(methodName, t, null, typeof(DynamicTypeHelper).Module);
+            Type t = typeof(T);
+            string methodName = "CreateInstance_" + typeof(T).Name + "_" + GetNextCounterValue();
+            DynamicMethod dynMethod = new(methodName, t, null, typeof(DynamicTypeHelper).Module);
             ILGenerator il = dynMethod.GetILGenerator();
             il.Emit(OpCodes.Newobj, t.GetConstructor(Type.EmptyTypes) ?? throw new ArgumentNullException(nameof(t)));
             il.Emit(OpCodes.Ret);
@@ -77,13 +77,12 @@ namespace Atlas.Core.Dynamic
 
         private static Func<T, object> GetValue<T>(PropertyInfo propertyInfo)
         {
-            var getAccessor = propertyInfo.GetGetMethod();
+            MethodInfo? getAccessor = propertyInfo.GetGetMethod();
 
             if(getAccessor == null) throw new NullReferenceException(nameof(getAccessor));
 
-            var methodName = "GetValue_" + propertyInfo.Name + "_" + GetNextCounterValue();
-            var dynMethod = new DynamicMethod(methodName, typeof(T), new Type[] { typeof(object) },
-                typeof(DynamicTypeHelper).Module);
+            string methodName = "GetValue_" + propertyInfo.Name + "_" + GetNextCounterValue();
+            DynamicMethod dynMethod = new(methodName, typeof(T), [typeof(object)], typeof(DynamicTypeHelper).Module);
             ILGenerator il = dynMethod.GetILGenerator();
             il.Emit(OpCodes.Ldarg_0);
             il.EmitCall(OpCodes.Callvirt, getAccessor, null);
@@ -97,13 +96,12 @@ namespace Atlas.Core.Dynamic
 
         private static Action<T, object?> SetValue<T>(PropertyInfo propertyInfo)
         {
-            var setAccessor = propertyInfo.GetSetMethod();
+            MethodInfo? setAccessor = propertyInfo.GetSetMethod();
 
             if (setAccessor == null) throw new NullReferenceException(nameof(setAccessor));
 
-            var methodName = "SetValue_" + propertyInfo.Name + "_" + GetNextCounterValue();
-            var dynMethod = new DynamicMethod(methodName, typeof(void),
-                new Type[] { typeof(T), typeof(object) }, typeof(DynamicTypeHelper).Module);
+            string methodName = "SetValue_" + propertyInfo.Name + "_" + GetNextCounterValue();
+            DynamicMethod dynMethod = new(methodName, typeof(void), [typeof(T), typeof(object)], typeof(DynamicTypeHelper).Module);
             ILGenerator il = dynMethod.GetILGenerator();
             il.Emit(OpCodes.Ldarg_0);
             il.Emit(OpCodes.Ldarg_1);

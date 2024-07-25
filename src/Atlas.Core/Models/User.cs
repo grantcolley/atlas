@@ -37,7 +37,7 @@ namespace Atlas.Core.Models
             {
                 if (RoleChecklist == null)
                 {
-                    return new List<string?>();
+                    return [];
                 }
 
                 return RoleChecklist

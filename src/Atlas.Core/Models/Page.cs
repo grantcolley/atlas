@@ -33,10 +33,7 @@ namespace Atlas.Core.Models
 
         public bool IsPermitted(IEnumerable<string?> permissions)
         {
-            if (permissions == null)
-            {
-                throw new ArgumentNullException(nameof(permissions));
-            }
+            ArgumentNullException.ThrowIfNull(permissions);
 
             return permissions.Contains(Permission);
         }

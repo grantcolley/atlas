@@ -35,14 +35,11 @@ namespace Atlas.Core.Models
 
         public bool IsPermitted(IEnumerable<string?> permissions)
         {
-            if (permissions == null)
-            {
-                throw new ArgumentNullException(nameof(permissions));
-            }
+            ArgumentNullException.ThrowIfNull(permissions);
 
             if (permissions.Contains(Permission))
             {
-                var count = Pages.Count;
+                int count = Pages.Count;
 
                 if (count > 0)
                 {

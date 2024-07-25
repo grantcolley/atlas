@@ -6,7 +6,7 @@ namespace Atlas.Core.Models
     {
         public ChecklistItem()
         {
-            SubItems = new List<string?>();
+            SubItems = [];
         }
 
         public bool IsChecked { get; set; }

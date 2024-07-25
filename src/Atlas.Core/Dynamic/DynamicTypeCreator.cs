@@ -17,9 +17,9 @@ namespace Atlas.Core.Dynamic
 
         public static IEnumerable<T> CreateList()
         {
-            var listType = typeof(List<>);
-            var genericListType = listType.MakeGenericType(typeof(T));
-            var instance = Activator.CreateInstance(genericListType);
+            Type listType = typeof(List<>);
+            Type genericListType = listType.MakeGenericType(typeof(T));
+            object? instance = Activator.CreateInstance(genericListType);
             if (instance == null) throw new InvalidOperationException(nameof(instance));
             return (IEnumerable<T>)instance;
         }

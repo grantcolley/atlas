@@ -7,7 +7,7 @@ namespace Atlas.Core.Models
     {
         public Authorisation()
         {
-            Permissions = new List<string?>();
+            Permissions = [];
         }
 
         public string? User { get; set; }
@@ -15,10 +15,7 @@ namespace Atlas.Core.Models
 
         public bool HasPermission(string permission)
         {
-            if(Permissions == null) 
-            {
-                throw new ArgumentNullException(nameof(permission));
-            }
+            ArgumentNullException.ThrowIfNull(nameof(permission));
 
             return Permissions.Contains(permission);
         }

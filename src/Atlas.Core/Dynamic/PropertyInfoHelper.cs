@@ -10,11 +10,11 @@ namespace Atlas.Core.Dynamic
     {
         public static IEnumerable<PropertyInfo> GetPropertyInfos(Type type)
         {
-            List<PropertyInfo> propertyInfoResults = new();
+            List<PropertyInfo> propertyInfoResults = [];
 
             PropertyInfo[] propertyInfos = type.GetProperties();
 
-            foreach (var propertyInfo in propertyInfos)
+            foreach (PropertyInfo propertyInfo in propertyInfos)
             {
                 if (SupportedProperty(propertyInfo))
                 {
@@ -33,7 +33,7 @@ namespace Atlas.Core.Dynamic
         /// <returns>True if the property is supported, else returns false.</returns>
         private static bool SupportedProperty(PropertyInfo propertyInfo)
         {
-            var propertyType = propertyInfo.PropertyType;
+            Type propertyType = propertyInfo.PropertyType;
 
             if (propertyType.IsPublic
                 && !propertyType.IsAbstract

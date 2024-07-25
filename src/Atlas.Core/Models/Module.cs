@@ -11,7 +11,7 @@ namespace Atlas.Core.Models
     {
         public Module()
         {
-            Categories = new List<Category>();
+            Categories = [];
         }
 
         public int ModuleId { get; set; }
@@ -32,14 +32,11 @@ namespace Atlas.Core.Models
 
         public bool IsPermitted(IEnumerable<string?> permissions)
         {
-            if (permissions == null)
-            {
-                throw new ArgumentNullException(nameof(permissions));
-            }
+            ArgumentNullException.ThrowIfNull(permissions);
 
-            if(permissions.Contains(Permission))
+            if (permissions.Contains(Permission))
             {
-                var count = Categories.Count;
+                int count = Categories.Count;
 
                 if (count > 0)
                 {
