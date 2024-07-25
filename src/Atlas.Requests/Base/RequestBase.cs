@@ -6,6 +6,7 @@ namespace Atlas.Requests.Base
 {
     public abstract class RequestBase(HttpClient httpClient)
     {
+        protected static readonly JsonSerializerOptions _jsonSerializerOptions = new(JsonSerializerDefaults.Web);
         protected readonly HttpClient _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
 
         protected static async Task<IResponse<T>> GetResponseAsync<T>(HttpResponseMessage httpResponseMessage)
@@ -20,7 +21,7 @@ namespace Atlas.Requests.Base
             {
                 response.Result = await JsonSerializer.DeserializeAsync<T>
                     (await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false),
-                        new JsonSerializerOptions(JsonSerializerDefaults.Web)).ConfigureAwait(false);
+                        _jsonSerializerOptions).ConfigureAwait(false);
             }
             else
             {
