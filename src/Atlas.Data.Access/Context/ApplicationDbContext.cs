@@ -65,9 +65,9 @@ namespace Atlas.Data.Access.Context
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
-            var audits = OnBeforeSaveChanges();
+            List<Audit> audits = OnBeforeSaveChanges();
 
-            var result = base.SaveChanges(acceptAllChangesOnSuccess);
+            int result = base.SaveChanges(acceptAllChangesOnSuccess);
 
             if (audits.Count > 0)
             {
@@ -81,9 +81,9 @@ namespace Atlas.Data.Access.Context
 
         public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
-            var audits = OnBeforeSaveChanges();
+            List<Audit> audits = OnBeforeSaveChanges();
 
-            var result = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+            int result = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
 
             if (audits.Count > 0)
             {
@@ -99,9 +99,9 @@ namespace Atlas.Data.Access.Context
         {
             ChangeTracker.DetectChanges();
 
-            var audits = new List<Audit>();
+            List<Audit> audits = new List<Audit>();
 
-            foreach (var entry in ChangeTracker.Entries())
+            foreach (EntityEntry entry in ChangeTracker.Entries())
             {
                 if (entry.Entity is not ModelBase
                     || entry.State == EntityState.Detached
@@ -110,7 +110,7 @@ namespace Atlas.Data.Access.Context
                     continue;
                 }
 
-                var now = DateTime.Now;
+                DateTime now = DateTime.Now;
 
                 if (entry.State.Equals(EntityState.Added))
                 {
@@ -125,7 +125,7 @@ namespace Atlas.Data.Access.Context
                     ((ModelBase)entry.Entity).ModifiedBy = _user ?? null;
                 }
 
-                var audit = new Audit
+                Audit audit = new()
                 {
                     TableName = entry.Metadata.GetTableName(),
                     ClrType = entry.Metadata.ClrType.Name,
@@ -134,7 +134,7 @@ namespace Atlas.Data.Access.Context
                     DateTime = now
                 };
 
-                foreach (var property in entry.Properties)
+                foreach (PropertyEntry property in entry.Properties)
                 {
                     if (property.IsTemporary)
                     {
@@ -171,7 +171,7 @@ namespace Atlas.Data.Access.Context
                 audits.Add(audit);
             }
 
-            foreach (var audit in audits.Where(e => e.TemporaryProperties.Count == 0))
+            foreach (Audit audit in audits.Where(e => e.TemporaryProperties.Count == 0))
             {
                 Audits.Add(SerializeValues(audit));
             }
@@ -181,7 +181,7 @@ namespace Atlas.Data.Access.Context
 
         private void OnAfterSaveChanges(List<Audit> audits)
         {
-            foreach (var audit in audits)
+            foreach (Audit audit in audits)
             {
                 foreach (var prop in audit.TemporaryProperties)
                 {

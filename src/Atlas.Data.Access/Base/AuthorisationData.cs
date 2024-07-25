@@ -18,7 +18,7 @@ namespace Atlas.Data.Access.Base
                 return default;
             }
 
-            var user = await _applicationDbContext.Users
+            User? user = await _applicationDbContext.Users
                 .AsNoTracking()
                 .Include(u => u.Roles)
                 .ThenInclude(r => r.Permissions)

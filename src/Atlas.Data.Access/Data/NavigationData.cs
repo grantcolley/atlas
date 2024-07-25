@@ -243,7 +243,7 @@ namespace Atlas.Data.Access.Data
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            var orderedPages = (from c in categories
+            List<Page> orderedPages = (from c in categories
                                     join mi in pages on c.CategoryId equals mi.Category?.CategoryId
                                     select mi).ToList();
 
