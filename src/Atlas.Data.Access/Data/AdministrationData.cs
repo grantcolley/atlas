@@ -307,9 +307,6 @@ namespace Atlas.Data.Access.Data
                 .Entry(role)
                 .CurrentValues.SetValues(updateRole);
 
-            role.Name = updateRole.Name;
-            role.Description = updateRole.Description;
-
             List<Permission> permissions = ExtractSelectedPemissions(updateRole.PermissionChecklist);
 
             List<Permission> removePermissions = role.Permissions
