@@ -10,9 +10,9 @@ namespace Atlas.Seed.Data
     {
         private static ApplicationDbContext? dbContext;
 
-        private static readonly Dictionary<string, Permission> permissions = new();
-        private static readonly Dictionary<string, Role> roles = new();
-        private static readonly Dictionary<string, User> users = new();
+        private static readonly Dictionary<string, Permission> permissions = [];
+        private static readonly Dictionary<string, Role> roles = [];
+        private static readonly Dictionary<string, User> users = [];
 
         public static void Initialise(ApplicationDbContext applicationDbContext)
         {
@@ -60,7 +60,7 @@ namespace Atlas.Seed.Data
             permissions.Add(Auth.ADMIN_WRITE, new Permission { Code = Auth.ADMIN_WRITE, Name = Auth.ADMIN_WRITE, Description = "Atlas Administrator Write Permission" });
             permissions.Add(Auth.DEVELOPER, new Permission { Code = Auth.DEVELOPER, Name = Auth.DEVELOPER, Description = "Atlas Developer Permission" });
 
-            foreach (var permission in permissions.Values)
+            foreach (Permission permission in permissions.Values)
             {
                 dbContext.Permissions.Add(permission);
             }
@@ -77,7 +77,7 @@ namespace Atlas.Seed.Data
             roles.Add(Auth.ADMIN_WRITE, new Role { Name = $"{Auth.ADMIN_WRITE} Role", Description = $"{Auth.ADMIN_WRITE} Role" });
             roles.Add(Auth.DEVELOPER, new Role { Name = $"{Auth.DEVELOPER} Role", Description = $"{Auth.DEVELOPER} Role" });
 
-            foreach (var role in roles.Values)
+            foreach (Role role in roles.Values)
             {
                 dbContext.Roles.Add(role);
             }
@@ -108,7 +108,7 @@ namespace Atlas.Seed.Data
             users.Add("bob", new User { Name = "bob", Email = "bob@email.com" });
             users.Add("grant", new User { Name = "grant", Email = "grant@email.com" });
 
-            foreach (var user in users.Values)
+            foreach (User user in users.Values)
             {
                 dbContext.Users.Add(user);
             }
@@ -120,9 +120,9 @@ namespace Atlas.Seed.Data
         {
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-            users["alice"].Roles.AddRange(new[] { roles[Auth.ADMIN_WRITE] });
-            users["jane"].Roles.AddRange(new[] { roles[Auth.ADMIN_READ] });
-            users["bob"].Roles.AddRange(new[] { roles[Auth.USER] });
+            users["alice"].Roles.AddRange([roles[Auth.ADMIN_WRITE]]);
+            users["jane"].Roles.AddRange([roles[Auth.ADMIN_READ]]);
+            users["bob"].Roles.AddRange([roles[Auth.USER]]);
             users["grant"].Roles.Add(roles[Auth.DEVELOPER]);
 
             dbContext.SaveChanges();
@@ -137,7 +137,7 @@ namespace Atlas.Seed.Data
         {
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-            var administrationModule = new Module { Name = "Administration", Icon = "TableSettings", Order = 2, Permission = Auth.ADMIN_READ };
+            Module administrationModule = new() { Name = "Administration", Icon = "TableSettings", Order = 2, Permission = Auth.ADMIN_READ };
 
             dbContext.Modules.Add(administrationModule);
 
@@ -152,7 +152,7 @@ namespace Atlas.Seed.Data
             ArgumentNullException.ThrowIfNull(administrationModule);
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-            var authorisationCategory = new Category { Name = "Authorisation", Icon = "ShieldLock", Order = 1, Permission = Auth.ADMIN_READ, Module = administrationModule };
+            Category authorisationCategory = new() { Name = "Authorisation", Icon = "ShieldLock", Order = 1, Permission = Auth.ADMIN_READ, Module = administrationModule };
 
             administrationModule.Categories.Add(authorisationCategory);
 
@@ -160,9 +160,9 @@ namespace Atlas.Seed.Data
 
             dbContext.SaveChanges();
 
-            var usersPage = new Page { Name = "Users", Icon = "PeopleLock", Route = AtlasWebConstants.PAGE_USERS, Order = 1, Permission = Auth.ADMIN_READ, Category = authorisationCategory };
-            var rolesPage = new Page { Name = "Roles", Icon = "LockMultiple", Route = AtlasWebConstants.PAGE_ROLES, Order = 2, Permission = Auth.ADMIN_READ, Category = authorisationCategory };
-            var permissionsPage = new Page { Name = "Permissions", Icon = "KeyMultiple", Route = AtlasWebConstants.PAGE_PERMISSIONS, Order = 3, Permission = Auth.ADMIN_READ, Category = authorisationCategory };
+            Page usersPage = new() { Name = "Users", Icon = "PeopleLock", Route = AtlasWebConstants.PAGE_USERS, Order = 1, Permission = Auth.ADMIN_READ, Category = authorisationCategory };
+            Page rolesPage = new() { Name = "Roles", Icon = "LockMultiple", Route = AtlasWebConstants.PAGE_ROLES, Order = 2, Permission = Auth.ADMIN_READ, Category = authorisationCategory };
+            Page permissionsPage = new() { Name = "Permissions", Icon = "KeyMultiple", Route = AtlasWebConstants.PAGE_PERMISSIONS, Order = 3, Permission = Auth.ADMIN_READ, Category = authorisationCategory };
 
             authorisationCategory.Pages.Add(usersPage);
             authorisationCategory.Pages.Add(rolesPage);
@@ -180,7 +180,7 @@ namespace Atlas.Seed.Data
             ArgumentNullException.ThrowIfNull(administrationModule);
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-            var configurationCategory = new Category { Name = "Applications", Icon = "Apps", Order = 2, Permission = Auth.DEVELOPER, Module = administrationModule };
+            Category configurationCategory = new() { Name = "Applications", Icon = "Apps", Order = 2, Permission = Auth.DEVELOPER, Module = administrationModule };
 
             administrationModule.Categories.Add(configurationCategory);
 
@@ -188,9 +188,9 @@ namespace Atlas.Seed.Data
 
             dbContext.SaveChanges();
 
-            var modulePage = new Page { Name = "Modules", Icon = "PanelLeftText", Route = AtlasWebConstants.PAGE_MODULES, Order = 1, Permission = Auth.DEVELOPER, Category = configurationCategory };
-            var categoriesPage = new Page { Name = "Categories", Icon = "AppsListDetail", Route = AtlasWebConstants.PAGE_CATEGORIES, Order = 2, Permission = Auth.DEVELOPER, Category = configurationCategory };
-            var pagesPage = new Page { Name = "Pages", Icon = "DocumentOnePage", Route = AtlasWebConstants.PAGE_PAGES, Order = 3, Permission = Auth.DEVELOPER, Category = configurationCategory };
+            Page modulePage = new() { Name = "Modules", Icon = "PanelLeftText", Route = AtlasWebConstants.PAGE_MODULES, Order = 1, Permission = Auth.DEVELOPER, Category = configurationCategory };
+            Page categoriesPage = new() { Name = "Categories", Icon = "AppsListDetail", Route = AtlasWebConstants.PAGE_CATEGORIES, Order = 2, Permission = Auth.DEVELOPER, Category = configurationCategory };
+            Page pagesPage = new() { Name = "Pages", Icon = "DocumentOnePage", Route = AtlasWebConstants.PAGE_PAGES, Order = 3, Permission = Auth.DEVELOPER, Category = configurationCategory };
 
             configurationCategory.Pages.Add(modulePage);
             configurationCategory.Pages.Add(categoriesPage);
@@ -207,13 +207,13 @@ namespace Atlas.Seed.Data
         //{
         //    if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-        //    var weather = new Module { Name = "Weather", Icon = "Thunderstorm", Order = 1, Permission = Auth.WEATHER_USER };
+        //    Module weather = new() { Name = "Weather", Icon = "Thunderstorm", Order = 1, Permission = Auth.WEATHER_USER };
 
         //    dbContext.Modules.Add(weather);
 
         //    dbContext.SaveChanges();
 
-        //    var forecastCategory = new Category { Name = "Forecast", Icon = "WbCloudy", Order = 1, Permission = Auth.WEATHER_USER, Module = weather };
+        //    Category forecastCategory = new() { Name = "Forecast", Icon = "WbCloudy", Order = 1, Permission = Auth.WEATHER_USER, Module = weather };
 
         //    weather.Categories.Add(forecastCategory);
 
@@ -221,7 +221,7 @@ namespace Atlas.Seed.Data
 
         //    dbContext.SaveChanges();
 
-        //    var weatherForecastPage = new Page { Name = "Weather Display", Icon = "DeviceThermostat", NavigatePage = "PageRouter", Order = 1, Permission = Auth.WEATHER_USER, Category = forecastCategory, PageCode = PageCodes.WEATHER_DISPLAY };
+        //    Page weatherForecastPage = new() { Name = "Weather Display", Icon = "DeviceThermostat", NavigatePage = "PageRouter", Order = 1, Permission = Auth.WEATHER_USER, Category = forecastCategory, PageCode = PageCodes.WEATHER_DISPLAY };
 
         //    forecastCategory.Pages.Add(weatherForecastPage);
 
