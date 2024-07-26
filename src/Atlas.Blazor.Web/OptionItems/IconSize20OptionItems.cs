@@ -20,7 +20,7 @@ namespace Atlas.Blazor.Web.OptionItems
             if (assembly == null) throw new InvalidOperationException(nameof(assembly));
 
             _iconsSize20 = [.. assembly.GetTypes()
-                .Where(i => i.BaseType == typeof(Icon) && i.FullName.Contains("Regular+Size20"))
+                .Where(i => i.BaseType == typeof(Icon) && !string.IsNullOrWhiteSpace(i.FullName) && i.FullName.Contains("Regular+Size20"))
                 .Select(i => new OptionItem { Id = i.Name, Display = i.Name, Icon = i.Name })
                 .OrderBy(oi => oi.Display)];
 

@@ -25,7 +25,7 @@ namespace Atlas.Blazor.Web.Components.Base
 
         protected void RouteAlert(string message)
         {
-            var alert = new Models.Alert
+            Models.Alert alert = new()
             {
                 AlertType = Alerts.ERROR,
                 Title = "Error",

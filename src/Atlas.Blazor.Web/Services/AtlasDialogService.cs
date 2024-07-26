@@ -11,12 +11,12 @@ namespace Atlas.Blazor.Web.Services
 
         public Task<AtlasDialogContent?> ShowDialogAsync(string title, string message)
         {
-            return ShowDialogAsync(title, new List<string> { message }, AtlasDialogType.Ok);
+            return ShowDialogAsync(title, [message], AtlasDialogType.Ok);
         }
 
         public Task<AtlasDialogContent?> ShowDialogAsync(string title, string message, AtlasDialogType dialogType)
         {
-            return ShowDialogAsync(title, new List<string> { message }, dialogType);
+            return ShowDialogAsync(title, [message], dialogType);
         }
 
         public Task<AtlasDialogContent?> ShowDialogAsync(string title, List<string> messages, AtlasDialogType dialogType)
