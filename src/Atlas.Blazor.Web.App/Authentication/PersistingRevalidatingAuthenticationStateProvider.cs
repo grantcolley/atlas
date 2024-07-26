@@ -41,11 +41,11 @@ namespace Atlas.Blazor.Web.App.Authentication
             AuthenticationState authenticationState, CancellationToken cancellationToken)
         {
             // Get the user manager from a new scope to ensure it fetches fresh data
-            await using var scope = _scopeFactory.CreateAsyncScope();
+            await using AsyncServiceScope scope = _scopeFactory.CreateAsyncScope();
             return ValidateSecurityStampAsync(authenticationState.User);
         }
 
-        private bool ValidateSecurityStampAsync(ClaimsPrincipal principal)
+        private static bool ValidateSecurityStampAsync(ClaimsPrincipal principal)
         {
             if (principal.Identity?.IsAuthenticated is false)
             {
@@ -67,13 +67,13 @@ namespace Atlas.Blazor.Web.App.Authentication
                 throw new UnreachableException($"Authentication state not set in {nameof(RevalidatingServerAuthenticationStateProvider)}.{nameof(OnPersistingAsync)}().");
             }
 
-            var authenticationState = await _authenticationStateTask;
-            var principal = authenticationState.User;
+            AuthenticationState authenticationState = await _authenticationStateTask;
+            ClaimsPrincipal principal = authenticationState.User;
 
             if (principal.Identity?.IsAuthenticated == true)
             {
-                var userId = principal.FindFirst(_options.ClaimsIdentity.UserIdClaimType)?.Value;
-                var email = principal.FindFirst("email")?.Value;
+                string? userId = principal.FindFirst(_options.ClaimsIdentity.UserIdClaimType)?.Value;
+                string? email = principal.FindFirst("email")?.Value;
 
                 if (userId != null && email != null)
                 {

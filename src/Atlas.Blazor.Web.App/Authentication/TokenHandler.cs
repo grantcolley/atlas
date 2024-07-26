@@ -3,20 +3,15 @@ using Microsoft.AspNetCore.Authentication;
 
 namespace Atlas.Blazor.Web.App.Authentication
 {
-    public class TokenHandler : DelegatingHandler
+    public class TokenHandler(IHttpContextAccessor httpContextAccessor) : DelegatingHandler
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public TokenHandler(IHttpContextAccessor httpContextAccessor)
-        {
-            _httpContextAccessor = httpContextAccessor;
-        }
+        private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if(_httpContextAccessor.HttpContext == null)  throw new NullReferenceException(nameof(_httpContextAccessor.HttpContext));
 
-            var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token").ConfigureAwait(false);
+            string? accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token").ConfigureAwait(false);
 
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 

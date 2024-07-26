@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components.Components.Tooltip;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
@@ -54,26 +54,26 @@ builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
 
 builder.Services.AddTransient<IClaimRequests, ClaimRequests>(sp =>
 {
-    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
-    var httpClient = httpClientFactory.CreateClient(AtlasWebConstants.ATLAS_API);
+    IHttpClientFactory httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    HttpClient httpClient = httpClientFactory.CreateClient(AtlasWebConstants.ATLAS_API);
     return new ClaimRequests(httpClient);
 });
 
 builder.Services.AddTransient<IGenericRequests, GenericRequests>(sp =>
 {
-    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
-    var httpClient = httpClientFactory.CreateClient(AtlasWebConstants.ATLAS_API);
+    IHttpClientFactory httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    HttpClient httpClient = httpClientFactory.CreateClient(AtlasWebConstants.ATLAS_API);
     return new GenericRequests(httpClient);
 });
 
 builder.Services.AddTransient<IOptionsRequest, OptionsRequest>(sp =>
 {
-    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
-    var httpClient = httpClientFactory.CreateClient(AtlasWebConstants.ATLAS_API);
+    IHttpClientFactory httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    HttpClient httpClient = httpClientFactory.CreateClient(AtlasWebConstants.ATLAS_API);
     return new OptionsRequest(httpClient);
 });
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -94,7 +94,7 @@ app.UseAntiforgery();
 
 app.MapGet("login", async (HttpContext httpContext, string redirectUri = @"/") =>
 {
-    var authenticationProperties = new LoginAuthenticationPropertiesBuilder()
+    AuthenticationProperties authenticationProperties = new LoginAuthenticationPropertiesBuilder()
             .WithRedirectUri(redirectUri)
             .Build();
 
@@ -103,7 +103,7 @@ app.MapGet("login", async (HttpContext httpContext, string redirectUri = @"/") =
 
 app.MapGet("logout", async (HttpContext httpContext, string redirectUri = @"/") =>
 {
-    var authenticationProperties = new LogoutAuthenticationPropertiesBuilder()
+    AuthenticationProperties authenticationProperties = new LogoutAuthenticationPropertiesBuilder()
             .WithRedirectUri(redirectUri)
             .Build();
 
