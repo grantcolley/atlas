@@ -66,10 +66,10 @@ namespace Atlas.Data.Access.Data
                 await _applicationDbContext
                     .SaveChangesAsync(cancellationToken)
                     .ConfigureAwait(false);
-
-                user.RoleChecklist = await GetRoleChecklistAsync(user.Roles, cancellationToken)
-                    .ConfigureAwait(false);
             }
+
+            user.RoleChecklist = await GetRoleChecklistAsync(user.Roles, cancellationToken)
+                .ConfigureAwait(false);
 
             if (Authorisation == null
                 || !Authorisation.HasPermission(Auth.ADMIN_WRITE))
