@@ -130,6 +130,7 @@ else
         if (GenericRequests == null) throw new NullReferenceException(nameof(GenericRequests));
         if (_apiCreateEndpoint == null) throw new NullReferenceException(nameof(_apiCreateEndpoint));
         if (_apiUpdateEndpoint == null) throw new NullReferenceException(nameof(_apiUpdateEndpoint));
+        if (_identityFieldName == null) throw new NullReferenceException(nameof(_identityFieldName));
 
         if (Model == null)
         {
@@ -150,6 +151,11 @@ else
                     .ConfigureAwait(false);
 
                 Model = GetResponse(response);
+
+                if (Model == null) throw new NullReferenceException(nameof(Model));
+
+                int? id = (int?)_dynamicType.GetValue(Model, _identityFieldName);
+                _id = id.HasValue ? id.Value : throw new NullReferenceException(_identityFieldName);
             }
             else
             {
