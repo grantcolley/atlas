@@ -1,4 +1,4 @@
- using Atlas.API.Extensions;
+using Atlas.API.Extensions;
 using Atlas.API.Interfaces;
 using Atlas.API.Services;
 using Atlas.Data.Access.Constants;
@@ -11,12 +11,15 @@ using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Text.Json.Serialization;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
+                  loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration)
+                                        .Enrich.FromLogContext());
+
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services
