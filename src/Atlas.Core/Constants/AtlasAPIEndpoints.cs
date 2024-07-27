@@ -4,6 +4,7 @@
     {
         public const string GET_CLAIM_AUTHORIZATION = "getclaimauthorization";
         public const string GET_CLAIM_MODULES = "getclaimmodules";
+        public const string LOG = "log";
         public const string GET_OPTIONS = "getoptions";
         public const string GET_GENERIC_OPTIONS = "getgenericoptions";
         public const string GET_MODULE = "getmodule";

@@ -59,6 +59,13 @@ builder.Services.AddTransient<IClaimRequests, ClaimRequests>(sp =>
     return new ClaimRequests(httpClient);
 });
 
+builder.Services.AddTransient<ILogRequests, LogRequests>(sp =>
+{
+    IHttpClientFactory httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    HttpClient httpClient = httpClientFactory.CreateClient(AtlasWebConstants.ATLAS_API);
+    return new LogRequests(httpClient);
+});
+
 builder.Services.AddTransient<IGenericRequests, GenericRequests>(sp =>
 {
     IHttpClientFactory httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
