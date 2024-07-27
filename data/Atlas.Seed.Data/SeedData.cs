@@ -35,7 +35,7 @@ namespace Atlas.Seed.Data
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
             ((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE Audits");
-            ((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE Logs");
+            //((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE Logs");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE RoleUser");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE PermissionRole");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("DELETE FROM Users");
