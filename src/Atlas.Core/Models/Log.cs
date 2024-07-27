@@ -1,4 +1,6 @@
-﻿namespace Atlas.Core.Models
+﻿using Atlas.Core.Enums;
+
+namespace Atlas.Core.Models
 {
     public class Log
     {
