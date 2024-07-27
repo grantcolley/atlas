@@ -19,7 +19,7 @@ else
                   Label="@Label"
                   Height="300px"
                   Disabled="@ReadOnly"
-                  OptionValue="@(i => _dynamicType?.GetValue(i, IdentifierFieldName ?? throw new NullReferenceException(nameof(IdentifierFieldName)))?.ToString())"
+                  OptionValue="@(i => _dynamicType?.GetValue(i ?? throw new NullReferenceException(nameof(i)), IdentifierFieldName ?? throw new NullReferenceException(nameof(IdentifierFieldName)))?.ToString())"
                   @bind-SelectedOption="@_selectedItem"
                   @onchange="OnChange">
         <OptionTemplate>
