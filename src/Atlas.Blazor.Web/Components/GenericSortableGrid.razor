@@ -61,7 +61,7 @@
             if (string.IsNullOrWhiteSpace(_filter)) return Source?.AsQueryable();
 
             return Source?.AsQueryable().Where(i => !string.IsNullOrWhiteSpace(_dynamicType.GetValue(i, FilterFieldName) as string)
-            && _dynamicType.GetValue(i, FilterFieldName).ToString().Contains(_filter, StringComparison.CurrentCultureIgnoreCase));
+            && (_dynamicType.GetValue(i, FilterFieldName) as string).ToString().Contains(_filter, StringComparison.CurrentCultureIgnoreCase));
         }
     }
 
