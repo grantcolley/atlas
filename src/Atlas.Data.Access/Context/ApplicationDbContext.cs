@@ -20,7 +20,7 @@ namespace Atlas.Data.Access.Context
 
         public void SetUser(string user)
         {
-            this._user = user;
+            _user = user;
         }
 
         public string? GetUser()
