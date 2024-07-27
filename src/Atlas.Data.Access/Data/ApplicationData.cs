@@ -8,8 +8,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Atlas.Data.Access.Data
 {
-    public class NavigationData(ApplicationDbContext applicationDbContext, ILogger<NavigationData> logger) 
-        : AuthorisationData<NavigationData>(applicationDbContext, logger), INavigationData
+    public class ApplicationData(ApplicationDbContext applicationDbContext, ILogger<ApplicationData> logger) 
+        : AuthorisationData<ApplicationData>(applicationDbContext, logger), IApplicationData
     {
         public async Task<IEnumerable<Module>> GetModulesAsync(CancellationToken cancellationToken)
         {

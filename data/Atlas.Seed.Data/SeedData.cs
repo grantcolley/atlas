@@ -25,7 +25,7 @@ namespace Atlas.Seed.Data
             CreateUsers();
             AssignUsersRoles();
 
-            AddNavigation();
+            AddApplications();
 
             //AddWeatherModule();
         }
@@ -128,7 +128,7 @@ namespace Atlas.Seed.Data
             dbContext.SaveChanges();
         }
 
-        private static void AddNavigation()
+        private static void AddApplications()
         {
             AddAdministration();
         }

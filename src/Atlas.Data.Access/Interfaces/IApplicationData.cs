@@ -2,7 +2,7 @@
 
 namespace Atlas.Data.Access.Interfaces
 {
-    public interface INavigationData : IAuthorisationData
+    public interface IApplicationData : IAuthorisationData
     {
         Task<IEnumerable<Module>> GetModulesAsync(CancellationToken cancellationToken);
         Task<Module?> GetModuleAsync(int id, CancellationToken cancellationToken);

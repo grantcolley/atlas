@@ -4,11 +4,11 @@ using Atlas.Core.Models;
 
 namespace Atlas.API.Extensions
 {
-    public static class NavigationEndpointMapper
+    public static class ApplicationEndpointMapper
     {
-        public static WebApplication? MapAtlasNavigationEndpoints(this WebApplication app)
+        public static WebApplication? MapAtlasApplicationEndpoints(this WebApplication app)
         {
-            app.MapGet($"/{AtlasAPIEndpoints.GET_MODULES}", NavigationEndpoints.GetModules)
+            app.MapGet($"/{AtlasAPIEndpoints.GET_MODULES}", ApplicationEndpoints.GetModules)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.GET_MODULES)
                 .WithDescription("Gets a list of modules")
@@ -16,7 +16,7 @@ namespace Atlas.API.Extensions
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapGet($"/{AtlasAPIEndpoints.GET_MODULE}/{{id:int}}", NavigationEndpoints.GetModule)
+            app.MapGet($"/{AtlasAPIEndpoints.GET_MODULE}/{{id:int}}", ApplicationEndpoints.GetModule)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.GET_MODULE)
                 .WithDescription("Gets a module for the given id. If id is 0 then returns a new instance of a blank module for creation.")
@@ -24,7 +24,7 @@ namespace Atlas.API.Extensions
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapPost($"/{AtlasAPIEndpoints.CREATE_MODULE}", NavigationEndpoints.CreateModule)
+            app.MapPost($"/{AtlasAPIEndpoints.CREATE_MODULE}", ApplicationEndpoints.CreateModule)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.CREATE_MODULE)
                 .WithDescription("Create a new module.")
@@ -32,7 +32,7 @@ namespace Atlas.API.Extensions
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapPut($"/{AtlasAPIEndpoints.UPDATE_MODULE}", NavigationEndpoints.UpdateModule)
+            app.MapPut($"/{AtlasAPIEndpoints.UPDATE_MODULE}", ApplicationEndpoints.UpdateModule)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.UPDATE_MODULE)
                 .WithDescription("Updates the module.")
@@ -40,7 +40,7 @@ namespace Atlas.API.Extensions
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapDelete($"/{AtlasAPIEndpoints.DELETE_MODULE}/{{id:int}}", NavigationEndpoints.DeleteModule)
+            app.MapDelete($"/{AtlasAPIEndpoints.DELETE_MODULE}/{{id:int}}", ApplicationEndpoints.DeleteModule)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.DELETE_MODULE)
                 .WithDescription("Delete's a module of the given id.")
@@ -48,7 +48,7 @@ namespace Atlas.API.Extensions
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapGet($"/{AtlasAPIEndpoints.GET_CATEGORIES}", NavigationEndpoints.GetCategories)
+            app.MapGet($"/{AtlasAPIEndpoints.GET_CATEGORIES}", ApplicationEndpoints.GetCategories)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.GET_CATEGORIES)
                 .WithDescription("Gets a list of categories")
@@ -56,7 +56,7 @@ namespace Atlas.API.Extensions
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapGet($"/{AtlasAPIEndpoints.GET_CATEGORY}/{{id:int}}", NavigationEndpoints.GetCategory)
+            app.MapGet($"/{AtlasAPIEndpoints.GET_CATEGORY}/{{id:int}}", ApplicationEndpoints.GetCategory)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.GET_CATEGORY)
                 .WithDescription("Gets a category for the given id. If id is 0 then returns a new instance of a blank category for creation.")
@@ -64,7 +64,7 @@ namespace Atlas.API.Extensions
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapPost($"/{AtlasAPIEndpoints.CREATE_CATEGORY}", NavigationEndpoints.CreateCategory)
+            app.MapPost($"/{AtlasAPIEndpoints.CREATE_CATEGORY}", ApplicationEndpoints.CreateCategory)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.CREATE_CATEGORY)
                 .WithDescription("Create a new category.")
@@ -72,7 +72,7 @@ namespace Atlas.API.Extensions
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapPut($"/{AtlasAPIEndpoints.UPDATE_CATEGORY}", NavigationEndpoints.UpdateCategory)
+            app.MapPut($"/{AtlasAPIEndpoints.UPDATE_CATEGORY}", ApplicationEndpoints.UpdateCategory)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.UPDATE_CATEGORY)
                 .WithDescription("Updates the category.")
@@ -80,7 +80,7 @@ namespace Atlas.API.Extensions
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapDelete($"/{AtlasAPIEndpoints.DELETE_CATEGORY}/{{id:int}}", NavigationEndpoints.DeleteCategory)
+            app.MapDelete($"/{AtlasAPIEndpoints.DELETE_CATEGORY}/{{id:int}}", ApplicationEndpoints.DeleteCategory)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.DELETE_CATEGORY)
                 .WithDescription("Delete's a category of the given id.")
@@ -88,7 +88,7 @@ namespace Atlas.API.Extensions
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapGet($"/{AtlasAPIEndpoints.GET_PAGES}", NavigationEndpoints.GetPages)
+            app.MapGet($"/{AtlasAPIEndpoints.GET_PAGES}", ApplicationEndpoints.GetPages)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.GET_PAGES)
                 .WithDescription("Gets a list of pages")
@@ -96,7 +96,7 @@ namespace Atlas.API.Extensions
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapGet($"/{AtlasAPIEndpoints.GET_PAGE}/{{id:int}}", NavigationEndpoints.GetPage)
+            app.MapGet($"/{AtlasAPIEndpoints.GET_PAGE}/{{id:int}}", ApplicationEndpoints.GetPage)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.GET_PAGE)
                 .WithDescription("Gets a page for the given id. If id is 0 then returns a new instance of a blank page for creation.")
@@ -104,7 +104,7 @@ namespace Atlas.API.Extensions
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapPost($"/{AtlasAPIEndpoints.CREATE_PAGE}", NavigationEndpoints.CreatePage)
+            app.MapPost($"/{AtlasAPIEndpoints.CREATE_PAGE}", ApplicationEndpoints.CreatePage)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.CREATE_PAGE)
                 .WithDescription("Create a new page.")
@@ -112,7 +112,7 @@ namespace Atlas.API.Extensions
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapPut($"/{AtlasAPIEndpoints.UPDATE_PAGE}", NavigationEndpoints.UpdatePage)
+            app.MapPut($"/{AtlasAPIEndpoints.UPDATE_PAGE}", ApplicationEndpoints.UpdatePage)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.UPDATE_PAGE)
                 .WithDescription("Updates the page.")
@@ -120,7 +120,7 @@ namespace Atlas.API.Extensions
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
-            app.MapDelete($"/{AtlasAPIEndpoints.DELETE_PAGE}/{{id:int}}", NavigationEndpoints.DeletePage)
+            app.MapDelete($"/{AtlasAPIEndpoints.DELETE_PAGE}/{{id:int}}", ApplicationEndpoints.DeletePage)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.DELETE_PAGE)
                 .WithDescription("Delete's a page of the given id.")

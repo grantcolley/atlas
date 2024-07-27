@@ -56,7 +56,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IClaimData, ClaimData>();
 builder.Services.AddScoped<IClaimService, ClaimService>();
 builder.Services.AddScoped<IOptionsData, OptionsData>();
-builder.Services.AddScoped<INavigationData, NavigationData>();
+builder.Services.AddScoped<IApplicationData, ApplicationData>();
 builder.Services.AddScoped<IAdministrationData, AdministrationData>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

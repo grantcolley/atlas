@@ -10,7 +10,7 @@ namespace Atlas.Data.Access.Data
     public class ClaimData(ApplicationDbContext applicationDbContext, ILogger<ClaimData> logger) 
         : AuthorisationData<ClaimData>(applicationDbContext, logger), IClaimData
     {
-        public async Task<IEnumerable<Module>?> GetNavigationClaimsAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<Module>?> GetApplicationClaimsAsync(CancellationToken cancellationToken)
         {
             string? email = _applicationDbContext.GetUser();
 
