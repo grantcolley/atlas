@@ -7,11 +7,11 @@ namespace Atlas.API.Endpoints
 {
     internal static class ClaimEndpoint
     {
-        internal static async Task<IResult> GetClaimAuthorisation(IClaimData userData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> GetClaimAuthorisation(IClaimData claimData, IClaimService claimService, CancellationToken cancellationToken)
         {
             try
             {
-                Authorisation? authorisation = await userData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                Authorisation? authorisation = await claimData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
