@@ -266,7 +266,7 @@ namespace Atlas.Data.Access.Data
                 Description = addRole.Description
             };
 
-            List<Permission> permissions = ExtractSelectedPemissions(role.PermissionChecklist);
+            List<int> permissionIds = ExtractSelectedPemissions(role.PermissionChecklist);
 
             await _applicationDbContext.Roles
                 .AddAsync(role, cancellationToken)
@@ -276,8 +276,13 @@ namespace Atlas.Data.Access.Data
                 .SaveChangesAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            if (permissions.Count > 0)
+            if (permissionIds.Count > 0)
             {
+                IEnumerable<Permission> permissions = await _applicationDbContext.Permissions
+                    .AsNoTracking()
+                    .Where(p => permissionIds.Contains(p.PermissionId))
+                    .ToListAsync();
+
                 role.Permissions.AddRange(permissions);
 
                 await _applicationDbContext
@@ -310,10 +315,10 @@ namespace Atlas.Data.Access.Data
                     .Entry(role)
                     .CurrentValues.SetValues(updateRole);
 
-                List<Permission> permissions = ExtractSelectedPemissions(updateRole.PermissionChecklist);
+                List<int> selectedPermissionIds = ExtractSelectedPemissions(updateRole.PermissionChecklist);
 
                 List<Permission> removePermissions = role.Permissions
-                    .Where(rp => !permissions.Any(p => p.PermissionId.Equals(rp.PermissionId)))
+                    .Where(rp => !selectedPermissionIds.Any(p => p.Equals(rp.PermissionId)))
                     .ToList();
 
                 foreach (Permission permission in removePermissions)
@@ -321,11 +326,19 @@ namespace Atlas.Data.Access.Data
                     role.Permissions.Remove(permission);
                 }
 
-                List<Permission> addPermissions = permissions
-                    .Where(rp => !role.Permissions.Any(p => p.PermissionId.Equals(rp.PermissionId)))
+                List<int> newPermissionIds = selectedPermissionIds
+                    .Where(np => !role.Permissions.Any(rp => rp.PermissionId.Equals(np)))
                     .ToList();
 
-                role.Permissions.AddRange(addPermissions);
+                if (newPermissionIds.Count > 0)
+                {
+                    IEnumerable<Permission> permissions = await _applicationDbContext.Permissions
+                        .AsNoTracking()
+                        .Where(p => newPermissionIds.Contains(p.PermissionId))
+                        .ToListAsync();
+
+                    role.Permissions.AddRange(permissions);
+                }
 
                 _applicationDbContext.Roles.Update(role);
 
@@ -419,16 +432,11 @@ namespace Atlas.Data.Access.Data
             return roleChecklist;
         }
 
-        private static List<Permission> ExtractSelectedPemissions(List<ChecklistItem> permissionChecklist)
+        private static List<int> ExtractSelectedPemissions(List<ChecklistItem> permissionChecklist)
         {
             return permissionChecklist
                 .Where(p => p.IsChecked)
-                .Select(p => new Permission
-                {
-                    PermissionId = p.Id,
-                    Name = p.Name,
-                    Description = p.Description
-                })
+                .Select(p => p.Id)
                 .ToList();
         }
 
