@@ -1,5 +1,6 @@
 ﻿using Atlas.Core.Constants;
 using Atlas.Core.Dynamic;
+using Atlas.Core.Exceptions;
 using Atlas.Core.Models;
 using Atlas.Data.Access.Base;
 using Atlas.Data.Access.Context;
@@ -298,48 +299,55 @@ namespace Atlas.Data.Access.Data
 
         public async Task<Role> UpdateRoleAsync(Role updateRole, CancellationToken cancellationToken)
         {
-            Role role = await _applicationDbContext.Roles
-                .Include(r => r.Permissions)
-                .FirstAsync(r => r.RoleId.Equals(updateRole.RoleId), cancellationToken)
-                .ConfigureAwait(false);
-
-            _applicationDbContext
-                .Entry(role)
-                .CurrentValues.SetValues(updateRole);
-
-            List<Permission> permissions = ExtractSelectedPemissions(updateRole.PermissionChecklist);
-
-            List<Permission> removePermissions = role.Permissions
-                .Where(rp => !permissions.Any(p => p.PermissionId.Equals(rp.PermissionId)))
-                .ToList();
-
-            foreach (Permission permission in removePermissions)
+            try
             {
-                role.Permissions.Remove(permission);
+                Role role = await _applicationDbContext.Roles
+                    .Include(r => r.Permissions)
+                    .FirstAsync(r => r.RoleId.Equals(updateRole.RoleId), cancellationToken)
+                    .ConfigureAwait(false);
+
+                _applicationDbContext
+                    .Entry(role)
+                    .CurrentValues.SetValues(updateRole);
+
+                List<Permission> permissions = ExtractSelectedPemissions(updateRole.PermissionChecklist);
+
+                List<Permission> removePermissions = role.Permissions
+                    .Where(rp => !permissions.Any(p => p.PermissionId.Equals(rp.PermissionId)))
+                    .ToList();
+
+                foreach (Permission permission in removePermissions)
+                {
+                    role.Permissions.Remove(permission);
+                }
+
+                List<Permission> addPermissions = permissions
+                    .Where(rp => !role.Permissions.Any(p => p.PermissionId.Equals(rp.PermissionId)))
+                    .ToList();
+
+                role.Permissions.AddRange(addPermissions);
+
+                _applicationDbContext.Roles.Update(role);
+
+                await _applicationDbContext
+                    .SaveChangesAsync(cancellationToken)
+                    .ConfigureAwait(false);
+
+                role.PermissionChecklist = await GetPermissionChecklistAsync(role.Permissions, cancellationToken)
+                    .ConfigureAwait(false);
+
+                if (Authorisation == null
+                    || !Authorisation.HasPermission(Auth.ADMIN_WRITE))
+                {
+                    role.IsReadOnly = true;
+                }
+
+                return role;
             }
-
-            List<Permission> addPermissions = permissions
-                .Where(rp => !role.Permissions.Any(p => p.PermissionId.Equals(rp.PermissionId)))
-                .ToList();
-
-            role.Permissions.AddRange(addPermissions);
-
-            _applicationDbContext.Roles.Update(role);
-
-            await _applicationDbContext
-                .SaveChangesAsync(cancellationToken)
-                .ConfigureAwait(false);
-
-            role.PermissionChecklist = await GetPermissionChecklistAsync(role.Permissions, cancellationToken)
-                .ConfigureAwait(false);
-
-            if (Authorisation == null
-                || !Authorisation.HasPermission(Auth.ADMIN_WRITE))
+            catch (Exception ex)
             {
-                role.IsReadOnly = true;
+                throw new AtlasException(ex.Message, ex);
             }
-
-            return role;
         }
 
         public async Task<int> DeleteRoleAsync(int roleId, CancellationToken cancellationToken)

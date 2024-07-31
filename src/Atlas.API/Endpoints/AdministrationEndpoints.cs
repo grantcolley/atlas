@@ -1,5 +1,6 @@
 ﻿using Atlas.API.Interfaces;
 using Atlas.Core.Constants;
+using Atlas.Core.Exceptions;
 using Atlas.Core.Models;
 using Atlas.Data.Access.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -224,11 +225,13 @@ namespace Atlas.API.Endpoints
             }
         }
 
-        internal static async Task<IResult> UpdateRole([FromBody] Role role, IAdministrationData administrationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> UpdateRole([FromBody] Role role, IAdministrationData administrationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
+            Authorisation? authorisation = null;
+
             try
             {
-                Authorisation? authorisation = await administrationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                authorisation = await administrationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -242,10 +245,9 @@ namespace Atlas.API.Endpoints
 
                 return Results.Ok(updatedRole);
             }
-            catch (Exception)
+            catch (AtlasException ex)
             {
-                // Exceptions thrown from administrationData.UpdateRoleAsync()
-                // have already been logged so simply return Status500InternalServerError.
+                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
