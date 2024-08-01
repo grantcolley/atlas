@@ -50,7 +50,7 @@ namespace Atlas.Data.Access.Data
             }
             catch (Exception ex)
             {
-                throw new AtlasException(ex.Message, ex);
+                throw new AtlasException(ex.Message, ex, $"UserId={userId}");
             }
         }
 
@@ -149,7 +149,7 @@ namespace Atlas.Data.Access.Data
             }
             catch (Exception ex)
             {
-                throw new AtlasException(ex.Message, ex);
+                throw new AtlasException(ex.Message, ex, $"UserId={updateUser.UserId}");
             }
         }
 
@@ -169,7 +169,7 @@ namespace Atlas.Data.Access.Data
             }
             catch (Exception ex)
             {
-                throw new AtlasException(ex.Message, ex);
+                throw new AtlasException(ex.Message, ex, $"UserId={userId}");
             }
         }
 
@@ -208,7 +208,7 @@ namespace Atlas.Data.Access.Data
             }
             catch (Exception ex)
             {
-                throw new AtlasException(ex.Message, ex);
+                throw new AtlasException(ex.Message, ex, $"PermissionId={permissionId}");
             }
         }
 
@@ -268,7 +268,7 @@ namespace Atlas.Data.Access.Data
             }
             catch (Exception ex)
             {
-                throw new AtlasException(ex.Message, ex);
+                throw new AtlasException(ex.Message, ex, $"PermissionId={permission.PermissionId}");
             }
         }
 
@@ -288,7 +288,7 @@ namespace Atlas.Data.Access.Data
             }
             catch (Exception ex)
             {
-                throw new AtlasException(ex.Message, ex);
+                throw new AtlasException(ex.Message, ex, $"PermissionId={permissionId}");
             }
         }
 
@@ -332,7 +332,7 @@ namespace Atlas.Data.Access.Data
             }
             catch (Exception ex)
             {
-                throw new AtlasException(ex.Message, ex);
+                throw new AtlasException(ex.Message, ex, $"RoleId={roleId}");
             }
         }
 
@@ -446,7 +446,7 @@ namespace Atlas.Data.Access.Data
             }
             catch (Exception ex)
             {
-                throw new AtlasException(ex.Message, ex);
+                throw new AtlasException(ex.Message, ex, $"RoleId={updateRole.RoleId}");
             }
         }
 
@@ -466,7 +466,7 @@ namespace Atlas.Data.Access.Data
             }
             catch (Exception ex)
             {
-                throw new AtlasException(ex.Message, ex);
+                throw new AtlasException(ex.Message, ex, $"RoleId={roleId}");
             }
         }
 
