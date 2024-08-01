@@ -40,11 +40,11 @@ namespace Atlas.Data.Access.Data
                 }
                 catch(Exception ex)
                 {
-                    throw new AtlasException(ex.Message, ex, $"Options Code = {optionsCode}");
+                    throw new AtlasException(ex.Message, ex, $"OptionsCode={optionsCode}");
                 }
             }
 
-            throw new AtlasException($"{optionsCode} not found", new NotImplementedException(optionsCode), $"Options Code = {optionsCode}");
+            throw new AtlasException($"{optionsCode} not found", new NotImplementedException(optionsCode), $"OptionsCode={optionsCode}");
         }
 
         public async Task<string> GetGenericOptionsAsync(IEnumerable<OptionsArg> optionsArgs, CancellationToken cancellationToken)
@@ -62,11 +62,11 @@ namespace Atlas.Data.Access.Data
                 }
                 catch (Exception ex)
                 {
-                    throw new AtlasException(ex.Message, ex, $"Options Code = {optionsCode}");
+                    throw new AtlasException(ex.Message, ex, $"OptionsCode={optionsCode}");
                 }
             }
 
-            throw new AtlasException($"{optionsCode} not found", new NotImplementedException(optionsCode), $"Options Code = {optionsCode}");
+            throw new AtlasException($"{optionsCode} not found", new NotImplementedException(optionsCode), $"OptionsCode={optionsCode}");
         }
 
         private async Task<IEnumerable<OptionItem>> GetPermissionsOptionItemsAsync(IEnumerable<OptionsArg> optionsArgs, CancellationToken cancellationToken)
