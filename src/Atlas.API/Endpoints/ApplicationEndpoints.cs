@@ -1,5 +1,6 @@
 ﻿using Atlas.API.Interfaces;
 using Atlas.Core.Constants;
+using Atlas.Core.Exceptions;
 using Atlas.Core.Models;
 using Atlas.Data.Access.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -8,11 +9,13 @@ namespace Atlas.API.Endpoints
 {
     internal static class ApplicationEndpoints
     {
-        internal static async Task<IResult> GetModules(IApplicationData applicationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> GetModules(IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
+            Authorisation? authorisation = null;
+
             try
             {
-                Authorisation? authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -26,20 +29,21 @@ namespace Atlas.API.Endpoints
 
                 return Results.Ok(new AuthResult<IEnumerable<Module>?> { Authorisation = authorisation, Result = modules });
             }
-            catch (Exception)
+            catch (AtlasException ex)
             {
-                // Exceptions thrown from applicationData.GetModulesAsync()
-                // have already been logged so simply return Status500InternalServerError.
+                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> GetModule(int id, IApplicationData applicationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> GetModule(int id, IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
+            Authorisation? authorisation = null;
+
             try
             {
-                Authorisation? authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -53,20 +57,21 @@ namespace Atlas.API.Endpoints
 
                 return Results.Ok(module);
             }
-            catch (Exception)
+            catch (AtlasException ex)
             {
-                // Exceptions thrown from applicationData.GetModuleAsync()
-                // have already been logged so simply return Status500InternalServerError.
+                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> CreateModule([FromBody] Module module, IApplicationData applicationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> CreateModule([FromBody] Module module, IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
+            Authorisation? authorisation = null;
+
             try
             {
-                Authorisation? authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -80,20 +85,21 @@ namespace Atlas.API.Endpoints
 
                 return Results.Ok(newModule);
             }
-            catch (Exception)
+            catch (AtlasException ex)
             {
-                // Exceptions thrown from applicationData.CreateModuleAsync()
-                // have already been logged so simply return Status500InternalServerError.
+                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> UpdateModule([FromBody] Module module, IApplicationData applicationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> UpdateModule([FromBody] Module module, IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
+            Authorisation? authorisation = null;
+
             try
             {
-                Authorisation? authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -107,20 +113,21 @@ namespace Atlas.API.Endpoints
 
                 return Results.Ok(updatedModule);
             }
-            catch (Exception)
+            catch (AtlasException ex)
             {
-                // Exceptions thrown from applicationData.UpdateModuleAsync()
-                // have already been logged so simply return Status500InternalServerError.
+                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> DeleteModule(int id, IApplicationData applicationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> DeleteModule(int id, IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
+            Authorisation? authorisation = null;
+
             try
             {
-                Authorisation? authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -134,20 +141,21 @@ namespace Atlas.API.Endpoints
 
                 return Results.Ok(affectedRows);
             }
-            catch (Exception)
+            catch (AtlasException ex)
             {
-                // Exceptions thrown from applicationData.DeleteModuleAsync()
-                // have already been logged so simply return Status500InternalServerError.
+                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> GetCategories(IApplicationData applicationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> GetCategories(IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
+            Authorisation? authorisation = null;
+
             try
             {
-                Authorisation? authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -161,20 +169,21 @@ namespace Atlas.API.Endpoints
 
                 return Results.Ok(new AuthResult<IEnumerable<Category>?> { Authorisation = authorisation, Result = categories });
             }
-            catch (Exception)
+            catch (AtlasException ex)
             {
-                // Exceptions thrown from applicationData.GetCategoriesAsync()
-                // have already been logged so simply return Status500InternalServerError.
+                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> GetCategory(int id, IApplicationData applicationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> GetCategory(int id, IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
+            Authorisation? authorisation = null;
+
             try
             {
-                Authorisation? authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -188,20 +197,21 @@ namespace Atlas.API.Endpoints
 
                 return Results.Ok(category);
             }
-            catch (Exception)
+            catch (AtlasException ex)
             {
-                // Exceptions thrown from applicationData.GetCategoryAsync()
-                // have already been logged so simply return Status500InternalServerError.
+                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> CreateCategory([FromBody] Category category, IApplicationData applicationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> CreateCategory([FromBody] Category category, IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
+            Authorisation? authorisation = null;
+
             try
             {
-                Authorisation? authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -215,20 +225,21 @@ namespace Atlas.API.Endpoints
 
                 return Results.Ok(newCategory);
             }
-            catch (Exception)
+            catch (AtlasException ex)
             {
-                // Exceptions thrown from applicationData.CreateCategoryAsync()
-                // have already been logged so simply return Status500InternalServerError.
+                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> UpdateCategory([FromBody] Category category, IApplicationData applicationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> UpdateCategory([FromBody] Category category, IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
+            Authorisation? authorisation = null;
+
             try
             {
-                Authorisation? authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -242,20 +253,21 @@ namespace Atlas.API.Endpoints
 
                 return Results.Ok(updatedCategory);
             }
-            catch (Exception)
+            catch (AtlasException ex)
             {
-                // Exceptions thrown from applicationData.UpdateCategoryAsync()
-                // have already been logged so simply return Status500InternalServerError.
+                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> DeleteCategory(int id, IApplicationData applicationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> DeleteCategory(int id, IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
+            Authorisation? authorisation = null;
+
             try
             {
-                Authorisation? authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -269,19 +281,20 @@ namespace Atlas.API.Endpoints
 
                 return Results.Ok(affectedRows);
             }
-            catch (Exception)
+            catch (AtlasException ex)
             {
-                // Exceptions thrown from applicationData.DeleteCategoryAsync()
-                // have already been logged so simply return Status500InternalServerError.
+                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
-        internal static async Task<IResult> GetPages(IApplicationData applicationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> GetPages(IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
+            Authorisation? authorisation = null;
+
             try
             {
-                Authorisation? authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -295,20 +308,21 @@ namespace Atlas.API.Endpoints
 
                 return Results.Ok(new AuthResult<IEnumerable<Page>?> { Authorisation = authorisation, Result = pages });
             }
-            catch (Exception)
+            catch (AtlasException ex)
             {
-                // Exceptions thrown from applicationData.GetPagesAsync()
-                // have already been logged so simply return Status500InternalServerError.
+                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> GetPage(int id, IApplicationData applicationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> GetPage(int id, IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
+            Authorisation? authorisation = null;
+
             try
             {
-                Authorisation? authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -322,20 +336,21 @@ namespace Atlas.API.Endpoints
 
                 return Results.Ok(page);
             }
-            catch (Exception)
+            catch (AtlasException ex)
             {
-                // Exceptions thrown from applicationData.GetPageAsync()
-                // have already been logged so simply return Status500InternalServerError.
+                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> CreatePage([FromBody] Page page, IApplicationData applicationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> CreatePage([FromBody] Page page, IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
+            Authorisation? authorisation = null;
+
             try
             {
-                Authorisation? authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -349,20 +364,21 @@ namespace Atlas.API.Endpoints
 
                 return Results.Ok(newPage);
             }
-            catch (Exception)
+            catch (AtlasException ex)
             {
-                // Exceptions thrown from applicationData.CreatePageAsync()
-                // have already been logged so simply return Status500InternalServerError.
+                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> UpdatePage([FromBody] Page page, IApplicationData applicationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> UpdatePage([FromBody] Page page, IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
+            Authorisation? authorisation = null;
+
             try
             {
-                Authorisation? authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -376,20 +392,21 @@ namespace Atlas.API.Endpoints
 
                 return Results.Ok(updatedPage);
             }
-            catch (Exception)
+            catch (AtlasException ex)
             {
-                // Exceptions thrown from applicationData.UpdatePageAsync()
-                // have already been logged so simply return Status500InternalServerError.
+                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> DeletePage(int id, IApplicationData applicationData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> DeletePage(int id, IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
+            Authorisation? authorisation = null;
+
             try
             {
-                Authorisation? authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                authorisation = await applicationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -403,10 +420,9 @@ namespace Atlas.API.Endpoints
 
                 return Results.Ok(affectedRows);
             }
-            catch (Exception)
+            catch (AtlasException ex)
             {
-                // Exceptions thrown from applicationData.DeletePageAsync()
-                // have already been logged so simply return Status500InternalServerError.
+                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
