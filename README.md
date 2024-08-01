@@ -13,6 +13,8 @@
 * [Authentication](#authentication)
   * [Blazor WebAssembly Standalone Authentication](#webassembly-standalone-authentication)
   * [Blazor Server Side Authentication](#server-side-authentication)
+* [Logging](#logging)
+* [Exception Handling](#exception-handling) 
 * [Notes](#notes)
     * [FluentDesignTheme Dark/Light](#fluentdesigntheme-darklight) 
 
@@ -52,6 +54,10 @@ The Blazor WebAssembly Authentication library (`Authentication.js`) only support
 [Backend for Frontend (BFF)](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps#name-backend-for-frontend-bff)
 
 [Microsoft Architecture Patterns - Backends for Frontends](https://learn.microsoft.com/en-us/azure/architecture/patterns/backends-for-frontends)
+
+# Logging
+
+# Exception Handling
 
 # Notes
 ### FluentDesignTheme Dark/Light
