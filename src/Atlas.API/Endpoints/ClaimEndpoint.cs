@@ -1,5 +1,6 @@
 ﻿using Atlas.API.Interfaces;
 using Atlas.Core.Constants;
+using Atlas.Core.Exceptions;
 using Atlas.Core.Models;
 using Atlas.Data.Access.Interfaces;
 
@@ -7,11 +8,13 @@ namespace Atlas.API.Endpoints
 {
     internal static class ClaimEndpoint
     {
-        internal static async Task<IResult> GetClaimAuthorisation(IClaimData claimData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> GetClaimAuthorisation(IClaimData claimData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
+            Authorisation? authorisation = null;
+
             try
             {
-                Authorisation? authorisation = await claimData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                authorisation = await claimData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -22,20 +25,21 @@ namespace Atlas.API.Endpoints
 
                 return Results.Ok(authorisation);
             }
-            catch (Exception)
+            catch (AtlasException ex)
             {
-                // Exceptions thrown from userData.GetAuthorisationAsync(claim)
-                // have already been logged so simply return Status500InternalServerError.
+                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> GetClaimModules(IClaimData claimData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> GetClaimModules(IClaimData claimData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
+            Authorisation? authorisation = null;
+
             try
             {
-                Authorisation? authorisation = await claimData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                authorisation = await claimData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -49,10 +53,9 @@ namespace Atlas.API.Endpoints
 
                 return Results.Ok(modules);
             }
-            catch (Exception)
+            catch (AtlasException ex)
             {
-                // Exceptions thrown from userData.GetApplicationClaimsAsync(claim)
-                // have already been logged so simply return Status500InternalServerError.
+                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
