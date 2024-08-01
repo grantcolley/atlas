@@ -1,4 +1,5 @@
 ﻿using Atlas.API.Interfaces;
+using Atlas.Core.Exceptions;
 using Serilog.Context;
 
 namespace Atlas.API.Services
@@ -14,22 +15,13 @@ namespace Atlas.API.Services
             _logger = logger;
         }
 
-        public void Log(Enums.LogLevel logLevel, string? message, string? user = "")
+        public void Log(Enums.LogLevel logLevel, string? message, AtlasException? exception = null, string? user = "")
         {
-            Log(logLevel, message, null, user);
-        }
-
-        public void Log(Enums.LogLevel logLevel, string? message, Exception? exception = null, string? user = "")
-        {
-            if (string.IsNullOrWhiteSpace(user))
+            using (LogContext.PushProperty("User", user))
             {
-                Log(logLevel, message, exception);
-            }
-            else
-            {
-                using (LogContext.PushProperty("User", user))
+                using (LogContext.PushProperty("Context", exception?.Context))
                 {
-                    Log(logLevel, message, exception);
+                    Log(logLevel, message, exception?.InnerException);
                 }
             }
         }

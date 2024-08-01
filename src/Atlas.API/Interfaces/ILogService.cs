@@ -1,8 +1,9 @@
-﻿namespace Atlas.API.Interfaces
+﻿using Atlas.Core.Exceptions;
+
+namespace Atlas.API.Interfaces
 {
     public interface ILogService
     {
-        void Log(Enums.LogLevel logLevel, string? message, string? user);
-        void Log(Enums.LogLevel logLevel, string? message, Exception? exception, string? user);
+        void Log(Enums.LogLevel logLevel, string? message, AtlasException? exception, string? user);
     }
 }
