@@ -1,4 +1,5 @@
-﻿using Atlas.Core.Models;
+﻿using Atlas.Core.Exceptions;
+using Atlas.Core.Models;
 using Atlas.Data.Access.Context;
 using Atlas.Data.Access.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -23,19 +24,13 @@ namespace Atlas.Data.Access.Base
                 .Include(u => u.Roles)
                 .ThenInclude(r => r.Permissions)
                 .FirstOrDefaultAsync(u => u.Email != null && u.Email.Equals(claim), cancellationToken)
-                .ConfigureAwait(false);
+                .ConfigureAwait(false) ?? throw new AtlasException($"{claim} unauthorized.", $"Claim {claim}");
 
-            if (user != null
-                && user.Email != null)
-            {
-                SetUser(user.Email);
+            if (user.Email == null) throw new AtlasException($"Missing email.", $"Claim {claim}");
 
-                Authorisation = new Authorisation { User = claim, Permissions = user.GetPermissions() };
+            SetUser(user.Email);
 
-                return Authorisation;
-            }
-
-            return default;
+            return new Authorisation { User = claim, Permissions = user.GetPermissions() };
         }
 
         private void SetUser(string user)
