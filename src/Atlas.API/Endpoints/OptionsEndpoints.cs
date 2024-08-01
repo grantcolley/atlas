@@ -1,5 +1,7 @@
 ﻿using Atlas.API.Interfaces;
+using Atlas.API.Services;
 using Atlas.Core.Constants;
+using Atlas.Core.Exceptions;
 using Atlas.Core.Models;
 using Atlas.Data.Access.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -9,11 +11,13 @@ namespace Atlas.API.Endpoints
 {
     internal static class OptionsEndpoints
     {
-        internal static async Task<IResult> GetOptions([FromBody] IEnumerable<OptionsArg> optionsArgs, IOptionsData optionsData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> GetOptions([FromBody] IEnumerable<OptionsArg> optionsArgs, IOptionsData optionsData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
+            Authorisation? authorisation = null;
+
             try
             {
-                Authorisation? authorisation = await optionsData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                authorisation = await optionsData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -21,26 +25,27 @@ namespace Atlas.API.Endpoints
                 {
                     return Results.Unauthorized();
                 }
-
+                
                 IEnumerable<OptionItem> optionItems = await optionsData.GetOptionsAsync(optionsArgs, cancellationToken)
                     .ConfigureAwait(false);
 
                 return Results.Ok(optionItems);
             }
-            catch (Exception)
+            catch (AtlasException ex)
             {
-                // Exceptions thrown from optionsData.GetOptionsAsync()
-                // have already been logged so simply return Status500InternalServerError.
+                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
-        internal static async Task<IResult> GetGenericOptions([FromBody] IEnumerable<OptionsArg> optionsArgs, IOptionsData optionsData, IClaimService claimService, CancellationToken cancellationToken)
+        internal static async Task<IResult> GetGenericOptions([FromBody] IEnumerable<OptionsArg> optionsArgs, IOptionsData optionsData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
+            Authorisation? authorisation = null;
+
             try
             {
-                Authorisation? authorisation = await optionsData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                authorisation = await optionsData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
                 if (authorisation == null
@@ -54,10 +59,9 @@ namespace Atlas.API.Endpoints
 
                 return Results.Text(genericOptions, "application/json", Encoding.UTF8);
             }
-            catch (Exception)
+            catch (AtlasException ex)
             {
-                // Exceptions thrown from optionsData.GetGenericOptionsAsync()
-                // have already been logged so simply return Status500InternalServerError.
+                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
