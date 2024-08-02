@@ -7,5 +7,6 @@
         public const string ADMIN_WRITE = "Admin-Write";
         public const string USER = "User";
         public const string DEVELOPER = "Developer";
+        public const string SUPPORT = "Support";
     }
 }

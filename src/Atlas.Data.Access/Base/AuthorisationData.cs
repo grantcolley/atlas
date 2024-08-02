@@ -30,7 +30,9 @@ namespace Atlas.Data.Access.Base
 
             SetUser(user.Email);
 
-            return new Authorisation { User = claim, Permissions = user.GetPermissions() };
+            Authorisation = new Authorisation { User = claim, Permissions = user.GetPermissions() };
+
+            return Authorisation;
         }
 
         private void SetUser(string user)

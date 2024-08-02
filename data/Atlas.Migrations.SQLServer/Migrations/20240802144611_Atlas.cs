@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Atlas.Migrations.SQLServer.Migrations
 {
     /// <inheritdoc />
-    public partial class Atlas_1 : Migration
+    public partial class Atlas : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -29,6 +29,26 @@ namespace Atlas.Migrations.SQLServer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Audits", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Logs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Message = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    MessageTemplate = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Level = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TimeStamp = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Exception = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Properties = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Context = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
+                    User = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Logs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -221,6 +241,26 @@ namespace Atlas.Migrations.SQLServer.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Logs_Context",
+                table: "Logs",
+                column: "Context");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Logs_Message",
+                table: "Logs",
+                column: "Message");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Logs_TimeStamp",
+                table: "Logs",
+                column: "TimeStamp");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Logs_User",
+                table: "Logs",
+                column: "User");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Modules_Name",
                 table: "Modules",
                 column: "Name",
@@ -283,6 +323,9 @@ namespace Atlas.Migrations.SQLServer.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Audits");
+
+            migrationBuilder.DropTable(
+                name: "Logs");
 
             migrationBuilder.DropTable(
                 name: "Pages");

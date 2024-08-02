@@ -14,6 +14,8 @@
 
             app.MapAtlasAdministrationEndpoints();
 
+            app.MapAtlasSupportEndpoints();
+
             app.MapAtlasModulesEndpoints();
 
             return app;

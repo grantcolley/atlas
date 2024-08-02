@@ -59,6 +59,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IClaimData, ClaimData>();
 builder.Services.AddScoped<ILogService, LogService>();
 builder.Services.AddScoped<IClaimService, ClaimService>();
+builder.Services.AddScoped<ISupportData, SupportData>();
 builder.Services.AddScoped<IOptionsData, OptionsData>();
 builder.Services.AddScoped<IApplicationData, ApplicationData>();
 builder.Services.AddScoped<IAdministrationData, AdministrationData>();

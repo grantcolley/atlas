@@ -1,0 +1,22 @@
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace Atlas.Core.Models
+{
+    public class Log
+    {
+        public int Id { get; set; }
+        public string? Message { get; set; }
+        public string? MessageTemplate { get; set; }
+        public string? Level { get; set; }
+        public DateTime? TimeStamp { get; set; }
+        public string? Exception { get; set; }
+        public string? Properties { get; set; }
+
+        [StringLength(450)]
+        public string? Context { get; set; }
+
+        [StringLength(450)]
+        public string? User { get; set; }
+    }
+}

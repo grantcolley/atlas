@@ -17,6 +17,7 @@ namespace Atlas.Data.Access.Context
         public DbSet<Module> Modules { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Page> Pages { get; set; }
+        public DbSet<Log> Logs { get; set; }
 
         public void SetUser(string user)
         {
@@ -59,8 +60,20 @@ namespace Atlas.Data.Access.Context
                 .IsUnique();
 
             builder.Entity<Page>()
-                .HasIndex(m => m.Name)
+                .HasIndex(p => p.Name)
                 .IsUnique();
+
+            builder.Entity<Log>()
+                .HasIndex(l => l.User);
+
+            builder.Entity<Log>()
+                .HasIndex(l => l.TimeStamp);
+
+            builder.Entity<Log>()
+                .HasIndex(l => l.Message);
+
+            builder.Entity<Log>()
+                .HasIndex(l => l.Context);
         }
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
