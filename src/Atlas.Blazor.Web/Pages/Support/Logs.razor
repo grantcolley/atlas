@@ -1,0 +1,39 @@
+﻿@page "/Logs"
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@attribute [StreamRendering]
+
+<PageTitle>Logs</PageTitle>
+
+@if (_alert == null)
+{
+    <FluentCard>
+        <FluentHeader>
+            Logs
+        </FluentHeader>
+
+        @if (_isProcessing)
+        {
+            <CenterContent>
+                <FluentProgressRing style="width: 82px; height: 82px;"></FluentProgressRing>
+            </CenterContent>
+        }
+
+        <FluentToolbar>            
+        </FluentToolbar>
+
+        <FluentPaginator State="_paginationState" />
+
+        <FluentFooter>
+        </FluentFooter>
+    </FluentCard>
+    }
+else
+{
+    <Atlas.Blazor.Web.Pages.Alert AlertType="@_alert.AlertType" Title="Logs" Message="@_alert.Message" />
+}
+
+@code {
+    private PaginationState _paginationState = new PaginationState();
+    private bool _isProcessing = false;
+    private Alert? _alert;
+}

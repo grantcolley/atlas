@@ -58,6 +58,7 @@ namespace Atlas.Seed.Data
             permissions.Add(Auth.USER, new Permission { Code = Auth.USER, Name = Auth.USER, Description = "Atlas User Permission" });
             permissions.Add(Auth.ADMIN_READ, new Permission { Code = Auth.ADMIN_READ, Name = Auth.ADMIN_READ, Description = "Atlas Administrator Read Permission" });
             permissions.Add(Auth.ADMIN_WRITE, new Permission { Code = Auth.ADMIN_WRITE, Name = Auth.ADMIN_WRITE, Description = "Atlas Administrator Write Permission" });
+            permissions.Add(Auth.SUPPORT, new Permission { Code = Auth.SUPPORT, Name = Auth.SUPPORT, Description = "Atlas Support Permission" });
             permissions.Add(Auth.DEVELOPER, new Permission { Code = Auth.DEVELOPER, Name = Auth.DEVELOPER, Description = "Atlas Developer Permission" });
 
             foreach (Permission permission in permissions.Values)
@@ -75,6 +76,7 @@ namespace Atlas.Seed.Data
             roles.Add(Auth.USER, new Role { Name = $"{Auth.USER} Role", Description = $"{Auth.USER} Role" });
             roles.Add(Auth.ADMIN_READ, new Role { Name = $"{Auth.ADMIN_READ} Role", Description = $"{Auth.ADMIN_READ} Role" });
             roles.Add(Auth.ADMIN_WRITE, new Role { Name = $"{Auth.ADMIN_WRITE} Role", Description = $"{Auth.ADMIN_WRITE} Role" });
+            roles.Add(Auth.SUPPORT, new Role { Name = $"{Auth.SUPPORT} Role", Description = $"{Auth.SUPPORT} Role" });
             roles.Add(Auth.DEVELOPER, new Role { Name = $"{Auth.DEVELOPER} Role", Description = $"{Auth.DEVELOPER} Role" });
 
             foreach (Role role in roles.Values)
@@ -91,9 +93,15 @@ namespace Atlas.Seed.Data
             roles[Auth.ADMIN_WRITE].Permissions.Add(permissions[Auth.ADMIN_READ]);
             roles[Auth.ADMIN_WRITE].Permissions.Add(permissions[Auth.ADMIN_WRITE]);
 
+            roles[Auth.SUPPORT].Permissions.Add(permissions[Auth.USER]);
+            roles[Auth.SUPPORT].Permissions.Add(permissions[Auth.SUPPORT]);
+            roles[Auth.SUPPORT].Permissions.Add(permissions[Auth.ADMIN_READ]);
+            roles[Auth.SUPPORT].Permissions.Add(permissions[Auth.ADMIN_WRITE]);
+
             roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.USER]);
             roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.ADMIN_READ]);
             roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.ADMIN_WRITE]);
+            roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.SUPPORT]);
             roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.DEVELOPER]);
 
             dbContext.SaveChanges();
@@ -131,13 +139,14 @@ namespace Atlas.Seed.Data
         private static void AddApplications()
         {
             AddAdministration();
+            AddSupport();
         }
 
         private static void AddAdministration()
         {
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-            Module administrationModule = new() { Name = "Administration", Icon = "TableSettings", Order = 2, Permission = Auth.ADMIN_READ };
+            Module administrationModule = new() { Name = "Administration", Icon = "TableSettings", Order = 1, Permission = Auth.ADMIN_READ };
 
             dbContext.Modules.Add(administrationModule);
 
@@ -199,6 +208,33 @@ namespace Atlas.Seed.Data
             dbContext.Pages.Add(modulePage);
             dbContext.Pages.Add(categoriesPage);
             dbContext.Pages.Add(pagesPage);
+
+            dbContext.SaveChanges();
+        }
+
+        private static void AddSupport()
+        {
+            if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
+
+            Module supportModule = new() { Name = "Support", Icon = "PersonSupport", Order = 2, Permission = Auth.SUPPORT };
+
+            dbContext.Modules.Add(supportModule);
+
+            dbContext.SaveChanges();
+
+            Category eventCategory = new() { Name = "Events", Icon = "ClockToolbox", Order = 1, Permission = Auth.SUPPORT, Module = supportModule };
+
+            supportModule.Categories.Add(eventCategory);
+
+            dbContext.Categories.Add(eventCategory);
+
+            dbContext.SaveChanges();
+
+            Page logsPage = new() { Name = "Logs", Icon = "DocumentTextClock", Route = AtlasWebConstants.PAGE_LOGS, Order = 1, Permission = Auth.SUPPORT, Category = eventCategory };
+
+            eventCategory.Pages.Add(logsPage);
+
+            dbContext.Pages.Add(logsPage);
 
             dbContext.SaveChanges();
         }
