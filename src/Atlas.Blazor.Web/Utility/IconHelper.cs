@@ -9,7 +9,7 @@ namespace Atlas.Blazor.Web.Utility
         {
             if(string.IsNullOrWhiteSpace(name))
             {
-                name = AtlasWebConstants.ATLAS_DEFAULIT_ICON;
+                name = AtlasWebConstants.ATLAS_DEFAULT_ICON;
             }
 
             try
