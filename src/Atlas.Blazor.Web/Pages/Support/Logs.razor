@@ -1,4 +1,5 @@
 ﻿@page "/Logs"
+@using System.Text.Json
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 @attribute [StreamRendering]
 
@@ -21,19 +22,112 @@
         <FluentToolbar>            
         </FluentToolbar>
 
+        <FluentDataGrid TGridItem=Atlas.Core.Models.Log Items="@FilteredItems" ResizableColumns=true Pagination="_paginationState" GridTemplateColumns="0.5fr 0.5fr 1fr 1fr 0.5fr  0.5fr 0.2fr" Style="height: 405px;overflow:auto;">
+            <PropertyColumn Property="@(l => l.TimeStamp)" Sortable="true" Title="Time Stamp"/>
+            <PropertyColumn Property="@(l => l.Level)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_filter)" Tooltip="true" Title="Level">
+                <ColumnOptions>
+                    <div class="search-box">
+                        <FluentSearch type="filter" Autofocus=true @bind-Value=_filter @oninput="HandleFilter" @bind-Value:after="HandleClear" Placeholder="Log level..." />
+                    </div>
+                </ColumnOptions>
+            </PropertyColumn>
+            <PropertyColumn Property="@(l => l.Message)" Sortable="true" Tooltip="true" Title="Message" />
+            <PropertyColumn Property="@(l => l.Exception)" Sortable="true" Title="Exception" />
+            <PropertyColumn Property="@(l => l.Context)" Sortable="true" Title="Context" />
+            <PropertyColumn Property="@(l => l.User)" Sortable="true" Title="User" />
+            <TemplateColumn Align="@Align.Center">
+                <FluentButton aria-label="Open" IconEnd="@(new Icons.Regular.Size16.MoreHorizontal())" OnClick="@(() => Open(context))" />
+            </TemplateColumn>
+        </FluentDataGrid>
+
         <FluentPaginator State="_paginationState" />
 
         <FluentFooter>
         </FluentFooter>
     </FluentCard>
-    }
+}
 else
 {
     <Atlas.Blazor.Web.Pages.Alert AlertType="@_alert.AlertType" Title="Logs" Message="@_alert.Message" />
 }
 
 @code {
+    [Inject]
+    public IGenericRequests? GenericRequests { get; set; }
+
+    public IQueryable<Log>? FilteredItems
+    {
+        get
+        {
+            if (string.IsNullOrWhiteSpace(_filter)) return _items?.AsQueryable();
+
+#pragma warning disable CS8602 // Deference of a possibly null reference
+            return _items?.AsQueryable().Where(l => !string.IsNullOrWhiteSpace(l.Level)
+            && l.Level.Contains(_filter, StringComparison.CurrentCultureIgnoreCase));
+#pragma warning restore CS8602 // Deference of a possibly null reference
+        }
+    }
+
     private PaginationState _paginationState = new PaginationState();
+    private IEnumerable<Log>? _items = new List<Log>();
+    private string _filter = string.Empty;
     private bool _isProcessing = false;
-    private Alert? _alert;
+    private Alert? _alert = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ArgumentNullException.ThrowIfNull(GenericRequests);
+
+        _paginationState.ItemsPerPage = 20;
+
+        _isProcessing = true;
+
+        string logArgs = JsonSerializer.Serialize(new LogArgs());
+
+        IAuthResponse<IEnumerable<Log>> response = await GenericRequests.GetListAsync<Log>(logArgs, AtlasAPIEndpoints.GET_LOGS)
+                                                            .ConfigureAwait(false);
+
+        if (!response.IsSuccess)
+        {
+            if (!string.IsNullOrWhiteSpace(response.Message))
+            {
+                _alert = new Models.Alert
+                    {
+                        AlertType = Alerts.ERROR,
+                        Title = $"Error Logs",
+                        Message = response.Message
+                    };
+            }
+        }
+        else
+        {
+            if (response.Result != null)
+            {
+                _items = response.Result;
+            }
+        }
+
+        _isProcessing = false;
+    }
+
+    private void HandleFilter(ChangeEventArgs args)
+    {
+        if (args.Value is string value)
+        {
+            _filter = value;
+        }
+    }
+
+    private void HandleClear()
+    {
+        if (string.IsNullOrWhiteSpace(_filter))
+        {
+            _filter = string.Empty;
+        }
+    }
+
+    private void Open(Log l)
+    {
+        
+    }
 }
