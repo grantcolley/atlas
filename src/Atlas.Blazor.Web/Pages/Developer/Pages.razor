@@ -28,7 +28,7 @@
                     </div>
                 </ColumnOptions>
             </PropertyColumn>
-            <PropertyColumn Property="@(p => p.Category.Name)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(Filter)" Tooltip="true" Title="Category" />
+            <PropertyColumn Property="@(p => p.Category.Name)" Sortable="true" Tooltip="true" Title="Category" />
             <PropertyColumn Property="@(p => p.Order)" Sortable="true" Title="Order" />
             <PropertyColumn Property="@(p => p.Permission)" Sortable="true" Title="Permission" />
             <TemplateColumn Align="@Align.Center">
