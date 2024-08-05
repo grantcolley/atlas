@@ -24,17 +24,41 @@
 
         <FluentDataGrid TGridItem=Atlas.Core.Models.Log Items="@FilteredItems" ResizableColumns=true Pagination="_paginationState" GridTemplateColumns="0.5fr 0.5fr 1fr 1fr 0.5fr  0.5fr 0.2fr" Style="height: 405px;overflow:auto;">
             <PropertyColumn Property="@(l => l.TimeStamp)" Sortable="true" Title="Time Stamp"/>
-            <PropertyColumn Property="@(l => l.Level)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_filter)" Tooltip="true" Title="Level">
+            <PropertyColumn Property="@(l => l.Level)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_levelFilter)" Tooltip="true" Title="Level">
                 <ColumnOptions>
                     <div class="search-box">
-                        <FluentSearch type="filter" Autofocus=true @bind-Value=_filter @oninput="HandleFilter" @bind-Value:after="HandleClear" Placeholder="Log level..." />
+                        <FluentSearch type="levelFilter" Autofocus=true @bind-Value=_levelFilter @oninput="HandleLevelFilter" @bind-Value:after="HandleLevelClear" Placeholder="Log level..." />
                     </div>
                 </ColumnOptions>
             </PropertyColumn>
-            <PropertyColumn Property="@(l => l.Message)" Sortable="true" Tooltip="true" Title="Message" />
-            <PropertyColumn Property="@(l => l.Exception)" Sortable="true" Title="Exception" />
-            <PropertyColumn Property="@(l => l.Context)" Sortable="true" Title="Context" />
-            <PropertyColumn Property="@(l => l.User)" Sortable="true" Title="User" />
+            <PropertyColumn Property="@(l => l.Message)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_messageFilter)" Tooltip="true" Title="Message">
+                <ColumnOptions>
+                    <div class="search-box">
+                        <FluentSearch type="messageFilter" Autofocus=true @bind-Value=_messageFilter @oninput="HandleMessageFilter" @bind-Value:after="HandleMessageClear" Placeholder="Message..." />
+                    </div>
+                </ColumnOptions>
+            </PropertyColumn>
+            <PropertyColumn Property="@(l => l.Exception)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_exceptionFilter)" Title="Exception">
+                <ColumnOptions>
+                    <div class="search-box">
+                        <FluentSearch type="exceptionFilter" Autofocus=true @bind-Value=_exceptionFilter @oninput="HandleExceptionFilter" @bind-Value:after="HandleExceptionClear" Placeholder="Exception..." />
+                    </div>
+                </ColumnOptions>
+            </PropertyColumn>
+            <PropertyColumn Property="@(l => l.Context)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_contextFilter)" Title="Context" >
+                <ColumnOptions>
+                    <div class="search-box">
+                        <FluentSearch type="contextFilter" Autofocus=true @bind-Value=_contextFilter @oninput="HandleContextFilter" @bind-Value:after="HandleContextClear" Placeholder="Context..." />
+                    </div>
+                </ColumnOptions>
+            </PropertyColumn>
+            <PropertyColumn Property="@(l => l.User)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_userFilter)" Title="User" >
+                <ColumnOptions>
+                    <div class="search-box">
+                        <FluentSearch type="userFilter" Autofocus=true @bind-Value=_userFilter @oninput="HandleUserFilter" @bind-Value:after="HandleUserClear" Placeholder="User..." />
+                    </div>
+                </ColumnOptions>
+            </PropertyColumn>
             <TemplateColumn Align="@Align.Center">
                 <FluentButton aria-label="Open" IconEnd="@(new Icons.Regular.Size16.MoreHorizontal())" OnClick="@(() => Open(context))" />
             </TemplateColumn>
@@ -59,18 +83,58 @@ else
     {
         get
         {
-            if (string.IsNullOrWhiteSpace(_filter)) return _items?.AsQueryable();
+            List<Log>? tmp = null;
 
-#pragma warning disable CS8602 // Deference of a possibly null reference
-            return _items?.AsQueryable().Where(l => !string.IsNullOrWhiteSpace(l.Level)
-            && l.Level.Contains(_filter, StringComparison.CurrentCultureIgnoreCase));
-#pragma warning restore CS8602 // Deference of a possibly null reference
+            if(string.IsNullOrWhiteSpace(_levelFilter))
+            {
+                tmp = _items?.ToList();
+            }
+            else
+            {
+                tmp = _items?.Where(l => !string.IsNullOrWhiteSpace(l.Level) 
+                                    && l.Level.Contains(_levelFilter, StringComparison.CurrentCultureIgnoreCase))
+                                    .ToList();
+            }
+
+            if(!string.IsNullOrWhiteSpace(_messageFilter))
+            {
+                tmp = tmp?.Where(l => !string.IsNullOrWhiteSpace(l.Message)
+                                    && l.Message.Contains(_messageFilter, StringComparison.CurrentCultureIgnoreCase))
+                                    .ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(_exceptionFilter))
+            {
+                tmp = tmp?.Where(l => !string.IsNullOrWhiteSpace(l.Exception)
+                                    && l.Exception.Contains(_exceptionFilter, StringComparison.CurrentCultureIgnoreCase))
+                                    .ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(_contextFilter))
+            {
+                tmp = tmp?.Where(l => !string.IsNullOrWhiteSpace(l.Context)
+                                    && l.Context.Contains(_contextFilter, StringComparison.CurrentCultureIgnoreCase))
+                                    .ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(_userFilter))
+            {
+                tmp = tmp?.Where(l => !string.IsNullOrWhiteSpace(l.User)
+                                    && l.User.Contains(_userFilter, StringComparison.CurrentCultureIgnoreCase))
+                                    .ToList();
+            }
+
+            return tmp?.AsQueryable();
         }
     }
 
     private PaginationState _paginationState = new PaginationState();
     private IEnumerable<Log>? _items = new List<Log>();
-    private string _filter = string.Empty;
+    private string _levelFilter = string.Empty;
+    private string _messageFilter = string.Empty;
+    private string _exceptionFilter = string.Empty;
+    private string _contextFilter = string.Empty;
+    private string _userFilter = string.Empty;
     private bool _isProcessing = false;
     private Alert? _alert = null;
 
@@ -110,19 +174,83 @@ else
         _isProcessing = false;
     }
 
-    private void HandleFilter(ChangeEventArgs args)
+    private void HandleLevelFilter(ChangeEventArgs args)
     {
         if (args.Value is string value)
         {
-            _filter = value;
+            _levelFilter = value;
         }
     }
 
-    private void HandleClear()
+    private void HandleLevelClear()
     {
-        if (string.IsNullOrWhiteSpace(_filter))
+        if (string.IsNullOrWhiteSpace(_levelFilter))
         {
-            _filter = string.Empty;
+            _levelFilter = string.Empty;
+        }
+    }
+
+    private void HandleMessageFilter(ChangeEventArgs args)
+    {
+        if (args.Value is string value)
+        {
+            _messageFilter = value;
+        }
+    }
+
+    private void HandleMessageClear()
+    {
+        if (string.IsNullOrWhiteSpace(_messageFilter))
+        {
+            _messageFilter = string.Empty;
+        }
+    }
+
+    private void HandleExceptionFilter(ChangeEventArgs args)
+    {
+        if (args.Value is string value)
+        {
+            _exceptionFilter = value;
+        }
+    }
+
+    private void HandleExceptionClear()
+    {
+        if (string.IsNullOrWhiteSpace(_exceptionFilter))
+        {
+            _exceptionFilter = string.Empty;
+        }
+    }
+
+    private void HandleContextFilter(ChangeEventArgs args)
+    {
+        if (args.Value is string value)
+        {
+            _contextFilter = value;
+        }
+    }
+
+    private void HandleContextClear()
+    {
+        if (string.IsNullOrWhiteSpace(_contextFilter))
+        {
+            _contextFilter = string.Empty;
+        }
+    }
+
+        private void HandleUserFilter(ChangeEventArgs args)
+    {
+        if (args.Value is string value)
+        {
+            _userFilter = value;
+        }
+    }
+
+    private void HandleUserClear()
+    {
+        if (string.IsNullOrWhiteSpace(_userFilter))
+        {
+            _userFilter = string.Empty;
         }
     }
 
