@@ -18,56 +18,60 @@
                 <FluentProgressRing style="width: 82px; height: 82px;"></FluentProgressRing>
             </CenterContent>
         }
+        else
+        {
+            <FluentToolbar Style="height:100px;">
+                <Atlas.Blazor.Web.Components.Support.LogSearch SearchClicked="OnSearchClicked"/>
+            </FluentToolbar>
 
-        <FluentToolbar>            
-        </FluentToolbar>
+            <FluentDataGrid TGridItem=Atlas.Core.Models.Log Items="@FilteredItems" ResizableColumns=true Pagination="_paginationState" GridTemplateColumns="0.5fr 0.5fr 1fr 1fr 0.5fr  0.5fr 0.2fr" Style="height: 405px;overflow:auto;">
+                <PropertyColumn Property="@(l => l.TimeStamp)" Sortable="true" Title="Time Stamp"/>
+                <PropertyColumn Property="@(l => l.Level)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_levelFilter)" Tooltip="true" Title="Level">
+                    <ColumnOptions>
+                        <div class="search-box">
+                            <FluentSearch type="levelFilter" Autofocus=true @bind-Value=_levelFilter @oninput="HandleLevelFilter" @bind-Value:after="HandleLevelClear" Placeholder="Log level..." />
+                        </div>
+                    </ColumnOptions>
+                </PropertyColumn>
+                <PropertyColumn Property="@(l => l.Message)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_messageFilter)" Tooltip="true" Title="Message">
+                    <ColumnOptions>
+                        <div class="search-box">
+                            <FluentSearch type="messageFilter" Autofocus=true @bind-Value=_messageFilter @oninput="HandleMessageFilter" @bind-Value:after="HandleMessageClear" Placeholder="Message..." />
+                        </div>
+                    </ColumnOptions>
+                </PropertyColumn>
+                <PropertyColumn Property="@(l => l.Exception)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_exceptionFilter)" Title="Exception">
+                    <ColumnOptions>
+                        <div class="search-box">
+                            <FluentSearch type="exceptionFilter" Autofocus=true @bind-Value=_exceptionFilter @oninput="HandleExceptionFilter" @bind-Value:after="HandleExceptionClear" Placeholder="Exception..." />
+                        </div>
+                    </ColumnOptions>
+                </PropertyColumn>
+                <PropertyColumn Property="@(l => l.Context)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_contextFilter)" Title="Context" >
+                    <ColumnOptions>
+                        <div class="search-box">
+                            <FluentSearch type="contextFilter" Autofocus=true @bind-Value=_contextFilter @oninput="HandleContextFilter" @bind-Value:after="HandleContextClear" Placeholder="Context..." />
+                        </div>
+                    </ColumnOptions>
+                </PropertyColumn>
+                <PropertyColumn Property="@(l => l.User)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_userFilter)" Title="User" >
+                    <ColumnOptions>
+                        <div class="search-box">
+                            <FluentSearch type="userFilter" Autofocus=true @bind-Value=_userFilter @oninput="HandleUserFilter" @bind-Value:after="HandleUserClear" Placeholder="User..." />
+                        </div>
+                    </ColumnOptions>
+                </PropertyColumn>
+                <TemplateColumn Align="@Align.Center">
+                    <FluentButton aria-label="Open" IconEnd="@(new Icons.Regular.Size16.MoreHorizontal())" OnClick="@(() => Open(context))" />
+                </TemplateColumn>
+            </FluentDataGrid>
 
-        <FluentDataGrid TGridItem=Atlas.Core.Models.Log Items="@FilteredItems" ResizableColumns=true Pagination="_paginationState" GridTemplateColumns="0.5fr 0.5fr 1fr 1fr 0.5fr  0.5fr 0.2fr" Style="height: 405px;overflow:auto;">
-            <PropertyColumn Property="@(l => l.TimeStamp)" Sortable="true" Title="Time Stamp"/>
-            <PropertyColumn Property="@(l => l.Level)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_levelFilter)" Tooltip="true" Title="Level">
-                <ColumnOptions>
-                    <div class="search-box">
-                        <FluentSearch type="levelFilter" Autofocus=true @bind-Value=_levelFilter @oninput="HandleLevelFilter" @bind-Value:after="HandleLevelClear" Placeholder="Log level..." />
-                    </div>
-                </ColumnOptions>
-            </PropertyColumn>
-            <PropertyColumn Property="@(l => l.Message)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_messageFilter)" Tooltip="true" Title="Message">
-                <ColumnOptions>
-                    <div class="search-box">
-                        <FluentSearch type="messageFilter" Autofocus=true @bind-Value=_messageFilter @oninput="HandleMessageFilter" @bind-Value:after="HandleMessageClear" Placeholder="Message..." />
-                    </div>
-                </ColumnOptions>
-            </PropertyColumn>
-            <PropertyColumn Property="@(l => l.Exception)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_exceptionFilter)" Title="Exception">
-                <ColumnOptions>
-                    <div class="search-box">
-                        <FluentSearch type="exceptionFilter" Autofocus=true @bind-Value=_exceptionFilter @oninput="HandleExceptionFilter" @bind-Value:after="HandleExceptionClear" Placeholder="Exception..." />
-                    </div>
-                </ColumnOptions>
-            </PropertyColumn>
-            <PropertyColumn Property="@(l => l.Context)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_contextFilter)" Title="Context" >
-                <ColumnOptions>
-                    <div class="search-box">
-                        <FluentSearch type="contextFilter" Autofocus=true @bind-Value=_contextFilter @oninput="HandleContextFilter" @bind-Value:after="HandleContextClear" Placeholder="Context..." />
-                    </div>
-                </ColumnOptions>
-            </PropertyColumn>
-            <PropertyColumn Property="@(l => l.User)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_userFilter)" Title="User" >
-                <ColumnOptions>
-                    <div class="search-box">
-                        <FluentSearch type="userFilter" Autofocus=true @bind-Value=_userFilter @oninput="HandleUserFilter" @bind-Value:after="HandleUserClear" Placeholder="User..." />
-                    </div>
-                </ColumnOptions>
-            </PropertyColumn>
-            <TemplateColumn Align="@Align.Center">
-                <FluentButton aria-label="Open" IconEnd="@(new Icons.Regular.Size16.MoreHorizontal())" OnClick="@(() => Open(context))" />
-            </TemplateColumn>
-        </FluentDataGrid>
-
-        <FluentPaginator State="_paginationState" />
+            <FluentPaginator State="_paginationState" />
+        }
 
         <FluentFooter>
         </FluentFooter>
+
     </FluentCard>
 }
 else
@@ -136,6 +140,7 @@ else
     private string _contextFilter = string.Empty;
     private string _userFilter = string.Empty;
     private bool _isProcessing = false;
+    private LogArgs _logArgs = new();
     private Alert? _alert = null;
 
     protected override async Task OnInitializedAsync()
@@ -172,6 +177,11 @@ else
         }
 
         _isProcessing = false;
+    }
+
+    private void OnSearchClicked(LogArgs logArgs)
+    {
+        ArgumentNullException.ThrowIfNull(logArgs);
     }
 
     private void HandleLevelFilter(ChangeEventArgs args)
