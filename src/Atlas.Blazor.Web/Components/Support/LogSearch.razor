@@ -1,0 +1,39 @@
+﻿<FluentStack Orientation="Orientation.Horizontal">
+    <FluentDatePicker Label="From" @bind-Value=@(_logArgs.From) />
+    <FluentTimePicker @bind-Value=@(_logArgs.From) />
+    <FluentDatePicker Label="To" @bind-Value=@(_logArgs.To) />
+    <FluentTimePicker @bind-Value=@(_logArgs.To) />
+    <FluentSelect TOption="OptionItem" Label="Level" Width="100px" />
+    <FluentTextField Label="Message" @bind-Value=@(_logArgs.Message) />
+    <FluentTextField Label="Context" @bind-Value=@(_logArgs.Context) />
+    <FluentTextField Label="User" @bind-Value=@(_logArgs.User) />
+    <FluentButton aria-label="Search" IconEnd="@(new Icons.Regular.Size20.Search())" OnClick="@(() => Search())" />
+    <FluentSpacer />
+</FluentStack>
+
+@code {
+    [Inject]
+    public IAtlasDialogService? AtlasDialogService { get; set; }
+
+    [Parameter]
+    public EventCallback<LogArgs?> SearchClicked { get; set; }
+
+    private LogArgs _logArgs = new();
+
+    private async void Search()
+    {
+        ArgumentNullException.ThrowIfNull(AtlasDialogService);
+        ArgumentNullException.ThrowIfNull(_logArgs);
+
+        if(_logArgs.From == null
+            || _logArgs.To == null)
+        {
+            await AtlasDialogService.ShowDialogAsync(
+                $"Log Search", $"A From and To date range is mandatory when searching the logs.", AtlasDialogType.Ok)
+                .ConfigureAwait(false);
+            return;
+        }
+
+        await SearchClicked.InvokeAsync(_logArgs);
+    }
+}
