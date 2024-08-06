@@ -87,48 +87,12 @@ else
     {
         get
         {
-            List<Log>? tmp = null;
-
-            if(string.IsNullOrWhiteSpace(_levelFilter))
-            {
-                tmp = _items?.ToList();
-            }
-            else
-            {
-                tmp = _items?.Where(l => !string.IsNullOrWhiteSpace(l.Level) 
-                                    && l.Level.Contains(_levelFilter, StringComparison.CurrentCultureIgnoreCase))
-                                    .ToList();
-            }
-
-            if(!string.IsNullOrWhiteSpace(_messageFilter))
-            {
-                tmp = tmp?.Where(l => !string.IsNullOrWhiteSpace(l.Message)
-                                    && l.Message.Contains(_messageFilter, StringComparison.CurrentCultureIgnoreCase))
-                                    .ToList();
-            }
-
-            if (!string.IsNullOrWhiteSpace(_exceptionFilter))
-            {
-                tmp = tmp?.Where(l => !string.IsNullOrWhiteSpace(l.Exception)
-                                    && l.Exception.Contains(_exceptionFilter, StringComparison.CurrentCultureIgnoreCase))
-                                    .ToList();
-            }
-
-            if (!string.IsNullOrWhiteSpace(_contextFilter))
-            {
-                tmp = tmp?.Where(l => !string.IsNullOrWhiteSpace(l.Context)
-                                    && l.Context.Contains(_contextFilter, StringComparison.CurrentCultureIgnoreCase))
-                                    .ToList();
-            }
-
-            if (!string.IsNullOrWhiteSpace(_userFilter))
-            {
-                tmp = tmp?.Where(l => !string.IsNullOrWhiteSpace(l.User)
-                                    && l.User.Contains(_userFilter, StringComparison.CurrentCultureIgnoreCase))
-                                    .ToList();
-            }
-
-            return tmp?.AsQueryable();
+            return _items?.Where(l => (string.IsNullOrWhiteSpace(_levelFilter) || (!string.IsNullOrWhiteSpace(l.Level) && l.Level.Contains(_levelFilter, StringComparison.CurrentCultureIgnoreCase)))
+                                 && (string.IsNullOrWhiteSpace(_messageFilter) || (!string.IsNullOrWhiteSpace(l.Message) && l.Message.Contains(_messageFilter, StringComparison.CurrentCultureIgnoreCase)))
+                                 && (string.IsNullOrWhiteSpace(_exceptionFilter) || (!string.IsNullOrWhiteSpace(l.Exception) && l.Exception.Contains(_exceptionFilter, StringComparison.CurrentCultureIgnoreCase)))
+                                 && (string.IsNullOrWhiteSpace(_contextFilter) || (!string.IsNullOrWhiteSpace(l.Context) && l.Context.Contains(_contextFilter, StringComparison.CurrentCultureIgnoreCase)))
+                                 && (string.IsNullOrWhiteSpace(_userFilter) || (!string.IsNullOrWhiteSpace(l.User) && l.User.Contains(_userFilter, StringComparison.CurrentCultureIgnoreCase))))
+                                 .AsQueryable();
         }
     }
 
