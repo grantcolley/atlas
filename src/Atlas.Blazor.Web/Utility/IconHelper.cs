@@ -7,6 +7,16 @@ namespace Atlas.Blazor.Web.Utility
     {
         public static Icon GetRegularSize20(string? name)
         {
+            return GetRegularIcon(name, IconSize.Size20);
+        }
+
+        public static Icon GetRegularSize16(string? name)
+        {
+            return GetRegularIcon(name, IconSize.Size16);
+        }
+
+        private static Icon GetRegularIcon(string? name, IconSize iconSize = IconSize.Size20)
+        {
             if(string.IsNullOrWhiteSpace(name))
             {
                 name = AtlasWebConstants.ATLAS_DEFAULT_ICON;
@@ -14,13 +24,13 @@ namespace Atlas.Blazor.Web.Utility
 
             try
             {
-                IconInfo iconInfo = new() { Name = name, Size = IconSize.Size20, Variant = IconVariant.Regular };
+                IconInfo iconInfo = new() { Name = name, Size = iconSize, Variant = IconVariant.Regular };
 
                 return Icons.GetInstance(iconInfo);
             }
             catch (ArgumentException)
             {
-                return new Icons.Regular.Size20.Prohibited();
+                return GetRegularIcon("Prohibited", iconSize);
             }
         }
     }
