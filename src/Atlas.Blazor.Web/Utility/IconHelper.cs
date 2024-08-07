@@ -5,6 +5,19 @@ namespace Atlas.Blazor.Web.Utility
 {
     public static class IconHelper
     {
+        public static Color GetIconColor(string? colour)
+        {
+            if (string.IsNullOrWhiteSpace(colour)) return Color.Accent;
+
+            return colour switch
+            {
+                "Error" => Color.Error,
+                "Warning" => Color.Warning,
+                "Information" => Color.Success,
+                _ => Color.Accent,
+            };
+        }
+
         public static Icon GetRegularSize20(string? name)
         {
             return GetRegularIcon(name, IconSize.Size20);
