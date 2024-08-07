@@ -1,6 +1,7 @@
 using Atlas.API.Extensions;
 using Atlas.API.Interfaces;
 using Atlas.API.Services;
+using Atlas.Core.Exceptions;
 using Atlas.Data.Access.Constants;
 using Atlas.Data.Access.Context;
 using Atlas.Data.Access.Data;
@@ -114,9 +115,10 @@ app.UseAuthorization();
 
 app.MapEndpoints();
 
-bool useSeedData = bool.Parse(builder.Configuration["SeedData:UseSeedData"] ?? "false");
+bool generateSeedData = bool.Parse(builder.Configuration["SeedData:GenerateSeedData"] ?? "false");
+bool generateSeedLogs = bool.Parse(builder.Configuration["SeedData:GenerateSeedLogs"] ?? "false");
 
-if (useSeedData)
+if (generateSeedData)
 {
     // Seed data for development testing purposes only...
     using IServiceScope scope = app.Services.CreateScope();
@@ -127,7 +129,20 @@ if (useSeedData)
 
     applicationDbContext.SetUser("Atlas.SeedData");
 
-    SeedData.Initialise(applicationDbContext);
+    SeedData.Generate(applicationDbContext);
+
+    if(generateSeedLogs)
+    {
+        ILogService logService = services.GetRequiredService<ILogService>();
+        logService.Log(Atlas.API.Enums.LogLevel.Information, "Hello World!", "test_user");
+
+#pragma warning disable CA2208 // Instantiate argument exceptions correctly
+        logService.Log(Atlas.API.Enums.LogLevel.Information, new AtlasException("myArg is null", new ArgumentNullException("myArg"), "myArg=null"), "test_user");
+        logService.Log(Atlas.API.Enums.LogLevel.Information, new AtlasException("myNumber is zero", new DivideByZeroException(), "myNumber=0"), "test_user");
+        logService.Log(Atlas.API.Enums.LogLevel.Warning, new AtlasException("myVariable is null", new NullReferenceException("myVariable"), "myVariable=null"), "test_user");
+        logService.Log(Atlas.API.Enums.LogLevel.Error, new AtlasException("Boom!", new StackOverflowException(), "what the...."), "test_user");
+#pragma warning restore CA2208 // Instantiate argument exceptions correctly
+    }
 }
 
 app.Run();
