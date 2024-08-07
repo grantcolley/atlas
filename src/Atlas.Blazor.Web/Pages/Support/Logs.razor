@@ -20,9 +20,12 @@
         }
         else
         {
-            <FluentToolbar Style="height:100px;">
+            <FluentToolbar>
                 <Atlas.Blazor.Web.Components.Support.LogSearch SearchClicked="OnSearchClicked"/>
             </FluentToolbar>
+
+            <br />
+            <br />
 
             <FluentDataGrid TGridItem=Atlas.Core.Models.Log Items="@FilteredItems" ResizableColumns=true Pagination="_paginationState" GridTemplateColumns="0.1fr 0.5fr 0.5fr 1fr 1fr 0.5fr  0.5fr 0.2fr" Style="height: 600px;overflow:auto;">
                 <TemplateColumn Align="@Align.Center">
