@@ -15,6 +15,21 @@ namespace Atlas.API.Services
             _logger = logger;
         }
 
+        public void Log(AtlasException? exception = null, string? user = "")
+        {
+            Log(Enums.LogLevel.Error, exception?.Message, exception, user);
+        }
+
+        public void Log(Enums.LogLevel logLevel, string? message, string? user = "")
+        {
+            Log(logLevel, message, null, user);
+        }
+
+        public void Log(Enums.LogLevel logLevel, AtlasException? exception = null, string? user = "")
+        {
+            Log(logLevel, exception?.Message, exception, user);
+        }
+
         public void Log(Enums.LogLevel logLevel, string? message, AtlasException? exception = null, string? user = "")
         {
             using (LogContext.PushProperty("User", user))
@@ -28,6 +43,12 @@ namespace Atlas.API.Services
 
         private void Log(Enums.LogLevel logLevel, string? message, Exception? exception)
         {
+            if(string.IsNullOrEmpty(message) 
+                && exception != null)
+            {
+                message = exception.Message;
+            }
+
 #pragma warning disable CA2254 // Template should be a static expression
             switch (logLevel)
             {
