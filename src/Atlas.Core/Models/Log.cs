@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Drawing;
+using System.Text.Json.Serialization;
 
 namespace Atlas.Core.Models
 {
@@ -21,7 +23,8 @@ namespace Atlas.Core.Models
         public string? User { get; set; }
 
         [NotMapped]
-        public string? LogIcon
+        [JsonIgnore]
+        public string? Icon
         {
             get 
             {
