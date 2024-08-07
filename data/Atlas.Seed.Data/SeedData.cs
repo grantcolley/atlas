@@ -3,6 +3,7 @@ using Atlas.Core.Constants;
 using Atlas.Core.Models;
 using Atlas.Data.Access.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace Atlas.Seed.Data
 {
@@ -14,7 +15,7 @@ namespace Atlas.Seed.Data
         private static readonly Dictionary<string, Role> roles = [];
         private static readonly Dictionary<string, User> users = [];
 
-        public static void Initialise(ApplicationDbContext applicationDbContext)
+        public static void Generate(ApplicationDbContext applicationDbContext)
         {
             dbContext = applicationDbContext ?? throw new NullReferenceException(nameof(applicationDbContext));
 
@@ -31,7 +32,7 @@ namespace Atlas.Seed.Data
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
             ((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE Audits");
-            //((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE Logs");
+            ((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE Logs");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE RoleUser");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE PermissionRole");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("DELETE FROM Users");
