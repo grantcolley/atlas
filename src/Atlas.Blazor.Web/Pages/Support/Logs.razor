@@ -24,7 +24,10 @@
                 <Atlas.Blazor.Web.Components.Support.LogSearch SearchClicked="OnSearchClicked"/>
             </FluentToolbar>
 
-            <FluentDataGrid TGridItem=Atlas.Core.Models.Log Items="@FilteredItems" ResizableColumns=true Pagination="_paginationState" GridTemplateColumns="0.5fr 0.5fr 1fr 1fr 0.5fr  0.5fr 0.2fr" Style="height: 405px;overflow:auto;">
+            <FluentDataGrid TGridItem=Atlas.Core.Models.Log Items="@FilteredItems" ResizableColumns=true Pagination="_paginationState" GridTemplateColumns="0.1fr 0.5fr 0.5fr 1fr 1fr 0.5fr  0.5fr 0.2fr" Style="height: 600px;overflow:auto;">
+                <TemplateColumn Align="@Align.Center">
+                    <FluentIcon Value="@IconHelper.GetRegularSize16(context.Icon)" Color="@IconHelper.GetIconColor(context.Level)" />
+                </TemplateColumn>
                 <PropertyColumn Property="@(l => l.TimeStamp)" Sortable="true" Title="Time Stamp"/>
                 <PropertyColumn Property="@(l => l.Level)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_levelFilter)" Tooltip="true" Title="Level">
                     <ColumnOptions>
