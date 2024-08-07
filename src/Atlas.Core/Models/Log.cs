@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Atlas.Core.Models
 {
@@ -18,5 +19,18 @@ namespace Atlas.Core.Models
 
         [StringLength(450)]
         public string? User { get; set; }
+
+        [NotMapped]
+        public string? LogIcon
+        {
+            get 
+            {
+                if (string.IsNullOrWhiteSpace(Level)) return "Circle";
+                else if (Level.Equals("Error")) return "DismissCircle";
+                else if (Level.Equals("Warning")) return "Warning";
+                else if (Level.Equals("Information")) return "Info";
+                else return "Circle";
+            } 
+        }
     }
 }
