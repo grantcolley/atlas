@@ -17,7 +17,7 @@
 
     <div>
         <FluentLabel>Level</FluentLabel>
-        <FluentSelect TOption="string" Width="130px">
+        <FluentSelect TOption="string" @bind-Value=@(_logArgs.Level) Width="130px">
             <FluentOption Value="Information">
                 Information
                 <FluentIcon Value="@IconHelper.GetRegularSize16("Info")" Color="@IconHelper.GetIconColor("Information")" Slot="start" />
