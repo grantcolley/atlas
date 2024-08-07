@@ -1,14 +1,58 @@
-﻿<FluentStack Orientation="Orientation.Horizontal">
-    <FluentDatePicker Label="From" @bind-Value=@(_logArgs.From) />
-    <FluentTimePicker @bind-Value=@(_logArgs.From) />
-    <FluentDatePicker Label="To" @bind-Value=@(_logArgs.To) />
-    <FluentTimePicker @bind-Value=@(_logArgs.To) />
-    <FluentSelect TOption="OptionItem" Label="Level" Width="100px" />
-    <FluentTextField Label="Message" @bind-Value=@(_logArgs.Message) />
-    <FluentTextField Label="Context" @bind-Value=@(_logArgs.Context) />
-    <FluentTextField Label="User" @bind-Value=@(_logArgs.User) />
-    <FluentButton aria-label="Search" IconEnd="@(new Icons.Regular.Size20.Search())" OnClick="@(() => Search())" />
+﻿<FluentStack Orientation="Orientation.Horizontal" Wrap="true">
+    <div>
+        <FluentLabel>From</FluentLabel>
+        <div style=" display: flex; flex-direction:row;">
+            <FluentDatePicker @bind-Value=@(_logArgs.From) Style="margin-right: 2px; width: 120px" />
+            <FluentTimePicker @bind-Value=@(_logArgs.From) />
+        </div>
+    </div>
+
+    <div>
+        <FluentLabel>To</FluentLabel>
+        <div style=" display: flex; flex-direction:row;">
+            <FluentDatePicker @bind-Value=@(_logArgs.To) Style="margin-right: 2px; width: 120px" />
+            <FluentTimePicker @bind-Value=@(_logArgs.To) />
+        </div>
+    </div>
+
+    <div>
+        <FluentLabel>Level</FluentLabel>
+        <FluentSelect TOption="string" Width="130px">
+            <FluentOption Value="Information">
+                Information
+                <FluentIcon Value="@IconHelper.GetRegularSize16("Info")" Color="@IconHelper.GetIconColor("Information")" Slot="start" />
+            </FluentOption>
+            <FluentOption Value="Warning">
+                Warning
+                <FluentIcon Value="@IconHelper.GetRegularSize16("Warning")" Color="@IconHelper.GetIconColor("Warning")" Slot="start" />
+            </FluentOption>
+            <FluentOption Value="Error">
+                Error
+                <FluentIcon Value="@IconHelper.GetRegularSize16("DismissCircle")" Color="@IconHelper.GetIconColor("Error")" Slot="start" />
+            </FluentOption>
+        </FluentSelect>
+    </div>
+
+    <div>
+        <FluentLabel>Message</FluentLabel>
+        <FluentTextField @bind-Value=@(_logArgs.Message) />
+    </div>
+
+    <div>
+        <FluentLabel>Context</FluentLabel>
+        <FluentTextField @bind-Value=@(_logArgs.Context) />
+    </div>
+
+    <div>
+        <FluentLabel>User</FluentLabel>
+        <div style=" display: flex; flex-direction:row;">
+            <FluentTextField @bind-Value=@(_logArgs.User) Style="margin-right: 10px;" />
+            <FluentButton aria-label="Search" IconEnd="@(new Icons.Regular.Size20.Search())" OnClick="@(() => Search())" />
+        </div>
+    </div>
+
     <FluentSpacer />
+
 </FluentStack>
 
 @code {
