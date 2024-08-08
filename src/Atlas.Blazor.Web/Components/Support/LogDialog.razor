@@ -1,0 +1,110 @@
+﻿@implements IDialogContentComponent<Log>
+
+<FluentDialogHeader ShowDismiss="true">
+    <FluentStack VerticalAlignment="VerticalAlignment.Center">
+        <FluentLabel Typo="Typography.PaneHeader">
+            @if (!string.IsNullOrWhiteSpace(Content.Level))
+            {
+                <div style=" display: flex; flex-direction:row;">
+                    <FluentIcon Value="@IconHelper.GetRegularSize24(@Content.Icon)" Color="@IconHelper.GetIconColor(@Content.Level)" Style="margin-right: 10px;" />
+                    <FluentLabel Typo="Typography.PaneHeader">@Content.Level</FluentLabel>
+                </div>
+            }
+            else
+            {
+                @Dialog?.Instance.Parameters.Title
+            }
+        </FluentLabel>
+    </FluentStack>
+</FluentDialogHeader>
+
+<FluentDialogBody>
+    <FluentBodyContent>
+
+        @if(Content.TimeStamp != null)
+        {
+            <div style=" display: flex; flex-direction:row;">
+                <FluentLabel Style="margin-right: 10px;">Time:</FluentLabel>
+                <FluentLabel Style="margin-right: 10px;">@Content.TimeStamp?.ToShortDateString()</FluentLabel>
+                <FluentLabel>@Content.TimeStamp?.ToLongTimeString()</FluentLabel>
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Content.Message))
+        {
+            <br />
+
+            <div style=" display: flex; flex-direction:row;">
+                <FluentLabel Style="margin-right: 10px;">Message:</FluentLabel>
+                <FluentLabel>@Content.Message</FluentLabel>
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Content.Exception))
+        {
+            <br />
+
+            <div style=" display: flex; flex-direction:row;">
+                <FluentLabel Style="margin-right: 10px;">Exception:</FluentLabel>
+                <FluentLabel>@Content.Exception</FluentLabel>
+            </div>
+        }
+
+        <br/>
+        <br />
+
+        <FluentLabel>Properties</FluentLabel>
+
+        <div style=" display: flex; flex-direction:row;">
+            <FluentLabel Style="margin-right: 10px;">Log Id:</FluentLabel>
+            <FluentLabel>@Content.Id</FluentLabel>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Content.User))
+        {
+            <div style=" display: flex; flex-direction:row;">
+                <FluentLabel Style="margin-right: 10px;">User:</FluentLabel>
+                <FluentLabel>@Content.User</FluentLabel>
+            </div>
+        }
+
+        @if(!string.IsNullOrWhiteSpace(Content.Context))
+        {
+            <div style=" display: flex; flex-direction:row;">
+                <FluentLabel Style="margin-right: 10px;">Context:</FluentLabel>
+                <FluentLabel>@Content.Context</FluentLabel>
+            </div>
+        }
+
+        @foreach (LogProperty logProperty in Content.GetLogProperties())
+        {
+            <div style=" display: flex; flex-direction:row;">
+                <FluentLabel Style="margin-right: 10px;">@logProperty.Key:</FluentLabel>
+                <FluentLabel>@logProperty.Value</FluentLabel>
+            </div>
+        }
+
+    </FluentBodyContent>
+</FluentDialogBody>
+
+<FluentDialogFooter>
+    <FluentButton Appearance="Appearance.Accent" OnClick="@OkClickAsync">Ok</FluentButton>
+</FluentDialogFooter>
+
+@code {
+    [CascadingParameter]
+    public FluentDialog? Dialog { get; set; } = default!;
+
+    [Parameter]
+    public Log Content { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        ArgumentNullException.ThrowIfNull(Content);
+    }
+
+    private async Task OkClickAsync()
+    {
+        await Dialog!.CloseAsync(Content);
+    }
+}
