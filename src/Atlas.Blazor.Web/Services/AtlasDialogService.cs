@@ -1,6 +1,8 @@
 ﻿using Atlas.Blazor.Web.Components;
+using Atlas.Blazor.Web.Components.Support;
 using Atlas.Blazor.Web.Interfaces;
 using Atlas.Blazor.Web.Models;
+using Atlas.Core.Models;
 using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace Atlas.Blazor.Web.Services
@@ -58,6 +60,24 @@ namespace Atlas.Blazor.Web.Services
             }
 
             return dialogResult;
+        }
+
+        public async Task ShowLogDialogAsync(Log log)
+        {
+            ArgumentNullException.ThrowIfNull(log, nameof(log));
+
+            DialogParameters parameters = new()
+            {
+                Title = string.IsNullOrWhiteSpace(log.Message) ? "Log Entry" : log.Message,
+                Width = "500px",
+                Height = "500px",
+                Modal = false,
+                PreventScroll = false
+            };
+
+            IDialogReference dialog = await _dialogService.ShowDialogAsync<LogDialog>(log, parameters);
+
+            _ = await dialog.Result;
         }
     }
 }
