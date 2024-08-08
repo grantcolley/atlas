@@ -89,6 +89,9 @@ else
     [Inject]
     public IGenericRequests? GenericRequests { get; set; }
 
+    [Inject]
+    public IAtlasDialogService? AtlasDialogService { get; set; }
+
     public IQueryable<Log>? FilteredItems
     {
         get
@@ -234,8 +237,10 @@ else
         }
     }
 
-    private void Open(Log log)
+    private async void Open(Log log)
     {
-        
+        if (AtlasDialogService == null) throw new NullReferenceException(nameof(AtlasDialogService));
+
+        await AtlasDialogService.ShowLogDialogAsync(log).ConfigureAwait(false);
     }
 }
