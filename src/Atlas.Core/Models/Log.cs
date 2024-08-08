@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Drawing;
+using System.IO;
 using System.Text.Json.Serialization;
+using System.Xml.Serialization;
 
 namespace Atlas.Core.Models
 {
@@ -34,6 +36,20 @@ namespace Atlas.Core.Models
                 else if (Level.Equals("Information")) return "Info";
                 else return "Circle";
             } 
+        }
+
+        public List<LogProperty> GetLogProperties()
+        {
+            if (string.IsNullOrWhiteSpace(Properties)) return [];
+
+            var serializer = new XmlSerializer(typeof(LogProperties));
+
+            using TextReader reader = new StringReader(Properties);
+            LogProperties? logProperties = (LogProperties?)serializer.Deserialize(reader);
+
+            if (logProperties == null || logProperties.Properties == null) return [];
+
+            return logProperties.Properties;
         }
     }
 }
