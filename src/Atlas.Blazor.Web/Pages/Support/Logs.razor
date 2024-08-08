@@ -49,21 +49,21 @@
                         </div>
                     </ColumnOptions>
                 </PropertyColumn>
-                <PropertyColumn Property="@(l => l.Exception)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_exceptionFilter)" Title="Exception">
+                <PropertyColumn Property="@(l => l.Exception)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_exceptionFilter)" Tooltip="true" Title="Exception">
                     <ColumnOptions>
                         <div class="search-box">
                             <FluentSearch type="exceptionFilter" Autofocus=true @bind-Value=_exceptionFilter @oninput="HandleExceptionFilter" @bind-Value:after="HandleExceptionClear" Placeholder="Exception..." />
                         </div>
                     </ColumnOptions>
                 </PropertyColumn>
-                <PropertyColumn Property="@(l => l.Context)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_contextFilter)" Title="Context" >
+                <PropertyColumn Property="@(l => l.Context)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_contextFilter)" Tooltip="true" Title="Context">
                     <ColumnOptions>
                         <div class="search-box">
                             <FluentSearch type="contextFilter" Autofocus=true @bind-Value=_contextFilter @oninput="HandleContextFilter" @bind-Value:after="HandleContextClear" Placeholder="Context..." />
                         </div>
                     </ColumnOptions>
                 </PropertyColumn>
-                <PropertyColumn Property="@(l => l.User)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_userFilter)" Title="User" >
+                <PropertyColumn Property="@(l => l.User)" Sortable="true" Filtered="!string.IsNullOrWhiteSpace(_userFilter)" Tooltip="true" Title="User">
                     <ColumnOptions>
                         <div class="search-box">
                             <FluentSearch type="userFilter" Autofocus=true @bind-Value=_userFilter @oninput="HandleUserFilter" @bind-Value:after="HandleUserClear" Placeholder="User..." />
