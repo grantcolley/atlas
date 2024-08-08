@@ -18,6 +18,11 @@ namespace Atlas.Blazor.Web.Utility
             };
         }
 
+        public static Icon GetRegularSize24(string? name)
+        {
+            return GetRegularIcon(name, IconSize.Size24);
+        }
+
         public static Icon GetRegularSize20(string? name)
         {
             return GetRegularIcon(name, IconSize.Size20);
