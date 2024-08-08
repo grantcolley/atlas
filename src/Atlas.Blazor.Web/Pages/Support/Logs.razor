@@ -27,7 +27,10 @@
             <br />
             <br />
 
-            <FluentDataGrid TGridItem=Atlas.Core.Models.Log Items="@FilteredItems" ResizableColumns=true Pagination="_paginationState" GridTemplateColumns="0.1fr 0.5fr 0.5fr 1fr 1fr 0.5fr  0.5fr 0.2fr" Style="height: 600px;overflow:auto;">
+            <FluentDataGrid TGridItem=Atlas.Core.Models.Log Items="@FilteredItems"
+                            Style="height: 600px;overflow:auto;" GridTemplateColumns="0.1fr 0.5fr 0.5fr 1fr 1fr 0.5fr  0.5fr 0.2fr"
+                            ResizableColumns=true GenerateHeader="GenerateHeaderOption.Sticky"
+                            Pagination="_paginationState">
                 <TemplateColumn Align="@Align.Center">
                     <FluentIcon Value="@IconHelper.GetRegularSize16(context.Icon)" Color="@IconHelper.GetIconColor(context.Level)" />
                 </TemplateColumn>
