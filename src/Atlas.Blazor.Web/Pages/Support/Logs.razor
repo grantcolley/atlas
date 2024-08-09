@@ -12,6 +12,13 @@
             Logs
         </FluentHeader>
 
+        <FluentToolbar>
+            <Atlas.Blazor.Web.Components.Support.LogSearch SearchClicked="OnSearchClicked"/>
+        </FluentToolbar>
+
+        <br />
+        <br />
+
         @if (_isProcessing)
         {
             <CenterContent>
@@ -20,13 +27,6 @@
         }
         else
         {
-            <FluentToolbar>
-                <Atlas.Blazor.Web.Components.Support.LogSearch SearchClicked="OnSearchClicked"/>
-            </FluentToolbar>
-
-            <br />
-            <br />
-
             <FluentDataGrid TGridItem=Atlas.Core.Models.Log Items="@FilteredItems"
                             Style="height: 600px;overflow:auto;" GridTemplateColumns="0.1fr 0.5fr 0.5fr 1fr 1fr 0.5fr  0.5fr 0.2fr"
                             ResizableColumns=true GenerateHeader="GenerateHeaderOption.Sticky"
@@ -108,8 +108,8 @@ else
         }
     }
 
-    private PaginationState _paginationState = new PaginationState();
-    private IEnumerable<Log>? _items = new List<Log>();
+    private PaginationState _paginationState = new PaginationState { ItemsPerPage = 20 };
+    private List<Log>? _items = new List<Log>();
     private string _levelFilter = string.Empty;
     private string _messageFilter = string.Empty;
     private string _exceptionFilter = string.Empty;
@@ -121,43 +121,16 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        ArgumentNullException.ThrowIfNull(GenericRequests);
-
-        _paginationState.ItemsPerPage = 20;
-
-        _isProcessing = true;
-
-        string logArgs = JsonSerializer.Serialize(new LogArgs());
-
-        IAuthResponse<IEnumerable<Log>> response = await GenericRequests.GetListAsync<Log>(logArgs, AtlasAPIEndpoints.GET_LOGS)
-                                                            .ConfigureAwait(false);
-
-        if (!response.IsSuccess)
-        {
-            if (!string.IsNullOrWhiteSpace(response.Message))
-            {
-                _alert = new Models.Alert
-                    {
-                        AlertType = Alerts.ERROR,
-                        Title = $"Error Logs",
-                        Message = response.Message
-                    };
-            }
-        }
-        else
-        {
-            if (response.Result != null)
-            {
-                _items = response.Result;
-            }
-        }
-
-        _isProcessing = false;
+        await GetLogs(new LogArgs()).ConfigureAwait(false);
     }
 
-    private void OnSearchClicked(LogArgs logArgs)
+    private async void OnSearchClicked(LogArgs logArgs)
     {
         ArgumentNullException.ThrowIfNull(logArgs);
+
+        await GetLogs(logArgs);
+
+        StateHasChanged();
     }
 
     private void HandleLevelFilter(ChangeEventArgs args)
@@ -224,7 +197,7 @@ else
         }
     }
 
-        private void HandleUserFilter(ChangeEventArgs args)
+    private void HandleUserFilter(ChangeEventArgs args)
     {
         if (args.Value is string value)
         {
@@ -245,5 +218,42 @@ else
         if (AtlasDialogService == null) throw new NullReferenceException(nameof(AtlasDialogService));
 
         await AtlasDialogService.ShowLogDialogAsync(log).ConfigureAwait(false);
+    }
+
+    private async Task GetLogs(LogArgs logArgs)
+    {
+        ArgumentNullException.ThrowIfNull(GenericRequests);
+
+        _isProcessing = true;
+
+        if(_items?.Count() > 0)
+        {
+            _items.Clear();
+        }
+
+        string logArgsJson = JsonSerializer.Serialize(logArgs);
+
+        IAuthResponse<IEnumerable<Log>> response = await GenericRequests
+                                                            .GetListAsync<Log>(logArgsJson, AtlasAPIEndpoints.GET_LOGS)
+                                                            .ConfigureAwait(false);
+
+        if (!response.IsSuccess)
+        {
+            if (!string.IsNullOrWhiteSpace(response.Message))
+            {
+                _alert = new Models.Alert
+                    {
+                        AlertType = Alerts.ERROR,
+                        Title = $"Error Logs",
+                        Message = response.Message
+                    };
+            }
+        }
+        else
+        {
+            _items = response.Result?.ToList();
+        }
+
+        _isProcessing = false;
     }
 }
