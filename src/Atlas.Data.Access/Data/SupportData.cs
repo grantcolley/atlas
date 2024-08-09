@@ -14,13 +14,35 @@ namespace Atlas.Data.Access.Data
     {
         private static JsonSerializerOptions jsonSerializerOptions = new() { WriteIndented = true };
 
-        public async Task<IEnumerable<Log>?> GetLogsAsync(LogArgs logArgs, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Log>> GetLogsAsync(LogArgs logArgs, CancellationToken cancellationToken)
         {
             try
             {
+                ArgumentNullException.ThrowIfNull(logArgs, nameof(logArgs));
+
+                List<string> level = [];
+
+                if(!string.IsNullOrWhiteSpace(logArgs.Level))
+                {
+                    if (logArgs.Level == "Error")
+                    {
+                        level.Add("Error");
+                    }
+                    else if (logArgs.Level == "Warning")
+                    {
+                        level.AddRange(["Warning", "Error"]);
+                    }
+                }
+
                 return await _applicationDbContext.Logs
                     .AsNoTracking()
+                    .Where(l => l.TimeStamp >= logArgs.From && l.TimeStamp <= logArgs.To
+                            && (level.Count == 0 || (!string.IsNullOrWhiteSpace(l.Level) && level.Contains(l.Level))
+                            && (string.IsNullOrWhiteSpace(logArgs.Message) || (!string.IsNullOrWhiteSpace(logArgs.Message) && !string.IsNullOrEmpty(l.Message) && l.Message.Contains(logArgs.Message)))
+                            && (string.IsNullOrWhiteSpace(logArgs.User) || (!string.IsNullOrWhiteSpace(logArgs.User) && !string.IsNullOrEmpty(l.User) && l.User.Contains(logArgs.User)))
+                            && (string.IsNullOrWhiteSpace(logArgs.Context) || (!string.IsNullOrWhiteSpace(logArgs.Context) && !string.IsNullOrEmpty(l.Context) && l.Context.Contains(logArgs.Context)))))
                     .OrderBy(l => l.TimeStamp)
+                    .ThenBy(l => l.Id)
                     .ToListAsync(cancellationToken)
                     .ConfigureAwait(false);
             }
