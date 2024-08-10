@@ -37,10 +37,10 @@ namespace Atlas.Data.Access.Data
                 return await _applicationDbContext.Logs
                     .AsNoTracking()
                     .Where(l => l.TimeStamp >= logArgs.From && l.TimeStamp <= logArgs.To
-                            && (level.Count == 0 || (!string.IsNullOrWhiteSpace(l.Level) && level.Contains(l.Level))
-                            && (string.IsNullOrWhiteSpace(logArgs.Message) || (!string.IsNullOrWhiteSpace(logArgs.Message) && !string.IsNullOrEmpty(l.Message) && l.Message.Contains(logArgs.Message)))
-                            && (string.IsNullOrWhiteSpace(logArgs.User) || (!string.IsNullOrWhiteSpace(logArgs.User) && !string.IsNullOrEmpty(l.User) && l.User.Contains(logArgs.User)))
-                            && (string.IsNullOrWhiteSpace(logArgs.Context) || (!string.IsNullOrWhiteSpace(logArgs.Context) && !string.IsNullOrEmpty(l.Context) && l.Context.Contains(logArgs.Context)))))
+                            && (level.Count == 0 || level.Contains(l.Level))
+                            && (string.IsNullOrWhiteSpace(logArgs.Message) || l.Message.Contains(logArgs.Message))
+                            && (string.IsNullOrWhiteSpace(logArgs.User) || l.User.Contains(logArgs.User))
+                            && (string.IsNullOrWhiteSpace(logArgs.Context) || l.Context.Contains(logArgs.Context)))
                     .OrderBy(l => l.TimeStamp)
                     .ThenBy(l => l.Id)
                     .ToListAsync(cancellationToken)
