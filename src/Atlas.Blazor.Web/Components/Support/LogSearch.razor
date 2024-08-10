@@ -1,4 +1,6 @@
-﻿<FluentStack Orientation="Orientation.Horizontal" Wrap="true">
+﻿@implements IDisposable
+
+<FluentStack Orientation="Orientation.Horizontal" Wrap="true">
     <div>
         <FluentLabel>From</FluentLabel>
         <div style=" display: flex; flex-direction:row;">
@@ -35,19 +37,19 @@
 
     <div>
         <FluentLabel>Message</FluentLabel>
-        <FluentTextField @bind-Value=@(_logArgs.Message) />
+        <FluentTextField @bind-Value=@(_logArgs.Message) Immediate="true" />
     </div>
 
     <div>
         <FluentLabel>Context</FluentLabel>
-        <FluentTextField @bind-Value=@(_logArgs.Context) />
+        <FluentTextField @bind-Value=@(_logArgs.Context) Immediate="true" />
     </div>
 
     <div>
         <FluentLabel>User</FluentLabel>
         <div style=" display: flex; flex-direction:row;">
-            <FluentTextField @bind-Value=@(_logArgs.User) Style="margin-right: 10px;" />
-            <FluentButton aria-label="Search" IconEnd="@(new Icons.Regular.Size20.Search())" OnClick="@(() => Search())" />
+            <FluentTextField @bind-Value=@(_logArgs.User) Style="margin-right: 10px;" Immediate="true" />
+            <FluentButton aria-label="Search" IconEnd="@(new Icons.Regular.Size20.Search())" OnClick="@(() => SearchClick())" />
         </div>
     </div>
 
@@ -57,6 +59,9 @@
 
 @code {
     [Inject]
+    private IKeyCodeService? KeyCodeService { get; set; }
+
+    [Inject]
     public IAtlasDialogService? AtlasDialogService { get; set; }
 
     [Parameter]
@@ -64,7 +69,26 @@
 
     private LogArgs _logArgs = new();
 
-    private async void Search()
+    protected override void OnInitialized()
+    {
+        FluentKeyCode.PreventMultipleKeyDown = true;
+        KeyCodeService?.RegisterListener(OnKeyHandleAsync);
+    }
+
+    private async Task OnKeyHandleAsync(FluentKeyCodeEventArgs args)
+    {
+        if (args.Key.Equals(KeyCode.Enter))
+        {
+            await Search().ConfigureAwait(false);
+        }
+    }
+
+    private async void SearchClick()
+    {
+        await Search().ConfigureAwait(false);
+    }
+
+    private async Task Search()
     {
         ArgumentNullException.ThrowIfNull(AtlasDialogService);
         ArgumentNullException.ThrowIfNull(_logArgs);
@@ -79,5 +103,10 @@
         }
 
         await SearchClicked.InvokeAsync(_logArgs);
+    }
+
+    void IDisposable.Dispose()
+    {
+        KeyCodeService?.UnregisterListener(OnKeyHandleAsync);
     }
 }
