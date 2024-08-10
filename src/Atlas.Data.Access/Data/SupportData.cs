@@ -34,6 +34,8 @@ namespace Atlas.Data.Access.Data
                     }
                 }
 
+#pragma warning disable CS8604 // Possible null reference argument.
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 return await _applicationDbContext.Logs
                     .AsNoTracking()
                     .Where(l => l.TimeStamp >= logArgs.From && l.TimeStamp <= logArgs.To
@@ -45,6 +47,8 @@ namespace Atlas.Data.Access.Data
                     .ThenBy(l => l.Id)
                     .ToListAsync(cancellationToken)
                     .ConfigureAwait(false);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+#pragma warning restore CS8604 // Possible null reference argument.
             }
             catch (Exception ex)
             {
