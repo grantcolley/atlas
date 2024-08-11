@@ -4,7 +4,7 @@
 
 \
 ![Alt text](/readme-images/Atlas_Architecture.png?raw=true "Atlas Architecture") 
-\
+
 
 [![Build status](https://ci.appveyor.com/api/projects/status/qx6pbauk9bfpopst?svg=true)](https://ci.appveyor.com/project/grantcolley/atlas)
 
