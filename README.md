@@ -11,6 +11,8 @@
 ## Table of Contents
 * [Setup the Solution](#setup-the-solution)
 * [Authentication](#authentication)
+    * [Securing Atlas.API](#securing-atlas.api)
+    * [Securing Atlas.Blazor.Web.App](#securing-atlas.blazor.web.app)
 * [Authorization](#authorization)
 * [Support](#support)
     * [Logging](#logging)
@@ -23,6 +25,7 @@
 # Authentication
 Atlas uses [Auth0](https://auth0.com/) as its authentication provider. Create a free account with [Auth0](https://auth0.com/signup?place=header&type=button&text=sign%20up) and register the **Atlas.API** and **Atlas.Blazor.Web.App** in the Auth0 dashboard.
 
+## Securing Atlas.API
 The following article explains how to [secure a minimal WebAPI with Auth0](https://auth0.com/blog/securing-aspnet-minimal-webapis-with-auth0/) with the relevant parts in the **Atlas.API** [Program.cs](https://github.com/grantcolley/atlas/blob/main/src/Atlas.API/Program.cs).
 
 ```C#
@@ -56,8 +59,7 @@ app.UseAuthorization();
 
 ```
 
-When mapping the minimal Web API methods add `RequireAuthorization(Auth.ATLAS_USER_CLAIM)`.
-
+When mapping the minimal Web API methods add `RequireAuthorization(Auth.ATLAS_USER_CLAIM)`, as can be seen here in [AtlasEndpointMapper.cs](https://github.com/grantcolley/atlas/blob/main/src/Atlas.API/Extensions/AtlasEndpointMapper.cs).
 ```C#
             app.MapGet($"/{AtlasAPIEndpoints.GET_CLAIM_MODULES}", ClaimEndpoint.GetClaimModules)
                 .WithOpenApi()
@@ -68,6 +70,7 @@ When mapping the minimal Web API methods add `RequireAuthorization(Auth.ATLAS_US
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);  // 👈 add RequireAuthorization
 ```
 
+## Securing Atlas.Blazor.Web.App
 The following articles explain how to [add Auth0 Authentication to Blazor Web Apps](https://auth0.com/blog/auth0-authentication-blazor-web-apps/) and to [Call Protected APIs from a Blazor Web App](https://auth0.com/blog/call-protected-api-from-blazor-web-app/).
 
 
