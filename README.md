@@ -9,6 +9,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/qx6pbauk9bfpopst?svg=true)](https://ci.appveyor.com/project/grantcolley/atlas)
 
 ## Table of Contents
+* [Setup the Solution](#setup-the-solution)
 * [Authentication](#authentication)
 * [Authorization](#authorization)
 * [Support](#support)
@@ -17,7 +18,34 @@
     * [FluentDesignTheme Dark/Light](#fluentdesigntheme-darklight)
     * [Backend for frontend](#backend-for-frontend)
 
+# Setup the Solution
+
 # Authentication
+Atlas uses [Auth0](https://auth0.com/) as its authentication provider. Create a free account with [Auth0]([https://auth0.com/](https://auth0.com/signup?utm_source=blog&utm_medium=auth0&utm_campaign=devn_signup)) and register the **Atlas.API** and **Atlas.Blazor.Web.App** in the Auth0 dashboard.
+
+The following article explains how to secure the 
+
+```
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = $"https://{builder.Configuration["Auth0:Domain"]}";
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidIssuer = builder.Configuration["Auth0:Domain"],
+            ValidAudience = builder.Configuration["Auth0:Audience"]
+        };
+    });
+
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("atlas-user", policy =>
+    {
+        policy.RequireAuthenticatedUser().RequireRole("atlas-user");
+    });
+```
+
+The following articles explain how to [add Auth0 Authentication to Blazor Web Apps](https://auth0.com/blog/auth0-authentication-blazor-web-apps/) and to [Call Protected APIs from a Blazor Web App](https://auth0.com/blog/call-protected-api-from-blazor-web-app/).
+
 
 # Authorization
 
