@@ -97,6 +97,25 @@ In the [Auth0](https://auth0.com/) dashboard, first create a role called `atlas-
 > [!TIP]
 > [SeedData.cs](https://github.com/grantcolley/atlas/blob/9509c67c874711e1760bbf5cd6561c662abe2e81/data/Atlas.Seed.Data/SeedData.cs#L111-L114) already contains some pre-defined sample users with roles and permissions. Either create these users in [Auth0](https://auth0.com/), or amend the sample users in [SeedData.cs](https://github.com/grantcolley/atlas/blob/9509c67c874711e1760bbf5cd6561c662abe2e81/data/Atlas.Seed.Data/SeedData.cs#L111-L114) to reflect those created in [Auth0](https://auth0.com/).
 
+```C#
+        private static void CreateUsers()
+        {
+            if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
+
+            users.Add("alice", new User { Name = "alice", Email = "alice@email.com" });
+            users.Add("jane", new User { Name = "jane", Email = "jane@email.com" });
+            users.Add("bob", new User { Name = "bob", Email = "bob@email.com" });
+            users.Add("grant", new User { Name = "grant", Email = "grant@email.com" });
+
+            foreach (User user in users.Values)
+            {
+                dbContext.Users.Add(user);
+            }
+
+            dbContext.SaveChanges();
+        }
+```
+
 ![Alt text](/readme-images/Auth0_Role.png?raw=true "Auth0 Roles") 
 
 ![Alt text](/readme-images/Auth0_User.png?raw=true "Auth0 Users") 
