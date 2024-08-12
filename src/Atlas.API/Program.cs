@@ -1,6 +1,7 @@
 using Atlas.API.Extensions;
 using Atlas.API.Interfaces;
 using Atlas.API.Services;
+using Atlas.Core.Constants;
 using Atlas.Core.Exceptions;
 using Atlas.Data.Access.Constants;
 using Atlas.Data.Access.Context;
@@ -77,9 +78,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("atlas-user", policy =>
+    .AddPolicy(Auth.ATLAS_USER_CLAIM, policy =>
     {
-        policy.RequireAuthenticatedUser().RequireRole("atlas-user");
+        policy.RequireAuthenticatedUser().RequireRole(Auth.ATLAS_USER_CLAIM);
     });
 
 builder.Services.AddCors(options =>
