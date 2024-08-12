@@ -21,9 +21,9 @@
 # Setup the Solution
 
 # Authentication
-Atlas uses [Auth0](https://auth0.com/) as its authentication provider. Create a free account with [Auth0]([https://auth0.com/](https://auth0.com/signup?utm_source=blog&utm_medium=auth0&utm_campaign=devn_signup)) and register the **Atlas.API** and **Atlas.Blazor.Web.App** in the Auth0 dashboard.
+Atlas uses [Auth0](https://auth0.com/) as its authentication provider. Create a free account with [Auth0](https://auth0.com/signup?place=header&type=button&text=sign%20up) and register the **Atlas.API** and **Atlas.Blazor.Web.App** in the Auth0 dashboard.
 
-The following article explains how to [secure a minimal WebAPI with Auth0](Setup the Solution](https://auth0.com/blog/securing-aspnet-minimal-webapis-with-auth0/) with the relevant parts in the **Atlas.API** [Program.cs](https://github.com/grantcolley/atlas/blob/main/src/Atlas.API/Program.cs).
+The following article explains how to [secure a minimal WebAPI with Auth0](https://auth0.com/blog/securing-aspnet-minimal-webapis-with-auth0/) with the relevant parts in the **Atlas.API** [Program.cs](https://github.com/grantcolley/atlas/blob/main/src/Atlas.API/Program.cs).
 
 ```C#
 
