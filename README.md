@@ -22,6 +22,10 @@
 
 # Setup the Solution
 
+In the Solution Properties, specify multiple startup projects and set the action for both **Atlas.API** and **Atlas.Blazor.Web.App** to *Start*.
+
+![Alt text](/readme-images/Solution_Property_Pages.png?raw=true "Solution Properties") 
+
 # Authentication
 Atlas uses [Auth0](https://auth0.com/) as its authentication provider. Create a free account with [Auth0](https://auth0.com/signup?place=header&type=button&text=sign%20up) and register the **Atlas.API** and **Atlas.Blazor.Web.App** in the Auth0 dashboard.
 
