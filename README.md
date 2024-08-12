@@ -22,6 +22,73 @@
 
 # Setup the Solution
 
+In the Solution Properties, specify multiple startup projects and set the action for both **Atlas.API** and **Atlas.Blazor.Web.App** to *Start*.
+
+![Alt text](/readme-images/Solution_Property_Pages.png?raw=true "Solution Properties") 
+
+In the **Atlas.API** [appsettings.json](https://github.com/grantcolley/atlas/blob/main/src/Atlas.API/appsettings.json) set the connection strings, configure Auth0 settings and generating seed data.
+
+> [!NOTE]  
+> Read the next section on [Authentication](#authentication) for how to configure Auth0 as the identity provider. 
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": ""   // 👈 set the default connection string
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning",
+      "Microsoft.EntityFrameworkCore.Database.Command": "Information"
+    }
+  },
+  "Serilog": {
+    "Using": [ "Serilog.Sinks.MSSqlServer" ],
+    "MinimumLevel": {
+      "Default": "Information",
+      "Override": {
+        "Microsoft": "Error",
+        "Microsoft.EntityFrameworkCore.Database.Command": "Information"
+      }
+    },
+    "WriteTo": [
+      {
+        "Name": "MSSqlServer",
+        "Args": {
+          "connectionString": "",   // 👈set the Serilog MS SQL Server connection string
+          "tableName": "Logs",
+          "autoCreateSqlTable": true,
+          "columnOptionsSection": {
+            "customColumns": [
+              {
+                "ColumnName": "User",
+                "DataType": "nvarchar",
+                "DataLength": 450
+              },
+              {
+                "ColumnName": "Context",
+                "DataType": "nvarchar",
+                "DataLength": 450
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "AllowedHosts": "*",
+  "Auth0": {
+    "Domain": "",   // 👈specify the Auth0 domain
+    "Audience": ""  // 👈specify the audience
+  },
+  "SeedData": {
+    "GenerateSeedData": "true", // 👈 set to true
+    "GenerateSeedLogs":  "true" // 👈 set to true
+  }
+}
+```
+
 # Authentication
 Atlas uses [Auth0](https://auth0.com/) as its authentication provider. Create a free account with [Auth0](https://auth0.com/signup?place=header&type=button&text=sign%20up) and register the **Atlas.API** and **Atlas.Blazor.Web.App** in the Auth0 dashboard.
 
