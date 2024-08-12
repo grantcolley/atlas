@@ -41,9 +41,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("atlas-user", policy =>
+    .AddPolicy(Auth.ATLAS_USER_CLAIM, policy =>
     {
-        policy.RequireAuthenticatedUser().RequireRole("atlas-user");
+        policy.RequireAuthenticatedUser().RequireRole(Auth.ATLAS_USER_CLAIM);
     });
 
 //....existing code removed for brevity
@@ -54,6 +54,18 @@ app.UseAuthorization();
 
 //....existing code removed for brevity
 
+```
+
+When mapping the minimal Web API methods add `RequireAuthorization(Auth.ATLAS_USER_CLAIM)`.
+
+```C#
+            app.MapGet($"/{AtlasAPIEndpoints.GET_CLAIM_MODULES}", ClaimEndpoint.GetClaimModules)
+                .WithOpenApi()
+                .WithName(AtlasAPIEndpoints.GET_CLAIM_MODULES)
+                .WithDescription("Gets the user's authorized modules")
+                .Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
+                .Produces(StatusCodes.Status500InternalServerError)
+                .RequireAuthorization(Auth.ATLAS_USER_CLAIM);  // 👈 add RequireAuthorization
 ```
 
 The following articles explain how to [add Auth0 Authentication to Blazor Web Apps](https://auth0.com/blog/auth0-authentication-blazor-web-apps/) and to [Call Protected APIs from a Blazor Web App](https://auth0.com/blog/call-protected-api-from-blazor-web-app/).
