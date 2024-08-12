@@ -92,6 +92,14 @@ In the **Atlas.API** [appsettings.json](https://github.com/grantcolley/atlas/blo
 # Authentication
 Atlas uses [Auth0](https://auth0.com/) as its authentication provider. Create a free account with [Auth0](https://auth0.com/signup?place=header&type=button&text=sign%20up) and register the **Atlas.API** and **Atlas.Blazor.Web.App** in the Auth0 dashboard.
 
+In the Auth0 dashboard, first create a role called `atlas-user`, and then create users and assign them the `atlas-user` role.
+
+![Alt text](/readme-images/Auth0_Role.png?raw=true "Auth0 Roles") 
+
+![Alt text](/readme-images/Auth0_User.png?raw=true "Auth0 Users") 
+
+
+
 ## Securing Atlas.API
 The following article explains how to [secure a minimal WebAPI with Auth0](https://auth0.com/blog/securing-aspnet-minimal-webapis-with-auth0/) with the relevant parts in the **Atlas.API** [Program.cs](https://github.com/grantcolley/atlas/blob/main/src/Atlas.API/Program.cs).
 
