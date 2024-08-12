@@ -92,7 +92,10 @@ In the **Atlas.API** [appsettings.json](https://github.com/grantcolley/atlas/blo
 # Authentication
 Atlas uses [Auth0](https://auth0.com/) as its authentication provider. Create a free account with [Auth0](https://auth0.com/signup?place=header&type=button&text=sign%20up) and register the **Atlas.API** and **Atlas.Blazor.Web.App** in the Auth0 dashboard.
 
-In the Auth0 dashboard, first create a role called `atlas-user`, and then create users and assign them the `atlas-user` role.
+In the [Auth0](https://auth0.com/) dashboard, first create a role called `atlas-user`, and then create users and assign them the `atlas-user` role.
+
+> [!TIP]
+> [SeedData.cs](https://github.com/grantcolley/atlas/blob/9509c67c874711e1760bbf5cd6561c662abe2e81/data/Atlas.Seed.Data/SeedData.cs#L111-L114) already contains some pre-defined sample users with roles and permissions. Either create these users in [Auth0](https://auth0.com/), or amend the sample users in [SeedData.cs](https://github.com/grantcolley/atlas/blob/9509c67c874711e1760bbf5cd6561c662abe2e81/data/Atlas.Seed.Data/SeedData.cs#L111-L114) to reflect those created in [Auth0](https://auth0.com/).
 
 ![Alt text](/readme-images/Auth0_Role.png?raw=true "Auth0 Roles") 
 
