@@ -11,8 +11,8 @@
 ## Table of Contents
 * [Setup the Solution](#setup-the-solution)
 * [Authentication](#authentication)
-    * [Securing Atlas.API](#securing-atlas.api)
-    * [Securing Atlas.Blazor.Web.App](#securing-atlas.blazor.web.app)
+    * [Securing Atlas.API](#securing-atlasapi)
+    * [Securing Atlas.Blazor.Web.App](#securing-atlasblazorwebapp)
 * [Authorization](#authorization)
 * [Support](#support)
     * [Logging](#logging)
