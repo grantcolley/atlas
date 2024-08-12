@@ -60,19 +60,83 @@ app.UseAuthorization();
 ```
 
 When mapping the minimal Web API methods add `RequireAuthorization(Auth.ATLAS_USER_CLAIM)`, as can be seen here in [AtlasEndpointMapper.cs](https://github.com/grantcolley/atlas/blob/main/src/Atlas.API/Extensions/AtlasEndpointMapper.cs).
+
 ```C#
-            app.MapGet($"/{AtlasAPIEndpoints.GET_CLAIM_MODULES}", ClaimEndpoint.GetClaimModules)
-                .WithOpenApi()
-                .WithName(AtlasAPIEndpoints.GET_CLAIM_MODULES)
-                .WithDescription("Gets the user's authorized modules")
-                .Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
-                .Produces(StatusCodes.Status500InternalServerError)
-                .RequireAuthorization(Auth.ATLAS_USER_CLAIM);  // 👈 add RequireAuthorization
+
+//....existing code removed for brevity
+
+app.MapGet($"/{AtlasAPIEndpoints.GET_CLAIM_MODULES}", ClaimEndpoint.GetClaimModules)
+            .WithOpenApi()
+            .WithName(AtlasAPIEndpoints.GET_CLAIM_MODULES)
+            .WithDescription("Gets the user's authorized modules")
+            .Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status500InternalServerError)
+            .RequireAuthorization(Auth.ATLAS_USER_CLAIM);  // 👈 add RequireAuthorization
+
+//....existing code removed for brevity
+
 ```
 
 ## Securing Atlas.Blazor.Web.App
-The following articles explain how to [add Auth0 Authentication to Blazor Web Apps](https://auth0.com/blog/auth0-authentication-blazor-web-apps/) and to [Call Protected APIs from a Blazor Web App](https://auth0.com/blog/call-protected-api-from-blazor-web-app/).
+The following article explains how to [add Auth0 Authentication to Blazor Web Apps](https://auth0.com/blog/auth0-authentication-blazor-web-apps/).
 
+Here are the relevant parts in the **Atlas.Blazor.Web.App** [Program.cs](https://github.com/grantcolley/atlas/blob/main/src/Atlas.Blazor.Web.App/Program.cs).
+
+```C#
+
+//....existing code removed for brevity
+
+builder.Services
+    .AddAuth0WebAppAuthentication(Auth0Constants.AuthenticationScheme, options =>
+    {
+        options.Domain = builder.Configuration["Auth0:Domain"] ?? throw new NullReferenceException("Auth0:Domain");
+        options.ClientId = builder.Configuration["Auth0:ClientId"] ?? throw new NullReferenceException("Auth0:ClientId");
+        options.ClientSecret = builder.Configuration["Auth0:ClientSecret"] ?? throw new NullReferenceException("Auth0:ClientSecret");
+        options.ResponseType = "code";
+    }).WithAccessToken(options =>
+    {
+        options.Audience = builder.Configuration["Auth0:Audience"] ?? throw new NullReferenceException("Auth0:Audience");
+    });
+
+builder.Services.AddCascadingAuthenticationState();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<TokenHandler>();
+builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
+
+//....existing code removed for brevity
+
+app.MapGet("login", async (HttpContext httpContext, string redirectUri = @"/") =>
+{
+    AuthenticationProperties authenticationProperties = new LoginAuthenticationPropertiesBuilder()
+            .WithRedirectUri(redirectUri)
+            .Build();
+
+    await httpContext.ChallengeAsync(Auth0Constants.AuthenticationScheme, authenticationProperties);
+});
+
+app.MapGet("logout", async (HttpContext httpContext, string redirectUri = @"/") =>
+{
+    AuthenticationProperties authenticationProperties = new LogoutAuthenticationPropertiesBuilder()
+            .WithRedirectUri(redirectUri)
+            .Build();
+
+    await httpContext.SignOutAsync(Auth0Constants.AuthenticationScheme, authenticationProperties);
+    await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+});
+
+app.MapGet($"/{AtlasAPIEndpoints.GET_CLAIM_MODULES}", async (HttpClient httpClient) =>
+{
+    return await httpClient.GetFromJsonAsync<int[]>(AtlasAPIEndpoints.GET_CLAIM_MODULES);
+})
+.RequireAuthorization();
+
+//....existing code removed for brevity
+
+```
+
+The following section in the article describes how the [client authentication state is synced with the server authentication state](https://auth0.com/blog/auth0-authentication-blazor-web-apps/#Syncing-the-Authentication-State) is with `PersistingRevalidatingAuthenticationStateProvider.cs`.
+
+Finally, the following article describes how to [call protected APIs from a Blazor Web App](https://auth0.com/blog/call-protected-api-from-blazor-web-app/), including [calling external APIs](https://auth0.com/blog/call-protected-api-from-blazor-web-app/#Call-an-External-API) which requires injecting the access token into HTTP requests.
 
 # Authorization
 
