@@ -24,6 +24,7 @@ Atlas is a framework for hosting and building Blazor applications using the Back
 * [Authorization](#authorization)
 * [Support](#support)
     * [Logging](#logging)
+    * [Audit](#Audit)
 * [Notes](#notes)
     * [FluentDesignTheme Dark/Light](#fluentdesigntheme-darklight)
     * [Backend for frontend](#backend-for-frontend)
@@ -318,7 +319,9 @@ Here user Bob is assignd the `User` and `Support` roles.
 Each module, category and page in the Navigation panel has a permission and are only accessible to users who have been assigned that permission.
 
 # Support
-### Logging
+## Logging
+
+## Audit
 
 # Notes
 ### FluentDesignTheme Dark/Light
