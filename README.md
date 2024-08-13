@@ -110,12 +110,12 @@ In the **Atlas.Blazor.Web.App** [appsettings.json](https://github.com/grantcolle
   },
   "AllowedHosts": "*",
   "Auth0": {
-    "Domain": "",                           // 👈specify the Auth0 domain
-    "ClientId": "",                         // 👈specify the Auth0 ClientId
-    "ClientSecret": "",                     // 👈specify the Auth0 ClientSecret
-    "Audience": "https://Atlas.API.com"     // 👈specify the audience
+    "Domain": "",                           👈specify the Auth0 domain
+    "ClientId": "",                         👈specify the Auth0 ClientId
+    "ClientSecret": "",                     👈specify the Auth0 ClientSecret
+    "Audience": "https://Atlas.API.com"     👈specify the audience
   },
-  "AtlasAPI": "https://localhost:44420"     // 👈specify the AtlasAPI url
+  "AtlasAPI": "https://localhost:44420"     👈specify the AtlasAPI url
 }
 ```
 
