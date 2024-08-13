@@ -295,7 +295,7 @@ Finally, the following article describes how to [call protected APIs from a Blaz
 ```
 
 ## Log In
-Clicking the `Login` button on the top left corner of the application will re-direct the user to Auth0. Once authenticated, the user is directed back to the application, and the navigation panel displays the Modules, Categories and Pages the user has permission to access.
+Clicking the `Login` button on the top left corner of the application will re-direct the user to the [Auth0](https://auth0.com/) login page. Once authenticated, the user is directed back to the application, and the navigation panel will display the Modules, Categories and Pages the user has permission to access.
 
 ![Alt text](/readme-images/Login.png?raw=true "Login") 
 
