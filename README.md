@@ -15,7 +15,7 @@ Atlas is a framework for hosting and building Blazor applications using the Back
     * [Atlas.API Configuration](#atlasapi-configuration)
     * [Atlas.Blazor.Web.App Configuration](#atlasblazorwebapp-configuration)
     * [Create the Database](#create-the-database)
-    * [Insert Seed Data(#insert-seed-data)]
+    * [Insert Seed Data](#insert-seed-data)]
 * [Authentication](#authentication)
     * [Create an Auth0 Role](#create-an-auth0-role)
     * [Create Auth0 Users](#create-auth0-users)
@@ -147,7 +147,7 @@ In the **Atlas.API** [appsettings.json](https://github.com/grantcolley/atlas/blo
 ```
 
 # Authentication
-Atlas uses [Auth0](https://auth0.com/) as its authentication provider. Create a free account with [Auth0](https://auth0.com/signup?place=header&type=button&text=sign%20up), register the **Atlas.API** and **Atlas.Blazor.Web.App**, and create users in the Auth0 dashboard.
+Atlas uses [Auth0](https://auth0.com/) as its authentication provider. Create a free account with [Auth0](https://auth0.com/signup?place=header&type=button&text=sign%20up). In the dashboard, register the **Atlas.API** and **Atlas.Blazor.Web.App**, create the `atlas-user` role, and create users.
 
 ### Create an Auth0 Role
 In the [Auth0](https://auth0.com/) dashboard create a role called `atlas-user`. This role must be assigned to all users wishing to access the Atlas application.
