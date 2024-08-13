@@ -1,10 +1,11 @@
 ![Alt text](/readme-images/Atlas.png?raw=true "Atlas") 
 
-###### .NET 8.0, Blazor, ASP.NET Core Web API, Auth0, FluentUI, FluentValidation, Entity Framework Core, MS SQL Server, SQLite
+###### .NET 8.0, Blazor, ASP.NET Core Web API, Auth0, FluentUI, FluentValidation, Backend for Frontend (BFF), Entity Framework Core, MS SQL Server, SQLite
+
+Atlas is a framework for hosting and building Blazor applications using the Backend for Frontend (BFF) pattern.
 
 \
-![Alt text](/readme-images/Atlas_Architecture.png?raw=true "Atlas Architecture") 
-
+![Alt text](/readme-images/Atlas_Architecture.png?raw=true "Atlas Architecture")
 
 [![Build status](https://ci.appveyor.com/api/projects/status/qx6pbauk9bfpopst?svg=true)](https://ci.appveyor.com/project/grantcolley/atlas)
 
@@ -13,15 +14,18 @@
     * [Multiple Startup Projects](#multiple-startup-projects)
     * [Atlas.API Configuration](#atlasapi-configuration)
     * [Atlas.Blazor.Web.App Configuration](#atlasblazorwebapp-configuration)
+    * [Create the Database](#create-the-database)
+    * [Insert Seed Data](#insert-seed-data)
 * [Authentication](#authentication)
-    * [Create Auth0 Role](#create-auth0-role)
+    * [Create an Auth0 Role](#create-an-auth0-role)
     * [Create Auth0 Users](#create-auth0-users)
     * [Securing Atlas.API](#securing-atlasapi)
     * [Securing Atlas.Blazor.Web.App](#securing-atlasblazorwebapp)
-    * [Logging In](#logging-in)
+    * [Log In](#log-in)
 * [Authorization](#authorization)
 * [Support](#support)
     * [Logging](#logging)
+    * [Audit](#audit)
 * [Notes](#notes)
     * [FluentDesignTheme Dark/Light](#fluentdesigntheme-darklight)
     * [Backend for frontend](#backend-for-frontend)
@@ -37,12 +41,12 @@ In the Solution Properties, specify multiple startup projects and set the action
 In the **Atlas.API** [appsettings.json](https://github.com/grantcolley/atlas/blob/main/src/Atlas.API/appsettings.json) set the connection strings, configure Auth0 settings and generating seed data.
 
 > [!NOTE]  
-> Read the next section on [Authentication](#authentication) for how to configure Auth0 as the identity provider. 
+> Read the next section on [Authentication](#authentication) for how to configure [Auth0](https://auth0.com/) as the identity provider. 
 
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": ""   👈 set the default connection string
+    "DefaultConnection": ""   👈 set the Atlas database connection string
   },
   "Logging": {
     "LogLevel": {
@@ -64,7 +68,7 @@ In the **Atlas.API** [appsettings.json](https://github.com/grantcolley/atlas/blo
       {
         "Name": "MSSqlServer",
         "Args": {
-          "connectionString": "",   👈set the Serilog MS SQL Server connection string
+          "connectionString": "",   👈set the Atlas database connection string for Serilogs MS SqlServer
           "tableName": "Logs",
           "autoCreateSqlTable": true,
           "columnOptionsSection": {
@@ -91,8 +95,8 @@ In the **Atlas.API** [appsettings.json](https://github.com/grantcolley/atlas/blo
     "Audience": "https://Atlas.API.com"  👈specify the audience
   },
   "SeedData": {
-    "GenerateSeedData": "true", 👈 set to true
-    "GenerateSeedLogs":  "true" 👈 set to true
+    "GenerateSeedData": "true", 👈 set to true to create seed data including modules, categories, pages, users, permissions and roles.
+    "GenerateSeedLogs":  "true" 👈 set to true to generate mock logs
   }
 }
 ```
@@ -101,7 +105,7 @@ In the **Atlas.API** [appsettings.json](https://github.com/grantcolley/atlas/blo
 In the **Atlas.Blazor.Web.App** [appsettings.json](https://github.com/grantcolley/atlas/blob/main/src/Atlas.Blazor.Web.App/appsettings.json) configure Auth0 settings and specify the AtlasAPI url.
 
 > [!NOTE]  
-> Read the next section on [Authentication](#authentication) for how to configure Auth0 as the identity provider.
+> Read the next section on [Authentication](#authentication) for how to configure [Auth0](https://auth0.com/) as the identity provider.
 
 ```json
 {
@@ -122,15 +126,35 @@ In the **Atlas.Blazor.Web.App** [appsettings.json](https://github.com/grantcolle
 }
 ```
 
-# Authentication
-Atlas uses [Auth0](https://auth0.com/) as its authentication provider. Create a free account with [Auth0](https://auth0.com/signup?place=header&type=button&text=sign%20up), register the **Atlas.API** and **Atlas.Blazor.Web.App**, and create users in the Auth0 dashboard.
+### Create the Database
+Use Entity Framework to create your database and create your schema from the migration with the `.NET CLI` 
 
-## Create Auth0 Role
+```
+dotnet ef database update --project ..\..\data\Atlas.Migrations.SQLServer
+```
+
+### Insert Seed Data
+In the **Atlas.API** [appsettings.json](https://github.com/grantcolley/atlas/blob/f00c8113c0c79c44718d347a139ab877e63a7b88/src/Atlas.API/appsettings.json#L51-L53) configuration file set `GenerateSeedData` and `GenerateSeedLogs` to true. This will populate the database with seed data at startup.
+
+> [!WARNING]  
+> If `"GenerateSeedData": "true"` tables in the Atlas database will be truncated and repopulated with seed data. Existing data will be permanently lost.
+
+```json
+  "SeedData": {
+    "GenerateSeedData": "true", 👈 set to true to create seed data including modules, categories, pages, users, permissions and roles.
+    "GenerateSeedLogs":  "true" 👈 set to true to generate mock logs
+  }
+```
+
+# Authentication
+Atlas uses [Auth0](https://auth0.com/) as its authentication provider. Create a free account with [Auth0](https://auth0.com/signup?place=header&type=button&text=sign%20up). In the dashboard, register the **Atlas.API** and **Atlas.Blazor.Web.App**, create the `atlas-user` role, and create users.
+
+### Create an Auth0 Role
 In the [Auth0](https://auth0.com/) dashboard create a role called `atlas-user`. This role must be assigned to all users wishing to access the Atlas application.
 ![Alt text](/readme-images/Auth0_Role.png?raw=true "Auth0 Role") 
 
-## Create Auth0 Users
-Create Auth0 users and assign the `atlas-user` role. Authenticated users must be assigned the `atlas-user` role, and the user's Auth0 email claim is mapped to the email of an authorised user in the Atlas datastore.
+### Create Auth0 Users
+Create Auth0 users. The user's [Auth0](https://auth0.com/) email claim is mapped to the email of an authorised user in the Atlas datastore. Authenticated users must be assigned the `atlas-user` role.
 ![Alt text](/readme-images/Auth0_User.png?raw=true "Auth0 User") 
 
 ![Alt text](/readme-images/Auth0_User_Role.png?raw=true "Auth0 User Role") 
@@ -161,8 +185,8 @@ Create Auth0 users and assign the `atlas-user` role. Authenticated users must be
 
 ![Alt text](/readme-images/Auth0_User.png?raw=true "Auth0 Users") 
 
-## Securing Atlas.API
-The following article explains how to [secure a minimal WebAPI with Auth0](https://auth0.com/blog/securing-aspnet-minimal-webapis-with-auth0/) with the relevant parts in the **Atlas.API** [Program.cs](https://github.com/grantcolley/atlas/blob/main/src/Atlas.API/Program.cs).
+### Securing Atlas.API
+The following article explains how to register and [secure a minimal WebAPI with Auth0](https://auth0.com/blog/securing-aspnet-minimal-webapis-with-auth0/) with the relevant parts in the **Atlas.API** [Program.cs](https://github.com/grantcolley/atlas/blob/main/src/Atlas.API/Program.cs).
 
 ```C#
 
@@ -207,14 +231,14 @@ app.MapGet($"/{AtlasAPIEndpoints.GET_CLAIM_MODULES}", ClaimEndpoint.GetClaimModu
             .WithDescription("Gets the user's authorized modules")
             .Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status500InternalServerError)
-            .RequireAuthorization(Auth.ATLAS_USER_CLAIM);  // 👈 add RequireAuthorization
+            .RequireAuthorization(Auth.ATLAS_USER_CLAIM);  // 👈 add RequireAuthorization to endpoints
 
 //....existing code removed for brevity
 
 ```
 
-## Securing Atlas.Blazor.Web.App
-The following article explains how to [add Auth0 Authentication to Blazor Web Apps](https://auth0.com/blog/auth0-authentication-blazor-web-apps/).
+### Securing Atlas.Blazor.Web.App
+The following article explains how to register and [add Auth0 Authentication to Blazor Web Apps](https://auth0.com/blog/auth0-authentication-blazor-web-apps/).
 
 Here are the relevant parts in the **Atlas.Blazor.Web.App** [Program.cs](https://github.com/grantcolley/atlas/blob/main/src/Atlas.Blazor.Web.App/Program.cs).
 
@@ -292,8 +316,8 @@ Finally, the following article describes how to [call protected APIs from a Blaz
     }
 ```
 
-## Logging In
-Clicking the `Login` button on the top left corner of the application will re-direct the user to Auth0. Once authenticated, the user is directed back to the application, and the navigation panel displays the Modules, Categories and Pages the user has permission to access.
+### Log In
+Clicking the `Login` button on the top left corner of the application will re-direct the user to the [Auth0](https://auth0.com/) login page. Once authenticated, the user is directed back to the application, and the navigation panel will display the Modules, Categories and Pages the user has permission to access.
 
 ![Alt text](/readme-images/Login.png?raw=true "Login") 
 
@@ -317,6 +341,8 @@ Each module, category and page in the Navigation panel has a permission and are 
 
 # Support
 ### Logging
+
+### Audit
 
 # Notes
 ### FluentDesignTheme Dark/Light
