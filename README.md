@@ -14,7 +14,7 @@
     * [Atlas.API Configuration](#atlasapi-configuration)
     * [Atlas.Blazor.Web.App Configuration](#atlasblazorwebapp-configuration)
 * [Authentication](#authentication)
-    * [Create Auth0 Role](#create-auth0-role)
+    * [Create an Auth0 Role](#create-an-auth0-role)
     * [Create Auth0 Users](#create-auth0-users)
     * [Securing Atlas.API](#securing-atlasapi)
     * [Securing Atlas.Blazor.Web.App](#securing-atlasblazorwebapp)
@@ -125,12 +125,12 @@ In the **Atlas.Blazor.Web.App** [appsettings.json](https://github.com/grantcolle
 # Authentication
 Atlas uses [Auth0](https://auth0.com/) as its authentication provider. Create a free account with [Auth0](https://auth0.com/signup?place=header&type=button&text=sign%20up), register the **Atlas.API** and **Atlas.Blazor.Web.App**, and create users in the Auth0 dashboard.
 
-## Create Auth0 Role
+## Create an Auth0 Role
 In the [Auth0](https://auth0.com/) dashboard create a role called `atlas-user`. This role must be assigned to all users wishing to access the Atlas application.
 ![Alt text](/readme-images/Auth0_Role.png?raw=true "Auth0 Role") 
 
 ## Create Auth0 Users
-Create Auth0 users and assign the `atlas-user` role. Authenticated users must be assigned the `atlas-user` role, and the user's Auth0 email claim is mapped to the email of an authorised user in the Atlas datastore.
+Create Auth0 users. The user's [Auth0](https://auth0.com/) email claim is mapped to the email of an authorised user in the Atlas datastore. Authenticated users must be assigned the `atlas-user` role.
 ![Alt text](/readme-images/Auth0_User.png?raw=true "Auth0 User") 
 
 ![Alt text](/readme-images/Auth0_User_Role.png?raw=true "Auth0 User Role") 
