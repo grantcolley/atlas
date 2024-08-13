@@ -286,6 +286,13 @@ Creating, updating and deleting users, roles and permissions, is done in the Aut
 
 ![Alt text](/readme-images/Users.png?raw=true "Users") 
 
+> [!IMPORTANT]  
+> Every user must be assigned the User role/permission in order to login to the application.
+
+Here user Bob is assignd the `User` and `Support` roles.
+
+![Alt text](/readme-images/User_Bob.png?raw=true "Bob the Support user") 
+
 Each module, category and page in the Navigation panel has a permission and are only accessible to users who have been assigned that permission.
 
 # Support
