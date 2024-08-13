@@ -1,6 +1,6 @@
 ![Alt text](/readme-images/Atlas.png?raw=true "Atlas") 
 
-###### .NET 8.0, Blazor, ASP.NET Core Web API, Auth0, FluentUI, FluentValidation, Entity Framework Core, MS SQL Server, SQLite
+###### .NET 8.0, Blazor, ASP.NET Core Web API, Auth0, FluentUI, FluentValidation, Backend for Frontend (BFF), Entity Framework Core, MS SQL Server, SQLite
 
 Atlas is a framework for hosting and building Blazor applications using the Backend for Frontend (BFF) pattern.
 
