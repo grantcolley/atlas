@@ -345,7 +345,15 @@ Here is a list of permissions created with seed data.
 ![Alt text](/readme-images/Permissions.png?raw=true "Permissions created with seed data") 
 
 ### Modules, Categories and Pages
-Each module, category and page in the Navigation panel has a permission and are only accessible to users who have been assigned that permission.
+Creating, updating and deleting modules, categories and pages, is done in the `Applications` category of the `Administration` module.
+
+Modules are applications, and can be related or unrelated to each other. Each module consists of one or more categories. Each category groups related pages. A page is a routable `razor @page`.
+
+> [!TIP]
+> Because each page must point to a routable `razor @page`, the `Applications` category of the `Administration` module is only accessible to users who are members of the `Developer Role`.
+> i.e. creating, updating and deleting modules, categories and pages is a developer concern.
+
+Each module, category and page in the Navigation panel has a permission, and are only accessible to users who have been assigned that permission via role membership.
 
 # Support
 ### Logging
