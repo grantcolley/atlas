@@ -10,6 +10,9 @@
 
 ## Table of Contents
 * [Setup the Solution](#setup-the-solution)
+    * [Multiple Startup Projects](#multiple-startup-projects)
+    * [Atlas.API Configuration](#atlasapi-configuration)
+    * [Atlas.Blazor.Web.App Configuration](#atlasblazorwebapp-configuration) 
 * [Authentication](#authentication)
     * [Securing Atlas.API](#securing-atlasapi)
     * [Securing Atlas.Blazor.Web.App](#securing-atlasblazorwebapp)
@@ -22,10 +25,12 @@
 
 # Setup the Solution
 
+### Multiple Startup Projects
 In the Solution Properties, specify multiple startup projects and set the action for both **Atlas.API** and **Atlas.Blazor.Web.App** to *Start*.
 
 ![Alt text](/readme-images/Solution_Property_Pages.png?raw=true "Solution Properties") 
 
+### Atlas.API Configuration
 In the **Atlas.API** [appsettings.json](https://github.com/grantcolley/atlas/blob/main/src/Atlas.API/appsettings.json) set the connection strings, configure Auth0 settings and generating seed data.
 
 > [!NOTE]  
@@ -88,6 +93,8 @@ In the **Atlas.API** [appsettings.json](https://github.com/grantcolley/atlas/blo
   }
 }
 ```
+
+### Atlas.Blazor.Web.App Configuration
 
 # Authentication
 Atlas uses [Auth0](https://auth0.com/) as its authentication provider. Create a free account with [Auth0](https://auth0.com/signup?place=header&type=button&text=sign%20up) and register the **Atlas.API** and **Atlas.Blazor.Web.App** in the Auth0 dashboard.
