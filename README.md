@@ -15,7 +15,7 @@ Atlas is a framework for hosting and building Blazor applications using the Back
     * [Atlas.API Configuration](#atlasapi-configuration)
     * [Atlas.Blazor.Web.App Configuration](#atlasblazorwebapp-configuration)
     * [Create the Database](#create-the-database)
-    * [Insert Seed Data](#insert-seed-data)]
+    * [Insert Seed Data](#insert-seed-data)
 * [Authentication](#authentication)
     * [Create an Auth0 Role](#create-an-auth0-role)
     * [Create Auth0 Users](#create-auth0-users)
