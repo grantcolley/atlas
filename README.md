@@ -150,8 +150,6 @@ In the [Auth0](https://auth0.com/) dashboard, first create a role called `atlas-
 
 ![Alt text](/readme-images/Auth0_User.png?raw=true "Auth0 Users") 
 
-
-
 ## Securing Atlas.API
 The following article explains how to [secure a minimal WebAPI with Auth0](https://auth0.com/blog/securing-aspnet-minimal-webapis-with-auth0/) with the relevant parts in the **Atlas.API** [Program.cs](https://github.com/grantcolley/atlas/blob/main/src/Atlas.API/Program.cs).
 
@@ -284,6 +282,11 @@ Finally, the following article describes how to [call protected APIs from a Blaz
 ```
 
 # Authorization
+Creating, updating and deleting users, roles and permissions, is done in the Authorisation category of the Administration module.
+
+![Alt text](/readme-images/Users.png?raw=true "Users") 
+
+Each module, category and page in the Navigation panel has a permission and are only accessible to users who have been assigned that permission.
 
 # Support
 ### Logging
