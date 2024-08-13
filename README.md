@@ -12,10 +12,11 @@
 * [Setup the Solution](#setup-the-solution)
     * [Multiple Startup Projects](#multiple-startup-projects)
     * [Atlas.API Configuration](#atlasapi-configuration)
-    * [Atlas.Blazor.Web.App Configuration](#atlasblazorwebapp-configuration) 
+    * [Atlas.Blazor.Web.App Configuration](#atlasblazorwebapp-configuration)
 * [Authentication](#authentication)
     * [Securing Atlas.API](#securing-atlasapi)
     * [Securing Atlas.Blazor.Web.App](#securing-atlasblazorwebapp)
+    * [Logging In](#logging-in)
 * [Authorization](#authorization)
 * [Support](#support)
     * [Logging](#logging)
@@ -280,6 +281,15 @@ Finally, the following article describes how to [call protected APIs from a Blaz
         }
     }
 ```
+
+## Logging In
+Clicking the `Login` button on the top left corner of the application will re-direct the user to Auth0. Once authenticated, the user is directed back to the application, and the navigation panel displays the Modules, Categories and Pages the user has permission to access.
+
+![Alt text](/readme-images/Login.png?raw=true "Login") 
+
+![Alt text](/readme-images/Auth0_Login.png?raw=true "Login") 
+
+![Alt text](/readme-images/Logged_in.png?raw=true "Logged in") 
 
 # Authorization
 Creating, updating and deleting users, roles and permissions, is done in the Authorisation category of the Administration module.
