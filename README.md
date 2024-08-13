@@ -84,8 +84,8 @@ In the **Atlas.API** [appsettings.json](https://github.com/grantcolley/atlas/blo
   },
   "AllowedHosts": "*",
   "Auth0": {
-    "Domain": "",   // 👈specify the Auth0 domain
-    "Audience": ""  // 👈specify the audience
+    "Domain": "",                        // 👈specify the Auth0 domain
+    "Audience": "https://Atlas.API.com"  // 👈specify the audience
   },
   "SeedData": {
     "GenerateSeedData": "true", // 👈 set to true
@@ -95,6 +95,29 @@ In the **Atlas.API** [appsettings.json](https://github.com/grantcolley/atlas/blo
 ```
 
 ### Atlas.Blazor.Web.App Configuration
+In the **Atlas.Blazor.Web.App** [appsettings.json](https://github.com/grantcolley/atlas/blob/main/src/Atlas.Blazor.Web.App/appsettings.json) configure Auth0 settings and specify the AtlasAPI url.
+
+> [!NOTE]  
+> Read the next section on [Authentication](#authentication) for how to configure Auth0 as the identity provider.
+
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "Auth0": {
+    "Domain": "",                           //👈specify the Auth0 domain
+    "ClientId": "",                         //👈specify the Auth0 ClientId
+    "ClientSecret": "",                     //👈specify the Auth0 ClientSecret
+    "Audience": "https://Atlas.API.com"     // 👈specify the audience
+  },
+  "AtlasAPI": "https://localhost:44420"     //👈specify the AtlasAPI url
+}
+```
 
 # Authentication
 Atlas uses [Auth0](https://auth0.com/) as its authentication provider. Create a free account with [Auth0](https://auth0.com/signup?place=header&type=button&text=sign%20up) and register the **Atlas.API** and **Atlas.Blazor.Web.App** in the Auth0 dashboard.
