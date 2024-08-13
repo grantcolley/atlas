@@ -134,7 +134,7 @@ dotnet ef database update --project ..\..\data\Atlas.Migrations.SQLServer
 ```
 
 ### Insert Seed Data
-In the **Atlas.API** [appsettings.json](https://github.com/grantcolley/atlas/blob/main/src/Atlas.API/appsettings.json) configuration file set `GenerateSeedData` and `GenerateSeedLogs` to true. This will populate the database with seed data at startup.
+In the **Atlas.API** [appsettings.json](https://github.com/grantcolley/atlas/blob/f00c8113c0c79c44718d347a139ab877e63a7b88/src/Atlas.API/appsettings.json#L51-L53) configuration file set `GenerateSeedData` and `GenerateSeedLogs` to true. This will populate the database with seed data at startup.
 
 > [!WARNING]  
 > If `"GenerateSeedData": "true"` tables in the Atlas database will be truncated and repopulated with seed data. Existing data will be permanently lost.
