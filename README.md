@@ -18,7 +18,7 @@
     * [Create Auth0 Users](#create-auth0-users)
     * [Securing Atlas.API](#securing-atlasapi)
     * [Securing Atlas.Blazor.Web.App](#securing-atlasblazorwebapp)
-    * [Logging In](#logging-in)
+    * [Log In](#log-in)
 * [Authorization](#authorization)
 * [Support](#support)
     * [Logging](#logging)
@@ -162,7 +162,7 @@ Create Auth0 users. The user's [Auth0](https://auth0.com/) email claim is mapped
 ![Alt text](/readme-images/Auth0_User.png?raw=true "Auth0 Users") 
 
 ## Securing Atlas.API
-The following article explains how to [secure a minimal WebAPI with Auth0](https://auth0.com/blog/securing-aspnet-minimal-webapis-with-auth0/) with the relevant parts in the **Atlas.API** [Program.cs](https://github.com/grantcolley/atlas/blob/main/src/Atlas.API/Program.cs).
+The following article explains how to register and [secure a minimal WebAPI with Auth0](https://auth0.com/blog/securing-aspnet-minimal-webapis-with-auth0/) with the relevant parts in the **Atlas.API** [Program.cs](https://github.com/grantcolley/atlas/blob/main/src/Atlas.API/Program.cs).
 
 ```C#
 
@@ -214,7 +214,7 @@ app.MapGet($"/{AtlasAPIEndpoints.GET_CLAIM_MODULES}", ClaimEndpoint.GetClaimModu
 ```
 
 ## Securing Atlas.Blazor.Web.App
-The following article explains how to [add Auth0 Authentication to Blazor Web Apps](https://auth0.com/blog/auth0-authentication-blazor-web-apps/).
+The following article explains how to register and [add Auth0 Authentication to Blazor Web Apps](https://auth0.com/blog/auth0-authentication-blazor-web-apps/).
 
 Here are the relevant parts in the **Atlas.Blazor.Web.App** [Program.cs](https://github.com/grantcolley/atlas/blob/main/src/Atlas.Blazor.Web.App/Program.cs).
 
@@ -292,7 +292,7 @@ Finally, the following article describes how to [call protected APIs from a Blaz
     }
 ```
 
-## Logging In
+## Log In
 Clicking the `Login` button on the top left corner of the application will re-direct the user to Auth0. Once authenticated, the user is directed back to the application, and the navigation panel displays the Modules, Categories and Pages the user has permission to access.
 
 ![Alt text](/readme-images/Login.png?raw=true "Login") 
