@@ -23,6 +23,8 @@ Atlas is a framework for hosting and building Blazor applications using the Back
     * [Securing Atlas.Blazor.Web.App](#securing-atlasblazorwebapp)
     * [Log In](#log-in)
 * [Authorization](#authorization)
+    * [Users, Roles and Permissions](#users-roles-and-permissions)
+    * [Modules, Categories and Pages](#modules-categories-and-pages) 
 * [Support](#support)
     * [Logging](#logging)
     * [Audit](#audit)
@@ -317,7 +319,7 @@ Finally, the following article describes how to [call protected APIs from a Blaz
 ```
 
 ### Log In
-Clicking the `Login` button on the top left corner of the application will re-direct the user to the [Auth0](https://auth0.com/) login page. Once authenticated, the user is directed back to the application, and the navigation panel will display the Modules, Categories and Pages the user has permission to access.
+Clicking the `Login` button on the top right corner of the application will re-direct the user to the [Auth0](https://auth0.com/) login page. Once authenticated, the user is directed back to the application, and the navigation panel will display the Modules, Categories and Pages the user has permission to access.
 
 ![Alt text](/readme-images/Login.png?raw=true "Login") 
 
@@ -326,17 +328,23 @@ Clicking the `Login` button on the top left corner of the application will re-di
 ![Alt text](/readme-images/Logged_in.png?raw=true "Logged in") 
 
 # Authorization
-Creating, updating and deleting users, roles and permissions, is done in the Authorisation category of the Administration module.
+### Users, Roles and Permissions
+Creating, updating and deleting users, roles and permissions, is done in the `Authorisation` category of the `Administration` module.
 
 ![Alt text](/readme-images/Users.png?raw=true "Users") 
 
 > [!IMPORTANT]  
-> Every user must be assigned the User role/permission in order to login to the application.
+> Every user must be assigned the `User` permission. This is done by making the user a member of the role `User Role`.
 
-Here user Bob is assignd the `User` and `Support` roles.
+Here user Bob is assignd the roles `User Role` and `Support Role` roles.
 
 ![Alt text](/readme-images/User_Bob.png?raw=true "Bob the Support user") 
 
+Here is a list of permissions created with seed data.
+
+![Alt text](/readme-images/Permissions.png?raw=true "Permissions created with seed data") 
+
+### Modules, Categories and Pages
 Each module, category and page in the Navigation panel has a permission and are only accessible to users who have been assigned that permission.
 
 # Support
