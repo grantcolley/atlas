@@ -39,7 +39,7 @@ In the **Atlas.API** [appsettings.json](https://github.com/grantcolley/atlas/blo
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": ""   // 👈 set the default connection string
+    "DefaultConnection": ""   👈 set the default connection string
   },
   "Logging": {
     "LogLevel": {
@@ -61,7 +61,7 @@ In the **Atlas.API** [appsettings.json](https://github.com/grantcolley/atlas/blo
       {
         "Name": "MSSqlServer",
         "Args": {
-          "connectionString": "",   // 👈set the Serilog MS SQL Server connection string
+          "connectionString": "",   👈set the Serilog MS SQL Server connection string
           "tableName": "Logs",
           "autoCreateSqlTable": true,
           "columnOptionsSection": {
@@ -84,12 +84,12 @@ In the **Atlas.API** [appsettings.json](https://github.com/grantcolley/atlas/blo
   },
   "AllowedHosts": "*",
   "Auth0": {
-    "Domain": "",                        // 👈specify the Auth0 domain
-    "Audience": "https://Atlas.API.com"  // 👈specify the audience
+    "Domain": "",                        👈specify the Auth0 domain
+    "Audience": "https://Atlas.API.com"  👈specify the audience
   },
   "SeedData": {
-    "GenerateSeedData": "true", // 👈 set to true
-    "GenerateSeedLogs":  "true" // 👈 set to true
+    "GenerateSeedData": "true", 👈 set to true
+    "GenerateSeedLogs":  "true" 👈 set to true
   }
 }
 ```
@@ -110,12 +110,12 @@ In the **Atlas.Blazor.Web.App** [appsettings.json](https://github.com/grantcolle
   },
   "AllowedHosts": "*",
   "Auth0": {
-    "Domain": "",                           //👈specify the Auth0 domain
-    "ClientId": "",                         //👈specify the Auth0 ClientId
-    "ClientSecret": "",                     //👈specify the Auth0 ClientSecret
+    "Domain": "",                           // 👈specify the Auth0 domain
+    "ClientId": "",                         // 👈specify the Auth0 ClientId
+    "ClientSecret": "",                     // 👈specify the Auth0 ClientSecret
     "Audience": "https://Atlas.API.com"     // 👈specify the audience
   },
-  "AtlasAPI": "https://localhost:44420"     //👈specify the AtlasAPI url
+  "AtlasAPI": "https://localhost:44420"     // 👈specify the AtlasAPI url
 }
 ```
 
