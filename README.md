@@ -331,6 +331,10 @@ Clicking the `Login` button on the top right corner of the application will re-d
 ### Users, Roles and Permissions
 Creating, updating and deleting users, roles and permissions, is done in the `Authorisation` category of the `Administration` module.
 
+> [!TIP]
+> The `Authorisation` category of the `Administration` module is only accessible to users who are members of the `Admin-Read Role` and `Admin-Write Role`.
+> The `Admin-Read Role` gives read-only view of users, roles and permissions, while the `Admin-Write Role` permit creating, updating and deleting them.
+
 ![Alt text](/readme-images/Users.png?raw=true "Users") 
 
 > [!IMPORTANT]  
