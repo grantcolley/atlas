@@ -231,7 +231,7 @@ app.MapGet($"/{AtlasAPIEndpoints.GET_CLAIM_MODULES}", ClaimEndpoint.GetClaimModu
             .WithDescription("Gets the user's authorized modules")
             .Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status500InternalServerError)
-            .RequireAuthorization(Auth.ATLAS_USER_CLAIM);  // 👈 add RequireAuthorization
+            .RequireAuthorization(Auth.ATLAS_USER_CLAIM);  // 👈 add RequireAuthorization to endpoints
 
 //....existing code removed for brevity
 
