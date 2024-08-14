@@ -299,12 +299,6 @@ app.MapGet("logout", async (HttpContext httpContext, string redirectUri = @"/") 
     await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 });
 
-app.MapGet($"/{AtlasAPIEndpoints.GET_CLAIM_MODULES}", async (HttpClient httpClient) =>
-{
-    return await httpClient.GetFromJsonAsync<int[]>(AtlasAPIEndpoints.GET_CLAIM_MODULES);
-})
-.RequireAuthorization();
-
 //....existing code removed for brevity
 
 ```
