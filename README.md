@@ -35,12 +35,12 @@ Atlas is a framework for hosting and building Blazor applications using the Back
 # Setup the Solution
 
 ### Multiple Startup Projects
-In the Solution Properties, specify multiple startup projects and set the action for both **Atlas.API** and **Atlas.Blazor.Web.App** to *Start*.
+In the _Solution Properties_, specify multiple startup projects and set the action for both **Atlas.API** and **Atlas.Blazor.Web.App** to *Start*.
 
 ![Alt text](/readme-images/Solution_Property_Pages.png?raw=true "Solution Properties") 
 
 ### Atlas.API Configuration
-In the **Atlas.API** [appsettings.json](https://github.com/grantcolley/atlas/blob/main/src/Atlas.API/appsettings.json) set the connection strings, configure Auth0 settings and generating seed data.
+In the **Atlas.API** [appsettings.json](https://github.com/grantcolley/atlas/blob/main/src/Atlas.API/appsettings.json) set the connection strings, configure [Auth0](https://auth0.com/) settings and generating seed data.
 
 > [!NOTE]  
 > Read the next section on [Authentication](#authentication) for how to configure [Auth0](https://auth0.com/) as the identity provider. 
@@ -104,7 +104,7 @@ In the **Atlas.API** [appsettings.json](https://github.com/grantcolley/atlas/blo
 ```
 
 ### Atlas.Blazor.Web.App Configuration
-In the **Atlas.Blazor.Web.App** [appsettings.json](https://github.com/grantcolley/atlas/blob/main/src/Atlas.Blazor.Web.App/appsettings.json) configure Auth0 settings and specify the AtlasAPI url.
+In the **Atlas.Blazor.Web.App** [appsettings.json](https://github.com/grantcolley/atlas/blob/main/src/Atlas.Blazor.Web.App/appsettings.json) configure [Auth0](https://auth0.com/) settings and specify the **Atlas.API** url.
 
 > [!NOTE]  
 > Read the next section on [Authentication](#authentication) for how to configure [Auth0](https://auth0.com/) as the identity provider.
@@ -129,7 +129,7 @@ In the **Atlas.Blazor.Web.App** [appsettings.json](https://github.com/grantcolle
 ```
 
 ### Create the Database
-Use Entity Framework to create your database and create your schema from the migration with the `.NET CLI` 
+Use the `.NET CLI` for Entity Framework to create your database and create your schema from the migration. In the `Developer Powershell` or similar, navigate to the **Atlas.API** folder and run the following command.
 
 ```
 dotnet ef database update --project ..\..\data\Atlas.Migrations.SQLServer
@@ -139,7 +139,7 @@ dotnet ef database update --project ..\..\data\Atlas.Migrations.SQLServer
 In the **Atlas.API** [appsettings.json](https://github.com/grantcolley/atlas/blob/f00c8113c0c79c44718d347a139ab877e63a7b88/src/Atlas.API/appsettings.json#L51-L53) configuration file set `GenerateSeedData` and `GenerateSeedLogs` to true. This will populate the database with seed data at startup.
 
 > [!WARNING]  
-> If `"GenerateSeedData": "true"` tables in the Atlas database will be truncated and repopulated with seed data. Existing data will be permanently lost.
+> If `"GenerateSeedData": "true"` the tables in the Atlas database will be truncated and repopulated with seed data. Existing data will be permanently lost.
 
 ```json
   "SeedData": {
