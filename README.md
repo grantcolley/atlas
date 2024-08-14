@@ -365,9 +365,6 @@ Here we see the permission `Support`, and the roles that have been granted the `
 
 ![Alt text](/readme-images/Permission_Support.png?raw=true "The Support permission") 
 
-# Support Role
-### Logging
-
 # Developer Role
 ### Modules, Categories and Pages
 Modules are applications, and can be related or unrelated to each other. Each module consists of one or more categories. Each category groups related pages. A page is a routable razor `@page`.
@@ -417,6 +414,9 @@ Here we can see the [Logs.razor](https://github.com/grantcolley/atlas/blob/59fb7
 <!-- code removed for brevity -->
 
 ```
+
+# Support Role
+### Logging
 
 # Audit
 
