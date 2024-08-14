@@ -127,7 +127,7 @@ namespace Atlas.Seed.Data
 
             users["alice"].Roles.AddRange([roles[Auth.ADMIN_WRITE]]);
             users["jane"].Roles.AddRange([roles[Auth.ADMIN_READ]]);
-            users["bob"].Roles.AddRange([roles[Auth.USER]]);
+            users["bob"].Roles.AddRange([roles[Auth.SUPPORT]]);
             users["grant"].Roles.Add(roles[Auth.DEVELOPER]);
 
             dbContext.SaveChanges();
