@@ -26,7 +26,7 @@ Atlas is a framework for hosting and building Blazor applications using the Back
     * [Users, Roles and Permissions](#users-roles-and-permissions)
 * [Support Role](#support-role)
     * [Logging](#logging)
-* [Developer-Role](#developer-role)
+* [Navigation](#navigation)
     * [Modules, Categories and Pages](#modules-categories-and-pages)
 * [Audit](#audit)
 * [Notes](#notes)
@@ -365,7 +365,7 @@ Here we see the permission `Support`, and the roles that have been granted the `
 
 ![Alt text](/readme-images/Permission_Support.png?raw=true "The Support permission") 
 
-# Developer Role
+# Navigation
 ### Modules, Categories and Pages
 Modules are applications, and can be related or unrelated to each other. Each module consists of one or more categories. Each category groups related pages. A page is a routable razor `@page`.
 
@@ -415,7 +415,14 @@ Here we can see the [Logs.razor](https://github.com/grantcolley/atlas/blob/59fb7
 
 ```
 
-# Support Role
+# Support
+
+> [!TIP]
+> The Support module, its vategories and routable pages, are only accessible to users who are members of the `Support Role`.
+
+> [!NOTE]
+> Members of the `Support Role` also have read/write access to the Authorisation category, allowing them to add, up date and delete users.
+
 ### Logging
 
 # Audit
