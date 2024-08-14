@@ -35,7 +35,7 @@ Atlas is a framework for hosting and building Blazor applications using the Back
 # Setup the Solution
 
 ### Multiple Startup Projects
-In the _Solution Properties_, specify multiple startup projects and set the action for both **Atlas.API** and **Atlas.Blazor.Web.App** to *Start*.
+In the _Solution Properties_, specify multiple startup projects and set the action for both **Atlas.API** Web API and **Atlas.Blazor.Web.App** Blazor application, to *Start*.
 
 ![Alt text](/readme-images/Solution_Property_Pages.png?raw=true "Solution Properties") 
 
@@ -149,7 +149,9 @@ In the **Atlas.API** [appsettings.json](https://github.com/grantcolley/atlas/blo
 ```
 
 # Authentication
-Atlas uses [Auth0](https://auth0.com/) as its authentication provider. Create a free account with [Auth0](https://auth0.com/signup?place=header&type=button&text=sign%20up). In the dashboard, register the **Atlas.API** and **Atlas.Blazor.Web.App**, create the `atlas-user` role, and create users.
+Atlas is setup to use [Auth0](https://auth0.com/) as its authentication provider, although this can be swapped out for any provider supporting **OAuth 2.0**. With [Auth0](https://auth0.com/signup?place=header&type=button&text=sign%20up) you can create a free account and it has a easy to use dashboard for registering applications, and creating and managing roles and users.
+
+Using the [Auth0](https://auth0.com/), register the **Atlas.API** Web API and **Atlas.Blazor.Web.App** Blazor application, and  create a `atlas-user` role and users.
 
 ### Create an Auth0 Role
 In the [Auth0](https://auth0.com/) dashboard create a role called `atlas-user`. This role must be assigned to all users wishing to access the Atlas application.
