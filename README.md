@@ -435,6 +435,14 @@ Clicking on the log entry will display the full log details in a popup box.
 ![Alt text](/readme-images/Log_Dialog.png?raw=true "Log dialog") 
 
 # Audit
+The [ApplicationDbContext.cs](https://github.com/grantcolley/atlas/blob/3c93993b057c5c7d12ea1e8eb081f0496596ab18/src/Atlas.Data.Access/Context/ApplicationDbContext.cs#L79-L226) uses EF Change Tracking to capture `OldValue` and `NewValues` from INSERT's, UPDATE's and DELETE's, for entities where their poco model class inherits from [ModelBase.cs](https://github.com/grantcolley/atlas/blob/main/src/Atlas.Core/Models/ModelBase.cs). Tracked changes can be queried in the **Audit** table of the **Atlas** database.
+
+![Alt text](/readme-images/Audits.png?raw=true "Audits") 
+
+More can be read here about change tracking in Entity Framework:
+- [Change Tracking in EF Core](https://learn.microsoft.com/en-us/ef/core/change-tracking/)
+- [Change Detection and Notifications](https://learn.microsoft.com/en-us/ef/core/change-tracking/change-detection)
+- [Tracking Changes of Entities in EF Core](https://www.entityframeworktutorial.net/efcore/changetracker-in-ef-core.aspx)
 
 # Notes
 ### FluentDesignTheme Dark/Light
