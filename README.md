@@ -360,7 +360,7 @@ Here we see the role `Support Role`, the list of permissions it has been granted
 
 ![Alt text](/readme-images/Role_Support.png?raw=true "The Support role") 
 
-Here we see the permission `Support`. and the roles that have been granted the `Support` permission.
+Here we see the permission `Support`, and the roles that have been granted the `Support` permission.
 
 ![Alt text](/readme-images/Permission_Support.png?raw=true "The Support permission") 
 
@@ -389,7 +389,10 @@ Here we see the `Logs` page, the category it belongs to, the order it appears un
 
 ![Alt text](/readme-images/Page_Logs.png?raw=true "Logs page") 
 
-Here we can see the [Logs.razor] component, with its routable `@page`  attribute.
+Here we can see the [Logs.razor](https://github.com/grantcolley/atlas/blob/59fb7ab83b40ceb90424168541be41fab11c64a1/src/Atlas.Blazor.Web/Pages/Support/Logs.razor#L1) component, with its routable `@page`  attribute.
+
+> [!IMPORTANT]  
+> The route specified in the page must map to a valid `@page` attribute on a routable component.
 
 ```HTML+Razor
 @page "/Logs"
