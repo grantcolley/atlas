@@ -342,7 +342,9 @@ The [Auth0](https://auth0.com/) callback redirects the authenticated user back t
 
 # Authorization
 ### Users, Roles and Permissions
-Creating, updating and deleting users, roles and permissions, is done in the `Authorisation` category of the `Administration` module.
+**Atlas** users are maintained in the Atlas database. The user's email in the **Atlas** database corresponds to the email claim provided by [Auth0](https://auth0.com/) to authenticated users. When a user is authenticated, a lookup is done in the **Atlas** database to get the users roles and permissions. This will determine which modules, categories and pages the user has access to in the navigation panel. It will also provide more granular permissions in each rendered page e.g. read / write.
+
+Creating, updating and deleting **Atlas** users, roles and permissions, is done in the `Authorisation` category of the `Administration` module.
 
 > [!TIP]
 > The `Authorisation` category of the `Administration` module is only accessible to users who are members of the `Admin-Read Role` and `Admin-Write Role`.
@@ -362,9 +364,9 @@ Here is a list of permissions created with seed data.
 ![Alt text](/readme-images/Permissions.png?raw=true "Permissions created with seed data") 
 
 ### Modules, Categories and Pages
-Creating, updating and deleting modules, categories and pages, is done in the `Applications` category of the `Administration` module.
-
 Modules are applications, and can be related or unrelated to each other. Each module consists of one or more categories. Each category groups related pages. A page is a routable `razor @page`.
+
+Creating, updating and deleting modules, categories and pages, is done in the `Applications` category of the `Administration` module.
 
 > [!TIP]
 > Because each page must point to a routable `razor @page`, the `Applications` category of the `Administration` module is only accessible to users who are members of the `Developer Role`.
