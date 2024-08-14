@@ -157,7 +157,7 @@ Using the [Auth0](https://auth0.com/), register the **Atlas.API** Web API and **
 In the [Auth0](https://auth0.com/) dashboard create a role called `atlas-user`. This role must be assigned to all users wishing to access the Atlas application.
 
 > [!IMPORTANT]  
-> Atlas users must be assigned the `atlas-user` role to access the Atlas application.
+> Atlas users must be assigned the `atlas-user` role in [Auth0](https://auth0.com/) to access the Atlas application.
 
 ![Alt text](/readme-images/Auth0_Role.png?raw=true "Auth0 Role") 
 
@@ -352,16 +352,17 @@ Creating, updating and deleting **Atlas** users, roles and permissions, is done 
 
 ![Alt text](/readme-images/Users.png?raw=true "Users") 
 
-> [!IMPORTANT]  
-> Every user must be assigned the `User` permission. This is done by making the user a member of the role `User Role`.
-
-Here user Bob is assignd the roles `User Role` and `Support Role` roles.
+Here we see user Bob is assignd the roles `Support Role` and `User Role`.
 
 ![Alt text](/readme-images/User_Bob.png?raw=true "Bob the Support user") 
 
-Here is a list of permissions created with seed data.
+Here we see the role `Support Role`, the list of permissions it has been granted, and we can see Bob is a member of the role.   
 
-![Alt text](/readme-images/Permissions.png?raw=true "Permissions created with seed data") 
+![Alt text](/readme-images/Role_Support.png?raw=true "The Support role") 
+
+Here we see the permission `Support`. and the roles that have been granted the `Support` permission.
+
+![Alt text](/readme-images/Permission_Support.png?raw=true "The Support permission") 
 
 ### Modules, Categories and Pages
 Modules are applications, and can be related or unrelated to each other. Each module consists of one or more categories. Each category groups related pages. A page is a routable `razor @page`.
