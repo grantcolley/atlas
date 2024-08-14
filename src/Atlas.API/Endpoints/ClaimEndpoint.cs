@@ -42,8 +42,7 @@ namespace Atlas.API.Endpoints
                 authorisation = await claimData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
 
-                if (authorisation == null
-                    || !authorisation.HasPermission(Auth.USER))
+                if (authorisation == null)
                 {
                     return Results.Unauthorized();
                 }
