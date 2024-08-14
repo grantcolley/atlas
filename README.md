@@ -139,7 +139,7 @@ dotnet ef database update --project ..\..\data\Atlas.Migrations.SQLServer
 In the **Atlas.API** [appsettings.json](https://github.com/grantcolley/atlas/blob/f00c8113c0c79c44718d347a139ab877e63a7b88/src/Atlas.API/appsettings.json#L51-L53) configuration file set `GenerateSeedData` and `GenerateSeedLogs` to true. This will populate the database with seed data at startup.
 
 > [!WARNING]  
-> If `"GenerateSeedData": "true"` the tables in the Atlas database will be truncated and repopulated with seed data. Existing data will be permanently lost.
+> If `"GenerateSeedData": "true"` the tables in the Atlas database will be truncated and repopulated with seed data every time the application starts. Existing data will be permanently lost.
 
 ```json
   "SeedData": {
@@ -155,16 +155,27 @@ Using the [Auth0](https://auth0.com/), register the **Atlas.API** Web API and **
 
 ### Create an Auth0 Role
 In the [Auth0](https://auth0.com/) dashboard create a role called `atlas-user`. This role must be assigned to all users wishing to access the Atlas application.
+
+> [!IMPORTANT]  
+> Atlas users must be assigned the `atlas-user` role to access the Atlas application.
+
 ![Alt text](/readme-images/Auth0_Role.png?raw=true "Auth0 Role") 
 
 ### Create Auth0 Users
-Create Auth0 users. The user's [Auth0](https://auth0.com/) email claim is mapped to the email of an authorised user in the Atlas datastore. Authenticated users must be assigned the `atlas-user` role.
+Create Auth0 users. The user's [Auth0](https://auth0.com/) email claim is mapped to the email of an authorised user in the Atlas database.
+
+> [!IMPORTANT]  
+> Atlas users must be assigned the `atlas-user` role to access the Atlas application.
+
 ![Alt text](/readme-images/Auth0_User.png?raw=true "Auth0 User") 
 
 ![Alt text](/readme-images/Auth0_User_Role.png?raw=true "Auth0 User Role") 
 
 > [!TIP]
 > [SeedData.cs](https://github.com/grantcolley/atlas/blob/9509c67c874711e1760bbf5cd6561c662abe2e81/data/Atlas.Seed.Data/SeedData.cs#L111-L114) already contains some pre-defined sample users with roles and permissions. Either create these users in [Auth0](https://auth0.com/), or amend the sample users in [SeedData.cs](https://github.com/grantcolley/atlas/blob/9509c67c874711e1760bbf5cd6561c662abe2e81/data/Atlas.Seed.Data/SeedData.cs#L111-L114) to reflect those created in [Auth0](https://auth0.com/).
+
+> [!WARNING]  
+> If `"GenerateSeedData": "true"` the tables in the Atlas database will be truncated and repopulated with seed data every time the application starts. Existing data will be permanently lost.
 
 ```C#
         private static void CreateUsers()
