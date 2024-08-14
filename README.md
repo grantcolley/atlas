@@ -418,12 +418,21 @@ Here we can see the [Logs.razor](https://github.com/grantcolley/atlas/blob/59fb7
 # Support
 
 > [!TIP]
-> The Support module, its vategories and routable pages, are only accessible to users who are members of the `Support Role`.
+> The Support module, its categories and routable pages, are only accessible to users who are members of the `Support Role`.
 
 > [!NOTE]
-> Members of the `Support Role` also have read/write access to the Authorisation category, allowing them to add, up date and delete users.
+> Members of the `Support Role` also have `Admin-Read` and `Admin-Write` permissions, permitting them to add, update and delete users.
 
 ### Logging
+Logs are persisted to the `Logs` table in the **Atlas** database and are viewable to members of the `Support Role`. 
+
+Here we can see mock logs created at startup when `"GenerateSeedLogs":  "true"` is set in the **Atlas.API**'s [appsettings.json](https://github.com/grantcolley/atlas/blob/84031b9b572082965a6668c6e57ce8f0b61d3f86/src/Atlas.API/appsettings.json#L53).
+
+![Alt text](/readme-images/Logs.png?raw=true "Logs") 
+
+Clicking on the log entry will display the full log details in a popup box. 
+
+![Alt text](/readme-images/Log_Dialog.png?raw=true "Log dialog") 
 
 # Audit
 
