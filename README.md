@@ -360,20 +360,58 @@ Here we see the role `Support Role`, the list of permissions it has been granted
 
 ![Alt text](/readme-images/Role_Support.png?raw=true "The Support role") 
 
-Here we see the permission `Support`. and the roles that have been granted the `Support` permission.
+Here we see the permission `Support`, and the roles that have been granted the `Support` permission.
 
 ![Alt text](/readme-images/Permission_Support.png?raw=true "The Support permission") 
 
 ### Modules, Categories and Pages
-Modules are applications, and can be related or unrelated to each other. Each module consists of one or more categories. Each category groups related pages. A page is a routable `razor @page`.
+Modules are applications, and can be related or unrelated to each other. Each module consists of one or more categories. Each category groups related pages. A page is a routable razor `@page`.
 
 Creating, updating and deleting modules, categories and pages, is done in the `Applications` category of the `Administration` module.
 
 > [!TIP]
-> Because each page must point to a routable `razor @page`, the `Applications` category of the `Administration` module is only accessible to users who are members of the `Developer Role`.
+> Because each page must point to a routable razor `@page`, the `Applications` category of the `Administration` module is only accessible to users who are members of the `Developer Role`.
 > i.e. creating, updating and deleting modules, categories and pages is a developer concern.
 
 Each module, category and page in the Navigation panel has a permission, and are only accessible to users who have been assigned that permission via role membership.
+
+![Alt text](/readme-images/Modules.png?raw=true "Modules") 
+
+Here we see the `Support` module, the order it appears in the navigation panel, the permission required for it to appear in the navigation panel, and the icon that is displayed with it in the navigation panel. We see it has an `Events` category. We can also see highlighted in yellow how it appears in the navigation panel.
+
+![Alt text](/readme-images/Module_Support.png?raw=true "Support module") 
+
+Here we see the `Events` category, the module it belongs to, the order it appears under the module in the navigation panel, the permission required for it to appear in the navigation panel, and the icon that is displayed with it in the navigation panel. We also see it has a page called `Logs`.
+
+![Alt text](/readme-images/Category_Events.png?raw=true "Events category") 
+
+Here we see the `Logs` page, the category it belongs to, the order it appears under the category in the navigation panel, the permission required for it to appear in the navigation panel, and the icon that is displayed with it in the navigation panel. Crucially, we also see the route, which is the routable razor `@page` that it navigates to when the user clicks the page in the navigation panel.
+
+![Alt text](/readme-images/Page_Logs.png?raw=true "Logs page") 
+
+Here we can see the [Logs.razor](https://github.com/grantcolley/atlas/blob/59fb7ab83b40ceb90424168541be41fab11c64a1/src/Atlas.Blazor.Web/Pages/Support/Logs.razor#L1) component, with its routable `@page`  attribute.
+
+> [!IMPORTANT]  
+> The route specified in the page must map to a valid `@page` attribute on a routable component.
+
+```HTML+Razor
+@page "/Logs"
+@using System.Text.Json
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@attribute [StreamRendering]
+
+<PageTitle>Logs</PageTitle>
+
+@if (_alert == null)
+{
+    <FluentCard>
+        <FluentHeader>
+            Logs
+        </FluentHeader>
+
+<!-- code removed for brevity -->
+
+```
 
 # Support
 ### Logging
