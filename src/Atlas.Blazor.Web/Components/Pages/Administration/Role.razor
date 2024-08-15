@@ -18,6 +18,33 @@
     public override string? ModelNameField { get; set; } = "Name";
     public override string? IdentityFieldName { get; set; } = "RoleId";
 
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        if (Model == null) throw new NullReferenceException(nameof(Model));
+        if (GenericRequests == null) throw new NullReferenceException(nameof(GenericRequests));
+
+        if(Model.RoleId.Equals(0))
+        {
+            _isProcessing = true;
+
+            IAuthResponse<IEnumerable<ChecklistItem>> response = await GenericRequests.GetListAsync<ChecklistItem>(AtlasAPIEndpoints.GET_PERMISSION_CHECKLIST)
+                .ConfigureAwait(false);
+
+            if (!response.IsSuccess)
+            {
+                ShowAlert(Alerts.ERROR, "Error Creating Role", response.Message);
+            }
+            else if(response.Result != null)
+            {
+                Model.PermissionChecklist.AddRange(response.Result);
+            }
+
+            _isProcessing = false;
+        }
+    }
+
     public override RenderFragment RenderModelContent() => __builder =>
     {
         if (Model == null) throw new NullReferenceException(nameof(Model));
@@ -47,17 +74,17 @@
                 </ChildContent>
             </FluentAccordionItem>
 
+            <FluentAccordionItem Expanded=true>
+                <HeadingTemplate>
+                    Permissions
+                </HeadingTemplate>
+                <ChildContent>
+                    <CheckList Source="@Model.PermissionChecklist" Header="Permission" FilterPlaceholder="Permission..." EmptyText="This role has not been granted any permissions." ReadOnly="@(Model.IsReadOnly)" />
+                </ChildContent>
+            </FluentAccordionItem>
+
             @if (Model.RoleId > 0)
             {
-                <FluentAccordionItem Expanded=true>
-                    <HeadingTemplate>
-                        Permissions
-                    </HeadingTemplate>
-                    <ChildContent>
-                        <CheckList Source="@Model.PermissionChecklist" Header="Permission" FilterPlaceholder="Permission..." EmptyText="This role has not been granted any permissions." ReadOnly="@(Model.IsReadOnly)" />
-                    </ChildContent>
-                </FluentAccordionItem>
-
                 <FluentAccordionItem Expanded=true>
                     <HeadingTemplate>
                         Members

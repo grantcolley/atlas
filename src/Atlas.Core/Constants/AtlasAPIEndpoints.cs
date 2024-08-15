@@ -37,5 +37,7 @@
         public const string CREATE_PERMISSION = "createpermission";
         public const string UPDATE_PERMISSION = "updatepermission";
         public const string DELETE_PERMISSION = "deletepermission";
+        public const string GET_PERMISSION_CHECKLIST = "getpermissionchecklist";
+        public const string GET_ROLE_CHECKLIST = "getrolechecklist";
     }
 }

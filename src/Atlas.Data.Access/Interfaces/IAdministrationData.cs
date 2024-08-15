@@ -19,6 +19,7 @@ namespace Atlas.Data.Access.Interfaces
         Task<Permission> CreatePermissionAsync(Permission permission, CancellationToken cancellationToken);
         Task<Permission> UpdatePermissionAsync(Permission permission, CancellationToken cancellationToken);
         Task<int> DeletePermissionAsync(int permissionId, CancellationToken cancellationToken);
-
+        Task<List<ChecklistItem>> GetPermissionChecklistAsync(List<Permission> modelPermissions, CancellationToken cancellationToken);
+        Task<List<ChecklistItem>> GetRoleChecklistAsync(List<Role> modelRoles, CancellationToken cancellationToken);
     }
 }

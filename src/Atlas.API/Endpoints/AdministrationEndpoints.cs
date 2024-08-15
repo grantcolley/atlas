@@ -428,5 +428,61 @@ namespace Atlas.API.Endpoints
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+
+        internal static async Task<IResult> GetPermissionChecklistAsync(IAdministrationData administrationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
+        {
+            Authorisation? authorisation = null;
+
+            try
+            {
+                authorisation = await administrationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                    .ConfigureAwait(false);
+
+                if (authorisation == null
+                    || !authorisation.HasPermission(Auth.ADMIN_WRITE))
+                {
+                    return Results.Unauthorized();
+                }
+
+                IEnumerable<ChecklistItem>? permissions = await administrationData.GetPermissionChecklistAsync([], cancellationToken)
+                    .ConfigureAwait(false);
+
+                return Results.Ok(new AuthResult<IEnumerable<ChecklistItem>?> { Authorisation = authorisation, Result = permissions });
+            }
+            catch (AtlasException ex)
+            {
+                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
+
+                return Results.StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        internal static async Task<IResult> GetRoleChecklistAsync(IAdministrationData administrationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
+        {
+            Authorisation? authorisation = null;
+
+            try
+            {
+                authorisation = await administrationData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                    .ConfigureAwait(false);
+
+                if (authorisation == null
+                    || !authorisation.HasPermission(Auth.ADMIN_WRITE))
+                {
+                    return Results.Unauthorized();
+                }
+
+                IEnumerable<ChecklistItem>? roles = await administrationData.GetRoleChecklistAsync([], cancellationToken)
+                    .ConfigureAwait(false);
+
+                return Results.Ok(new AuthResult<IEnumerable<ChecklistItem>?> { Authorisation = authorisation, Result = roles });
+            }
+            catch (AtlasException ex)
+            {
+                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
+
+                return Results.StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
     }
 }

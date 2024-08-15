@@ -60,11 +60,11 @@
     public int? Id { get; set; }
 
     private int _id = 0;
-    private bool _isProcessing = false;
     private List<string> _messages = new();
     private EditContext? _currentEditContext;
     private DynamicType<T> _dynamicType = DynamicTypeHelper.Get<T>();
 
+    protected bool _isProcessing = false;
     protected string? _title { get; set; }
     protected string? _apiGetEndpoint { get; set; }
     protected string? _apiCreateEndpoint { get; set; }
@@ -115,6 +115,18 @@
 
         _currentEditContext = new EditContext(Model ?? throw new NullReferenceException(nameof(Model)));
         _currentEditContext.OnValidationStateChanged += CurrentEditContextOnValidationStateChanged;
+    }
+
+    protected void ShowAlert(string? alertType, string? title, string? message)
+    {
+        Alert alert = new Alert
+            {
+                AlertType = alertType,
+                Title = title,
+                Message = message
+            };
+
+        NavigationManager?.NavigateTo(alert.Route);
     }
 
     private async Task OnSubmitAsync()
@@ -222,18 +234,6 @@
         {
             return response.Result;
         }
-    }
-
-    private void ShowAlert(string? alertType, string? title, string? message)
-    {
-        Alert alert = new Alert
-            {
-                AlertType = alertType,
-                Title = title,
-                Message = message
-            };
-
-        NavigationManager?.NavigateTo(alert.Route);
     }
 
     private void CurrentEditContextOnValidationStateChanged(object? sender, ValidationStateChangedEventArgs e)

@@ -128,6 +128,22 @@ namespace Atlas.API.Extensions
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
+            app.MapGet($"/{AtlasAPIEndpoints.GET_PERMISSION_CHECKLIST}", AdministrationEndpoints.GetPermissionChecklistAsync)
+                .WithOpenApi()
+                .WithName(AtlasAPIEndpoints.GET_PERMISSION_CHECKLIST)
+                .WithDescription("Gets a checklist of permissions")
+                .Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
+                .Produces(StatusCodes.Status500InternalServerError)
+                .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
+
+            app.MapGet($"/{AtlasAPIEndpoints.GET_ROLE_CHECKLIST}", AdministrationEndpoints.GetRoleChecklistAsync)
+                .WithOpenApi()
+                .WithName(AtlasAPIEndpoints.GET_ROLE_CHECKLIST)
+                .WithDescription("Gets a checklist of roles")
+                .Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
+                .Produces(StatusCodes.Status500InternalServerError)
+                .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
+
             return app;
         }
     }

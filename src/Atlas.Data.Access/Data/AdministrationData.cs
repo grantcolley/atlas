@@ -74,9 +74,11 @@ namespace Atlas.Data.Access.Data
                     .SaveChangesAsync(cancellationToken)
                     .ConfigureAwait(false);
 
-                if (addUser.Roles.Count > 0)
+                List<Role> roles = ExtractSelectedRoles(addUser.RoleChecklist);
+
+                if (roles.Count > 0)
                 {
-                    user.Roles.AddRange(addUser.Roles);
+                    user.Roles.AddRange(roles);
 
                     await _applicationDbContext
                         .SaveChangesAsync(cancellationToken)
@@ -348,8 +350,6 @@ namespace Atlas.Data.Access.Data
                     Description = addRole.Description
                 };
 
-                List<int> permissionIds = ExtractSelectedPemissions(role.PermissionChecklist);
-
                 await _applicationDbContext.Roles
                     .AddAsync(role, cancellationToken)
                     .ConfigureAwait(false);
@@ -357,6 +357,8 @@ namespace Atlas.Data.Access.Data
                 await _applicationDbContext
                     .SaveChangesAsync(cancellationToken)
                     .ConfigureAwait(false);
+
+                List<int> permissionIds = ExtractSelectedPemissions(addRole.PermissionChecklist);
 
                 if (permissionIds.Count > 0)
                 {
@@ -470,7 +472,7 @@ namespace Atlas.Data.Access.Data
             }
         }
 
-        private async Task<List<ChecklistItem>> GetPermissionChecklistAsync(List<Permission> modelPermissions, CancellationToken cancellationToken)
+        public async Task<List<ChecklistItem>> GetPermissionChecklistAsync(List<Permission> modelPermissions, CancellationToken cancellationToken)
         {
             IEnumerable<Permission> permissions = await GetPermissionsAsync(cancellationToken)
                 .ConfigureAwait(false);
@@ -492,7 +494,7 @@ namespace Atlas.Data.Access.Data
             return permissionChecklist;
         }
 
-        private async Task<List<ChecklistItem>> GetRoleChecklistAsync(List<Role> modelRoles, CancellationToken cancellationToken)
+        public async Task<List<ChecklistItem>> GetRoleChecklistAsync(List<Role> modelRoles, CancellationToken cancellationToken)
         {
             IEnumerable<Role> roles = await GetRolesAsync(cancellationToken)
                 .ConfigureAwait(false);

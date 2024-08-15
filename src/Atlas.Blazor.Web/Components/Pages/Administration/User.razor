@@ -18,6 +18,33 @@
     public override string? ModelNameField { get; set; } = "Name";
     public override string? IdentityFieldName { get; set; } = "UserId";
 
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        if (Model == null) throw new NullReferenceException(nameof(Model));
+        if (GenericRequests == null) throw new NullReferenceException(nameof(GenericRequests));
+
+        if(Model.UserId.Equals(0))
+        {
+            _isProcessing = true;
+
+            IAuthResponse<IEnumerable<ChecklistItem>> response = await GenericRequests.GetListAsync<ChecklistItem>(AtlasAPIEndpoints.GET_ROLE_CHECKLIST)
+                .ConfigureAwait(false);
+
+            if (!response.IsSuccess)
+            {
+                ShowAlert(Alerts.ERROR, "Error Creating User", response.Message);
+            }
+            else if(response.Result != null)
+            {
+                Model.RoleChecklist.AddRange(response.Result);
+            }
+
+            _isProcessing = false;
+        }
+    }
+
     public override RenderFragment RenderModelContent() => __builder =>
     {
         if (Model == null) throw new NullReferenceException(nameof(Model));
@@ -46,17 +73,14 @@
                 </ChildContent>
             </FluentAccordionItem>
 
-            @if (Model.UserId > 0)
-            {
-                <FluentAccordionItem Expanded=true>
-                    <HeadingTemplate>
-                        Role Membership
-                    </HeadingTemplate>
-                    <ChildContent>
-                        <CheckList Source="@Model.RoleChecklist" Header="Role" FilterPlaceholder="Role..." EmptyText="This user is not a member of any roles." ReadOnly="@(Model.IsReadOnly)" />
-                    </ChildContent>
-                </FluentAccordionItem>
-            }
+            <FluentAccordionItem Expanded=true>
+                <HeadingTemplate>
+                    Role Membership
+                </HeadingTemplate>
+                <ChildContent>
+                    <CheckList Source="@Model.RoleChecklist" Header="Role" FilterPlaceholder="Role..." EmptyText="This user is not a member of any roles." ReadOnly="@(Model.IsReadOnly)" />
+                </ChildContent>
+            </FluentAccordionItem>
 
         </FluentAccordion>
     };
