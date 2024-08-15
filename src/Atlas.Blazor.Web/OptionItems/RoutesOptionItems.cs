@@ -6,7 +6,6 @@ namespace Atlas.Blazor.Web.OptionItems
 {
     public class RoutesOptionItems : IOptionItems
     {
-        private static List<OptionItem>? _routes;
         private readonly IAtlasRoutesService _atlasRoutesService;
 
         public RoutesOptionItems(IAtlasRoutesService atlasRoutesService)
@@ -16,16 +15,12 @@ namespace Atlas.Blazor.Web.OptionItems
 
         public IEnumerable<OptionItem> GetOptionItems(IEnumerable<OptionsArg> args)
         {
-            if (_routes != null) return _routes;
-
             IEnumerable<string> routes = [.. _atlasRoutesService.GetRoutes()
                 .Where(s => !s.Contains("/alert/"))
                 .Select(s => s.Remove(0, 1))
                 .Order()];
 
-            _routes = [new OptionItem { Id = string.Empty, Display = string.Empty }, .. routes.Select(r => new OptionItem { Id = r, Display = r })];
-
-            return _routes;
+            return [new OptionItem { Id = string.Empty, Display = string.Empty }, .. routes.Select(r => new OptionItem { Id = r, Display = r })];
         }
     }
 }

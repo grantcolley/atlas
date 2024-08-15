@@ -6,7 +6,7 @@ using Atlas.Data.Access.Interfaces;
 
 namespace Atlas.API.Endpoints
 {
-    internal static class ClaimEndpoint
+    internal static class ClaimEndpoints
     {
         internal static async Task<IResult> GetClaimAuthorisation(IClaimData claimData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {

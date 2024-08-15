@@ -6,7 +6,7 @@ using System.Net.Http.Json;
 
 namespace Atlas.Requests.API
 {
-    public class OptionsRequest(HttpClient httpClient) : RequestBase(httpClient), IOptionsRequest
+    public class OptionsRequests(HttpClient httpClient) : RequestBase(httpClient), IOptionsRequests
     {
         public async Task<IResponse<IEnumerable<OptionItem>?>> GetOptionItemsAsync(string optionsCode)
         {

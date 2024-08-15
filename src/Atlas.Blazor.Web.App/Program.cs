@@ -66,11 +66,11 @@ builder.Services.AddTransient<IGenericRequests, GenericRequests>(sp =>
     return new GenericRequests(httpClient);
 });
 
-builder.Services.AddTransient<IOptionsRequest, OptionsRequest>(sp =>
+builder.Services.AddTransient<IOptionsRequests, OptionsRequests>(sp =>
 {
     IHttpClientFactory httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
     HttpClient httpClient = httpClientFactory.CreateClient(AtlasWebConstants.ATLAS_API);
-    return new OptionsRequest(httpClient);
+    return new OptionsRequests(httpClient);
 });
 
 WebApplication app = builder.Build();

@@ -30,7 +30,7 @@
     <Content Update="Components\GenericSelectList.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Pages\Developer\Categories.razor">
+    <Content Update="Components\Pages\Developer\Categories.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
   </ItemGroup>

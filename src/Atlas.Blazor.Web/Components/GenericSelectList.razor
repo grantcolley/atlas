@@ -42,7 +42,7 @@ else
     private EditContext? CascadedEditContext { get; set; }
 
     [Inject]
-    internal IOptionsRequest? OptionsRequest { get; set; }
+    internal IOptionsRequests? OptionsRequests { get; set; }
 
     [Parameter]
     public string? OptionsCode { get; set; }
@@ -82,12 +82,12 @@ else
     {
         try
         {
-            ArgumentNullException.ThrowIfNull(OptionsRequest);
+            ArgumentNullException.ThrowIfNull(OptionsRequests);
             ArgumentNullException.ThrowIfNull(NavigationManager);
             ArgumentNullException.ThrowIfNullOrWhiteSpace(OptionsCode);
             ArgumentNullException.ThrowIfNullOrWhiteSpace(IdentifierFieldName);
 
-            IResponse<IEnumerable<T>?> response = await OptionsRequest.GetGenericOptionsAsync<T>(OptionsCode).ConfigureAwait(false);
+            IResponse<IEnumerable<T>?> response = await OptionsRequests.GetGenericOptionsAsync<T>(OptionsCode).ConfigureAwait(false);
 
             _source = GetResponse(response);
 
