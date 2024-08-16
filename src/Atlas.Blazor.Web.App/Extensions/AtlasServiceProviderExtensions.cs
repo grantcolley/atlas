@@ -1,4 +1,5 @@
-﻿using Atlas.Blazor.Web.Services;
+﻿using Atlas.Blazor.Web.Interfaces;
+using Atlas.Blazor.Web.Services;
 using Microsoft.AspNetCore.Components;
 using System.Reflection;
 
@@ -8,9 +9,9 @@ namespace Atlas.Blazor.Web.App.Extensions
     {
         public static IServiceProvider AddAtlasRoutablePages(this IServiceProvider serviceProvider)
         {
-            if (serviceProvider.GetRequiredService<Atlas.Blazor.Web.Interfaces.IAtlasRoutesService>() is AtlasRoutesService atlasRoutesService)
+            if (serviceProvider.GetRequiredService<IAtlasRoutesService>() is AtlasRoutesService atlasRoutesService)
             {
-                List<string> routes = GetRoutesToRender(typeof(Atlas.Blazor.Web._Imports).Assembly);
+                List<string> routes = GetRoutesToRender(typeof(_Imports).Assembly);
 
                 atlasRoutesService.AddRoutes(routes);
             }
@@ -22,7 +23,7 @@ namespace Atlas.Blazor.Web.App.Extensions
         {
             foreach (Assembly assembly in assemblies)
             {
-                if (serviceProvider.GetRequiredService<Atlas.Blazor.Web.Interfaces.IAtlasRoutesService>() is AtlasRoutesService atlasRoutesService)
+                if (serviceProvider.GetRequiredService<IAtlasRoutesService>() is AtlasRoutesService atlasRoutesService)
                 {
                     List<string> routes = GetRoutesToRender(assembly);
 
