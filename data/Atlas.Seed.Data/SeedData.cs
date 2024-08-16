@@ -3,7 +3,6 @@ using Atlas.Core.Constants;
 using Atlas.Core.Models;
 using Atlas.Data.Access.Context;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace Atlas.Seed.Data
 {
@@ -52,7 +51,6 @@ namespace Atlas.Seed.Data
         {
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-            permissions.Add(Auth.USER, new Permission { Code = Auth.USER, Name = Auth.USER, Description = "Atlas User Permission" });
             permissions.Add(Auth.ADMIN_READ, new Permission { Code = Auth.ADMIN_READ, Name = Auth.ADMIN_READ, Description = "Atlas Administrator Read Permission" });
             permissions.Add(Auth.ADMIN_WRITE, new Permission { Code = Auth.ADMIN_WRITE, Name = Auth.ADMIN_WRITE, Description = "Atlas Administrator Write Permission" });
             permissions.Add(Auth.SUPPORT, new Permission { Code = Auth.SUPPORT, Name = Auth.SUPPORT, Description = "Atlas Support Permission" });
@@ -70,7 +68,6 @@ namespace Atlas.Seed.Data
         {
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-            roles.Add(Auth.USER, new Role { Name = $"{Auth.USER} Role", Description = $"{Auth.USER} Role" });
             roles.Add(Auth.ADMIN_READ, new Role { Name = $"{Auth.ADMIN_READ} Role", Description = $"{Auth.ADMIN_READ} Role" });
             roles.Add(Auth.ADMIN_WRITE, new Role { Name = $"{Auth.ADMIN_WRITE} Role", Description = $"{Auth.ADMIN_WRITE} Role" });
             roles.Add(Auth.SUPPORT, new Role { Name = $"{Auth.SUPPORT} Role", Description = $"{Auth.SUPPORT} Role" });
@@ -81,21 +78,15 @@ namespace Atlas.Seed.Data
                 dbContext.Roles.Add(role);
             }
 
-            roles[Auth.USER].Permissions.Add(permissions[Auth.USER]);
-
-            roles[Auth.ADMIN_READ].Permissions.Add(permissions[Auth.USER]);
             roles[Auth.ADMIN_READ].Permissions.Add(permissions[Auth.ADMIN_READ]);
 
-            roles[Auth.ADMIN_WRITE].Permissions.Add(permissions[Auth.USER]);
             roles[Auth.ADMIN_WRITE].Permissions.Add(permissions[Auth.ADMIN_READ]);
             roles[Auth.ADMIN_WRITE].Permissions.Add(permissions[Auth.ADMIN_WRITE]);
 
-            roles[Auth.SUPPORT].Permissions.Add(permissions[Auth.USER]);
             roles[Auth.SUPPORT].Permissions.Add(permissions[Auth.SUPPORT]);
             roles[Auth.SUPPORT].Permissions.Add(permissions[Auth.ADMIN_READ]);
             roles[Auth.SUPPORT].Permissions.Add(permissions[Auth.ADMIN_WRITE]);
 
-            roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.USER]);
             roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.ADMIN_READ]);
             roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.ADMIN_WRITE]);
             roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.SUPPORT]);
