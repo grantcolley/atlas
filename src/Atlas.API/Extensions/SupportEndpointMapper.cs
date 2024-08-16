@@ -4,9 +4,9 @@ using Atlas.Core.Models;
 
 namespace Atlas.API.Extensions
 {
-    public static class SupportEndpointMapper
+    internal static class SupportEndpointMapper
     {
-        public static WebApplication? MapAtlasSupportEndpoints(this WebApplication app)
+        internal static WebApplication? MapAtlasSupportEndpoints(this WebApplication app)
         {
             app.MapPost($"/{AtlasAPIEndpoints.GET_LOGS}", SupportEndpoints.GetLogs)
                 .WithOpenApi()

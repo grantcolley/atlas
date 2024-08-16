@@ -1,8 +1,8 @@
 ﻿namespace Atlas.API.Extensions
 {
-    public static class EndpointMapper
+    internal static class EndpointMapper
     {
-        public static WebApplication? MapEndpoints(this WebApplication app)
+        internal static WebApplication? MapEndpoints(this WebApplication app)
         {
             app.MapHealthChecks("/health");
 

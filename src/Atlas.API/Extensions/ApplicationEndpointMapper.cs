@@ -4,9 +4,9 @@ using Atlas.Core.Models;
 
 namespace Atlas.API.Extensions
 {
-    public static class ApplicationEndpointMapper
+    internal static class ApplicationEndpointMapper
     {
-        public static WebApplication? MapAtlasApplicationEndpoints(this WebApplication app)
+        internal static WebApplication? MapAtlasApplicationEndpoints(this WebApplication app)
         {
             app.MapGet($"/{AtlasAPIEndpoints.GET_MODULES}", ApplicationEndpoints.GetModules)
                 .WithOpenApi()

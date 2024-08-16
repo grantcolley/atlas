@@ -3,9 +3,9 @@ using Atlas.Core.Constants;
 
 namespace Atlas.API.Extensions
 {
-    public static class ModulesEndpointMapper
+    internal static class ModulesEndpointMapper
     {
-        public static WebApplication? MapAtlasModulesEndpoints(this WebApplication app)
+        internal static WebApplication? MapAtlasModulesEndpoints(this WebApplication app)
         {
             // TODO: Additional module API's mapped here...
 
