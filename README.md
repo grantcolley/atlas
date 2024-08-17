@@ -2,7 +2,9 @@
 
 ###### .NET 8.0, Blazor, ASP.NET Core Web API, Auth0, FluentUI, FluentValidation, Backend for Frontend (BFF), Entity Framework Core, MS SQL Server, SQLite
 
-A .NET 8.0 Blazor framework for hosting and building Blazor applications using the Backend for Frontend (BFF) pattern.
+A .NET 8.0 Blazor framework for hosting and building Blazor applications using the Backend for Frontend (BFF) pattern. It comes with authentication, authorisation, change tracking, and persisting structured logs to the database.
+
+See the [Worked Examples](#worked-examples) for step-by-step guidance on how to introduce new modules into the **Atlas** framework.
 
 \
 ![Alt text](/readme-images/Atlas_Architecture.png?raw=true "Atlas Architecture")
@@ -29,6 +31,7 @@ A .NET 8.0 Blazor framework for hosting and building Blazor applications using t
 * [Navigation](#navigation)
     * [Modules, Categories and Pages](#modules-categories-and-pages)
 * [Audit](#audit)
+* [Worked Examples](#worked-examples)
 * [Notes](#notes)
     * [FluentDesignTheme Dark/Light](#fluentdesigntheme-darklight)
     * [Backend for frontend](#backend-for-frontend)
