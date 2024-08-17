@@ -32,6 +32,7 @@ See the [Worked Examples](#worked-examples) for step-by-step guidance on how to 
     * [Modules, Categories and Pages](#modules-categories-and-pages)
 * [Audit](#audit)
 * [Worked Examples](#worked-examples)
+    * [Blazor Template](#blazor-template) 
 * [Notes](#notes)
     * [FluentDesignTheme Dark/Light](#fluentdesigntheme-darklight)
     * [Backend for frontend](#backend-for-frontend)
@@ -446,6 +447,11 @@ More can be read here about change tracking in Entity Framework:
 - [Change Tracking in EF Core](https://learn.microsoft.com/en-us/ef/core/change-tracking/)
 - [Change Detection and Notifications](https://learn.microsoft.com/en-us/ef/core/change-tracking/change-detection)
 - [Tracking Changes of Entities in EF Core](https://www.entityframeworktutorial.net/efcore/changetracker-in-ef-core.aspx)
+
+# Worked Examples
+## Blazor Template
+Create a Blazor Template module for the standard template WeatherForecast and Counter pages.
+
 
 # Notes
 ### FluentDesignTheme Dark/Light
