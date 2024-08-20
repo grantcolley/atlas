@@ -452,6 +452,10 @@ More can be read here about change tracking in Entity Framework:
 ## Blazor Template
 Create a Blazor Template module for the standard template WeatherForecast and Counter pages.
 
+> [!TIP]
+> The code for this worked example can be found in the [blazor-template](https://github.com/grantcolley/atlas/tree/blazor-template) branch.
+
+
 
 # Notes
 ### FluentDesignTheme Dark/Light
