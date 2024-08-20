@@ -5,6 +5,8 @@ using Atlas.Blazor.Web.Constants;
 using Atlas.Blazor.Web.Interfaces;
 using Atlas.Blazor.Web.Services;
 using Atlas.Core.Constants;
+using Atlas.Core.Logging.Interfaces;
+using Atlas.Core.Logging.Services;
 using Atlas.Requests.API;
 using Atlas.Requests.Interfaces;
 using Auth0.AspNetCore.Authentication;
@@ -13,8 +15,15 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components.Components.Tooltip;
+using Serilog;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.ClearProviders();
+
+builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
+                  loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration)
+                                        .Enrich.FromLogContext());
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
@@ -40,6 +49,7 @@ builder.Services.AddScoped<TokenHandler>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
 
 builder.Services.AddSingleton<IAtlasRoutesService, AtlasRoutesService>();
+builder.Services.AddScoped<ILogService, LogService>();
 builder.Services.AddScoped<ITooltipService, TooltipService>();
 builder.Services.AddScoped<IDialogService, DialogService>();
 builder.Services.AddScoped<IAtlasDialogService, AtlasDialogService>();

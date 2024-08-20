@@ -69,6 +69,8 @@ else
             ArgumentNullException.ThrowIfNull(NavigationManager);
             ArgumentNullException.ThrowIfNullOrWhiteSpace(OptionsCode);
 
+            await base.OnInitializedAsync();
+
             IResponse<IEnumerable<OptionItem>?> response = await OptionsRequests.GetOptionItemsAsync(OptionsCode).ConfigureAwait(false);
 
             _source = GetResponse(response);
@@ -77,7 +79,7 @@ else
         }
         catch (Exception ex)
         {
-            RouteAlert(ex.Message);
+            RouteAlert(ex.Message, new AtlasException(ex.Message, ex));
         }
     }
 
