@@ -1,14 +1,15 @@
-﻿using Atlas.API.Interfaces;
-using Atlas.Core.Exceptions;
+﻿using Atlas.Core.Exceptions;
+using Atlas.Core.Logging.Interfaces;
+using Microsoft.Extensions.Logging;
 using Serilog.Context;
 
-namespace Atlas.API.Services
+namespace Atlas.Core.Logging.Services
 {
     public class LogService : ILogService
     {
         private readonly ILogger<LogService> _logger;
 
-        public LogService(ILogger<LogService> logger) 
+        public LogService(ILogger<LogService> logger)
         {
             ArgumentNullException.ThrowIfNull(nameof(logger));
 
@@ -43,7 +44,7 @@ namespace Atlas.API.Services
 
         private void Log(Enums.LogLevel logLevel, string? message, Exception? exception)
         {
-            if(string.IsNullOrEmpty(message) 
+            if (string.IsNullOrEmpty(message)
                 && exception != null)
             {
                 message = exception.Message;

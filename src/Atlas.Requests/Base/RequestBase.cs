@@ -11,10 +11,9 @@ namespace Atlas.Requests.Base
 
         protected static async Task<IResponse<T>> GetResponseAsync<T>(HttpResponseMessage httpResponseMessage)
         {
-            Response<T> response = new Response<T>
+            Response<T> response = new()
             {
-                IsSuccess = httpResponseMessage.IsSuccessStatusCode,
-                Message = httpResponseMessage.ReasonPhrase
+                IsSuccess = httpResponseMessage.IsSuccessStatusCode
             };
 
             if (response.IsSuccess)
@@ -22,9 +21,13 @@ namespace Atlas.Requests.Base
                 response.Result = await JsonSerializer.DeserializeAsync<T>
                     (await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false),
                         _jsonSerializerOptions).ConfigureAwait(false);
+
+                response.Message = httpResponseMessage.ReasonPhrase;
             }
             else
             {
+                response.Message = $"{(int)httpResponseMessage.StatusCode} {httpResponseMessage.ReasonPhrase}";
+
 #pragma warning disable IDE0059 // Unnecessary assignment of a value
                 string? debug = httpResponseMessage.Content.ReadAsStringAsync().Result;
 #pragma warning restore IDE0059 // Unnecessary assignment of a value

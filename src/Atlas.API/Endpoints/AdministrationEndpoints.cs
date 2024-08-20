@@ -1,6 +1,7 @@
 ﻿using Atlas.API.Interfaces;
 using Atlas.Core.Constants;
 using Atlas.Core.Exceptions;
+using Atlas.Core.Logging.Interfaces;
 using Atlas.Core.Models;
 using Atlas.Data.Access.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +32,7 @@ namespace Atlas.API.Endpoints
             }
             catch (AtlasException ex)
             {
-                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
+                logService.Log(Core.Logging.Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
@@ -59,7 +60,7 @@ namespace Atlas.API.Endpoints
             }
             catch (AtlasException ex)
             {
-                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
+                logService.Log(Core.Logging.Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
@@ -87,7 +88,7 @@ namespace Atlas.API.Endpoints
             }
             catch (AtlasException ex)
             {
-                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
+                logService.Log(Core.Logging.Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
@@ -115,7 +116,7 @@ namespace Atlas.API.Endpoints
             }
             catch (AtlasException ex)
             {
-                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
+                logService.Log(Core.Logging.Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
@@ -143,7 +144,7 @@ namespace Atlas.API.Endpoints
             }
             catch (AtlasException ex)
             {
-                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
+                logService.Log(Core.Logging.Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
@@ -171,7 +172,7 @@ namespace Atlas.API.Endpoints
             }
             catch (AtlasException ex)
             {
-                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
+                logService.Log(Core.Logging.Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
@@ -199,7 +200,7 @@ namespace Atlas.API.Endpoints
             }
             catch (AtlasException ex)
             {
-                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
+                logService.Log(Core.Logging.Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
@@ -227,7 +228,7 @@ namespace Atlas.API.Endpoints
             }
             catch (AtlasException ex)
             {
-                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
+                logService.Log(Core.Logging.Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
@@ -255,7 +256,7 @@ namespace Atlas.API.Endpoints
             }
             catch (AtlasException ex)
             {
-                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
+                logService.Log(Core.Logging.Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
@@ -283,7 +284,7 @@ namespace Atlas.API.Endpoints
             }
             catch (AtlasException ex)
             {
-                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
+                logService.Log(Core.Logging.Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
@@ -311,7 +312,7 @@ namespace Atlas.API.Endpoints
             }
             catch (AtlasException ex)
             {
-                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
+                logService.Log(Core.Logging.Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
@@ -339,7 +340,7 @@ namespace Atlas.API.Endpoints
             }
             catch (AtlasException ex)
             {
-                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
+                logService.Log(Core.Logging.Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
@@ -367,7 +368,7 @@ namespace Atlas.API.Endpoints
             }
             catch (AtlasException ex)
             {
-                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
+                logService.Log(Core.Logging.Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
@@ -395,7 +396,7 @@ namespace Atlas.API.Endpoints
             }
             catch (AtlasException ex)
             {
-                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
+                logService.Log(Core.Logging.Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
@@ -423,7 +424,7 @@ namespace Atlas.API.Endpoints
             }
             catch (AtlasException ex)
             {
-                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
+                logService.Log(Core.Logging.Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
@@ -451,7 +452,7 @@ namespace Atlas.API.Endpoints
             }
             catch (AtlasException ex)
             {
-                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
+                logService.Log(Core.Logging.Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
@@ -479,7 +480,7 @@ namespace Atlas.API.Endpoints
             }
             catch (AtlasException ex)
             {
-                logService.Log(Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
+                logService.Log(Core.Logging.Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
 
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }

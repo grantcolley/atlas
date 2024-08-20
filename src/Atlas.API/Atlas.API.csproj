@@ -21,7 +21,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
-    <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.2" />
     <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="6.6.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
@@ -32,6 +32,7 @@
     <ProjectReference Include="..\..\data\Atlas.Migrations.SQLServer\Atlas.Migrations.SQLServer.csproj" />
     <ProjectReference Include="..\..\data\Atlas.Seed.Data\Atlas.Seed.Data.csproj" />
     <ProjectReference Include="..\Atlas.Core\Atlas.Core.csproj" />
+    <ProjectReference Include="..\Atlas.Core.Logging\Atlas.Core.Logging.csproj" />  
     <ProjectReference Include="..\Atlas.Data.Access\Atlas.Data.Access.csproj" />
   </ItemGroup>
 
