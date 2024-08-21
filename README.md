@@ -119,8 +119,43 @@ In the **Atlas.Blazor.Web.App** [appsettings.json](https://github.com/grantcolle
   "Logging": {
     "LogLevel": {
       "Default": "Information",
-      "Microsoft.AspNetCore": "Warning"
+      "Microsoft.AspNetCore": "Warning",
+      "Microsoft.EntityFrameworkCore.Database.Command": "Warning"
     }
+  },
+  "Serilog": {
+    "Using": [ "Serilog.Sinks.MSSqlServer" ],
+    "MinimumLevel": {
+      "Default": "Information",
+      "Override": {
+        "Microsoft": "Error",
+        "Microsoft.EntityFrameworkCore.Database.Command": "Information"
+      }
+    },
+    "WriteTo": [
+      {
+        "Name": "MSSqlServer",
+        "Args": {
+          "connectionString": "",    👈set the Atlas database connection string for Serilogs MS SqlServer
+          "tableName": "Logs",
+          "autoCreateSqlTable": true,
+          "columnOptionsSection": {
+            "customColumns": [
+              {
+                "ColumnName": "User",
+                "DataType": "nvarchar",
+                "DataLength": 450
+              },
+              {
+                "ColumnName": "Context",
+                "DataType": "nvarchar",
+                "DataLength": 450
+              }
+            ]
+          }
+        }
+      }
+    ]
   },
   "AllowedHosts": "*",
   "Auth0": {
@@ -464,7 +499,7 @@ Create a Blazor Template module for the standard template WeatherForecast and Co
         public const string ADMIN_WRITE = "Admin-Write";
         public const string DEVELOPER = "Developer";
         public const string SUPPORT = "Support";
-        public const string BLAZOR_TEMPLATE = "Blazor-Template"; 👈 new Blazor-Template permission 
+        public const string BLAZOR_TEMPLATE = "Blazor-Template"; // 👈 new Blazor-Template permission 
     }
 ```
 
@@ -525,7 +560,7 @@ Create a Blazor Template module for the standard template WeatherForecast and Co
     {
         // existing code removed for brevity
 
-        public const string GET_WEATHER_FORECAST = "getweatherforecast"; 👈 new getweatherforecast endpoint constant 
+        public const string GET_WEATHER_FORECAST = "getweatherforecast"; // 👈 new getweatherforecast endpoint constant 
     }
 ```
 
