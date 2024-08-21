@@ -455,7 +455,258 @@ Create a Blazor Template module for the standard template WeatherForecast and Co
 > [!TIP]
 > The code for this worked example can be found in the [blazor-template](https://github.com/grantcolley/atlas/tree/blazor-template) branch.
 
+1. Add a new permission to [Auth](https://github.com/grantcolley/atlas/blob/blazor-template/src/Atlas.Core/Constants/Auth.cs) in **Atlas.Core**.
+```C#
+    public static class Auth
+    {
+        public const string ATLAS_USER_CLAIM = "atlas-user";
+        public const string ADMIN_READ = "Admin-Read";
+        public const string ADMIN_WRITE = "Admin-Write";
+        public const string DEVELOPER = "Developer";
+        public const string SUPPORT = "Support";
+        public const string BLAZOR_TEMPLATE = "Blazor-Template"; 👈 new Blazor-Template permission 
+    }
+```
 
+2. Create a new [WeatherForecast](https://github.com/grantcolley/atlas/blob/blazor-template/src/Atlas.Core/Models/WeatherForecast.cs) class in **Atlas.Core**.
+```C#
+    public class WeatherForecast
+    {
+        public DateOnly Date { get; set; }
+        public int TemperatureC { get; set; }
+        public string? Summary { get; set; }
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
+```
+
+3. Create a new [WeatherEndpoints](https://github.com/grantcolley/atlas/blob/blazor-template/src/Atlas.API/Endpoints/WeatherEndpoints.cs) in **Atlas.API**.
+```C#
+    public class WeatherEndpoints
+    {
+        internal static async Task<IResult> GetWeatherForecast(IClaimData claimData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
+        {
+            Authorisation? authorisation = null;
+
+            try
+            {
+                authorisation = await claimData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
+                    .ConfigureAwait(false);
+
+                if (authorisation == null
+                    || !authorisation.HasPermission(Auth.BLAZOR_TEMPLATE))
+                {
+                    return Results.Unauthorized();
+                }
+
+                var startDate = DateOnly.FromDateTime(DateTime.Now);
+                var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
+                IEnumerable<WeatherForecast> forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+                {
+                    Date = startDate.AddDays(index),
+                    TemperatureC = Random.Shared.Next(-20, 55),
+                    Summary = summaries[Random.Shared.Next(summaries.Length)]
+                });
+
+                return Results.Ok(forecasts);
+            }
+            catch (AtlasException ex)
+            {
+                logService.Log(Core.Logging.Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
+
+                return Results.StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+    }
+```
+
+4. Add a new [AtlasAPIEndpoints](https://github.com/grantcolley/atlas/blob/blazor-template/src/Atlas.Core/Constants/AtlasAPIEndpoints.cs) constant in **Atlas.Core**.
+```C#
+    public static class AtlasAPIEndpoints
+    {
+        // existing code removed for brevity
+
+        public const string GET_WEATHER_FORECAST = "getweatherforecast"; 👈 new getweatherforecast endpoint constant 
+    }
+```
+
+5. Map the endpoint in [ModulesEndpointMapper](https://github.com/grantcolley/atlas/blob/blazor-template/src/Atlas.API/Extensions/ModulesEndpointMapper.cs) in **Atlas.API**.
+```C#
+    internal static class ModulesEndpointMapper
+    {
+        internal static WebApplication? MapAtlasModulesEndpoints(this WebApplication app)
+        {
+            // Additional module API's mapped here...
+
+            app.MapGet($"/{AtlasAPIEndpoints.GET_WEATHER_FORECAST}", WeatherEndpoints.GetWeatherForecast)
+                .WithOpenApi()
+                .WithName(AtlasAPIEndpoints.GET_WEATHER_FORECAST)
+                .WithDescription("Gets the weather forecast")
+                .Produces<IEnumerable<WeatherForecast>?>(StatusCodes.Status200OK)
+                .Produces(StatusCodes.Status500InternalServerError)
+                .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
+
+            return app;
+        }
+    }
+```
+
+6. Create interface [IWeatherForecastRequests](https://github.com/grantcolley/atlas/blob/blazor-template/src/Atlas.Requests/Interfaces/IWeatherForecastRequests.cs) in **Atlas.Requests**.
+```C#
+    public interface IWeatherForecastRequests
+    {
+        Task<IEnumerable<WeatherForecast>?> GetWeatherForecastAsync();
+    }
+```
+
+7. Create class [WeatherForecastRequests](https://github.com/grantcolley/atlas/blob/blazor-template/src/Atlas.Requests/API/WeatherForecastRequests.cs) in **Atlas.Requests**.
+```C#
+    public class WeatherForecastRequests(HttpClient httpClient) : IWeatherForecastRequests
+    {
+        protected readonly HttpClient _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+        protected readonly JsonSerializerOptions _jsonSerializerOptions = new(JsonSerializerDefaults.Web);
+
+        public async Task<IEnumerable<WeatherForecast>?> GetWeatherForecastAsync()
+        {
+            return await JsonSerializer.DeserializeAsync<IEnumerable<WeatherForecast>?>
+                (await _httpClient.GetStreamAsync(AtlasAPIEndpoints.GET_WEATHER_FORECAST)
+                .ConfigureAwait(false), _jsonSerializerOptions).ConfigureAwait(false);
+        }
+    }
+```
+
+8. Register the service `WeatherForecastRequests` in [Program](https://github.com/grantcolley/atlas/blob/blazor-template/src/Atlas.Blazor.Web.App/Program.cs) of **Atlas.Blazor.Web.App**.
+```C#
+   // existing code removed for brevity
+   
+   builder.Services.AddTransient<IWeatherForecastRequests, WeatherForecastRequests>(sp =>
+   {
+       IHttpClientFactory httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+       HttpClient httpClient = httpClientFactory.CreateClient(AtlasWebConstants.ATLAS_API);
+       return new WeatherForecastRequests(httpClient);
+   });
+
+   WebApplication app = builder.Build();
+
+   // existing code removed for brevity
+```
+
+9. Create the [Weather](https://github.com/grantcolley/atlas/blob/blazor-template/src/Atlas.Blazor.Web/Components/Pages/BlazorTemplate/Weather.razor) component in **Atlas.Blazor.Web**
+```HTML+Razor
+@page "/Weather"
+@attribute [StreamRendering]
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<PageTitle>Weather</PageTitle>
+
+<FluentLabel Typo="Typography.PageTitle">Weather</FluentLabel>
+
+<br>
+
+<FluentLabel Typo="Typography.PaneHeader">This component demonstrates showing data.</FluentLabel>
+
+<br>
+
+@if (Forecasts == null)
+{
+    <FluentLabel Typo="Typography.Subject">Loading...</FluentLabel>
+}
+else
+{
+    <FluentDataGrid TGridItem=Atlas.Core.Models.WeatherForecast Items="@Forecasts"
+                     Style="height: 600px;overflow:auto;" GridTemplateColumns="0.25fr 0.25fr 0.25fr 0.25fr"
+                     ResizableColumns=true GenerateHeader="GenerateHeaderOption.Sticky">
+        <PropertyColumn Property="@(f => f.Date.ToShortDateString())" Title="Date" Sortable="true" />
+        <PropertyColumn Property="@(f => f.TemperatureC)" Sortable="true" />
+        <PropertyColumn Property="@(f => f.TemperatureF)" Sortable="true" />
+        <PropertyColumn Property="@(f => f.Summary)" Sortable="true" />
+    </FluentDataGrid>
+}
+
+@code {
+    [Inject]
+    public IWeatherForecastRequests? WeatherForecastRequests { get; set; }
+
+    private IEnumerable<WeatherForecast>? _forecasts;
+
+    public IQueryable<WeatherForecast>? Forecasts
+    {
+        get
+        {
+            return _forecasts?.AsQueryable();
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (WeatherForecastRequests == null) throw new NullReferenceException(nameof(WeatherForecastRequests));
+
+        _forecasts = await WeatherForecastRequests.GetWeatherForecastAsync().ConfigureAwait(false);
+    }
+}
+```
+
+10. Create the [Counter](https://github.com/grantcolley/atlas/blob/blazor-template/src/Atlas.Blazor.Web/Components/Pages/BlazorTemplate/Counter.razor) component in **Atlas.Blazor.Web**
+```HTML+Razor
+@page "/Counter"
+@rendermode InteractiveAuto
+
+<PageTitle>Counter</PageTitle>
+
+<FluentLabel Typo="Typography.PageTitle">Counter</FluentLabel>
+
+<br>
+
+<FluentLabel Typo="Typography.PaneHeader">Current count: @currentCount</FluentLabel>
+
+<br>
+
+<FluentButton Appearance="Appearance.Accent" OnClick="@IncrementCount">Click me</FluentButton>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}
+```
+
+11. Create a new user `will@email.com` in Auth0 and assign the user the `atlas-user` role.
+![Alt text](/readme-images/BlazorTemplate/Blazor_Template_Auth0_User.png?raw=true "Blazor Template Auth0 New User")
+
+12. Create the permission `Blazor-Template`.
+![Alt text](/readme-images/BlazorTemplate/Blazor_Template_Permission.png?raw=true "Blazor-Template permission")
+
+13. Create the role `Blazor Template Role` and assign it the `Blazor-Template` permission.
+![Alt text](/readme-images/BlazorTemplate/Blazor_Template_Role.png?raw=true "Blazor Template role")
+
+14. Create the user `will@email.com` and assign it the `Blazor Template Role` role.
+![Alt text](/readme-images/BlazorTemplate/Blazor_Template_User.png?raw=true "Blazor Template user")
+
+15. Create the module `Blazor Template`.
+![Alt text](/readme-images/BlazorTemplate/Blazor_Template_Module.png?raw=true "Blazor Template module")
+
+16. Create the category `Templates` and set the Module to `Blazor Template`.
+![Alt text](/readme-images/BlazorTemplate/Blazor_Template_Category.png?raw=true "Blazor Template category")
+
+17. Create the page `Weather` and set the Category to `Templates`.
+![Alt text](/readme-images/BlazorTemplate/Blazor_Template_Page_Weather.png?raw=true "Blazor Template weather")
+
+18. Create the page `Counter` and set the Category to `Templates`.
+![Alt text](/readme-images/BlazorTemplate/Blazor_Template_Page_Counter.png?raw=true "Blazor Template counter")
+
+19. Log out, then log back in as user `will@email.com`
+![Alt text](/readme-images/BlazorTemplate/Blazor_Template_Auth0_Login.png?raw=true "Blazor Template Auth0 login")
+
+20. In the navigation panel, user `will@email.com` only has permission to the Blazor Template module.
+![Alt text](/readme-images/BlazorTemplate/Blazor_Template_Home.png?raw=true "Blazor Template Home")
+
+21. Clieck on the Weather navigation link.
+![Alt text](/readme-images/BlazorTemplate/Blazor_Template_Component_Weather.png?raw=true "Blazor Template Weather")
+
+22. Clieck on the Counter navigation link.
+![Alt text](/readme-images/BlazorTemplate/Blazor_Template_Component_Counter.png?raw=true "Blazor Template Counter")
 
 # Notes
 ### FluentDesignTheme Dark/Light
