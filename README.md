@@ -681,7 +681,7 @@ else
 13. Create the role `Blazor Template Role` and assign it the `Blazor-Template` permission.
 ![Alt text](/readme-images/BlazorTemplate/Blazor_Template_Role.png?raw=true "Blazor Template role")
 
-14. Create the user `will@email.com` and assign it the `Blazor Template Role` role.
+14. Create the user `will@email.com` and assign the `Blazor Template Role` role.
 ![Alt text](/readme-images/BlazorTemplate/Blazor_Template_User.png?raw=true "Blazor Template user")
 
 15. Create the module `Blazor Template`.
@@ -702,10 +702,10 @@ else
 20. In the navigation panel, user `will@email.com` only has permission to the Blazor Template module.
 ![Alt text](/readme-images/BlazorTemplate/Blazor_Template_Home.png?raw=true "Blazor Template Home")
 
-21. Clieck on the Weather navigation link.
+21. Click on the Weather navigation link.
 ![Alt text](/readme-images/BlazorTemplate/Blazor_Template_Component_Weather.png?raw=true "Blazor Template Weather")
 
-22. Clieck on the Counter navigation link.
+22. Click on the Counter navigation link.
 ![Alt text](/readme-images/BlazorTemplate/Blazor_Template_Component_Counter.png?raw=true "Blazor Template Counter")
 
 # Notes
