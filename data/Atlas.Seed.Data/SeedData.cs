@@ -55,6 +55,7 @@ namespace Atlas.Seed.Data
             permissions.Add(Auth.ADMIN_WRITE, new Permission { Code = Auth.ADMIN_WRITE, Name = Auth.ADMIN_WRITE, Description = "Atlas Administrator Write Permission" });
             permissions.Add(Auth.SUPPORT, new Permission { Code = Auth.SUPPORT, Name = Auth.SUPPORT, Description = "Atlas Support Permission" });
             permissions.Add(Auth.DEVELOPER, new Permission { Code = Auth.DEVELOPER, Name = Auth.DEVELOPER, Description = "Atlas Developer Permission" });
+            permissions.Add(Auth.BLAZOR_TEMPLATE, new Permission { Code = Auth.BLAZOR_TEMPLATE, Name = "Blazor Template", Description = "Atlas Blazor Template Permission" });
 
             foreach (Permission permission in permissions.Values)
             {
@@ -72,6 +73,7 @@ namespace Atlas.Seed.Data
             roles.Add(Auth.ADMIN_WRITE, new Role { Name = $"{Auth.ADMIN_WRITE} Role", Description = $"{Auth.ADMIN_WRITE} Role" });
             roles.Add(Auth.SUPPORT, new Role { Name = $"{Auth.SUPPORT} Role", Description = $"{Auth.SUPPORT} Role" });
             roles.Add(Auth.DEVELOPER, new Role { Name = $"{Auth.DEVELOPER} Role", Description = $"{Auth.DEVELOPER} Role" });
+            roles.Add(Auth.BLAZOR_TEMPLATE, new Role { Name = "Blazor Template Role", Description = "Blazor Template Role" });
 
             foreach (Role role in roles.Values)
             {
@@ -86,11 +88,15 @@ namespace Atlas.Seed.Data
             roles[Auth.SUPPORT].Permissions.Add(permissions[Auth.SUPPORT]);
             roles[Auth.SUPPORT].Permissions.Add(permissions[Auth.ADMIN_READ]);
             roles[Auth.SUPPORT].Permissions.Add(permissions[Auth.ADMIN_WRITE]);
+            roles[Auth.SUPPORT].Permissions.Add(permissions[Auth.BLAZOR_TEMPLATE]);
 
             roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.ADMIN_READ]);
             roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.ADMIN_WRITE]);
             roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.SUPPORT]);
             roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.DEVELOPER]);
+            roles[Auth.DEVELOPER].Permissions.Add(permissions[Auth.BLAZOR_TEMPLATE]);
+
+            roles[Auth.BLAZOR_TEMPLATE].Permissions.Add(permissions[Auth.BLAZOR_TEMPLATE]);
 
             dbContext.SaveChanges();
         }
@@ -103,6 +109,7 @@ namespace Atlas.Seed.Data
             users.Add("jane", new User { Name = "jane", Email = "jane@email.com" });
             users.Add("bob", new User { Name = "bob", Email = "bob@email.com" });
             users.Add("grant", new User { Name = "grant", Email = "grant@email.com" });
+            users.Add("will", new User { Name = "will", Email = "will@email.com" });
 
             foreach (User user in users.Values)
             {
@@ -120,6 +127,7 @@ namespace Atlas.Seed.Data
             users["jane"].Roles.AddRange([roles[Auth.ADMIN_READ]]);
             users["bob"].Roles.AddRange([roles[Auth.SUPPORT]]);
             users["grant"].Roles.Add(roles[Auth.DEVELOPER]);
+            users["will"].Roles.Add(roles[Auth.BLAZOR_TEMPLATE]);
 
             dbContext.SaveChanges();
         }
@@ -128,6 +136,7 @@ namespace Atlas.Seed.Data
         {
             AddAdministration();
             AddSupport();
+            AddBlazorTemplate();
         }
 
         private static void AddAdministration()
@@ -223,6 +232,36 @@ namespace Atlas.Seed.Data
             eventCategory.Pages.Add(logsPage);
 
             dbContext.Pages.Add(logsPage);
+
+            dbContext.SaveChanges();
+        }
+
+        private static void AddBlazorTemplate()
+        {
+            if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
+
+            Module blazorTemplateModule = new() { Name = "Blazor Template", Icon = "AppGeneric", Order = 0, Permission = Auth.BLAZOR_TEMPLATE };
+
+            dbContext.Modules.Add(blazorTemplateModule);
+
+            dbContext.SaveChanges();
+
+            Category blazorTemplatesCategory = new() { Name = "Templates", Icon = "DocumentMultiple", Order = 1, Permission = Auth.BLAZOR_TEMPLATE, Module = blazorTemplateModule };
+
+            blazorTemplateModule.Categories.Add(blazorTemplatesCategory);
+
+            dbContext.Categories.Add(blazorTemplatesCategory);
+
+            dbContext.SaveChanges();
+
+            Page weatherPage = new() { Name = "Weather", Icon = "WeatherHailDay", Route = AtlasWebConstants.PAGE_WEATHER, Order = 1, Permission = Auth.BLAZOR_TEMPLATE, Category = blazorTemplatesCategory };
+            Page counterPage = new() { Name = "Counter", Icon = "Add", Route = AtlasWebConstants.PAGE_COUNTER, Order = 2, Permission = Auth.BLAZOR_TEMPLATE, Category = blazorTemplatesCategory };
+
+            blazorTemplatesCategory.Pages.Add(weatherPage);
+            blazorTemplatesCategory.Pages.Add(counterPage);
+
+            dbContext.Pages.Add(weatherPage);
+            dbContext.Pages.Add(counterPage);
 
             dbContext.SaveChanges();
         }

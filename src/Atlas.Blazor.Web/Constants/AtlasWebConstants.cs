@@ -24,5 +24,9 @@
 
         // Support
         public const string PAGE_LOGS = "Logs";
+
+        // Blazor Templates
+        public const string PAGE_WEATHER = "Weather";
+        public const string PAGE_COUNTER = "Counter";
     }
 }
