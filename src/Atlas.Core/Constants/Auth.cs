@@ -7,5 +7,6 @@
         public const string ADMIN_WRITE = "Admin-Write";
         public const string DEVELOPER = "Developer";
         public const string SUPPORT = "Support";
+        public const string BLAZOR_TEMPLATE = "Blazor-Template";
     }
 }

@@ -39,5 +39,6 @@
         public const string DELETE_PERMISSION = "deletepermission";
         public const string GET_PERMISSION_CHECKLIST = "getpermissionchecklist";
         public const string GET_ROLE_CHECKLIST = "getrolechecklist";
+        public const string GET_WEATHER_FORECAST = "getweatherforecast";
     }
 }

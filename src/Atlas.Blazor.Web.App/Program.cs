@@ -83,6 +83,13 @@ builder.Services.AddTransient<IOptionsRequests, OptionsRequests>(sp =>
     return new OptionsRequests(httpClient);
 });
 
+builder.Services.AddTransient<IWeatherForecastRequests, WeatherForecastRequests>(sp =>
+{
+    IHttpClientFactory httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    HttpClient httpClient = httpClientFactory.CreateClient(AtlasWebConstants.ATLAS_API);
+    return new WeatherForecastRequests(httpClient);
+});
+
 WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.

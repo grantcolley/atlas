@@ -1,0 +1,51 @@
+﻿@page "/Weather"
+@attribute [StreamRendering]
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<PageTitle>Weather</PageTitle>
+
+<FluentLabel Typo="Typography.PageTitle">Weather</FluentLabel>
+
+<br>
+
+<FluentLabel Typo="Typography.PaneHeader">This component demonstrates showing data.</FluentLabel>
+
+<br>
+
+@if (Forecasts == null)
+{
+    <FluentLabel Typo="Typography.Subject">Loading...</FluentLabel>
+}
+else
+{
+    <FluentDataGrid TGridItem=Atlas.Core.Models.WeatherForecast Items="@Forecasts"
+                    Style="height: 600px;overflow:auto;" GridTemplateColumns="0.25fr 0.25fr 0.25fr 0.25fr"
+                    ResizableColumns=true GenerateHeader="GenerateHeaderOption.Sticky">
+        <PropertyColumn Property="@(f => f.Date.ToShortDateString())" Title="Date" Sortable="true" />
+        <PropertyColumn Property="@(f => f.TemperatureC)" Sortable="true" />
+        <PropertyColumn Property="@(f => f.TemperatureF)" Sortable="true" />
+        <PropertyColumn Property="@(f => f.Summary)" Sortable="true" />
+    </FluentDataGrid>
+}
+
+@code {
+    [Inject]
+    public IWeatherForecastRequests? WeatherForecastRequests { get; set; }
+
+    private IEnumerable<WeatherForecast>? _forecasts;
+
+    public IQueryable<WeatherForecast>? Forecasts
+    {
+        get
+        {
+            return _forecasts?.AsQueryable();
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (WeatherForecastRequests == null) throw new NullReferenceException(nameof(WeatherForecastRequests));
+
+        _forecasts = await WeatherForecastRequests.GetWeatherForecastAsync().ConfigureAwait(false);
+    }
+}
