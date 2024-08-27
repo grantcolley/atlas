@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/qx6pbauk9bfpopst?svg=true)](https://ci.appveyor.com/project/grantcolley/atlas)
+
 ![Alt text](/readme-images/Atlas.png?raw=true "Atlas") 
 
 ###### .NET 8.0, Blazor, ASP.NET Core Web API, Auth0, FluentUI, FluentValidation, Backend for Frontend (BFF), Entity Framework Core, MS SQL Server, SQLite
@@ -8,8 +10,6 @@ See the [Worked Examples](#worked-examples) for step-by-step guidance on how to 
 
 \
 ![Alt text](/readme-images/Atlas_Architecture.png?raw=true "Atlas Architecture")
-
-[![Build status](https://ci.appveyor.com/api/projects/status/qx6pbauk9bfpopst?svg=true)](https://ci.appveyor.com/project/grantcolley/atlas)
 
 ## Table of Contents
 * [Setup the Solution](#setup-the-solution)
