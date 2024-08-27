@@ -6,6 +6,7 @@ A .NET 8.0 Blazor framework for hosting and building Blazor applications using t
 
 See the [Worked Examples](#worked-examples) for step-by-step guidance on how to introduce new modules into the **Atlas** framework.
 
+\
 [![Build status](https://ci.appveyor.com/api/projects/status/qx6pbauk9bfpopst?svg=true)](https://ci.appveyor.com/project/grantcolley/atlas)
 
 \
