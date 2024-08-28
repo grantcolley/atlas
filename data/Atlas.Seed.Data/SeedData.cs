@@ -226,32 +226,5 @@ namespace Atlas.Seed.Data
 
             dbContext.SaveChanges();
         }
-
-        //private static void AddWeatherModule()
-        //{
-        //    if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
-
-        //    Module weather = new() { Name = "Weather", Icon = "Thunderstorm", Order = 1, Permission = Auth.WEATHER_USER };
-
-        //    dbContext.Modules.Add(weather);
-
-        //    dbContext.SaveChanges();
-
-        //    Category forecastCategory = new() { Name = "Forecast", Icon = "WbCloudy", Order = 1, Permission = Auth.WEATHER_USER, Module = weather };
-
-        //    weather.Categories.Add(forecastCategory);
-
-        //    dbContext.Categories.Add(forecastCategory);
-
-        //    dbContext.SaveChanges();
-
-        //    Page weatherForecastPage = new() { Name = "Weather Display", Icon = "DeviceThermostat", NavigatePage = "PageRouter", Order = 1, Permission = Auth.WEATHER_USER, Category = forecastCategory, PageCode = PageCodes.WEATHER_DISPLAY };
-
-        //    forecastCategory.Pages.Add(weatherForecastPage);
-
-        //    dbContext.Pages.Add(weatherForecastPage);
-
-        //    dbContext.SaveChanges();
-        //}
     }
 }
