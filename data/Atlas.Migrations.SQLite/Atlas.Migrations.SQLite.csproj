@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Atlas.Data.Access\Atlas.Data.Access.csproj" />
+    <ProjectReference Include="..\..\src\Atlas.Data.Context\Atlas.Data.Context.csproj" />
   </ItemGroup>
 
 </Project>

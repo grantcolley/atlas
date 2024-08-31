@@ -1,10 +1,9 @@
 ﻿using Atlas.Core.Models;
-using Atlas.Data.Access.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Text.Json;
 
-namespace Atlas.Data.Access.Context
+namespace Atlas.Data.Context
 {
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
     {

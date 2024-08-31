@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Atlas.Data.Access.Model
+namespace Atlas.Data.Context
 {
     public class Audit
     {

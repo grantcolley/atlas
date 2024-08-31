@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Atlas.Migrations.SQLServer.Migrations
 {
     /// <inheritdoc />
-    public partial class Atlas : Migration
+    public partial class Atlas_1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

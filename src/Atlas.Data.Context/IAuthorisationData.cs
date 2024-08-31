@@ -1,6 +1,6 @@
 ﻿using Atlas.Core.Models;
 
-namespace Atlas.Data.Access.Interfaces
+namespace Atlas.Data.Context
 {
     public interface IAuthorisationData
     {

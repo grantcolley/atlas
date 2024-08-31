@@ -1,8 +1,7 @@
 ﻿using Atlas.Core.Exceptions;
 using Atlas.Core.Models;
-using Atlas.Data.Access.Base;
-using Atlas.Data.Access.Context;
 using Atlas.Data.Access.Interfaces;
+using Atlas.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
