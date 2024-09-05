@@ -12,7 +12,7 @@ namespace Atlas.API.Extensions
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.GET_CLAIM_AUTHORIZATION)
                 .WithDescription("Gets the user's authorization")
-                .Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
+                .Produces<Authorisation?>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
@@ -35,7 +35,7 @@ namespace Atlas.API.Extensions
             app.MapPost($"/{AtlasAPIEndpoints.GET_GENERIC_OPTIONS}", OptionsEndpoints.GetGenericOptions)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.GET_GENERIC_OPTIONS)
-                .WithDescription("Gets generic options for the specified options code")
+                .WithDescription("Gets serialized list of generic options for the specified options code")
                 .Produces<string>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);

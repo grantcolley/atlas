@@ -12,7 +12,7 @@ namespace Atlas.API.Extensions
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.GET_LOGS)
                 .WithDescription("Gets a list of logs")
-                .Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
+                .Produces<IEnumerable<Log>?>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 

@@ -12,7 +12,7 @@ namespace Atlas.API.Extensions
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.GET_USERS)
                 .WithDescription("Gets a list of users")
-                .Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
+                .Produces<IEnumerable<User>?>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
@@ -20,7 +20,7 @@ namespace Atlas.API.Extensions
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.GET_USER)
                 .WithDescription("Gets a user for the given id. If id is 0 then returns a new instance of a blank user for creation.")
-                .Produces<Module>(StatusCodes.Status200OK)
+                .Produces<User>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
@@ -28,7 +28,7 @@ namespace Atlas.API.Extensions
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.CREATE_USER)
                 .WithDescription("Create a new user.")
-                .Produces<Module>(StatusCodes.Status200OK)
+                .Produces<User>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
@@ -36,15 +36,15 @@ namespace Atlas.API.Extensions
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.UPDATE_USER)
                 .WithDescription("Updates the user.")
-                .Produces<Module>(StatusCodes.Status200OK)
+                .Produces<User>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
             app.MapDelete($"/{AtlasAPIEndpoints.DELETE_USER}/{{id:int}}", AdministrationEndpoints.DeleteUser)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.DELETE_USER)
-                .WithDescription("Delete's a user of the given id.")
-                .Produces<Module>(StatusCodes.Status200OK)
+                .WithDescription("Delete's a user of the given id and returns the number of records affected.")
+                .Produces<int>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
@@ -52,7 +52,7 @@ namespace Atlas.API.Extensions
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.GET_ROLES)
                 .WithDescription("Gets a list of roles")
-                .Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
+                .Produces<IEnumerable<Role>?>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
@@ -60,7 +60,7 @@ namespace Atlas.API.Extensions
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.GET_ROLE)
                 .WithDescription("Gets a role for the given id. If id is 0 then returns a new instance of a blank role for creation.")
-                .Produces<Module>(StatusCodes.Status200OK)
+                .Produces<Role>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
@@ -68,7 +68,7 @@ namespace Atlas.API.Extensions
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.CREATE_ROLE)
                 .WithDescription("Create a new role.")
-                .Produces<Module>(StatusCodes.Status200OK)
+                .Produces<Role>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
@@ -76,15 +76,15 @@ namespace Atlas.API.Extensions
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.UPDATE_ROLE)
                 .WithDescription("Updates the role.")
-                .Produces<Module>(StatusCodes.Status200OK)
+                .Produces<Role>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
             app.MapDelete($"/{AtlasAPIEndpoints.DELETE_ROLE}/{{id:int}}", AdministrationEndpoints.DeleteRole)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.DELETE_ROLE)
-                .WithDescription("Delete's a role of the given id.")
-                .Produces<Module>(StatusCodes.Status200OK)
+                .WithDescription("Delete's a role of the given id and returns the number of records affected.")
+                .Produces<int>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
@@ -92,7 +92,7 @@ namespace Atlas.API.Extensions
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.GET_PERMISSIONS)
                 .WithDescription("Gets a list of permissions")
-                .Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
+                .Produces<IEnumerable<Permission>?>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
@@ -100,7 +100,7 @@ namespace Atlas.API.Extensions
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.GET_PERMISSION)
                 .WithDescription("Gets a permission for the given id. If id is 0 then returns a new instance of a blank permission for creation.")
-                .Produces<Module>(StatusCodes.Status200OK)
+                .Produces<Permission>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
@@ -108,7 +108,7 @@ namespace Atlas.API.Extensions
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.CREATE_PERMISSION)
                 .WithDescription("Create a new permission.")
-                .Produces<Module>(StatusCodes.Status200OK)
+                .Produces<Permission>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
@@ -116,15 +116,15 @@ namespace Atlas.API.Extensions
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.UPDATE_PERMISSION)
                 .WithDescription("Updates the permission.")
-                .Produces<Module>(StatusCodes.Status200OK)
+                .Produces<Permission>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
             app.MapDelete($"/{AtlasAPIEndpoints.DELETE_PERMISSION}/{{id:int}}", AdministrationEndpoints.DeletePermission)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.DELETE_PERMISSION)
-                .WithDescription("Delete's a permission of the given id.")
-                .Produces<Module>(StatusCodes.Status200OK)
+                .WithDescription("Delete's a permission of the given id and returns the number of records affected.")
+                .Produces<int>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
@@ -132,7 +132,7 @@ namespace Atlas.API.Extensions
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.GET_PERMISSION_CHECKLIST)
                 .WithDescription("Gets a checklist of permissions")
-                .Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
+                .Produces<IEnumerable<ChecklistItem>?>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
@@ -140,7 +140,7 @@ namespace Atlas.API.Extensions
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.GET_ROLE_CHECKLIST)
                 .WithDescription("Gets a checklist of roles")
-                .Produces<IEnumerable<Module>?>(StatusCodes.Status200OK)
+                .Produces<IEnumerable<ChecklistItem>?>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
 
