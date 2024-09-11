@@ -13,7 +13,6 @@ else
 {
     <FluentSelect TOption="OptionItem"
                   @onchange="OnChange"
-                  Disabled="@ReadOnly"
                   Items="@_source"
                   Label="@Label"
                   OptionValue="@(oi => oi.Id)"
