@@ -10,6 +10,12 @@
 }
 
 @code {
+    [Inject]
+    internal IOptionsService? OptionsService { get; set; }
+
+    [Inject]
+    internal IOptionsRequests? OptionsRequests { get; set; }
+
     public override string? Title { get; set; } = "Page";
     public override string? APIGetEndpoint { get; set; } = AtlasAPIEndpoints.GET_PAGE;
     public override string? APICreateEndpoint { get; set; } = AtlasAPIEndpoints.CREATE_PAGE;
@@ -17,6 +23,39 @@
     public override string? APIDeleteEndpoint { get; set; } = AtlasAPIEndpoints.DELETE_PAGE;
     public override string? ModelNameField { get; set; } = "Name";
     public override string? IdentityFieldName { get; set; } = "PageId";
+
+    private IEnumerable<OptionItem> _routeOptions = [];
+    private IEnumerable<OptionItem>? _permissions = [];
+    private IEnumerable<Atlas.Core.Models.Category>? _categories = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        ArgumentNullException.ThrowIfNull(OptionsService);
+        ArgumentNullException.ThrowIfNull(OptionsRequests);
+
+        await base.OnInitializedAsync();
+
+        try
+        {
+            _isProcessing = true;
+
+            _routeOptions = OptionsService.GetOptionItems(Options.ROUTES);
+
+            IResponse<IEnumerable<OptionItem>?> response = await OptionsRequests.GetOptionItemsAsync(Options.PERMISSIONS_OPTION_ITEMS).ConfigureAwait(false);
+
+            _permissions = GetResponse(response);
+
+            IResponse<IEnumerable<Atlas.Core.Models.Category>?> categoriesResponse = await OptionsRequests.GetGenericOptionsAsync<Atlas.Core.Models.Category>(Options.CATEGORIES_OPTION_ITEMS).ConfigureAwait(false);
+
+            _categories = GetResponse<IEnumerable<Atlas.Core.Models.Category>?>(categoriesResponse);
+
+            _isProcessing = false;
+        }
+        catch(Exception ex)
+        {
+            RouteAlert(Alerts.ERROR, $"{Title} Error", ex.Message, new AtlasException(ex.Message, ex));
+        }
+    }
 
     public override RenderFragment RenderModelContent() => __builder =>
     {
@@ -45,6 +84,7 @@
                     </div>
                     <div>
                         <GenericSelectList T="Atlas.Core.Models.Category"
+                                           Source="@_categories"
                                            @bind-Value=@(Model.Category)
                                            ReadOnly="@(Model.IsReadOnly)"
                                            FieldName="Category"
@@ -52,12 +92,11 @@
                                            DisplayFieldName="Name"
                                            IconFieldName="Icon"
                                            Label="Category"
-                                           OptionsCode="@Options.CATEGORIES_OPTION_ITEMS"
                                            ShowIcons="true" />
                         <FluentValidationMessage For="@(() => Model.Category)" />
                     </div>
                     <div>
-                        <OptionsRequestList OptionsCode="@Options.PERMISSIONS_OPTION_ITEMS" @bind-Value=Model.Permission FieldName="Permission" Label="Permission" ReadOnly="@(Model.IsReadOnly)" />
+                        <OptionsList Source="@_permissions" @bind-Value=Model.Permission FieldName="Permission" Label="Permission" ReadOnly="@(Model.IsReadOnly)" />
                         <FluentValidationMessage For="@(() => Model.Permission)" />
                     </div>
                     <div>
@@ -65,7 +104,7 @@
                         <FluentValidationMessage For="@(() => Model.Icon)" />
                     </div>
                     <div>
-                        <OptionsServiceList OptionsCode="@Options.ROUTES" @bind-Value=Model.Route FieldName="Route" Label="Route" ReadOnly="@(Model.IsReadOnly)" />
+                        <OptionsList Source="@_routeOptions" @bind-Value=Model.Route FieldName="Route" Label="Route" ReadOnly="@(Model.IsReadOnly)" />
                         <FluentValidationMessage For="@(() => Model.Route)" />
                     </div>
                 </ChildContent>
