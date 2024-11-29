@@ -60,8 +60,10 @@
             if (string.IsNullOrWhiteSpace(FilterFieldName)) throw new NullReferenceException(nameof(FilterFieldName));
             if (string.IsNullOrWhiteSpace(_filter)) return Source?.AsQueryable();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             return Source?.AsQueryable().Where(i => !string.IsNullOrWhiteSpace(_dynamicType.GetValue(i, FilterFieldName) as string)
             && (_dynamicType.GetValue(i, FilterFieldName) as string).ToString().Contains(_filter, StringComparison.CurrentCultureIgnoreCase));
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
     }
 

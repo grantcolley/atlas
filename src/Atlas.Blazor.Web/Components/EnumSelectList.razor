@@ -1,0 +1,78 @@
+﻿@typeparam T where T : struct, Enum
+
+@if (ReadOnly)
+{
+    <FluentTextField Value="@_selectedText" Label="@Label" ReadOnly="true" />
+}
+else
+{
+    <FluentSelect Items="@_source"
+                  Label="@Label"
+                  Height="300px"
+                  Disabled="@ReadOnly"
+                  OptionText="@(o => o.Text)"
+                  OptionValue="@(o => o.Value.ToString())"
+                  OptionSelected="@(o => o.Selected)"
+                  @onchange="OnChange">
+    </FluentSelect>
+}
+
+@code {
+
+    [CascadingParameter]
+    private EditContext? CascadedEditContext { get; set; }
+
+    [Parameter]
+    public string? Label { get; set; }
+
+    [Parameter]
+    public string? FieldName { get; set; }
+
+    [Parameter]
+    public T? Value { get; set; }
+
+    [Parameter]
+    public bool ReadOnly { get; set; }
+
+    [Parameter]
+    public EventCallback<T> ValueChanged { get; set; }
+
+    private string? _selectedText;
+    private List<Option<T>> _source = new List<Option<T>>();
+
+    protected override void OnInitialized()
+    {
+        Array? values = Enum.GetValues(typeof(T));
+
+        if(Value != null)
+        {
+            _selectedText = Enum.GetName(typeof(T), Value);
+        }
+
+        foreach(T item in values)
+        {
+            string? itemText = Enum.GetName(typeof(T), item);
+            bool isSelected = string.IsNullOrWhiteSpace(_selectedText) ? false : _selectedText == itemText ? true : false;
+            Option<T> option = new Option<T> { Value = item, Text = itemText, Selected = isSelected };
+
+            _source.Add(option);
+        }
+    }
+
+    private async Task OnChange(ChangeEventArgs args)
+    {
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(FieldName);
+
+        Option<T>? value = _source.FirstOrDefault(o => o.Text == args.Value?.ToString());
+
+        T val = default(T);
+
+        if (value != null)
+        {
+            val = value.Value;
+        }
+
+        await ValueChanged.InvokeAsync(val);
+        CascadedEditContext?.NotifyFieldChanged(CascadedEditContext.Field(FieldName));
+    }
+}

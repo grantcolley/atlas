@@ -1,5 +1,4 @@
 ﻿@page "/Logs"
-@using System.Text.Json
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 @attribute [StreamRendering]
 
@@ -28,7 +27,7 @@
         else
         {
             <FluentDataGrid TGridItem=Atlas.Core.Models.Log Items="@FilteredItems"
-                            Style="height: 600px;overflow:auto;" GridTemplateColumns="0.1fr 0.5fr 0.5fr 1fr 1fr 0.5fr  0.5fr 0.2fr"
+                            Style="height: 700px;overflow:auto;" GridTemplateColumns="0.1fr 0.5fr 0.5fr 1fr 1fr 0.5fr  0.5fr 0.2fr"
                             ResizableColumns=true GenerateHeader="GenerateHeaderOption.Sticky"
                             Pagination="_paginationState">
                 <TemplateColumn Align="@Align.Center">
@@ -108,7 +107,7 @@ else
         }
     }
 
-    private PaginationState _paginationState = new PaginationState { ItemsPerPage = 20 };
+    private PaginationState _paginationState = new PaginationState { ItemsPerPage = 14 };
     private List<Log>? _items = new List<Log>();
     private string _levelFilter = string.Empty;
     private string _messageFilter = string.Empty;

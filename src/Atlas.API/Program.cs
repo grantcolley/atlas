@@ -5,6 +5,7 @@ using Atlas.Core.Constants;
 using Atlas.Core.Exceptions;
 using Atlas.Core.Logging.Interfaces;
 using Atlas.Core.Logging.Services;
+using Atlas.Core.Validation.Extensions;
 using Atlas.Data.Access.Data;
 using Atlas.Data.Access.Interfaces;
 using Atlas.Data.Context;
@@ -25,6 +26,8 @@ builder.Logging.AddConsole();
 builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
                   loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration)
                                         .Enrich.FromLogContext());
+
+builder.Services.AddAtlasValidators();
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -69,6 +72,7 @@ builder.Services.AddScoped<ISupportData, SupportData>();
 builder.Services.AddScoped<IOptionsData, OptionsData>();
 builder.Services.AddScoped<IApplicationData, ApplicationData>();
 builder.Services.AddScoped<IAdministrationData, AdministrationData>();
+builder.Services.AddScoped<IUserAuthorisationData, UserAuthorisationData>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -120,6 +124,7 @@ app.UseAuthorization();
 
 app.MapEndpoints();
 
+/////////////////////////// REMOVE START !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 bool generateSeedData = bool.Parse(builder.Configuration["SeedData:GenerateSeedData"] ?? "false");
 bool generateSeedLogs = bool.Parse(builder.Configuration["SeedData:GenerateSeedLogs"] ?? "false");
 
@@ -142,13 +147,12 @@ if (generateSeedData)
 
         for (int i = 0; i < 500; i++)
         {
-#pragma warning disable CA2208 // Instantiate argument exceptions correctly
             logService.Log(Atlas.Core.Logging.Enums.LogLevel.Information, new AtlasException("myNumber is zero", new DivideByZeroException(), "myNumber=0"), "test@email.com");
             logService.Log(Atlas.Core.Logging.Enums.LogLevel.Warning, new AtlasException("myVariable is null", new NullReferenceException("myVariable"), "myVariable=null"), "system@email.com");
             logService.Log(Atlas.Core.Logging.Enums.LogLevel.Error, new AtlasException("Boom!", new StackOverflowException(), "what the...."), "user@email.com");
-#pragma warning restore CA2208 // Instantiate argument exceptions correctly
         }
     }
 }
+/////////////////////////// REMOVE END !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 app.Run();

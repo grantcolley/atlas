@@ -43,7 +43,7 @@ namespace Atlas.API.Extensions
             app.MapDelete($"/{AtlasAPIEndpoints.DELETE_MODULE}/{{id:int}}", ApplicationEndpoints.DeleteModule)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.DELETE_MODULE)
-                .WithDescription("Delete's a module of the given id and returns the number of records affected.")
+                .WithDescription("Delete's a module of the given id and returns the number of affected rows.")
                 .Produces<int>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
@@ -83,7 +83,7 @@ namespace Atlas.API.Extensions
             app.MapDelete($"/{AtlasAPIEndpoints.DELETE_CATEGORY}/{{id:int}}", ApplicationEndpoints.DeleteCategory)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.DELETE_CATEGORY)
-                .WithDescription("Delete's a category of the given id and returns the number of records affected.")
+                .WithDescription("Delete's a category of the given id and returns the number of affected rows.")
                 .Produces<int>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);
@@ -123,7 +123,7 @@ namespace Atlas.API.Extensions
             app.MapDelete($"/{AtlasAPIEndpoints.DELETE_PAGE}/{{id:int}}", ApplicationEndpoints.DeletePage)
                 .WithOpenApi()
                 .WithName(AtlasAPIEndpoints.DELETE_PAGE)
-                .WithDescription("Delete's a page of the given id and returns the number of records affected.")
+                .WithDescription("Delete's a page of the given id and returns the number of affected rows.")
                 .Produces<int>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .RequireAuthorization(Auth.ATLAS_USER_CLAIM);

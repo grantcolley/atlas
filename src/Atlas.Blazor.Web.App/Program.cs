@@ -7,14 +7,13 @@ using Atlas.Blazor.Web.Services;
 using Atlas.Core.Constants;
 using Atlas.Core.Logging.Interfaces;
 using Atlas.Core.Logging.Services;
+using Atlas.Core.Validation.Extensions;
 using Atlas.Requests.API;
 using Atlas.Requests.Interfaces;
 using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.FluentUI.AspNetCore.Components;
-using Microsoft.FluentUI.AspNetCore.Components.Components.Tooltip;
 using Serilog;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -27,9 +26,12 @@ builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
-    .AddInteractiveWebAssemblyComponents();
+    .AddInteractiveWebAssemblyComponents()
+    .AddAuthenticationStateSerialization();
 
-builder.Services.AddFluentUIComponents();
+builder.Services.AddFluentUIComponents(new LibraryConfiguration { UseTooltipServiceProvider = true });
+
+builder.Services.AddAtlasValidators();
 
 builder.Services
     .AddAuth0WebAppAuthentication(Auth0Constants.AuthenticationScheme, options =>
@@ -46,12 +48,9 @@ builder.Services
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<TokenHandler>();
-builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
 
 builder.Services.AddSingleton<IAtlasRoutesService, AtlasRoutesService>();
 builder.Services.AddScoped<ILogService, LogService>();
-builder.Services.AddScoped<ITooltipService, TooltipService>();
-builder.Services.AddScoped<IDialogService, DialogService>();
 builder.Services.AddScoped<IAtlasDialogService, AtlasDialogService>();
 builder.Services.AddScoped<IOptionsService, OptionsService>();
 
@@ -135,6 +134,7 @@ app.MapRazorComponents<App>()
         typeof(Atlas.Blazor.Web._Imports).Assembly);
 
 app.Services.AddAtlasRoutablePages()
-            .AddAdditionalRoutableAssemblies(typeof(Atlas.Blazor.Web.App.Client._Imports).Assembly);
+            .AddAdditionalRoutableAssemblies(
+                typeof(Atlas.Blazor.Web.App.Client._Imports).Assembly);
 
 app.Run();

@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\migrations\Atlas.Migrations.SQLite\Atlas.Migrations.SQLite.csproj" />
+    <ProjectReference Include="..\..\migrations\Atlas.Migrations.SQLServer\Atlas.Migrations.SQLServer.csproj" />
+    <ProjectReference Include="..\..\src\Atlas.Blazor.Web\Atlas.Blazor.Web.csproj" />
+    <ProjectReference Include="..\..\src\Atlas.Core\Atlas.Core.csproj" />
+    <ProjectReference Include="..\..\src\Atlas.Data.Context\Atlas.Data.Context.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,9 +1,11 @@
 ﻿using Atlas.API.Interfaces;
+using Atlas.API.Utility;
 using Atlas.Core.Constants;
 using Atlas.Core.Exceptions;
 using Atlas.Core.Logging.Interfaces;
 using Atlas.Core.Models;
 using Atlas.Data.Access.Interfaces;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Atlas.API.Endpoints
@@ -66,7 +68,7 @@ namespace Atlas.API.Endpoints
             }
         }
 
-        internal static async Task<IResult> CreateUser([FromBody] User user, IAdministrationData administrationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
+        internal static async Task<IResult> CreateUser([FromBody] User user, IValidator<User> validator, IAdministrationData administrationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
             Authorisation? authorisation = null;
 
@@ -80,6 +82,8 @@ namespace Atlas.API.Endpoints
                 {
                     return Results.Unauthorized();
                 }
+
+                await validator.ValidateAndThrowAtlasException(user, "CreateUser", cancellationToken).ConfigureAwait(false);
 
                 User? newUser = await administrationData.CreateUserAsync(user, cancellationToken)
                     .ConfigureAwait(false);
@@ -94,7 +98,7 @@ namespace Atlas.API.Endpoints
             }
         }
 
-        internal static async Task<IResult> UpdateUser([FromBody] User user, IAdministrationData administrationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
+        internal static async Task<IResult> UpdateUser([FromBody] User user, IValidator<User> validator, IAdministrationData administrationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
             Authorisation? authorisation = null;
 
@@ -108,6 +112,8 @@ namespace Atlas.API.Endpoints
                 {
                     return Results.Unauthorized();
                 }
+
+                await validator.ValidateAndThrowAtlasException(user, "UpdateUser", cancellationToken).ConfigureAwait(false);
 
                 User? updatedUser = await administrationData.UpdateUserAsync(user, cancellationToken)
                     .ConfigureAwait(false);
@@ -206,7 +212,7 @@ namespace Atlas.API.Endpoints
             }
         }
 
-        internal static async Task<IResult> CreateRole([FromBody] Role role, IAdministrationData administrationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
+        internal static async Task<IResult> CreateRole([FromBody] Role role, IValidator<Role> validator, IAdministrationData administrationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
             Authorisation? authorisation = null;
 
@@ -220,6 +226,8 @@ namespace Atlas.API.Endpoints
                 {
                     return Results.Unauthorized();
                 }
+
+                await validator.ValidateAndThrowAtlasException(role, "CreateRole", cancellationToken).ConfigureAwait(false);
 
                 Role? newRole = await administrationData.CreateRoleAsync(role, cancellationToken)
                     .ConfigureAwait(false);
@@ -234,7 +242,7 @@ namespace Atlas.API.Endpoints
             }
         }
 
-        internal static async Task<IResult> UpdateRole([FromBody] Role role, IAdministrationData administrationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
+        internal static async Task<IResult> UpdateRole([FromBody] Role role, IValidator<Role> validator, IAdministrationData administrationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
             Authorisation? authorisation = null;
 
@@ -248,6 +256,8 @@ namespace Atlas.API.Endpoints
                 {
                     return Results.Unauthorized();
                 }
+
+                await validator.ValidateAndThrowAtlasException(role, "UpdateRole", cancellationToken).ConfigureAwait(false);
 
                 Role? updatedRole = await administrationData.UpdateRoleAsync(role, cancellationToken)
                     .ConfigureAwait(false);
@@ -346,7 +356,7 @@ namespace Atlas.API.Endpoints
             }
         }
 
-        internal static async Task<IResult> CreatePermission([FromBody] Permission permission, IAdministrationData administrationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
+        internal static async Task<IResult> CreatePermission([FromBody] Permission permission, IValidator<Permission> validator, IAdministrationData administrationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
             Authorisation? authorisation = null;
 
@@ -360,6 +370,8 @@ namespace Atlas.API.Endpoints
                 {
                     return Results.Unauthorized();
                 }
+
+                await validator.ValidateAndThrowAtlasException(permission, "CreatePermission", cancellationToken).ConfigureAwait(false);
 
                 Permission? newPermission = await administrationData.CreatePermissionAsync(permission, cancellationToken)
                     .ConfigureAwait(false);
@@ -374,7 +386,7 @@ namespace Atlas.API.Endpoints
             }
         }
 
-        internal static async Task<IResult> UpdatePermission([FromBody] Permission permission, IAdministrationData administrationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
+        internal static async Task<IResult> UpdatePermission([FromBody] Permission permission, IValidator<Permission> validator, IAdministrationData administrationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
             Authorisation? authorisation = null;
 
@@ -388,6 +400,8 @@ namespace Atlas.API.Endpoints
                 {
                     return Results.Unauthorized();
                 }
+
+                await validator.ValidateAndThrowAtlasException(permission, "UpdatePermission", cancellationToken).ConfigureAwait(false);
 
                 Permission? updatedPermission = await administrationData.UpdatePermissionAsync(permission, cancellationToken)
                     .ConfigureAwait(false);

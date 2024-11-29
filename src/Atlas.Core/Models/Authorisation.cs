@@ -15,8 +15,6 @@ namespace Atlas.Core.Models
 
         public bool HasPermission(string permission)
         {
-            ArgumentNullException.ThrowIfNull(nameof(permission));
-
             return Permissions.Contains(permission);
         }
     }

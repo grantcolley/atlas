@@ -5,16 +5,9 @@ using Serilog.Context;
 
 namespace Atlas.Core.Logging.Services
 {
-    public class LogService : ILogService
+    public class LogService(ILogger<LogService> logger) : ILogService
     {
-        private readonly ILogger<LogService> _logger;
-
-        public LogService(ILogger<LogService> logger)
-        {
-            ArgumentNullException.ThrowIfNull(nameof(logger));
-
-            _logger = logger;
-        }
+        private readonly ILogger<LogService> _logger = logger;
 
         public void Log(AtlasException? exception = null, string? user = "")
         {
@@ -50,6 +43,7 @@ namespace Atlas.Core.Logging.Services
                 message = exception.Message;
             }
 
+#pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable CA2254 // Template should be a static expression
             switch (logLevel)
             {
@@ -66,6 +60,7 @@ namespace Atlas.Core.Logging.Services
                     break;
             }
 #pragma warning restore CA2254 // Template should be a static expression
+#pragma warning restore IDE0079 // Remove unnecessary suppression
         }
     }
 }

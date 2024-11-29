@@ -10,8 +10,6 @@ namespace Atlas.API.Services
 
         public ClaimService(IHttpContextAccessor httpContextAccessor)
         {
-            ArgumentNullException.ThrowIfNull(nameof(httpContextAccessor));
-
             _httpContextAccessor = httpContextAccessor;
 
             if (_httpContextAccessor.HttpContext == null)

@@ -4,6 +4,7 @@ using Atlas.Core.Models;
 using Atlas.Data.Access.Interfaces;
 using Atlas.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 
 namespace Atlas.Data.Access.Data
@@ -55,10 +56,10 @@ namespace Atlas.Data.Access.Data
 
         public async Task<User> CreateUserAsync(User addUser, CancellationToken cancellationToken)
         {
+            using IDbContextTransaction transaction = _applicationDbContext.Database.BeginTransaction();
+
             try
             {
-                ArgumentNullException.ThrowIfNull(nameof(addUser));
-
                 User user = new()
                 {
                     Name = addUser.Name,
@@ -93,10 +94,14 @@ namespace Atlas.Data.Access.Data
                     user.IsReadOnly = true;
                 }
 
+                await transaction.CommitAsync(cancellationToken).ConfigureAwait(false);
+
                 return user;
             }
             catch (Exception ex)
             {
+                await transaction.RollbackAsync(cancellationToken).ConfigureAwait(false);
+
                 throw new AtlasException(ex.Message, ex);
             }
         }
@@ -217,8 +222,6 @@ namespace Atlas.Data.Access.Data
         {
             try
             {
-                ArgumentNullException.ThrowIfNull(nameof(permission));
-
                 await _applicationDbContext.Permissions
                     .AddAsync(permission, cancellationToken)
                     .ConfigureAwait(false);
@@ -339,10 +342,10 @@ namespace Atlas.Data.Access.Data
 
         public async Task<Role> CreateRoleAsync(Role addRole, CancellationToken cancellationToken)
         {
+            using IDbContextTransaction transaction = _applicationDbContext.Database.BeginTransaction();
+
             try
             {
-                ArgumentNullException.ThrowIfNull(nameof(addRole));
-
                 Role role = new()
                 {
                     Name = addRole.Name,
@@ -364,7 +367,7 @@ namespace Atlas.Data.Access.Data
                     IEnumerable<Permission> permissions = await _applicationDbContext.Permissions
                         .AsNoTracking()
                         .Where(p => permissionIds.Contains(p.PermissionId))
-                        .ToListAsync();
+                        .ToListAsync(cancellationToken);
 
                     role.Permissions.AddRange(permissions);
 
@@ -382,10 +385,14 @@ namespace Atlas.Data.Access.Data
                     role.IsReadOnly = true;
                 }
 
+                await transaction.CommitAsync(cancellationToken).ConfigureAwait(false);
+
                 return role;
             }
             catch (Exception ex)
             {
+                await transaction.RollbackAsync(cancellationToken).ConfigureAwait(false);
+
                 throw new AtlasException(ex.Message, ex);
             }
         }
@@ -423,7 +430,7 @@ namespace Atlas.Data.Access.Data
                     IEnumerable<Permission> permissions = await _applicationDbContext.Permissions
                         .AsNoTracking()
                         .Where(p => newPermissionIds.Contains(p.PermissionId))
-                        .ToListAsync();
+                        .ToListAsync(cancellationToken);
 
                     role.Permissions.AddRange(permissions);
                 }
@@ -476,15 +483,14 @@ namespace Atlas.Data.Access.Data
             IEnumerable<Permission> permissions = await GetPermissionsAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            List<ChecklistItem> permissionChecklist = (from p in permissions
+            List<ChecklistItem> permissionChecklist = [.. (from p in permissions
                                                        select new ChecklistItem
                                                        {
                                                            Id = p.PermissionId,
                                                            Name = p.Name,
                                                            Description = p.Description
                                                        })
-                                       .OrderBy(p => p.Name)
-                                       .ToList();
+                                       .OrderBy(p => p.Name)];
 
             _ = (from i in permissionChecklist
                  join p in modelPermissions on i.Id equals p.PermissionId

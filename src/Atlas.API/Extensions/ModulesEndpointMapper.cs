@@ -1,7 +1,4 @@
-﻿using Atlas.API.Endpoints;
-using Atlas.Core.Constants;
-
-namespace Atlas.API.Extensions
+﻿namespace Atlas.API.Extensions
 {
     internal static class ModulesEndpointMapper
     {

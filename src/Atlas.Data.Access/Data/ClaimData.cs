@@ -43,11 +43,11 @@ namespace Atlas.Data.Access.Data
                 List<string?> permissions = rolePermissions.Distinct().ToList();
 
                 List<Module> modules = await _applicationDbContext.Modules
-                    .AsNoTracking()
                     .Include(m => m.Categories.OrderBy(c => c.Order))
                     .ThenInclude(c => c.Pages.OrderBy(mu => mu.Order))
                     .Where(m => permissions.Contains(m.Permission))
                     .OrderBy(m => m.Order)
+                    .AsNoTracking()
                     .ToListAsync(cancellationToken)
                     .ConfigureAwait(false);
 

@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -28,19 +27,5 @@ namespace Atlas.Core.Models
 
         [NotMapped]
         public List<ChecklistItem> PermissionChecklist { get; set; }
-    }
-
-    public class RoleValidator : AbstractValidator<Role>
-    {
-        public RoleValidator()
-        {
-            RuleFor(v => v.Name)
-                .NotNull().WithMessage("Name is required")
-                .Length(1, 50).WithMessage("Name cannot exceed 50 characters");
-
-            RuleFor(v => v.Description)
-                .NotNull().WithMessage("Description is required")
-                .Length(1, 150).WithMessage("Description cannot exceed 150 characters");
-        }
     }
 }

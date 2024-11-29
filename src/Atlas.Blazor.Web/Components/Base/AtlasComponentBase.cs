@@ -18,14 +18,14 @@ namespace Atlas.Blazor.Web.Components.Base
         [Inject]
         public ILogService? LoggingService { get; set; }
 
-        protected string? _user { get; set; }
+        protected string? User { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             if (AuthenticationState != null)
             {
                 AuthenticationState authenticationState = await AuthenticationState;
-                _user = authenticationState.User?.Identity?.Name;
+                User = authenticationState.User?.Identity?.Name;
             }
         }
 
@@ -52,7 +52,7 @@ namespace Atlas.Blazor.Web.Components.Base
                 Message = message
             };
 
-            LoggingService?.Log(Core.Logging.Enums.LogLevel.Error, message, atlasException, _user);
+            LoggingService?.Log(Core.Logging.Enums.LogLevel.Error, message, atlasException, User);
 
             NavigationManager?.NavigateTo(alert.Route);
         }

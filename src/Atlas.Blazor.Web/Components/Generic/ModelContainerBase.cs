@@ -19,9 +19,6 @@ namespace Atlas.Blazor.Web.Components.Generic
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(Title);
             ArgumentException.ThrowIfNullOrWhiteSpace(APIGetEndpoint);
-            ArgumentException.ThrowIfNullOrWhiteSpace(APICreateEndpoint);
-            ArgumentException.ThrowIfNullOrWhiteSpace(APIUpdateEndpoint);
-            ArgumentException.ThrowIfNullOrWhiteSpace(APIDeleteEndpoint);
             ArgumentException.ThrowIfNullOrWhiteSpace(IdentityFieldName);
             ArgumentException.ThrowIfNullOrWhiteSpace(ModelNameField);
 

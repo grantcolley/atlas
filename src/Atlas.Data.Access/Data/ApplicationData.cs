@@ -141,10 +141,10 @@ namespace Atlas.Data.Access.Data
             try
             {
                 return await _applicationDbContext.Categories
-                    .AsNoTracking()
                     .Include(c => c.Module)
                     .OrderBy(m => m.Order)
                     .ThenBy(c => c.Order)
+                    .AsNoTracking()
                     .ToListAsync(cancellationToken)
                     .ConfigureAwait(false);
             }

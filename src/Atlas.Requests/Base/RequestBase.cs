@@ -1,12 +1,13 @@
 ﻿using Atlas.Requests.Interfaces;
 using Atlas.Requests.Model;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Atlas.Requests.Base
 {
     public abstract class RequestBase(HttpClient httpClient)
     {
-        protected static readonly JsonSerializerOptions _jsonSerializerOptions = new(JsonSerializerDefaults.Web);
+        protected static readonly JsonSerializerOptions _jsonSerializerOptions = new(JsonSerializerDefaults.Web) { ReferenceHandler = ReferenceHandler.IgnoreCycles };
         protected readonly HttpClient _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
 
         protected static async Task<IResponse<T>> GetResponseAsync<T>(HttpResponseMessage httpResponseMessage)

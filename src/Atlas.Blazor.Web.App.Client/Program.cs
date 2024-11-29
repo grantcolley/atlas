@@ -1,5 +1,3 @@
-using Atlas.Blazor.Web.App.Client.Authentication;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.FluentUI.AspNetCore.Components;
 
@@ -9,6 +7,6 @@ builder.Services.AddFluentUIComponents();
 
 builder.Services.AddAuthorizationCore();
 builder.Services.AddCascadingAuthenticationState();
-builder.Services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticationStateProvider>();
+builder.Services.AddAuthenticationStateDeserialization();
 
 await builder.Build().RunAsync();

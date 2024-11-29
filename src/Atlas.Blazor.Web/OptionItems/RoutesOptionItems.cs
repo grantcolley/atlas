@@ -4,14 +4,9 @@ using Atlas.Core.Models;
 
 namespace Atlas.Blazor.Web.OptionItems
 {
-    public class RoutesOptionItems : IOptionItems
+    public class RoutesOptionItems(IAtlasRoutesService atlasRoutesService) : IOptionItems
     {
-        private readonly IAtlasRoutesService _atlasRoutesService;
-
-        public RoutesOptionItems(IAtlasRoutesService atlasRoutesService)
-        {
-            _atlasRoutesService = atlasRoutesService;
-        }
+        private readonly IAtlasRoutesService _atlasRoutesService = atlasRoutesService;
 
         public IEnumerable<OptionItem> GetOptionItems(IEnumerable<OptionsArg> args)
         {

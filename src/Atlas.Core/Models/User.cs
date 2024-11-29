@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -53,20 +52,6 @@ namespace Atlas.Core.Models
             return Roles
                 .SelectMany(r => r.Permissions.Select(p => p.Code))
                 .ToList();
-        }
-    }
-
-    public class UserValidator : AbstractValidator<User>
-    {
-        public UserValidator()
-        {
-            RuleFor(v => v.Name)
-                .NotNull().WithMessage("Name is required")
-                .Length(1, 50).WithMessage("Name cannot exceed 50 characters");
-
-            RuleFor(v => v.Email)
-                .NotNull().WithMessage("Email is required")
-                .EmailAddress().WithMessage("A valid email address is required");
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Atlas.Data.Access.Data
     public class SupportData(ApplicationDbContext applicationDbContext, ILogger<SupportData> logger)
         : AuthorisationData<SupportData>(applicationDbContext, logger), ISupportData
     {
-        private static JsonSerializerOptions jsonSerializerOptions = new() { WriteIndented = true };
+        private static readonly JsonSerializerOptions jsonSerializerOptions = new() { WriteIndented = true };
 
         public async Task<IEnumerable<Log>> GetLogsAsync(LogArgs logArgs, CancellationToken cancellationToken)
         {

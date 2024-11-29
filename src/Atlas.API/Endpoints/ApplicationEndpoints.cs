@@ -1,9 +1,11 @@
 ﻿using Atlas.API.Interfaces;
+using Atlas.API.Utility;
 using Atlas.Core.Constants;
 using Atlas.Core.Exceptions;
 using Atlas.Core.Logging.Interfaces;
 using Atlas.Core.Models;
 using Atlas.Data.Access.Interfaces;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Atlas.API.Endpoints
@@ -66,7 +68,7 @@ namespace Atlas.API.Endpoints
             }
         }
 
-        internal static async Task<IResult> CreateModule([FromBody] Module module, IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
+        internal static async Task<IResult> CreateModule([FromBody] Module module, IValidator<Module> validator, IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
             Authorisation? authorisation = null;
 
@@ -80,6 +82,8 @@ namespace Atlas.API.Endpoints
                 {
                     return Results.Unauthorized();
                 }
+
+                await validator.ValidateAndThrowAtlasException(module, "CreateModule", cancellationToken).ConfigureAwait(false);
 
                 Module? newModule = await applicationData.CreateModuleAsync(module, cancellationToken)
                     .ConfigureAwait(false);
@@ -94,7 +98,7 @@ namespace Atlas.API.Endpoints
             }
         }
 
-        internal static async Task<IResult> UpdateModule([FromBody] Module module, IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
+        internal static async Task<IResult> UpdateModule([FromBody] Module module, IValidator<Module> validator, IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
             Authorisation? authorisation = null;
 
@@ -108,6 +112,8 @@ namespace Atlas.API.Endpoints
                 {
                     return Results.Unauthorized();
                 }
+
+                await validator.ValidateAndThrowAtlasException(module, "UpdateModule", cancellationToken).ConfigureAwait(false);
 
                 Module? updatedModule = await applicationData.UpdateModuleAsync(module, cancellationToken)
                     .ConfigureAwait(false);
@@ -206,7 +212,7 @@ namespace Atlas.API.Endpoints
             }
         }
 
-        internal static async Task<IResult> CreateCategory([FromBody] Category category, IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
+        internal static async Task<IResult> CreateCategory([FromBody] Category category, IValidator<Category> validator, IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
             Authorisation? authorisation = null;
 
@@ -220,6 +226,8 @@ namespace Atlas.API.Endpoints
                 {
                     return Results.Unauthorized();
                 }
+
+                await validator.ValidateAndThrowAtlasException(category, "CreateCategory", cancellationToken).ConfigureAwait(false);
 
                 Category? newCategory = await applicationData.CreateCategoryAsync(category, cancellationToken)
                     .ConfigureAwait(false);
@@ -234,7 +242,7 @@ namespace Atlas.API.Endpoints
             }
         }
 
-        internal static async Task<IResult> UpdateCategory([FromBody] Category category, IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
+        internal static async Task<IResult> UpdateCategory([FromBody] Category category, IValidator<Category> validator, IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
             Authorisation? authorisation = null;
 
@@ -248,6 +256,8 @@ namespace Atlas.API.Endpoints
                 {
                     return Results.Unauthorized();
                 }
+
+                await validator.ValidateAndThrowAtlasException(category, "UpdateCategory", cancellationToken).ConfigureAwait(false);
 
                 Category? updatedCategory = await applicationData.UpdateCategoryAsync(category, cancellationToken)
                     .ConfigureAwait(false);
@@ -345,7 +355,7 @@ namespace Atlas.API.Endpoints
             }
         }
 
-        internal static async Task<IResult> CreatePage([FromBody] Page page, IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
+        internal static async Task<IResult> CreatePage([FromBody] Page page, IValidator<Page> validator, IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
             Authorisation? authorisation = null;
 
@@ -359,6 +369,8 @@ namespace Atlas.API.Endpoints
                 {
                     return Results.Unauthorized();
                 }
+
+                await validator.ValidateAndThrowAtlasException(page, "CreatePage", cancellationToken).ConfigureAwait(false);
 
                 Page? newPage = await applicationData.CreatePageAsync(page, cancellationToken)
                     .ConfigureAwait(false);
@@ -373,7 +385,7 @@ namespace Atlas.API.Endpoints
             }
         }
 
-        internal static async Task<IResult> UpdatePage([FromBody] Page page, IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
+        internal static async Task<IResult> UpdatePage([FromBody] Page page, IValidator<Page> validator, IApplicationData applicationData, IClaimService claimService, ILogService logService, CancellationToken cancellationToken)
         {
             Authorisation? authorisation = null;
 
@@ -387,6 +399,8 @@ namespace Atlas.API.Endpoints
                 {
                     return Results.Unauthorized();
                 }
+
+                await validator.ValidateAndThrowAtlasException(page, "UpdatePage", cancellationToken).ConfigureAwait(false);
 
                 Page? updatedPage = await applicationData.UpdatePageAsync(page, cancellationToken)
                     .ConfigureAwait(false);

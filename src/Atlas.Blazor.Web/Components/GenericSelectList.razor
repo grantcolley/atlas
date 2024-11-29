@@ -74,14 +74,14 @@ else
 
     protected override void OnInitialized()
     {
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(IdentifierFieldName);
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(IdentifierFieldName);
 
-            if (Value != null)
-            {
-                int id = (int)(_dynamicType?.GetValue(Value, IdentifierFieldName) ?? 0);
+        if (Value != null)
+        {
+            int id = (int)(_dynamicType?.GetValue(Value, IdentifierFieldName) ?? 0);
 
-                _selectedItem = Source?.FirstOrDefault(o => (int)(_dynamicType?.GetValue(o, IdentifierFieldName) ?? 0) == id);
-            }
+            _selectedItem = Source?.FirstOrDefault(o => (int)(_dynamicType?.GetValue(o, IdentifierFieldName) ?? 0) == id);
+        }
     }
 
     private async Task OnChange(ChangeEventArgs args)

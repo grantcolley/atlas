@@ -16,7 +16,7 @@ namespace Atlas.Core.Dynamic
 
         private static int _counter;
 
-        private static readonly object _cacheLock = new();
+        private static readonly Lock _cacheLock = new();
 
         /// <summary>
         /// Gets an instance of a <see cref="DynamicTypeHelper"/> for the specified type.

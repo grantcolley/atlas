@@ -36,7 +36,7 @@
 
             <div style=" display: flex; flex-direction:row;">
                 <FluentLabel Style="margin-right: 10px;">Message:</FluentLabel>
-                <FluentLabel>@Content.Message</FluentLabel>
+                <FluentLabel Style="word-break: break-all;">@Content.Message</FluentLabel>
             </div>
         }
 
@@ -46,7 +46,7 @@
 
             <div style=" display: flex; flex-direction:row;">
                 <FluentLabel Style="margin-right: 10px;">Exception:</FluentLabel>
-                <FluentLabel>@Content.Exception</FluentLabel>
+                <FluentLabel Style="word-break: break-all;">@Content.Exception</FluentLabel>
             </div>
         }
 
@@ -57,14 +57,14 @@
 
         <div style=" display: flex; flex-direction:row;">
             <FluentLabel Style="margin-right: 10px;">Log Id:</FluentLabel>
-            <FluentLabel>@Content.Id</FluentLabel>
+            <FluentLabel Style="word-break: break-all;">@Content.Id</FluentLabel>
         </div>
 
         @if (!string.IsNullOrWhiteSpace(Content.User))
         {
             <div style=" display: flex; flex-direction:row;">
                 <FluentLabel Style="margin-right: 10px;">User:</FluentLabel>
-                <FluentLabel>@Content.User</FluentLabel>
+                <FluentLabel Style="word-break: break-all;">@Content.User</FluentLabel>
             </div>
         }
 
@@ -72,7 +72,7 @@
         {
             <div style=" display: flex; flex-direction:row;">
                 <FluentLabel Style="margin-right: 10px;">Context:</FluentLabel>
-                <FluentLabel>@Content.Context</FluentLabel>
+                <FluentLabel Style="word-break: break-all;">@Content.Context</FluentLabel>
             </div>
         }
 
@@ -80,7 +80,7 @@
         {
             <div style=" display: flex; flex-direction:row;">
                 <FluentLabel Style="margin-right: 10px;">@logProperty.Key:</FluentLabel>
-                <FluentLabel>@logProperty.Value</FluentLabel>
+                <FluentLabel Style="word-break: break-all;">@logProperty.Value</FluentLabel>
             </div>
         }
 
