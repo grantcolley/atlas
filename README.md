@@ -513,7 +513,7 @@ More can be read here about change tracking in Entity Framework:
 ## Blazor Template
 Create a Blazor Template module for the standard template WeatherForecast and Counter pages.
 
-1. Add a new permission constant in **Atlas.Core**'s [Auth](https://github.com/grantcolley/atlas/blob/main/src/Atlas.Core/Constants/Auth.cs) class.
+1. Add a new permission constant in **Atlas.Core**'s `Auth` class.
 ```C#
     public static class Auth
     {
@@ -577,7 +577,7 @@ Create a Blazor Template module for the standard template WeatherForecast and Co
     }
 ```
 
-4. Add a new constant for the weather forecast endpoint in **Atlas.Core**'s [AtlasAPIEndpoints](https://github.com/grantcolley/atlas/blob/main/src/Atlas.Core/Constants/AtlasAPIEndpoints.cs) class.
+4. Add a new constant for the weather forecast endpoint in **Atlas.Core**'s `AtlasAPIEndpoints` class.
 ```C#
     public static class AtlasAPIEndpoints
     {
@@ -587,7 +587,7 @@ Create a Blazor Template module for the standard template WeatherForecast and Co
     }
 ```
 
-5. Map the weather forecast endpoint in **Atlas.API**'s [ModulesEndpointMapper](https://github.com/grantcolley/atlas/blob/main/src/Atlas.API/Extensions/ModulesEndpointMapper.cs) class.
+5. Map the weather forecast endpoint in **Atlas.API**'s `ModulesEndpointMapper` class.
 ```C#
     internal static class ModulesEndpointMapper
     {
@@ -632,7 +632,7 @@ Create a Blazor Template module for the standard template WeatherForecast and Co
     }
 ```
 
-8. Register the `WeatherForecastRequests` service in **Atlas.Blazor.Web.App**'s [Program](https://github.com/grantcolley/atlas/blob/main/src/Atlas.Blazor.Web.App/Program.cs) file.
+8. Register the `WeatherForecastRequests` service in **Atlas.Blazor.Web.App**'s `Program` file.
 ```C#
    // existing code removed for brevity
    
