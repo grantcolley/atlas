@@ -513,10 +513,7 @@ More can be read here about change tracking in Entity Framework:
 ## Blazor Template
 Create a Blazor Template module for the standard template WeatherForecast and Counter pages.
 
-> [!TIP]
-> The code for this worked example can be found in the [blazor-template](https://github.com/grantcolley/atlas/tree/blazor-template) branch.
-
-1. Add a new permission to [Auth](https://github.com/grantcolley/atlas/blob/blazor-template/src/Atlas.Core/Constants/Auth.cs) in **Atlas.Core**.
+1. Add a new permission constant in **Atlas.Core**' [Auth](https://github.com/grantcolley/atlas/blob/main/src/Atlas.Core/Constants/Auth.cs) class.
 ```C#
     public static class Auth
     {
@@ -529,7 +526,7 @@ Create a Blazor Template module for the standard template WeatherForecast and Co
     }
 ```
 
-2. Create a new [WeatherForecast](https://github.com/grantcolley/atlas/blob/blazor-template/src/Atlas.Core/Models/WeatherForecast.cs) class in **Atlas.Core**.
+2. Create a new `WeatherForecast` class in **Atlas.Core**'s `Models` folder.
 ```C#
     public class WeatherForecast
     {
@@ -540,7 +537,7 @@ Create a Blazor Template module for the standard template WeatherForecast and Co
     }
 ```
 
-3. Create a new [WeatherEndpoints](https://github.com/grantcolley/atlas/blob/blazor-template/src/Atlas.API/Endpoints/WeatherEndpoints.cs) in **Atlas.API**.
+3. Create a new `WeatherEndpoints` class in **Atlas.API**'s `Endpoints` folder.
 ```C#
     public class WeatherEndpoints
     {
@@ -580,7 +577,7 @@ Create a Blazor Template module for the standard template WeatherForecast and Co
     }
 ```
 
-4. Add a new [AtlasAPIEndpoints](https://github.com/grantcolley/atlas/blob/blazor-template/src/Atlas.Core/Constants/AtlasAPIEndpoints.cs) constant in **Atlas.Core**.
+4. Add a new constant for the weather forecast endpoint in **Atlas.Core**'s [AtlasAPIEndpoints](https://github.com/grantcolley/atlas/blob/main/src/Atlas.Core/Constants/AtlasAPIEndpoints.cs) class.
 ```C#
     public static class AtlasAPIEndpoints
     {
@@ -590,7 +587,7 @@ Create a Blazor Template module for the standard template WeatherForecast and Co
     }
 ```
 
-5. Map the endpoint in [ModulesEndpointMapper](https://github.com/grantcolley/atlas/blob/blazor-template/src/Atlas.API/Extensions/ModulesEndpointMapper.cs) in **Atlas.API**.
+5. Map the weather forecast endpoint in **Atlas.API**'s [ModulesEndpointMapper](https://github.com/grantcolley/atlas/blob/main/src/Atlas.API/Extensions/ModulesEndpointMapper.cs) class.
 ```C#
     internal static class ModulesEndpointMapper
     {
@@ -611,7 +608,7 @@ Create a Blazor Template module for the standard template WeatherForecast and Co
     }
 ```
 
-6. Create interface [IWeatherForecastRequests](https://github.com/grantcolley/atlas/blob/blazor-template/src/Atlas.Requests/Interfaces/IWeatherForecastRequests.cs) in **Atlas.Requests**.
+6. Create a new interface `IWeatherForecastRequests` in **Atlas.Requests**'s `Interfaces` folder.
 ```C#
     public interface IWeatherForecastRequests
     {
@@ -619,7 +616,7 @@ Create a Blazor Template module for the standard template WeatherForecast and Co
     }
 ```
 
-7. Create class [WeatherForecastRequests](https://github.com/grantcolley/atlas/blob/blazor-template/src/Atlas.Requests/API/WeatherForecastRequests.cs) in **Atlas.Requests**.
+7. Create a new class `WeatherForecastRequests` in **Atlas.Requests**'s `API` folder.
 ```C#
     public class WeatherForecastRequests(HttpClient httpClient) : IWeatherForecastRequests
     {
@@ -635,7 +632,7 @@ Create a Blazor Template module for the standard template WeatherForecast and Co
     }
 ```
 
-8. Register the service `WeatherForecastRequests` in [Program](https://github.com/grantcolley/atlas/blob/blazor-template/src/Atlas.Blazor.Web.App/Program.cs) of **Atlas.Blazor.Web.App**.
+8. Register the `WeatherForecastRequests` service in **Atlas.Blazor.Web.App**'s [Program](https://github.com/grantcolley/atlas/blob/main/src/Atlas.Blazor.Web.App/Program.cs) file.
 ```C#
    // existing code removed for brevity
    
@@ -651,7 +648,7 @@ Create a Blazor Template module for the standard template WeatherForecast and Co
    // existing code removed for brevity
 ```
 
-9. Create the [Weather](https://github.com/grantcolley/atlas/blob/blazor-template/src/Atlas.Blazor.Web/Components/Pages/BlazorTemplate/Weather.razor) component in **Atlas.Blazor.Web**
+9. Create a new Blazor `Weather` component in **Atlas.Blazor.Web**'s `/Components/Pages` folder
 ```HTML+Razor
 @page "/Weather"
 @attribute [StreamRendering]
@@ -706,7 +703,7 @@ else
 }
 ```
 
-10. Create the [Counter](https://github.com/grantcolley/atlas/blob/blazor-template/src/Atlas.Blazor.Web/Components/Pages/BlazorTemplate/Counter.razor) component in **Atlas.Blazor.Web**
+10. Create a new Blazor `Counter` component in **Atlas.Blazor.Web**'s `/Components/Pages` folder.
 ```HTML+Razor
 @page "/Counter"
 @rendermode InteractiveAuto
