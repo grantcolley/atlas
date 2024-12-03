@@ -1,4 +1,4 @@
-﻿namespace Atlas.Blazor.Web.Constants
+﻿namespace Atlas.Core.Constants
 {
     public static class AtlasWebConstants
     {

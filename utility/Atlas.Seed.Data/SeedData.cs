@@ -1,5 +1,4 @@
-﻿using Atlas.Blazor.Web.Constants;
-using Atlas.Core.Constants;
+﻿using Atlas.Core.Constants;
 using Atlas.Core.Models;
 using Atlas.Data.Context;
 using Microsoft.EntityFrameworkCore;

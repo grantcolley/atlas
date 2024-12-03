@@ -17,7 +17,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\migrations\Atlas.Migrations.SQLite\Atlas.Migrations.SQLite.csproj" />
     <ProjectReference Include="..\..\migrations\Atlas.Migrations.SQLServer\Atlas.Migrations.SQLServer.csproj" />
-    <ProjectReference Include="..\..\src\Atlas.Blazor.Web\Atlas.Blazor.Web.csproj" />
     <ProjectReference Include="..\..\src\Atlas.Core\Atlas.Core.csproj" />
     <ProjectReference Include="..\..\src\Atlas.Data.Context\Atlas.Data.Context.csproj" />
   </ItemGroup>
