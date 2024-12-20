@@ -125,28 +125,76 @@ namespace Atlas.Seed.Data
 
         private static void AddApplications()
         {
+            AddDevelopment();
             AddAdministration();
             AddSupport();
+        }
+
+        public static Module GetDeveloperModule()
+        {
+            return new() { Name = "Developer", Icon = "AppsSettings", Order = 1, Permission = Auth.DEVELOPER };
+        }
+
+        public static Category GetSettingsCategory(Module developerModule)
+        {
+            return new() { Name = "Settings", Icon = "LauncherSettings", Order = 1, Permission = Auth.DEVELOPER, Module = developerModule };
+        }
+
+        public static Page GetDatabasePage(Category settingsCategory)
+        {
+            return new() { Name = "Database", Icon = "Database", Route = AtlasWebConstants.PAGE_DATABASE, Order = 1, Permission = Auth.DEVELOPER, Category = settingsCategory };
+        }
+
+        private static void AddDevelopment()
+        {
+            if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
+
+            Module developerModule = GetDeveloperModule();
+
+            dbContext.Modules.Add(developerModule);
+
+            dbContext.SaveChanges();
+
+            Category settingsCategory = GetSettingsCategory(developerModule);
+            Category configurationCategory = new() { Name = "Applications", Icon = "Apps", Order = 2, Permission = Auth.DEVELOPER, Module = developerModule };
+
+            developerModule.Categories.Add(settingsCategory);
+            developerModule.Categories.Add(configurationCategory);
+
+            dbContext.Categories.Add(settingsCategory);
+            dbContext.Categories.Add(configurationCategory);
+
+            dbContext.SaveChanges();
+
+            Page databasePage = GetDatabasePage(settingsCategory);
+
+            settingsCategory.Pages.Add(databasePage);
+
+            Page modulePage = new() { Name = "Modules", Icon = "PanelLeftText", Route = AtlasWebConstants.PAGE_MODULES, Order = 1, Permission = Auth.DEVELOPER, Category = configurationCategory };
+            Page categoriesPage = new() { Name = "Categories", Icon = "AppsListDetail", Route = AtlasWebConstants.PAGE_CATEGORIES, Order = 2, Permission = Auth.DEVELOPER, Category = configurationCategory };
+            Page pagesPage = new() { Name = "Pages", Icon = "DocumentOnePage", Route = AtlasWebConstants.PAGE_PAGES, Order = 3, Permission = Auth.DEVELOPER, Category = configurationCategory };
+
+            configurationCategory.Pages.Add(modulePage);
+            configurationCategory.Pages.Add(categoriesPage);
+            configurationCategory.Pages.Add(pagesPage);
+
+            dbContext.Pages.Add(databasePage);
+            dbContext.Pages.Add(modulePage);
+            dbContext.Pages.Add(categoriesPage);
+            dbContext.Pages.Add(pagesPage);
+
+            dbContext.SaveChanges();
         }
 
         private static void AddAdministration()
         {
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-            Module administrationModule = new() { Name = "Administration", Icon = "TableSettings", Order = 1, Permission = Auth.ADMIN_READ };
+            Module administrationModule = new() { Name = "Administration", Icon = "TableSettings", Order = 2, Permission = Auth.ADMIN_READ };
 
             dbContext.Modules.Add(administrationModule);
 
             dbContext.SaveChanges();
-
-            AddAuthorisationCategory(administrationModule);
-            AddDevelopmentCategory(administrationModule);
-        }
-
-        private static void AddAuthorisationCategory(Module administrationModule)
-        {
-            ArgumentNullException.ThrowIfNull(administrationModule);
-            if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
             Category authorisationCategory = new() { Name = "Authorisation", Icon = "ShieldLock", Order = 1, Permission = Auth.ADMIN_READ, Module = administrationModule };
 
@@ -171,39 +219,11 @@ namespace Atlas.Seed.Data
             dbContext.SaveChanges();
         }
 
-        private static void AddDevelopmentCategory(Module administrationModule)
-        {
-            ArgumentNullException.ThrowIfNull(administrationModule);
-            if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
-
-            Category configurationCategory = new() { Name = "Applications", Icon = "Apps", Order = 2, Permission = Auth.DEVELOPER, Module = administrationModule };
-
-            administrationModule.Categories.Add(configurationCategory);
-
-            dbContext.Categories.Add(configurationCategory);
-
-            dbContext.SaveChanges();
-
-            Page modulePage = new() { Name = "Modules", Icon = "PanelLeftText", Route = AtlasWebConstants.PAGE_MODULES, Order = 1, Permission = Auth.DEVELOPER, Category = configurationCategory };
-            Page categoriesPage = new() { Name = "Categories", Icon = "AppsListDetail", Route = AtlasWebConstants.PAGE_CATEGORIES, Order = 2, Permission = Auth.DEVELOPER, Category = configurationCategory };
-            Page pagesPage = new() { Name = "Pages", Icon = "DocumentOnePage", Route = AtlasWebConstants.PAGE_PAGES, Order = 3, Permission = Auth.DEVELOPER, Category = configurationCategory };
-
-            configurationCategory.Pages.Add(modulePage);
-            configurationCategory.Pages.Add(categoriesPage);
-            configurationCategory.Pages.Add(pagesPage);
-
-            dbContext.Pages.Add(modulePage);
-            dbContext.Pages.Add(categoriesPage);
-            dbContext.Pages.Add(pagesPage);
-
-            dbContext.SaveChanges();
-        }
-
         private static void AddSupport()
         {
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
-            Module supportModule = new() { Name = "Support", Icon = "PersonSupport", Order = 2, Permission = Auth.SUPPORT };
+            Module supportModule = new() { Name = "Support", Icon = "PersonSupport", Order = 3, Permission = Auth.SUPPORT };
 
             dbContext.Modules.Add(supportModule);
 

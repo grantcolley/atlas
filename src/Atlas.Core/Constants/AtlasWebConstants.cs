@@ -21,6 +21,7 @@
         public const string PAGE_CATEGORIES = "Categories";
         public const string PAGE_PAGE = "Page";
         public const string PAGE_PAGES = "Pages";
+        public const string PAGE_DATABASE = "Database";
 
         // Support
         public const string PAGE_LOGS = "Logs";

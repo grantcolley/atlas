@@ -1,7 +1,9 @@
-﻿using Atlas.Core.Exceptions;
+﻿using Atlas.Core.Constants;
+using Atlas.Core.Exceptions;
 using Atlas.Core.Models;
 using Atlas.Data.Access.Interfaces;
 using Atlas.Data.Context;
+using Atlas.Seed.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -61,6 +63,21 @@ namespace Atlas.Data.Access.Data
             {
                 throw new AtlasException(ex.Message, ex, $"User={email ?? "Email is null"}");
             }
+        }
+
+        public IEnumerable<Module> GetDeveloperDatabaseClaim()
+        {
+            Module module = SeedData.GetDeveloperModule();
+
+            Category category = SeedData.GetSettingsCategory(module);
+
+            module.Categories.Add(category);
+
+            Page page = SeedData.GetDatabasePage(category);
+
+            category.Pages.Add(page);
+
+            return [module];
         }
     }
 }

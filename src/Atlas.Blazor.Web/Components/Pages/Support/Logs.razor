@@ -88,6 +88,12 @@ else
 }
 
 @code {
+    [CascadingParameter]
+    public Task<AuthenticationState>? AuthenticationState { get; set; }
+
+    [Inject]
+    public ILogService? LoggingService { get; set; }
+
     [Inject]
     public IGenericRequests? GenericRequests { get; set; }
 
@@ -114,6 +120,7 @@ else
     private string _exceptionFilter = string.Empty;
     private string _contextFilter = string.Empty;
     private string _userFilter = string.Empty;
+    private string? _user = string.Empty;
     private bool _isProcessing = false;
     private LogArgs _logArgs = new();
     private Alert? _alert = null;
@@ -232,25 +239,45 @@ else
 
         string logArgsJson = JsonSerializer.Serialize(logArgs);
 
-        IAuthResponse<IEnumerable<Log>> response = await GenericRequests
-                                                            .GetListAsync<Log>(logArgsJson, AtlasAPIEndpoints.GET_LOGS)
-                                                            .ConfigureAwait(false);
-
-        if (!response.IsSuccess)
+        try
         {
-            if (!string.IsNullOrWhiteSpace(response.Message))
+            if (AuthenticationState != null)
             {
-                _alert = new Models.Alert
-                    {
-                        AlertType = Alerts.ERROR,
-                        Title = $"Error Logs",
-                        Message = response.Message
-                    };
+                AuthenticationState authenticationState = await AuthenticationState;
+                _user = authenticationState.User?.Identity?.Name;
+            }
+
+            IAuthResponse<IEnumerable<Log>> response = await GenericRequests
+                                                                .GetListAsync<Log>(logArgsJson, AtlasAPIEndpoints.GET_LOGS)
+                                                                .ConfigureAwait(false);
+
+            if (!response.IsSuccess)
+            {
+                if (!string.IsNullOrWhiteSpace(response.Message))
+                {
+                    _alert = new Models.Alert
+                        {
+                            AlertType = Alerts.ERROR,
+                            Title = $"Error Logs",
+                            Message = response.Message
+                        };
+                }
+            }
+            else
+            {
+                _items = response.Result?.ToList();
             }
         }
-        else
+        catch (Exception ex)
         {
-            _items = response.Result?.ToList();
+            _alert = new Models.Alert
+                {
+                    AlertType = Alerts.ERROR,
+                    Title = $"Error Logs",
+                    Message = ex.Message
+                };
+
+            LoggingService?.Log(Core.Logging.Enums.LogLevel.Error, ex.Message, new AtlasException(ex.Message, ex), _user);
         }
 
         _isProcessing = false;

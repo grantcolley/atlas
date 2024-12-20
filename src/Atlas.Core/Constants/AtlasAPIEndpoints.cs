@@ -4,6 +4,9 @@
     {
         public const string GET_CLAIM_AUTHORIZATION = "getclaimauthorization";
         public const string GET_CLAIM_MODULES = "getclaimmodules";
+        public const string GET_DATABASE_STATUS = "getdatabasestatus";
+        public const string CREATE_DATABASE = "createdatabase";
+        public const string SEED_DATABASE = "seeddatabase";
         public const string GET_LOGS = "getlogs";
         public const string GET_OPTIONS = "getoptions";
         public const string GET_GENERIC_OPTIONS = "getgenericoptions";

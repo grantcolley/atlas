@@ -10,6 +10,8 @@
 
             app.MapAtlasEndpoints();
 
+            app.MapAtlasDatabaseEndpoints();
+
             app.MapAtlasApplicationEndpoints();
 
             app.MapAtlasAdministrationEndpoints();

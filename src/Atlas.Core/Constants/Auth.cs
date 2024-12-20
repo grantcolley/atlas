@@ -3,6 +3,7 @@
     public static class Auth
     {
         public const string ATLAS_USER_CLAIM = "atlas-user";
+        public const string ATLAS_DEVELOPER_CLAIM = "atlas-developer";
         public const string ADMIN_READ = "Admin-Read";
         public const string ADMIN_WRITE = "Admin-Write";
         public const string DEVELOPER = "Developer";

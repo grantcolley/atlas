@@ -1,5 +1,4 @@
 ﻿using Atlas.API.Interfaces;
-using Atlas.Core.Constants;
 using Atlas.Core.Exceptions;
 using Atlas.Core.Logging.Interfaces;
 using Atlas.Core.Models;
@@ -42,7 +41,27 @@ namespace Atlas.API.Endpoints
             {
                 authorisation = await claimData.GetAuthorisationAsync(claimService.GetClaim(), cancellationToken)
                     .ConfigureAwait(false);
+            }
+            catch(AtlasException ex)
+            {
+                if ((ex.Message.StartsWith("Cannot open database \"Atlas\"")
+                    || ex.Message.Contains("unauthorized"))
+                    && claimService.HasDeveloperClaim())
+                {
+                    logService.Log(Core.Logging.Enums.LogLevel.Information, ex.Message, ex, authorisation?.User);
 
+                    return Results.Ok(claimData.GetDeveloperDatabaseClaim());
+                }
+                else
+                {
+                    logService.Log(Core.Logging.Enums.LogLevel.Error, ex.Message, ex, authorisation?.User);
+
+                    return Results.StatusCode(StatusCodes.Status500InternalServerError);
+                }
+            }
+
+            try
+            {
                 if (authorisation == null)
                 {
                     return Results.Unauthorized();

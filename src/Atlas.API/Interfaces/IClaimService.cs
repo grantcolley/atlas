@@ -3,5 +3,6 @@
     public interface IClaimService
     {
         string? GetClaim();
+        bool HasDeveloperClaim();
     }
 }

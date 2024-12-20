@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\utility\Atlas.Seed.Data\Atlas.Seed.Data.csproj" />
+    <ProjectReference Include="..\Atlas.Core.Logging\Atlas.Core.Logging.csproj" />
     <ProjectReference Include="..\Atlas.Core\Atlas.Core.csproj" />
     <ProjectReference Include="..\Atlas.Data.Context\Atlas.Data.Context.csproj" />
   </ItemGroup>

@@ -2,14 +2,12 @@ using Atlas.API.Extensions;
 using Atlas.API.Interfaces;
 using Atlas.API.Services;
 using Atlas.Core.Constants;
-using Atlas.Core.Exceptions;
 using Atlas.Core.Logging.Interfaces;
 using Atlas.Core.Logging.Services;
 using Atlas.Core.Validation.Extensions;
 using Atlas.Data.Access.Data;
 using Atlas.Data.Access.Interfaces;
 using Atlas.Data.Context;
-using Atlas.Seed.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
@@ -68,6 +66,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IClaimData, ClaimData>();
 builder.Services.AddScoped<ILogService, LogService>();
 builder.Services.AddScoped<IClaimService, ClaimService>();
+builder.Services.AddScoped<IDeveloperData, DeveloperData>();
 builder.Services.AddScoped<ISupportData, SupportData>();
 builder.Services.AddScoped<IOptionsData, OptionsData>();
 builder.Services.AddScoped<IApplicationData, ApplicationData>();
@@ -89,6 +88,10 @@ builder.Services.AddAuthorizationBuilder()
     .AddPolicy(Auth.ATLAS_USER_CLAIM, policy =>
     {
         policy.RequireAuthenticatedUser().RequireRole(Auth.ATLAS_USER_CLAIM);
+    })
+    .AddPolicy(Auth.ATLAS_DEVELOPER_CLAIM, policy =>
+    {
+        policy.RequireAuthenticatedUser().RequireRole(Auth.ATLAS_DEVELOPER_CLAIM);
     });
 
 builder.Services.AddCors(options =>
@@ -123,36 +126,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapEndpoints();
-
-/////////////////////////// REMOVE START !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-bool generateSeedData = bool.Parse(builder.Configuration["SeedData:GenerateSeedData"] ?? "false");
-bool generateSeedLogs = bool.Parse(builder.Configuration["SeedData:GenerateSeedLogs"] ?? "false");
-
-if (generateSeedData)
-{
-    // Seed data for development testing purposes only...
-    using IServiceScope scope = app.Services.CreateScope();
-
-    IServiceProvider services = scope.ServiceProvider;
-
-    ApplicationDbContext applicationDbContext = services.GetRequiredService<ApplicationDbContext>();
-
-    applicationDbContext.SetUser("Atlas.SeedData");
-
-    SeedData.Generate(applicationDbContext);
-
-    if (generateSeedLogs)
-    {
-        ILogService logService = services.GetRequiredService<ILogService>();
-
-        for (int i = 0; i < 500; i++)
-        {
-            logService.Log(Atlas.Core.Logging.Enums.LogLevel.Information, new AtlasException("myNumber is zero", new DivideByZeroException(), "myNumber=0"), "test@email.com");
-            logService.Log(Atlas.Core.Logging.Enums.LogLevel.Warning, new AtlasException("myVariable is null", new NullReferenceException("myVariable"), "myVariable=null"), "system@email.com");
-            logService.Log(Atlas.Core.Logging.Enums.LogLevel.Error, new AtlasException("Boom!", new StackOverflowException(), "what the...."), "user@email.com");
-        }
-    }
-}
-/////////////////////////// REMOVE END !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 app.Run();

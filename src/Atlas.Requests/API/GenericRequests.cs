@@ -58,7 +58,7 @@ namespace Atlas.Requests.API
         {
             ArgumentNullException.ThrowIfNullOrWhiteSpace(endpoint, nameof(endpoint));
 
-            HttpResponseMessage httpResponseMessage = await _httpClient.GetAsync($"{endpoint}/{id}").ConfigureAwait(false);
+            using HttpResponseMessage httpResponseMessage = await _httpClient.GetAsync($"{endpoint}/{id}").ConfigureAwait(false);
 
             IResponse<T> responseModel = await GetResponseAsync<T>(httpResponseMessage)
                 .ConfigureAwait(false);
