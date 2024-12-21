@@ -1,4 +1,4 @@
-﻿namespace Atlas.Data.Context
+﻿namespace Atlas.Data.Access.EF.Context
 {
     public static class DataMigrations
     {

@@ -5,7 +5,7 @@ using System.Text.Json;
 
 #nullable disable
 
-namespace Atlas.Data.Context
+namespace Atlas.Data.Access.EF.Context
 {
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
     {

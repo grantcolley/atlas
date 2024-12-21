@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Atlas.Core\Atlas.Core.csproj" />
+    <ProjectReference Include="..\Atlas.Data.Access\Atlas.Data.Access.csproj" />
   </ItemGroup>
 
 </Project>

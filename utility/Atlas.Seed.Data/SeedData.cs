@@ -1,6 +1,6 @@
 ﻿using Atlas.Core.Constants;
 using Atlas.Core.Models;
-using Atlas.Data.Context;
+using Atlas.Data.Access.EF.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace Atlas.Seed.Data

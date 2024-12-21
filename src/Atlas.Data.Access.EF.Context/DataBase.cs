@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace Atlas.Data.Context
+namespace Atlas.Data.Access.EF.Context
 {
     public abstract class DataBase<T>(ApplicationDbContext applicationDbContext, ILogger<T> logger) : IDisposable
     {
