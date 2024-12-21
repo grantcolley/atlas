@@ -44,7 +44,7 @@ namespace Atlas.API.Endpoints
             }
             catch(AtlasException ex)
             {
-                if ((ex.Message.StartsWith("Cannot open database \"Atlas\"")
+                if ((ex.Message.StartsWith("Cannot open database")
                     || ex.Message.Contains("unauthorized"))
                     && claimService.HasDeveloperClaim())
                 {

@@ -37,7 +37,7 @@ namespace Atlas.Data.Context
             catch (Exception ex)
             {
                 if (ex.InnerException != null
-                    && ex.InnerException.Message.StartsWith("Cannot open database \"Atlas\""))
+                    && ex.InnerException.Message.StartsWith("Cannot open database"))
                 {
                     throw new AtlasException(ex.InnerException.Message, ex);
                 }
