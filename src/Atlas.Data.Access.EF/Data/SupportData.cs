@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
-namespace Atlas.Data.Access.Data
+namespace Atlas.Data.Access.EF.Data
 {
     public class SupportData(ApplicationDbContext applicationDbContext, ILogger<SupportData> logger)
         : AuthorisationData<SupportData>(applicationDbContext, logger), ISupportData

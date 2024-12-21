@@ -6,7 +6,7 @@ using Atlas.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Atlas.Data.Access.Data
+namespace Atlas.Data.Access.EF.Data
 {
     public class ApplicationData(ApplicationDbContext applicationDbContext, ILogger<ApplicationData> logger)
         : AuthorisationData<ApplicationData>(applicationDbContext, logger), IApplicationData

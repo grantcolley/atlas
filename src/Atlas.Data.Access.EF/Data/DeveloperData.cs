@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Atlas.Data.Access.Data
+namespace Atlas.Data.Access.EF.Data
 {
     public class DeveloperData(ApplicationDbContext applicationDbContext, IConfiguration configuration, ILogService logService, ILogger<DeveloperData> logger)
         : AuthorisationData<DeveloperData>(applicationDbContext, logger), IDeveloperData

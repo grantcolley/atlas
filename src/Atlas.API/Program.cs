@@ -5,7 +5,7 @@ using Atlas.Core.Constants;
 using Atlas.Core.Logging.Interfaces;
 using Atlas.Core.Logging.Services;
 using Atlas.Core.Validation.Extensions;
-using Atlas.Data.Access.Data;
+using Atlas.Data.Access.EF.Data;
 using Atlas.Data.Access.Interfaces;
 using Atlas.Data.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
