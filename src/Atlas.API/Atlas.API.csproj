@@ -30,7 +30,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\migrations\Atlas.Migrations.SQLite\Atlas.Migrations.SQLite.csproj" />
     <ProjectReference Include="..\..\migrations\Atlas.Migrations.SQLServer\Atlas.Migrations.SQLServer.csproj" />
-    <ProjectReference Include="..\..\utility\Atlas.Seed.Data\Atlas.Seed.Data.csproj" />
     <ProjectReference Include="..\Atlas.Core.Validation\Atlas.Core.Validation.csproj" />
     <ProjectReference Include="..\Atlas.Core\Atlas.Core.csproj" />
     <ProjectReference Include="..\Atlas.Core.Logging\Atlas.Core.Logging.csproj" />
