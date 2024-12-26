@@ -37,7 +37,7 @@ namespace Atlas.Migrations.SQLServer.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Message = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MessageTemplate = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Level = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TimeStamp = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -244,11 +244,6 @@ namespace Atlas.Migrations.SQLServer.Migrations
                 name: "IX_Logs_Context",
                 table: "Logs",
                 column: "Context");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Logs_Message",
-                table: "Logs",
-                column: "Message");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Logs_TimeStamp",

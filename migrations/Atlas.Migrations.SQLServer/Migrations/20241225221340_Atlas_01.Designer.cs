@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Atlas.Migrations.SQLServer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241221210812_Atlas_01")]
+    [Migration("20241225221340_Atlas_01")]
     partial class Atlas_01
     {
         /// <inheritdoc />
@@ -95,7 +95,7 @@ namespace Atlas.Migrations.SQLServer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Message")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MessageTemplate")
                         .HasColumnType("nvarchar(max)");
@@ -113,8 +113,6 @@ namespace Atlas.Migrations.SQLServer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Context");
-
-                    b.HasIndex("Message");
 
                     b.HasIndex("TimeStamp");
 

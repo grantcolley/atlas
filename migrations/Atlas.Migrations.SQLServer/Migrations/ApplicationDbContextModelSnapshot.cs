@@ -92,7 +92,7 @@ namespace Atlas.Migrations.SQLServer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Message")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MessageTemplate")
                         .HasColumnType("nvarchar(max)");
@@ -110,8 +110,6 @@ namespace Atlas.Migrations.SQLServer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Context");
-
-                    b.HasIndex("Message");
 
                     b.HasIndex("TimeStamp");
 

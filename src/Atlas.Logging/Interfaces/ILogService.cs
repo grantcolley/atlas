@@ -1,7 +1,7 @@
 ﻿using Atlas.Core.Exceptions;
-using Atlas.Core.Logging.Enums;
+using Atlas.Logging.Enums;
 
-namespace Atlas.Core.Logging.Interfaces
+namespace Atlas.Logging.Interfaces
 {
     public interface ILogService
     {

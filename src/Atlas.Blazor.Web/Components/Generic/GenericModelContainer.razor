@@ -208,7 +208,7 @@
         if (!string.IsNullOrWhiteSpace(alertType)
             && (alertType == Alerts.ERROR || alertType == Alerts.WARNING))
         {
-            Core.Logging.Enums.LogLevel logLevel = alertType == Alerts.ERROR ? Core.Logging.Enums.LogLevel.Error : Core.Logging.Enums.LogLevel.Warning;
+            Logging.Enums.LogLevel logLevel = alertType == Alerts.ERROR ? Logging.Enums.LogLevel.Error : Logging.Enums.LogLevel.Warning;
 
             LoggingService?.Log(logLevel, message, ex, _user);
         }

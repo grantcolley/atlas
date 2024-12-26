@@ -1,6 +1,6 @@
 ﻿using Atlas.Blazor.Web.Constants;
 using Atlas.Core.Exceptions;
-using Atlas.Core.Logging.Interfaces;
+using Atlas.Logging.Interfaces;
 using Atlas.Requests.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -52,7 +52,7 @@ namespace Atlas.Blazor.Web.Components.Base
                 Message = message
             };
 
-            LoggingService?.Log(Core.Logging.Enums.LogLevel.Error, message, atlasException, User);
+            LoggingService?.Log(Logging.Enums.LogLevel.Error, message, atlasException, User);
 
             NavigationManager?.NavigateTo(alert.Route);
         }

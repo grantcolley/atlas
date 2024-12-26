@@ -1,9 +1,9 @@
 ﻿using Atlas.Core.Exceptions;
-using Atlas.Core.Logging.Interfaces;
+using Atlas.Logging.Interfaces;
 using Microsoft.Extensions.Logging;
 using Serilog.Context;
 
-namespace Atlas.Core.Logging.Services
+namespace Atlas.Logging.Serilog.Services
 {
     public class LogService(ILogger<LogService> logger) : ILogService
     {

@@ -8,10 +8,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\utility\Atlas.Seed.Data\Atlas.Seed.Data.csproj" />
-    <ProjectReference Include="..\Atlas.Core.Logging\Atlas.Core.Logging.csproj" />
     <ProjectReference Include="..\Atlas.Core\Atlas.Core.csproj" />
     <ProjectReference Include="..\Atlas.Data.Access.EF.Context\Atlas.Data.Access.EF.Context.csproj" />
     <ProjectReference Include="..\Atlas.Data.Access\Atlas.Data.Access.csproj" />
+    <ProjectReference Include="..\Atlas.Logging\Atlas.Logging.csproj" />
   </ItemGroup>
 
 </Project>

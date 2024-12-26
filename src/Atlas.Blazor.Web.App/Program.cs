@@ -1,13 +1,12 @@
 using Atlas.Blazor.Web.App.Authentication;
 using Atlas.Blazor.Web.App.Components;
 using Atlas.Blazor.Web.App.Extensions;
-using Atlas.Blazor.Web.Constants;
 using Atlas.Blazor.Web.Interfaces;
 using Atlas.Blazor.Web.Services;
 using Atlas.Core.Constants;
-using Atlas.Core.Logging.Interfaces;
-using Atlas.Core.Logging.Services;
 using Atlas.Core.Validation.Extensions;
+using Atlas.Logging.Interfaces;
+using Atlas.Logging.Serilog.Services;
 using Atlas.Requests.API;
 using Atlas.Requests.Interfaces;
 using Auth0.AspNetCore.Authentication;

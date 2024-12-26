@@ -1,4 +1,4 @@
-﻿namespace Atlas.Core.Logging.Enums
+﻿namespace Atlas.Logging.Enums
 {
     public enum LogLevel
     {
