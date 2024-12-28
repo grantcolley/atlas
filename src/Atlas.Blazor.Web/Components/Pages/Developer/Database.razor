@@ -2,13 +2,13 @@
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 @attribute [StreamRendering]
 
-<PageTitle>Database Settings</PageTitle>
+<PageTitle>Database Status</PageTitle>
 
 @if (_alert == null)
 {
     <FluentCard>
         <FluentHeader>
-            Database Settings
+            Database Status
         </FluentHeader>
 
         <br />
@@ -26,11 +26,14 @@
                     <br />
                     <br />
 
-                    <FluentButton IconStart="@(new Icons.Regular.Size16.ArrowClockwise())"
-                    Loading="@_isProcessing"
-                    OnClick="@SeedDatabaseAsync">
-                        Seed data
-                    </FluentButton>
+                    @if (_databaseStatus.CanSeedData)
+                    {
+                        <FluentButton IconStart="@(new Icons.Regular.Size16.ArrowClockwise())" 
+                        Loading="@_isProcessing" 
+                        OnClick="@SeedDatabaseAsync">
+                            Seed data
+                        </FluentButton>
+                    }
                 </FluentStack>
             }
             else
@@ -43,11 +46,14 @@
                     <br />
                     <br />
 
-                    <FluentButton IconStart="@(new Icons.Regular.Size16.Database())"
-                    Loading="@_isProcessing"
-                    OnClick="@CreateDatabaseAsync">
-                        Create database
-                    </FluentButton>
+                    @if (_databaseStatus.CanCreate)
+                    {
+                        <FluentButton IconStart="@(new Icons.Regular.Size16.Database())"
+                                      Loading="@_isProcessing"
+                                      OnClick="@CreateDatabaseAsync">
+                            Create database
+                        </FluentButton>
+                    }
                 </FluentStack>
             }
         }

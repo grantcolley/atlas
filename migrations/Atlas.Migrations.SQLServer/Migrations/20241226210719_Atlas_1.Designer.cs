@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Atlas.Migrations.SQLServer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241225221340_Atlas_01")]
-    partial class Atlas_01
+    [Migration("20241226210719_Atlas_1")]
+    partial class Atlas_1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
