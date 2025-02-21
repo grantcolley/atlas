@@ -94,13 +94,22 @@ builder.Services.AddAuthorizationBuilder()
         policy.RequireAuthenticatedUser().RequireRole(Auth.ATLAS_DEVELOPER_CLAIM);
     });
 
-builder.Services.AddCors(options =>
+string originsPolicy = $"{builder.Configuration["CorsOrigins:Policy"]}";
+string originUrls = $"{builder.Configuration["CorsOrigins:Urls"]}";
+
+if (!string.IsNullOrWhiteSpace(originsPolicy)
+    && !string.IsNullOrWhiteSpace(originUrls))
 {
-    options.AddPolicy("local",
-        builder =>
-            builder.WithOrigins("https://localhost:44400")
-            .AllowAnyHeader());
-});
+    builder.Services.AddCors(options =>
+    {
+        string[] urls = originUrls.Split(';');
+
+        options.AddPolicy(originsPolicy,
+            builder =>
+                builder.WithOrigins(urls)
+                .AllowAnyHeader());
+    });
+}
 
 WebApplication app = builder.Build();
 
