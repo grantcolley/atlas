@@ -15,31 +15,25 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Serilog;
 
-string? domain = null;
-string? audience = null;
-string? clientId = null;
-string? clientSecret = null;
+string domainKey = Config.AUTH_DOMAIN;
+string audienceKey = Config.AUTH_AUDIENCE;
+string clientIdKey = Config.AUTH_CLIENT_ID;
+string clientSecretKey = Config.AUTH_CLIENT_SECRET;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-#pragma warning disable IDE0079 // Remove unnecessary suppression
-#pragma warning disable CA2208 // Instantiate argument exceptions correctly
-if (builder.Environment.IsDevelopment())
+if (!builder.Environment.IsDevelopment())
 {
-    domain = builder.Configuration[Config.DEV_AUTH_DOMAIN] ?? throw new ArgumentNullException(Config.DEV_AUTH_DOMAIN);
-    audience = builder.Configuration[Config.DEV_AUTH_AUDIENCE] ?? throw new ArgumentNullException(Config.DEV_AUTH_AUDIENCE);
-    clientId = builder.Configuration[Config.DEV_AUTH_CLIENT_ID] ?? throw new ArgumentNullException(Config.DEV_AUTH_CLIENT_ID);
-    clientSecret = builder.Configuration[Config.DEV_AUTH_CLIENT_SECRET] ?? throw new ArgumentNullException(Config.DEV_AUTH_CLIENT_SECRET);
+    domainKey = domainKey.Replace(":", "_");
+    audienceKey = audienceKey.Replace(":", "_");
+    clientIdKey = clientIdKey.Replace(":", "_");
+    clientSecretKey = clientSecretKey.Replace(":", "_");
 }
-else
-{
-    domain = builder.Configuration[Config.AZURE_AUTH_DOMAIN] ?? throw new ArgumentNullException(Config.AZURE_AUTH_DOMAIN);
-    audience = builder.Configuration[Config.AZURE_AUTH_AUDIENCE] ?? throw new ArgumentNullException(Config.AZURE_AUTH_AUDIENCE);
-    clientId = builder.Configuration[Config.AZURE_AUTH_CLIENT_ID] ?? throw new ArgumentNullException(Config.AZURE_AUTH_CLIENT_ID);
-    clientSecret = builder.Configuration[Config.AZURE_AUTH_CLIENT_SECRET] ?? throw new ArgumentNullException(Config.AZURE_AUTH_CLIENT_SECRET);
-}
-#pragma warning restore CA2208 // Instantiate argument exceptions correctly
-#pragma warning restore IDE0079 // Remove unnecessary suppression
+
+string? domain = builder.Configuration[domainKey] ?? throw new NullReferenceException(domainKey);
+string? audience = builder.Configuration[audienceKey] ?? throw new NullReferenceException(audienceKey);
+string? clientId = builder.Configuration[clientIdKey] ?? throw new NullReferenceException(clientIdKey);
+string? clientSecret = builder.Configuration[clientSecretKey] ?? throw new NullReferenceException(clientSecretKey);
 
 builder.Logging.ClearProviders();
 

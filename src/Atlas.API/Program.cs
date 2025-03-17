@@ -19,37 +19,30 @@ using Serilog.Sinks.MSSqlServer;
 using System.Data;
 using System.Text.Json.Serialization;
 
-string? domain = null;
-string? audience = null;
-string? connectionString = null;
-string? corsPolicy = null;
-string? originUrls = null;
+string domainKey = Config.AUTH_DOMAIN;
+string audienceKey = Config.AUTH_AUDIENCE;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-AtlasConfig atlasConfig = new AtlasConfig();
+AtlasConfig atlasConfig = new();
 
-#pragma warning disable IDE0079 // Remove unnecessary suppression
-#pragma warning disable CA2208 // Instantiate argument exceptions correctly
 if (builder.Environment.IsDevelopment())
 {
-    domain = builder.Configuration[Config.DEV_AUTH_DOMAIN] ?? throw new ArgumentNullException(Config.DEV_AUTH_DOMAIN);
-    audience = builder.Configuration[Config.DEV_AUTH_AUDIENCE] ?? throw new ArgumentNullException(Config.DEV_AUTH_AUDIENCE);
-    connectionString = builder.Configuration.GetConnectionString(Config.DEV_CONNECTION_STRING) ?? throw new ArgumentNullException(Config.DEV_CONNECTION_STRING);
-    corsPolicy = builder.Configuration[Config.DEV_CORS_POLICY] ?? throw new ArgumentNullException(Config.DEV_CORS_POLICY);
-    originUrls = builder.Configuration[Config.DEV_ORIGINS_URLS] ?? throw new ArgumentNullException(Config.DEV_ORIGINS_URLS);
     atlasConfig.DatabaseCreate = bool.Parse(builder.Configuration["Database:CreateDatabase"] ?? "false");
     atlasConfig.DatabaseSeedData = bool.Parse(builder.Configuration["Database:GenerateSeedData"] ?? "false");
     atlasConfig.DatabaseSeedLogs = bool.Parse(builder.Configuration["Database:GenerateSeedLogs"] ?? "false");
 }
 else
 {
-    domain = builder.Configuration[Config.AZURE_AUTH_DOMAIN] ?? throw new ArgumentNullException(Config.AZURE_AUTH_DOMAIN);
-    audience = builder.Configuration[Config.AZURE_AUTH_AUDIENCE] ?? throw new ArgumentNullException(Config.AZURE_AUTH_AUDIENCE);
-    connectionString = builder.Configuration.GetConnectionString(Config.AZURE_SQL_CONNECTIONSTRING) ?? throw new ArgumentNullException(Config.AZURE_SQL_CONNECTIONSTRING);
+    domainKey = domainKey.Replace(":", "_");
+    audienceKey = audienceKey.Replace(":", "_");
 }
-#pragma warning restore CA2208 // Instantiate argument exceptions correctly
-#pragma warning restore IDE0079 // Remove unnecessary suppression
+
+string? domain = builder.Configuration[domainKey] ?? throw new NullReferenceException(domainKey);
+string? audience = builder.Configuration[audienceKey] ?? throw new NullReferenceException(audienceKey);
+string? connectionString = builder.Configuration.GetConnectionString(Config.CONNECTION_STRING) ?? throw new NullReferenceException(Config.CONNECTION_STRING);
+string? corsPolicy = builder.Configuration[Config.CORS_POLICY] ?? throw new NullReferenceException(Config.CORS_POLICY);
+string? originUrls = builder.Configuration[Config.ORIGINS_URLS] ?? throw new NullReferenceException(Config.ORIGINS_URLS);
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
