@@ -21,28 +21,39 @@ using System.Text.Json.Serialization;
 
 string domainKey = Config.AUTH_DOMAIN;
 string audienceKey = Config.AUTH_AUDIENCE;
+string corsPolicyKey = Config.CORS_POLICY;
+string originsUrls = Config.ORIGINS_URLS;
+string createDatabaseKey = Config.DATABASE_CREATE;
+string generateSeedDataKey = Config.DATABASE_SEED_DATA;
+string generateSeedLogsKey = Config.DATABASE_SEED_LOGS;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-AtlasConfig atlasConfig = new();
-
-if (builder.Environment.IsDevelopment())
-{
-    atlasConfig.DatabaseCreate = bool.Parse(builder.Configuration["Database:CreateDatabase"] ?? "false");
-    atlasConfig.DatabaseSeedData = bool.Parse(builder.Configuration["Database:GenerateSeedData"] ?? "false");
-    atlasConfig.DatabaseSeedLogs = bool.Parse(builder.Configuration["Database:GenerateSeedLogs"] ?? "false");
-}
-else
+if (!builder.Environment.IsDevelopment())
 {
     domainKey = domainKey.Replace(":", "_");
     audienceKey = audienceKey.Replace(":", "_");
+
+    corsPolicyKey = corsPolicyKey.Replace(":", "_");
+    originsUrls = originsUrls.Replace(":", "_");
+
+    createDatabaseKey = createDatabaseKey.Replace(":", "_");
+    generateSeedDataKey = generateSeedDataKey.Replace(":", "_");
+    generateSeedLogsKey = generateSeedLogsKey.Replace(":", "_");
 }
 
 string? domain = builder.Configuration[domainKey] ?? throw new NullReferenceException(domainKey);
 string? audience = builder.Configuration[audienceKey] ?? throw new NullReferenceException(audienceKey);
 string? connectionString = builder.Configuration.GetConnectionString(Config.CONNECTION_STRING) ?? throw new NullReferenceException(Config.CONNECTION_STRING);
-string? corsPolicy = builder.Configuration[Config.CORS_POLICY] ?? throw new NullReferenceException(Config.CORS_POLICY);
-string? originUrls = builder.Configuration[Config.ORIGINS_URLS] ?? throw new NullReferenceException(Config.ORIGINS_URLS);
+string? corsPolicy = builder.Configuration[corsPolicyKey] ?? throw new NullReferenceException(corsPolicyKey);
+string? originUrls = builder.Configuration[originsUrls] ?? throw new NullReferenceException(originsUrls);
+
+AtlasConfig atlasConfig = new()
+{
+    DatabaseCreate = bool.Parse(builder.Configuration[createDatabaseKey] ?? "false"),
+    DatabaseSeedData = bool.Parse(builder.Configuration[generateSeedDataKey] ?? "false"),
+    DatabaseSeedLogs = bool.Parse(builder.Configuration[generateSeedLogsKey] ?? "false")
+};
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
