@@ -71,38 +71,38 @@ builder.Services.AddScoped<ILogService, LogService>();
 builder.Services.AddScoped<IAtlasDialogService, AtlasDialogService>();
 builder.Services.AddScoped<IOptionsService, OptionsService>();
 
-builder.Services.AddHttpClient(AtlasWeb.ATLAS_API,
-      client => client.BaseAddress = new Uri(builder.Configuration[AtlasWeb.ATLAS_API] ?? throw new NullReferenceException(AtlasWeb.ATLAS_API)))
+builder.Services.AddHttpClient(Config.ATLAS_API,
+      client => client.BaseAddress = new Uri(builder.Configuration[Config.ATLAS_API] ?? throw new NullReferenceException(Config.ATLAS_API)))
       .AddHttpMessageHandler<TokenHandler>();
 
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
-  .CreateClient(AtlasWeb.ATLAS_API));
+  .CreateClient(Config.ATLAS_API));
 
 builder.Services.AddTransient<IClaimRequests, ClaimRequests>(sp =>
 {
     IHttpClientFactory httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
-    HttpClient httpClient = httpClientFactory.CreateClient(AtlasWeb.ATLAS_API);
+    HttpClient httpClient = httpClientFactory.CreateClient(Config.ATLAS_API);
     return new ClaimRequests(httpClient);
 });
 
 builder.Services.AddTransient<IDeveloperRequests, DeveloperRequests>(sp =>
 {
     IHttpClientFactory httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
-    HttpClient httpClient = httpClientFactory.CreateClient(AtlasWeb.ATLAS_API);
+    HttpClient httpClient = httpClientFactory.CreateClient(Config.ATLAS_API);
     return new DeveloperRequests(httpClient);
 });
 
 builder.Services.AddTransient<IGenericRequests, GenericRequests>(sp =>
 {
     IHttpClientFactory httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
-    HttpClient httpClient = httpClientFactory.CreateClient(AtlasWeb.ATLAS_API);
+    HttpClient httpClient = httpClientFactory.CreateClient(Config.ATLAS_API);
     return new GenericRequests(httpClient);
 });
 
 builder.Services.AddTransient<IOptionsRequests, OptionsRequests>(sp =>
 {
     IHttpClientFactory httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
-    HttpClient httpClient = httpClientFactory.CreateClient(AtlasWeb.ATLAS_API);
+    HttpClient httpClient = httpClientFactory.CreateClient(Config.ATLAS_API);
     return new OptionsRequests(httpClient);
 });
 
