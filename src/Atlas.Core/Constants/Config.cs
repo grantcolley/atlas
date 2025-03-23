@@ -21,8 +21,8 @@
         // For example, ApplicationInsights:InstrumentationKey needs to be configured in App Service 
         // as ApplicationInsights__InstrumentationKey for the key name.
 
-        private static string _colon = ":";
-        private static string _doubleUnderscore = "__";
+        private static readonly string _colon = ":";
+        private static readonly string _doubleUnderscore = "__";
 
         public static string GET_ATLAS_API(bool useColon = true) { return useColon ? ATLAS_API : ATLAS_API.Replace(_colon, _doubleUnderscore); }
         public static string GET_CONNECTION_STRING(bool useColon = true) { return useColon ? CONNECTION_STRING : CONNECTION_STRING.Replace(_colon, _doubleUnderscore); }
