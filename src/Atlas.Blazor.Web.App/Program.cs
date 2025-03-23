@@ -14,11 +14,15 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Serilog;
+using Serilog.Sinks.MSSqlServer;
+using System.Data;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 bool isDev = builder.Environment.IsDevelopment();
 
+string? atlasApi = Config.GET_ATLAS_API(isDev);
+string? connectionString = builder.Configuration.GetConnectionString(Config.GET_CONNECTION_STRING(isDev)) ?? throw new NullReferenceException(Config.GET_CONNECTION_STRING(isDev));
 string? domain = builder.Configuration[Config.GET_AUTH_DOMAIN(isDev)] ?? throw new NullReferenceException(Config.GET_AUTH_DOMAIN(isDev));
 string? audience = builder.Configuration[Config.GET_AUTH_AUDIENCE(isDev)] ?? throw new NullReferenceException(Config.GET_AUTH_AUDIENCE(isDev));
 string? clientId = builder.Configuration[Config.GET_AUTH_CLIENT_ID(isDev)] ?? throw new NullReferenceException(Config.GET_AUTH_CLIENT_ID(isDev));
@@ -27,8 +31,24 @@ string? clientSecret = builder.Configuration[Config.GET_AUTH_CLIENT_SECRET(isDev
 builder.Logging.ClearProviders();
 
 builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
-                  loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration)
-                                        .Enrich.FromLogContext());
+              loggerConfiguration
+              .MinimumLevel.Information()
+              .Enrich.FromLogContext()
+              .WriteTo.MSSqlServer(
+                  connectionString: connectionString,
+                  sinkOptions: new MSSqlServerSinkOptions
+                  {
+                      TableName = "Logs",
+                      AutoCreateSqlDatabase = false
+                  },
+                  columnOptions: new ColumnOptions
+                  {
+                      AdditionalColumns =
+                      [
+                          new SqlColumn {ColumnName = "User", PropertyName = "User", DataType = SqlDbType.NVarChar, DataLength = 450},
+                          new SqlColumn {ColumnName = "Context", PropertyName = "Context", DataType = SqlDbType.NVarChar, DataLength = 450},
+                      ]
+                  }));
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
@@ -59,8 +79,6 @@ builder.Services.AddSingleton<IAtlasRoutesService, AtlasRoutesService>();
 builder.Services.AddScoped<ILogService, LogService>();
 builder.Services.AddScoped<IAtlasDialogService, AtlasDialogService>();
 builder.Services.AddScoped<IOptionsService, OptionsService>();
-
-string atlasApi = Config.GET_ATLAS_API(isDev);
 
 builder.Services.AddHttpClient(atlasApi,
       client => client.BaseAddress = new Uri(builder.Configuration[atlasApi] ?? throw new NullReferenceException(atlasApi)))
