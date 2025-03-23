@@ -23,9 +23,9 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 bool isDev = builder.Environment.IsDevelopment();
 
+string? connectionString = builder.Configuration.GetConnectionString(Config.GET_CONNECTION_STRING(isDev)) ?? throw new NullReferenceException(Config.GET_CONNECTION_STRING(isDev));
 string? domain = builder.Configuration[Config.GET_AUTH_DOMAIN(isDev)] ?? throw new NullReferenceException(Config.GET_AUTH_DOMAIN(isDev));
 string? audience = builder.Configuration[Config.GET_AUTH_AUDIENCE(isDev)] ?? throw new NullReferenceException(Config.GET_AUTH_AUDIENCE(isDev));
-string? connectionString = builder.Configuration.GetConnectionString(Config.GET_CONNECTION_STRING(isDev)) ?? throw new NullReferenceException(Config.GET_CONNECTION_STRING(isDev));
 string? corsPolicy = builder.Configuration[Config.GET_CORS_POLICY(isDev)] ?? throw new NullReferenceException(Config.GET_CORS_POLICY(isDev));
 string? originUrls = builder.Configuration[Config.GET_ORIGINS_URLS(isDev)] ?? throw new NullReferenceException(Config.GET_ORIGINS_URLS(isDev));
 
