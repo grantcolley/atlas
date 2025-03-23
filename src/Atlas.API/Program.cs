@@ -19,40 +19,21 @@ using Serilog.Sinks.MSSqlServer;
 using System.Data;
 using System.Text.Json.Serialization;
 
-string domainKey = Config.AUTH_DOMAIN;
-string audienceKey = Config.AUTH_AUDIENCE;
-string corsPolicyKey = Config.CORS_POLICY;
-string originsUrls = Config.ORIGINS_URLS;
-string createDatabaseKey = Config.DATABASE_CREATE;
-string generateSeedDataKey = Config.DATABASE_SEED_DATA;
-string generateSeedLogsKey = Config.DATABASE_SEED_LOGS;
-
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-if (!builder.Environment.IsDevelopment())
-{
-    domainKey = domainKey.Replace(":", "_");
-    audienceKey = audienceKey.Replace(":", "_");
+bool isDev = builder.Environment.IsDevelopment();
 
-    corsPolicyKey = corsPolicyKey.Replace(":", "_");
-    originsUrls = originsUrls.Replace(":", "_");
-
-    createDatabaseKey = createDatabaseKey.Replace(":", "_");
-    generateSeedDataKey = generateSeedDataKey.Replace(":", "_");
-    generateSeedLogsKey = generateSeedLogsKey.Replace(":", "_");
-}
-
-string? domain = builder.Configuration[domainKey] ?? throw new NullReferenceException(domainKey);
-string? audience = builder.Configuration[audienceKey] ?? throw new NullReferenceException(audienceKey);
-string? connectionString = builder.Configuration.GetConnectionString(Config.CONNECTION_STRING) ?? throw new NullReferenceException(Config.CONNECTION_STRING);
-string? corsPolicy = builder.Configuration[corsPolicyKey] ?? throw new NullReferenceException(corsPolicyKey);
-string? originUrls = builder.Configuration[originsUrls] ?? throw new NullReferenceException(originsUrls);
+string? domain = builder.Configuration[Config.GET_AUTH_DOMAIN(isDev)] ?? throw new NullReferenceException(Config.GET_AUTH_DOMAIN(isDev));
+string? audience = builder.Configuration[Config.GET_AUTH_AUDIENCE(isDev)] ?? throw new NullReferenceException(Config.GET_AUTH_AUDIENCE(isDev));
+string? connectionString = builder.Configuration.GetConnectionString(Config.GET_CONNECTION_STRING(isDev)) ?? throw new NullReferenceException(Config.GET_CONNECTION_STRING(isDev));
+string? corsPolicy = builder.Configuration[Config.GET_CORS_POLICY(isDev)] ?? throw new NullReferenceException(Config.GET_CORS_POLICY(isDev));
+string? originUrls = builder.Configuration[Config.GET_ORIGINS_URLS(isDev)] ?? throw new NullReferenceException(Config.GET_ORIGINS_URLS(isDev));
 
 AtlasConfig atlasConfig = new()
 {
-    DatabaseCreate = bool.Parse(builder.Configuration[createDatabaseKey] ?? "false"),
-    DatabaseSeedData = bool.Parse(builder.Configuration[generateSeedDataKey] ?? "false"),
-    DatabaseSeedLogs = bool.Parse(builder.Configuration[generateSeedLogsKey] ?? "false")
+    DatabaseCreate = bool.Parse(builder.Configuration[Config.GET_DATABASE_CREATE(isDev)] ?? "false"),
+    DatabaseSeedData = bool.Parse(builder.Configuration[Config.GET_DATABASE_SEED_DATA(isDev)] ?? "false"),
+    DatabaseSeedLogs = bool.Parse(builder.Configuration[Config.GET_DATABASE_SEED_LOGS(isDev)] ?? "false")
 };
 
 builder.Logging.ClearProviders();
