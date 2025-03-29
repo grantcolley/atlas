@@ -10,7 +10,10 @@
 
             app.MapAtlasEndpoints();
 
-            app.MapAtlasDatabaseEndpoints();
+            if (app.Environment.IsDevelopment())
+            {
+                app.MapAtlasDatabaseEndpoints();
+            }
 
             app.MapAtlasApplicationEndpoints();
 
