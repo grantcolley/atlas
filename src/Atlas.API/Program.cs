@@ -21,19 +21,24 @@ using System.Text.Json.Serialization;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-bool isDev = builder.Environment.IsDevelopment();
+builder.Configuration
+    .SetBasePath(AppContext.BaseDirectory)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: false, reloadOnChange: true);
 
-string? connectionString = builder.Configuration.GetConnectionString(Config.GET_CONNECTION_STRING(isDev)) ?? throw new NullReferenceException(Config.GET_CONNECTION_STRING(isDev));
-string? domain = builder.Configuration[Config.GET_AUTH_DOMAIN(isDev)] ?? throw new NullReferenceException(Config.GET_AUTH_DOMAIN(isDev));
-string? audience = builder.Configuration[Config.GET_AUTH_AUDIENCE(isDev)] ?? throw new NullReferenceException(Config.GET_AUTH_AUDIENCE(isDev));
-string? corsPolicy = builder.Configuration[Config.GET_CORS_POLICY(isDev)] ?? throw new NullReferenceException(Config.GET_CORS_POLICY(isDev));
-string? originUrls = builder.Configuration[Config.GET_ORIGINS_URLS(isDev)] ?? throw new NullReferenceException(Config.GET_ORIGINS_URLS(isDev));
+string? connectionString = builder.Configuration.GetConnectionString(Config.CONNECTION_STRING) ?? throw new NullReferenceException(Config.CONNECTION_STRING);
+string? domain = builder.Configuration[Config.AUTH_DOMAIN] ?? throw new NullReferenceException(Config.AUTH_DOMAIN);
+string? audience = builder.Configuration[Config.AUTH_AUDIENCE] ?? throw new NullReferenceException(Config.AUTH_AUDIENCE);
+string? corsPolicy = builder.Configuration[Config.CORS_POLICY] ?? throw new NullReferenceException(Config.CORS_POLICY);
+string? originUrls = builder.Configuration[Config.ORIGINS_URLS] ?? throw new NullReferenceException(Config.ORIGINS_URLS);
+bool createDatabase = bool.Parse(builder.Configuration[Config.DATABASE_CREATE] ?? "false");
+bool seedData = bool.Parse(builder.Configuration[Config.DATABASE_SEED_DATA] ?? "false");
+bool seedLogs = bool.Parse(builder.Configuration[Config.DATABASE_SEED_LOGS] ?? "false");
 
 AtlasConfig atlasConfig = new()
 {
-    DatabaseCreate = bool.Parse(builder.Configuration[Config.GET_DATABASE_CREATE(isDev)] ?? "false"),
-    DatabaseSeedData = bool.Parse(builder.Configuration[Config.GET_DATABASE_SEED_DATA(isDev)] ?? "false"),
-    DatabaseSeedLogs = bool.Parse(builder.Configuration[Config.GET_DATABASE_SEED_LOGS(isDev)] ?? "false")
+    DatabaseCreate = createDatabase,
+    DatabaseSeedData = seedData,
+    DatabaseSeedLogs = seedLogs
 };
 
 builder.Logging.ClearProviders();
