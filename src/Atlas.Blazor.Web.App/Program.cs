@@ -19,14 +19,18 @@ using System.Data;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-bool isDev = builder.Environment.IsDevelopment();
+builder.Configuration
+    .SetBasePath(AppContext.BaseDirectory)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: false, reloadOnChange: true);
 
-string? atlasApi = Config.GET_ATLAS_API(isDev);
-string? connectionString = builder.Configuration.GetConnectionString(Config.GET_CONNECTION_STRING(isDev)) ?? throw new NullReferenceException(Config.GET_CONNECTION_STRING(isDev));
-string? domain = builder.Configuration[Config.GET_AUTH_DOMAIN(isDev)] ?? throw new NullReferenceException(Config.GET_AUTH_DOMAIN(isDev));
-string? audience = builder.Configuration[Config.GET_AUTH_AUDIENCE(isDev)] ?? throw new NullReferenceException(Config.GET_AUTH_AUDIENCE(isDev));
-string? clientId = builder.Configuration[Config.GET_AUTH_CLIENT_ID(isDev)] ?? throw new NullReferenceException(Config.GET_AUTH_CLIENT_ID(isDev));
-string? clientSecret = builder.Configuration[Config.GET_AUTH_CLIENT_SECRET(isDev)] ?? throw new NullReferenceException(Config.GET_AUTH_CLIENT_SECRET(isDev));
+builder.Configuration.AddEnvironmentVariables();
+
+string? atlasApi = Config.ATLAS_API;
+string? connectionString = builder.Configuration.GetConnectionString(Config.CONNECTION_STRING) ?? throw new NullReferenceException(Config.CONNECTION_STRING);
+string? domain = builder.Configuration[Config.AUTH_DOMAIN] ?? throw new NullReferenceException(Config.AUTH_DOMAIN);
+string? audience = builder.Configuration[Config.AUTH_AUDIENCE] ?? throw new NullReferenceException(Config.AUTH_AUDIENCE);
+string? clientId = builder.Configuration[Config.AUTH_CLIENT_ID] ?? throw new NullReferenceException(Config.AUTH_CLIENT_ID);
+string? clientSecret = builder.Configuration[Config.AUTH_CLIENT_SECRET] ?? throw new NullReferenceException(Config.AUTH_CLIENT_SECRET);
 
 builder.Logging.ClearProviders();
 
