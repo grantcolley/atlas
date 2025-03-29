@@ -404,6 +404,7 @@ FodyWeavers.xsd
 
 # Ignore local appSettings
 appsettings.Development.json
+appsettings.Production.json
 
 # sqlite
 data/db/
