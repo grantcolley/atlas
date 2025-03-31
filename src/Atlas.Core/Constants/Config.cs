@@ -10,6 +10,7 @@
         public const string AUTH_CLIENT_SECRET = "Auth0:ClientSecret";
         public const string CORS_POLICY = "CorsOrigins:Policy";
         public const string ORIGINS_URLS = "CorsOrigins:Urls";
+        public const string DATABASE_MIGRATION = "Database:MigrateDatabase";
         public const string DATABASE_CREATE = "Database:CreateDatabase";
         public const string DATABASE_SEED_DATA = "Database:GenerateSeedData";
         public const string DATABASE_SEED_LOGS = "Database:GenerateSeedLogs";
