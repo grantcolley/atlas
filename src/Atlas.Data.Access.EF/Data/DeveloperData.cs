@@ -15,6 +15,19 @@ namespace Atlas.Data.Access.EF.Data
     {
         private readonly AtlasConfig _atlasConfig = atlasConfig;
 
+        public void MigrateDatabase()
+        {
+            if (_atlasConfig.DatabaseMigrate)
+            {
+                _applicationDbContext.Database.Migrate();
+
+                if(_atlasConfig.DatabaseSeedData)
+                {
+                    SeedData.Generate(_applicationDbContext);
+                }
+            }
+        }
+
         public async Task<DatabaseStatus?> GetDatabaseStatusAsync(string? user, CancellationToken cancellationToken)
         {
             try
