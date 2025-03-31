@@ -31,12 +31,14 @@ string? domain = builder.Configuration[Config.AUTH_DOMAIN] ?? throw new NullRefe
 string? audience = builder.Configuration[Config.AUTH_AUDIENCE] ?? throw new NullReferenceException(Config.AUTH_AUDIENCE);
 string? corsPolicy = builder.Configuration[Config.CORS_POLICY] ?? throw new NullReferenceException(Config.CORS_POLICY);
 string? originUrls = builder.Configuration[Config.ORIGINS_URLS] ?? throw new NullReferenceException(Config.ORIGINS_URLS);
+bool databaseMigrate = bool.Parse(builder.Configuration[Config.DATABASE_MIGRATION] ?? "false");
 bool createDatabase = bool.Parse(builder.Configuration[Config.DATABASE_CREATE] ?? "false");
 bool seedData = bool.Parse(builder.Configuration[Config.DATABASE_SEED_DATA] ?? "false");
 bool seedLogs = bool.Parse(builder.Configuration[Config.DATABASE_SEED_LOGS] ?? "false");
 
 AtlasConfig atlasConfig = new()
 {
+    DatabaseMigrate = databaseMigrate,
     DatabaseCreate = createDatabase,
     DatabaseSeedData = seedData,
     DatabaseSeedLogs = seedLogs
@@ -173,5 +175,24 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapEndpoints();
+
+if(atlasConfig.DatabaseMigrate
+    || atlasConfig.DatabaseSeedData)
+{
+    try
+    {
+        using IServiceScope serviceScope = app.Services.CreateScope();
+        IServiceProvider serviceProvider = serviceScope.ServiceProvider;
+        IDeveloperData developerData = serviceProvider.GetRequiredService<IDeveloperData>();
+
+        developerData.MigrateDatabase();
+
+        Console.WriteLine($"Database Migration Successful");
+    }
+    catch(Exception ex)
+    {
+        Console.WriteLine(ex);
+    }
+}
 
 app.Run();
