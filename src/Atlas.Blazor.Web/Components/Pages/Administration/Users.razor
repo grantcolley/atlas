@@ -10,7 +10,7 @@
 
 @code{
     public override string? Title { get; set; } = "Users";
-    public override string? NavigateTo { get; set; } = AtlasWebConstants.PAGE_USER;
+    public override string? NavigateTo { get; set; } = AtlasWeb.PAGE_USER;
     public override string? APIEndpoint { get; set; } = AtlasAPIEndpoints.GET_USERS;
     public override int ItemsPerPage { get; set; } = 20;
     public override string? FilterFieldName { get; set; } = "Name";

@@ -29,6 +29,10 @@ namespace Atlas.Seed.Data
         {
             if (dbContext == null) throw new NullReferenceException(nameof(dbContext));
 
+            permissions.Clear();
+            roles.Clear();
+            users.Clear();
+
             ((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE Audits");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE Logs");
             ((DbContext)dbContext).Database.ExecuteSqlRaw("TRUNCATE TABLE RoleUser");
@@ -142,7 +146,7 @@ namespace Atlas.Seed.Data
 
         public static Page GetDatabasePage(Category settingsCategory)
         {
-            return new() { Name = "Database", Icon = "Database", Route = AtlasWebConstants.PAGE_DATABASE, Order = 1, Permission = Auth.DEVELOPER, Category = settingsCategory };
+            return new() { Name = "Database", Icon = "Database", Route = AtlasWeb.PAGE_DATABASE, Order = 1, Permission = Auth.DEVELOPER, Category = settingsCategory };
         }
 
         private static void AddDevelopment()
@@ -170,9 +174,9 @@ namespace Atlas.Seed.Data
 
             settingsCategory.Pages.Add(databasePage);
 
-            Page modulePage = new() { Name = "Modules", Icon = "PanelLeftText", Route = AtlasWebConstants.PAGE_MODULES, Order = 1, Permission = Auth.DEVELOPER, Category = configurationCategory };
-            Page categoriesPage = new() { Name = "Categories", Icon = "AppsListDetail", Route = AtlasWebConstants.PAGE_CATEGORIES, Order = 2, Permission = Auth.DEVELOPER, Category = configurationCategory };
-            Page pagesPage = new() { Name = "Pages", Icon = "DocumentOnePage", Route = AtlasWebConstants.PAGE_PAGES, Order = 3, Permission = Auth.DEVELOPER, Category = configurationCategory };
+            Page modulePage = new() { Name = "Modules", Icon = "PanelLeftText", Route = AtlasWeb.PAGE_MODULES, Order = 1, Permission = Auth.DEVELOPER, Category = configurationCategory };
+            Page categoriesPage = new() { Name = "Categories", Icon = "AppsListDetail", Route = AtlasWeb.PAGE_CATEGORIES, Order = 2, Permission = Auth.DEVELOPER, Category = configurationCategory };
+            Page pagesPage = new() { Name = "Pages", Icon = "DocumentOnePage", Route = AtlasWeb.PAGE_PAGES, Order = 3, Permission = Auth.DEVELOPER, Category = configurationCategory };
 
             configurationCategory.Pages.Add(modulePage);
             configurationCategory.Pages.Add(categoriesPage);
@@ -204,9 +208,9 @@ namespace Atlas.Seed.Data
 
             dbContext.SaveChanges();
 
-            Page usersPage = new() { Name = "Users", Icon = "PeopleLock", Route = AtlasWebConstants.PAGE_USERS, Order = 1, Permission = Auth.ADMIN_READ, Category = authorisationCategory };
-            Page rolesPage = new() { Name = "Roles", Icon = "LockMultiple", Route = AtlasWebConstants.PAGE_ROLES, Order = 2, Permission = Auth.ADMIN_READ, Category = authorisationCategory };
-            Page permissionsPage = new() { Name = "Permissions", Icon = "KeyMultiple", Route = AtlasWebConstants.PAGE_PERMISSIONS, Order = 3, Permission = Auth.ADMIN_READ, Category = authorisationCategory };
+            Page usersPage = new() { Name = "Users", Icon = "PeopleLock", Route = AtlasWeb.PAGE_USERS, Order = 1, Permission = Auth.ADMIN_READ, Category = authorisationCategory };
+            Page rolesPage = new() { Name = "Roles", Icon = "LockMultiple", Route = AtlasWeb.PAGE_ROLES, Order = 2, Permission = Auth.ADMIN_READ, Category = authorisationCategory };
+            Page permissionsPage = new() { Name = "Permissions", Icon = "KeyMultiple", Route = AtlasWeb.PAGE_PERMISSIONS, Order = 3, Permission = Auth.ADMIN_READ, Category = authorisationCategory };
 
             authorisationCategory.Pages.Add(usersPage);
             authorisationCategory.Pages.Add(rolesPage);
@@ -237,7 +241,7 @@ namespace Atlas.Seed.Data
 
             dbContext.SaveChanges();
 
-            Page logsPage = new() { Name = "Logs", Icon = "DocumentTextClock", Route = AtlasWebConstants.PAGE_LOGS, Order = 1, Permission = Auth.SUPPORT, Category = eventCategory };
+            Page logsPage = new() { Name = "Logs", Icon = "DocumentTextClock", Route = AtlasWeb.PAGE_LOGS, Order = 1, Permission = Auth.SUPPORT, Category = eventCategory };
 
             eventCategory.Pages.Add(logsPage);
 

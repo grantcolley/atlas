@@ -14,14 +14,44 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Serilog;
+using Serilog.Sinks.MSSqlServer;
+using System.Data;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration
+    .SetBasePath(AppContext.BaseDirectory)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: false, reloadOnChange: true)
+    .AddEnvironmentVariables();
+
+string? atlasApi = Config.ATLAS_API;
+string? connectionString = builder.Configuration.GetConnectionString(Config.CONNECTION_STRING) ?? throw new NullReferenceException(Config.CONNECTION_STRING);
+string? domain = builder.Configuration[Config.AUTH_DOMAIN] ?? throw new NullReferenceException(Config.AUTH_DOMAIN);
+string? audience = builder.Configuration[Config.AUTH_AUDIENCE] ?? throw new NullReferenceException(Config.AUTH_AUDIENCE);
+string? clientId = builder.Configuration[Config.AUTH_CLIENT_ID] ?? throw new NullReferenceException(Config.AUTH_CLIENT_ID);
+string? clientSecret = builder.Configuration[Config.AUTH_CLIENT_SECRET] ?? throw new NullReferenceException(Config.AUTH_CLIENT_SECRET);
 
 builder.Logging.ClearProviders();
 
 builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
-                  loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration)
-                                        .Enrich.FromLogContext());
+              loggerConfiguration
+              .MinimumLevel.Information()
+              .Enrich.FromLogContext()
+              .WriteTo.MSSqlServer(
+                  connectionString: connectionString,
+                  sinkOptions: new MSSqlServerSinkOptions
+                  {
+                      TableName = "Logs",
+                      AutoCreateSqlDatabase = false
+                  },
+                  columnOptions: new ColumnOptions
+                  {
+                      AdditionalColumns =
+                      [
+                          new SqlColumn {ColumnName = "User", PropertyName = "User", DataType = SqlDbType.NVarChar, DataLength = 450},
+                          new SqlColumn {ColumnName = "Context", PropertyName = "Context", DataType = SqlDbType.NVarChar, DataLength = 450},
+                      ]
+                  }));
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
@@ -35,13 +65,13 @@ builder.Services.AddAtlasValidators();
 builder.Services
     .AddAuth0WebAppAuthentication(Auth0Constants.AuthenticationScheme, options =>
     {
-        options.Domain = builder.Configuration["Auth0:Domain"] ?? throw new NullReferenceException("Auth0:Domain");
-        options.ClientId = builder.Configuration["Auth0:ClientId"] ?? throw new NullReferenceException("Auth0:ClientId");
-        options.ClientSecret = builder.Configuration["Auth0:ClientSecret"] ?? throw new NullReferenceException("Auth0:ClientSecret");
+        options.Domain = domain;
+        options.ClientId = clientId;
+        options.ClientSecret = clientSecret;
         options.ResponseType = "code";
     }).WithAccessToken(options =>
     {
-        options.Audience = builder.Configuration["Auth0:Audience"] ?? throw new NullReferenceException("Auth0:Audience");
+        options.Audience = audience;
     });
 
 builder.Services.AddCascadingAuthenticationState();
@@ -53,38 +83,38 @@ builder.Services.AddScoped<ILogService, LogService>();
 builder.Services.AddScoped<IAtlasDialogService, AtlasDialogService>();
 builder.Services.AddScoped<IOptionsService, OptionsService>();
 
-builder.Services.AddHttpClient(AtlasWebConstants.ATLAS_API,
-      client => client.BaseAddress = new Uri(builder.Configuration[AtlasWebConstants.ATLAS_API] ?? throw new NullReferenceException(AtlasWebConstants.ATLAS_API)))
+builder.Services.AddHttpClient(atlasApi,
+      client => client.BaseAddress = new Uri(builder.Configuration[atlasApi] ?? throw new NullReferenceException(atlasApi)))
       .AddHttpMessageHandler<TokenHandler>();
 
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
-  .CreateClient(AtlasWebConstants.ATLAS_API));
+  .CreateClient(atlasApi));
 
 builder.Services.AddTransient<IClaimRequests, ClaimRequests>(sp =>
 {
     IHttpClientFactory httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
-    HttpClient httpClient = httpClientFactory.CreateClient(AtlasWebConstants.ATLAS_API);
+    HttpClient httpClient = httpClientFactory.CreateClient(atlasApi);
     return new ClaimRequests(httpClient);
 });
 
 builder.Services.AddTransient<IDeveloperRequests, DeveloperRequests>(sp =>
 {
     IHttpClientFactory httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
-    HttpClient httpClient = httpClientFactory.CreateClient(AtlasWebConstants.ATLAS_API);
+    HttpClient httpClient = httpClientFactory.CreateClient(atlasApi);
     return new DeveloperRequests(httpClient);
 });
 
 builder.Services.AddTransient<IGenericRequests, GenericRequests>(sp =>
 {
     IHttpClientFactory httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
-    HttpClient httpClient = httpClientFactory.CreateClient(AtlasWebConstants.ATLAS_API);
+    HttpClient httpClient = httpClientFactory.CreateClient(atlasApi);
     return new GenericRequests(httpClient);
 });
 
 builder.Services.AddTransient<IOptionsRequests, OptionsRequests>(sp =>
 {
     IHttpClientFactory httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
-    HttpClient httpClient = httpClientFactory.CreateClient(AtlasWebConstants.ATLAS_API);
+    HttpClient httpClient = httpClientFactory.CreateClient(atlasApi);
     return new OptionsRequests(httpClient);
 });
 

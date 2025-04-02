@@ -7,5 +7,6 @@ namespace Atlas.Data.Access.Interfaces
         Task<DatabaseStatus?> GetDatabaseStatusAsync(string? user, CancellationToken cancellationToken);
         Task<DatabaseStatus?> CreateDatabaseAsync(string? user, CancellationToken cancellationToken);
         Task<DatabaseStatus?> SeedDatabaseAsync(string? user, CancellationToken cancellationToken);
+        void MigrateDatabase();
     }
 }

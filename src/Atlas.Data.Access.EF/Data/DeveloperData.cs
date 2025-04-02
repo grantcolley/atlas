@@ -10,10 +10,23 @@ using Microsoft.Extensions.Logging;
 
 namespace Atlas.Data.Access.EF.Data
 {
-    public class DeveloperData(ApplicationDbContext applicationDbContext, IConfiguration configuration, ILogService logService, ILogger<DeveloperData> logger)
+    public class DeveloperData(ApplicationDbContext applicationDbContext, AtlasConfig atlasConfig, ILogService logService, ILogger<DeveloperData> logger)
         : AuthorisationData<DeveloperData>(applicationDbContext, logger), IDeveloperData
     {
-        private readonly IConfiguration _configuration = configuration;
+        private readonly AtlasConfig _atlasConfig = atlasConfig;
+
+        public void MigrateDatabase()
+        {
+            if (_atlasConfig.DatabaseMigrate)
+            {
+                _applicationDbContext.Database.Migrate();
+
+                if(_atlasConfig.DatabaseSeedData)
+                {
+                    SeedData.Generate(_applicationDbContext);
+                }
+            }
+        }
 
         public async Task<DatabaseStatus?> GetDatabaseStatusAsync(string? user, CancellationToken cancellationToken)
         {
@@ -24,12 +37,12 @@ namespace Atlas.Data.Access.EF.Data
                 DatabaseStatus databaseStatus = new()
                 {
                     CanConnect = await _applicationDbContext.Database.CanConnectAsync(cancellationToken).ConfigureAwait(false),
-                    CanCreate = bool.Parse(_configuration["Database:CreateDatabase"] ?? "false")
+                    CanCreate = _atlasConfig.DatabaseCreate
                 };
 
                 if(databaseStatus.CanConnect)
                 {
-                    databaseStatus.CanSeedData = bool.Parse(_configuration["Database:GenerateSeedData"] ?? "false");
+                    databaseStatus.CanSeedData = _atlasConfig.DatabaseSeedData;
                 }
 
                 return databaseStatus;
@@ -49,7 +62,7 @@ namespace Atlas.Data.Access.EF.Data
                 DatabaseStatus databaseStatus = new()
                 {
                     CanConnect = await _applicationDbContext.Database.CanConnectAsync(cancellationToken).ConfigureAwait(false),
-                    CanCreate = bool.Parse(_configuration["Database:CreateDatabase"] ?? "false")
+                    CanCreate = _atlasConfig.DatabaseCreate
                 };
 
                 if (!databaseStatus.CanConnect)
@@ -60,7 +73,7 @@ namespace Atlas.Data.Access.EF.Data
 
                     if (databaseStatus.CanConnect)
                     {
-                        databaseStatus.CanSeedData = bool.Parse(_configuration["Database:GenerateSeedData"] ?? "false");
+                        databaseStatus.CanSeedData = _atlasConfig.DatabaseSeedData;
                     }
 
                     logService.Log(Logging.Enums.LogLevel.Information, $"Atlas database created {_applicationDbContext.Database.GetConnectionString()}", user);
@@ -83,13 +96,13 @@ namespace Atlas.Data.Access.EF.Data
                 DatabaseStatus databaseStatus = new()
                 {
                     CanConnect = await _applicationDbContext.Database.CanConnectAsync(cancellationToken).ConfigureAwait(false),
-                    CanCreate = bool.Parse(_configuration["Database:CreateDatabase"] ?? "false"),
-                    CanSeedData = bool.Parse(_configuration["Database:GenerateSeedData"] ?? "false")
+                    CanCreate = _atlasConfig.DatabaseCreate,
+                    CanSeedData = _atlasConfig.DatabaseSeedData
                 };
 
                 if (databaseStatus.CanConnect)
                 {
-                    bool generateSeedLogs = bool.Parse(_configuration["Database:GenerateSeedLogs"] ?? "false");
+                    bool generateSeedLogs = _atlasConfig.DatabaseSeedLogs;
 
                     if (databaseStatus.CanSeedData)
                     {

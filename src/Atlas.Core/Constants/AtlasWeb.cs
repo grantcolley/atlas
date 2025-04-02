@@ -1,8 +1,7 @@
 ﻿namespace Atlas.Core.Constants
 {
-    public static class AtlasWebConstants
+    public static class AtlasWeb
     {
-        public const string ATLAS_API = "AtlasAPI";
         public const string ATLAS_DEFAULT_ICON = "Image";
         public const string ATLAS_THEME_STORAGE = "atlas-theme";
 
