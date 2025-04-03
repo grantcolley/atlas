@@ -32,6 +32,15 @@ See the [Worked Examples](#worked-examples) for step-by-step guidance on how to 
 * [Navigation](#navigation)
     * [Modules, Categories and Pages](#modules-categories-and-pages)
 * [Audit](#audit)
+* [Publish Atlas to Azure](#publish-atlas-to-azure)
+  * [Steps to Publish Atlas to Azure](#steps-to-publish-atlas-to-azure)
+    * [Resource Group](#resource-group)   
+    * [Web App + Database](#web-app+-database)
+    * [Web App](#web-app)
+    * [Environment Variables](#environment-variables)
+    * [Auth0](#auth0)
+    * [Update Web API Configuration and Publish to Azure](#update-web-api-configuration-and-publish-to-azure)
+    * [Update Blazor Web App Configuration and Publish to Azure](#update-blazor-web-app-configuration-and-publish-to-azure)
 * [Worked Examples](#worked-examples)
     * [Blazor Template](#blazor-template) 
 * [Notes](#notes)
@@ -508,6 +517,153 @@ More can be read here about change tracking in Entity Framework:
 - [Change Tracking in EF Core](https://learn.microsoft.com/en-us/ef/core/change-tracking/)
 - [Change Detection and Notifications](https://learn.microsoft.com/en-us/ef/core/change-tracking/change-detection)
 - [Tracking Changes of Entities in EF Core](https://www.entityframeworktutorial.net/efcore/changetracker-in-ef-core.aspx)
+
+## Publish Atlas to Azure
+Create an account in Azure and a subscription.
+
+#### Steps to Publish Atlas to Azure
+#### Resource Group
+Create a **Resource Group** called `atlas-rg`.
+- Select an appropriate **Region**.
+
+#### Web App + Database
+In the **Resource Group**, create a **Web App + Database** called `atlas-web-api`.
+- Select the same **Region** as the **Resource Group**.
+- Select the **Runtime stack**.
+- Stick with the `SQLAzure` **Engine**, and default server and database names provided. 
+- For the **Hosting plan**, select `Basic - For hobby or research purposes`.
+
+#### Web App
+In the **Resource Group**, create a **Web App** called `atlas-blazor`.
+- Select the **Runtime stack**.
+- For **Operating system** select `Linux`.
+- Select the same **Region** as the **Resource Group**.
+- Skip **Database**, in the **Deployment** section ensure **Basic authentication** is selected, and keep the rest of the default settings.
+
+#### Environment Variables
+Go to `atlas-web-api` resource.
+For this demo we will use the config in the `appsettings.Production.json` file for the **Atlas.API** and **Atlas.Blazor.Web.App** projects.
+- In **Environment variables** -> **Connection strings**, copy the connection string from the environment variable `AZURE_SQL_CONNECTIONSTRING`, and paste it into `AtlasConnection` in the `appsettings.Production.json` file for both projects.  
+- Delete environment variable `AZURE_SQL_CONNECTIONSTRING`. 
+- Click **Apply** -> **Confirm**
+
+#### Auth0
+Login to `Auth0` and:
+- add the `atlas-blazor` url to `Allowed Callback URLs` e.g. `{atlas-blazor url here...}/callback`
+- add the `atlas-blazor` url to `Allowed Logout URLs` e.g. `{atlas-blazor url here...}/`
+
+![Alt text](/readme-images/auth0-application-uris.png?raw=true "Auth0 Application URIs") 
+
+#### Update Web API Configuration and Publish to Azure
+In the **Atlas.API** project's `appsettings.Production.json` update the following:
+```json
+{
+  "ConnectionStrings": {
+    "AtlasConnection": "" // 👈 connection string to atlas-web-api-database (copied from AZURE_SQL_CONNECTIONSTRING in atlas-web-api environment variables)
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning",
+      "Microsoft.EntityFrameworkCore.Database.Command": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "Auth0": {
+    "Domain": "", // 👈 Auth0 domain
+    "Audience": "https://Atlas.API.com"
+  },
+  "CorsOrigins": {
+    "Policy": "atlas-cors-policy",
+    "Urls": "" // 👈 url to atlas-blazor app 
+  },
+  "Database": {
+    "MigrateDatabase": "true",
+    "CreateDatabase": "true",
+    "GenerateSeedData": "true",
+    "GenerateSeedLogs": "false"
+  }
+}
+```
+
+- Right click the project and select **Publish**.
+- For **Target** select `Azure`. 
+- For **Specific target** select `Azure App Service (Linux)`.
+- For **App Service** select `atlas-web-api`.
+- For **API Management** tick `Skip this step`.
+- For **Deployment type** select `Publish (generates pubxml file)`.
+- In the projects **Properties** -> **PublishProfiles** folder, add the following to `atlas-web-api - Zip Deploy.pubxml`.
+```xml
+  <ItemGroup>
+	 <Content Update="appsettings.json">
+		<CopyToPublishDirectory>Never</CopyToPublishDirectory>
+	  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	 </Content>	  
+    <Content Update="appsettings.Development.json">
+     <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+     <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+```
+
+In the Publish tab click the publish button. This will build and publish **Atlas.API** to `atlas-web-api`. A new tab will open in your default browser for the running `atlas-web-api`. Append `/swagger/index.html` to the url and hit enter.
+
+![Alt text](/readme-images/atlas-web-api-swagger.png?raw=true "Atlas Web API Swagger")
+
+#### Update Blazor Web App Configuration and Publish to Azure
+7. In the **Atlas.Blazor.Web.App** project's `appsettings.Production.json` update the following:
+```json
+{
+  "ConnectionStrings": {
+    "AtlasConnection": "" // 👈 connection string to atlas-web-api-database (copied from AZURE_SQL_CONNECTIONSTRING in atlas-web-api environment variables)
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning",
+      "Microsoft.EntityFrameworkCore.Database.Command": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "Auth0": {
+    "Domain": "", // 👈 Auth0 domain
+    "ClientId": "", // 👈 Auth0 ClientId
+    "ClientSecret": "", // 👈 Auth0 ClientSecret
+    "Audience": "https://Atlas.API.com"
+  },
+  "AtlasAPI": "" // 👈 url to atlas-web-api 
+}
+```
+- Right click the project and select **Publish**.
+- For **Target** select `Azure`. 
+- For **Specific target** select `Azure App Service (Linux)`.
+- For **App Service** select `atlas-blazor`.
+- For **Deployment type** select `Publish (generates pubxml file)`.
+- In the projects **Properties** -> **PublishProfiles** folder, add the following to `atlas-blazor - Zip Deploy.pubxml`.
+```xml
+  <ItemGroup>
+	 <Content Update="appsettings.json">
+	  <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+	  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	 </Content>	  
+    <Content Update="appsettings.Development.json">
+     <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+     <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+```
+
+In the Publish tab click the publish button. This will build and publish **Atlas.Blazor.Web.App** to `atlas-blazor`. A new tab will open in your default browser for the running `atlas-blazor`.
+
+![Alt text](/readme-images/atlas-blazor-login.png?raw=true "Atlas Blazor Login")
+
+Click `login` to be re-directed to `Auth0` for authentication.
+
+![Alt text](/readme-images/Auth0_Login.png?raw=true "Auth0 Login")
+
+`Auth0` will re-direct bck to the `callback` page.
+
+![Alt text](/readme-images/atlas-blazor-loggedin.png?raw=true "Atlas Web API Swagger")
 
 # Worked Examples
 ## Blazor Template
