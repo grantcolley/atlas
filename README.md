@@ -1,8 +1,8 @@
 ![Alt text](/readme-images/Atlas.png?raw=true "Atlas") 
 
-###### .NET 9.0, Blazor, ASP.NET Core Web API, Auth0, FluentUI, FluentValidation, Backend for Frontend (BFF), Entity Framework Core, MS SQL Server, SQLite
+###### .NET 9.0, Blazor, ASP.NET Core Web API, Azure, Auth0, FluentUI, FluentValidation, Backend for Frontend (BFF), Entity Framework Core, MS SQL Server, SQLite
 
-A .NET 9.0 Blazor framework for hosting and building Blazor applications using the Backend for Frontend (BFF) pattern. It comes with authentication, authorisation, change tracking, and persisting structured logs to the database.
+A .NET 9.0 Blazor framework for hosting and building Blazor applications using the Backend for Frontend (BFF) pattern. It comes with authentication, authorisation, change tracking, and persisting structured logs to the database. Follow the instructions for deploying to Azure.
 
 See the [Worked Examples](#worked-examples) for step-by-step guidance on how to introduce new modules into the **Atlas** framework.
 
