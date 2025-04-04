@@ -35,7 +35,7 @@ See the [Worked Examples](#worked-examples) for step-by-step guidance on how to 
 * [Publish Atlas to Azure](#publish-atlas-to-azure)
   * [Steps to Publish Atlas to Azure](#steps-to-publish-atlas-to-azure)
     * [Resource Group](#resource-group)   
-    * [Web App + Database](#web-app+-database)
+    * [Web App + Database](#web-app--database)
     * [Web App](#web-app)
     * [Environment Variables](#environment-variables)
     * [Auth0](#auth0)
@@ -559,7 +559,7 @@ In the **Atlas.API** project's `appsettings.Production.json` update the followin
 ```json
 {
   "ConnectionStrings": {
-    "AtlasConnection": "" // 👈 connection string to atlas-web-api-database (copied from AZURE_SQL_CONNECTIONSTRING in atlas-web-api environment variables)
+    "AtlasConnection": "" // 👈 connection string to atlas-web-api-database
   },
   "Logging": {
     "LogLevel": {
@@ -615,7 +615,7 @@ In the Publish tab click the publish button. This will build and publish **Atlas
 ```json
 {
   "ConnectionStrings": {
-    "AtlasConnection": "" // 👈 connection string to atlas-web-api-database (copied from AZURE_SQL_CONNECTIONSTRING in atlas-web-api environment variables)
+    "AtlasConnection": "" // 👈 connection string to atlas-web-api-database
   },
   "Logging": {
     "LogLevel": {
