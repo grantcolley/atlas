@@ -559,7 +559,7 @@ In the **Atlas.API** project's `appsettings.Production.json` update the followin
 ```json
 {
   "ConnectionStrings": {
-    "AtlasConnection": "" // 👈 connection string to atlas-web-api-database (copied from AZURE_SQL_CONNECTIONSTRING in atlas-web-api environment variables)
+    "AtlasConnection": "" // 👈 connection string to atlas-web-api-database
   },
   "Logging": {
     "LogLevel": {
@@ -615,7 +615,7 @@ In the Publish tab click the publish button. This will build and publish **Atlas
 ```json
 {
   "ConnectionStrings": {
-    "AtlasConnection": "" // 👈 connection string to atlas-web-api-database (copied from AZURE_SQL_CONNECTIONSTRING in atlas-web-api environment variables)
+    "AtlasConnection": "" // 👈 connection string to atlas-web-api-database
   },
   "Logging": {
     "LogLevel": {
