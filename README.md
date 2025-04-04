@@ -600,10 +600,10 @@ In the **Atlas.API** project's `appsettings.Production.json` update the followin
 - In the projects **Properties** -> **PublishProfiles** folder, add the following to `atlas-web-api - Zip Deploy.pubxml`.
 ```xml
   <ItemGroup>
-	 <Content Update="appsettings.json">
-		<CopyToPublishDirectory>Never</CopyToPublishDirectory>
-	  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-	 </Content>	  
+    <Content Update="appsettings.json">
+     <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+     <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>	  
     <Content Update="appsettings.Development.json">
      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -647,10 +647,10 @@ In the Publish tab click the publish button. This will build and publish **Atlas
 - In the projects **Properties** -> **PublishProfiles** folder, add the following to `atlas-blazor - Zip Deploy.pubxml`.
 ```xml
   <ItemGroup>
-	 <Content Update="appsettings.json">
-	  <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-	  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-	 </Content>	  
+    <Content Update="appsettings.json">
+     <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+     <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>	  
     <Content Update="appsettings.Development.json">
      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
