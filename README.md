@@ -519,12 +519,13 @@ More can be read here about change tracking in Entity Framework:
 - [Tracking Changes of Entities in EF Core](https://www.entityframeworktutorial.net/efcore/changetracker-in-ef-core.aspx)
 
 ## Publish Atlas to Azure
-Create an account in Azure and a subscription.
+First, create an Azure account.
 
 #### Steps to Publish Atlas to Azure
 #### Resource Group
-Create a **Resource Group** called `atlas-rg`.
-- Select an appropriate **Region**.
+Create a **Resource Group** called `atlas-rg` and select an appropriate **Region**.
+
+![Alt text](/readme-images/Create_ResourceGroup.png?raw=true "Create a Resource Group")
 
 #### Web App + Database
 In the **Resource Group**, create a **Web App + Database** called `atlas-web-api`.
@@ -533,12 +534,16 @@ In the **Resource Group**, create a **Web App + Database** called `atlas-web-api
 - Stick with the `SQLAzure` **Engine**, and default server and database names provided. 
 - For the **Hosting plan**, select `Basic - For hobby or research purposes`.
 
+![Alt text](/readme-images/Create_WebAppAndDatabase.png?raw=true "Create WebApp + Database")
+
 #### Web App
 In the **Resource Group**, create a **Web App** called `atlas-blazor`.
 - Select the **Runtime stack**.
 - For **Operating system** select `Linux`.
 - Select the same **Region** as the **Resource Group**.
 - Skip **Database**, in the **Deployment** section ensure **Basic authentication** is selected, and keep the rest of the default settings.
+
+![Alt text](/readme-images/Create_WebApp_Blazor.png?raw=true "Create WebApp - Blazor")
 
 #### Environment Variables
 Go to `atlas-web-api` resource.
