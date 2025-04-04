@@ -664,7 +664,7 @@ In the Publish tab click the publish button. This will build and publish **Atlas
 
 Click `login` to be re-directed to `Auth0` for authentication.
 
-![Alt text](/readme-images/Auth0_Login.png?raw=true "Auth0 Login")
+![Alt text](/readme-images/Auth0_Login_Blank.png?raw=true "Auth0 Login")
 
 `Auth0` will re-direct bck to the `callback` page.
 
