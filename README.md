@@ -35,7 +35,7 @@ See the [Worked Examples](#worked-examples) for step-by-step guidance on how to 
 * [Publish Atlas to Azure](#publish-atlas-to-azure)
   * [Steps to Publish Atlas to Azure](#steps-to-publish-atlas-to-azure)
     * [Resource Group](#resource-group)   
-    * [Web App + Database](#web-app-database)
+    * [Web App + Database](#web-app-+-database)
     * [Web App](#web-app)
     * [Environment Variables](#environment-variables)
     * [Auth0](#auth0)
@@ -526,7 +526,7 @@ Create an account in Azure and a subscription.
 Create a **Resource Group** called `atlas-rg`.
 - Select an appropriate **Region**.
 
-#### Web App /+ Database
+#### Web App + Database
 In the **Resource Group**, create a **Web App + Database** called `atlas-web-api`.
 - Select the same **Region** as the **Resource Group**.
 - Select the **Runtime stack**.
