@@ -35,7 +35,7 @@ See the [Worked Examples](#worked-examples) for step-by-step guidance on how to 
 * [Publish Atlas to Azure](#publish-atlas-to-azure)
   * [Steps to Publish Atlas to Azure](#steps-to-publish-atlas-to-azure)
     * [Resource Group](#resource-group)   
-    * [Web App + Database](#web-app-database)
+    * [Web App + Database](#web-app--database)
     * [Web App](#web-app)
     * [Environment Variables](#environment-variables)
     * [Auth0](#auth0)
